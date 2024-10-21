@@ -8,5 +8,5 @@ export default function Row({
   children: ReactNode;
   classname?: string;
 }>) {
-  return <div className={cn("row", classname)}>{children}</div>;
+  return <div className={cn("row flex items-center", classname)}>{children}</div>;
 }
