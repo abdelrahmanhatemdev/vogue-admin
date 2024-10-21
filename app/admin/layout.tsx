@@ -1,7 +1,12 @@
 import { ReactNode } from "react";
 
-export default function layout({children}: Readonly<{children: ReactNode}>) {
+export default function layout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
-    <>{children}</>
-  )
+    <>
+      <aside></aside>
+      <main>{children}</main>
+    </>
+  );
 }
