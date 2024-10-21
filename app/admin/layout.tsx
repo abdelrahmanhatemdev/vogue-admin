@@ -11,17 +11,17 @@ export default function layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <Row>
-        <Sidebar className="hidden lg:block w-80" />
-        <MobileSidebar className="lg:hidden" />
-        <main className="grow">
-          <Container>
+      <Container>
+        <Row>
+          <Sidebar className="hidden lg:block w-80" />
+          <MobileSidebar className="lg:hidden" />
+          <main className="grow relative h-screen">
             <Header />
             {children}
             <Footer />
-          </Container>
-        </main>
-      </Row>
+          </main>
+        </Row>
+      </Container>
     </>
   );
 }

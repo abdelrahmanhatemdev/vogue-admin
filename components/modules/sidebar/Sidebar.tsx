@@ -8,9 +8,9 @@ export default function Sidebar({
     className?: string;
   }>) {
   return (
-    <aside className="w-80">
+    <aside className="w-52">
       <Logo />
-        <ul className="flex flex-col p-4 border-e border-solid border-stone-200 w-full">
+        <ul className="p-4 border-e border-solid border-stone-800 w-full">
           <li>
             <Link href="/admin/users" className="font-bold">Users</Link>
           </li>
