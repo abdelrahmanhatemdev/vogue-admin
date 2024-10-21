@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 
 export default function Container({
   children,
-  classname,
+  className,
 }: Readonly<{
   children: ReactNode;
-  classname?: string;
+  className?: string;
 }>) {
-  return <div className={cn("container w-full h-full", classname)}>{children}</div>;
+  return <div className={cn("container w-full h-full", className)}>{children}</div>;
 }

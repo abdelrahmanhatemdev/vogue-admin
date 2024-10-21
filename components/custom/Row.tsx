@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 
 export default function Row({
   children,
-  classname,
+  className,
 }: Readonly<{
   children: ReactNode;
-  classname?: string;
+  className?: string;
 }>) {
-  return <div className={cn("row flex items-center", classname)}>{children}</div>;
+  return <div className={cn("row flex items-center", className)}>{children}</div>;
 }
