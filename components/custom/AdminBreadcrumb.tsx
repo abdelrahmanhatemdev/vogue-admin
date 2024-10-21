@@ -6,11 +6,9 @@ import Link from "next/link";
 
 export default function AdminBreadcrumb({
   children,
-  className,
   page
 }: Readonly<{
-  children: ReactNode;
-  className?: string;
+  children?: ReactNode;
   page: string;
 }>) {
   return  <Breadcrumb>

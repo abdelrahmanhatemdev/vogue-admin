@@ -1,9 +1,9 @@
 import Container from "@/components/custom/Container";
 import Row from "@/components/custom/Row";
-import Footer from "@/components/modules/footer/Footer";
-import Header from "@/components/modules/header/Header";
-import MobileSidebar from "@/components/modules/sidebar/MobileSidebar";
-import Sidebar from "@/components/modules/sidebar/Sidebar";
+import Footer from "@/components/modules/admin/footer/Footer";
+import Header from "@/components/modules/admin/header/Header";
+import MobileSidebar from "@/components/modules/admin/sidebar/MobileSidebar";
+import Sidebar from "@/components/modules/admin/sidebar/Sidebar";
 import { ReactNode } from "react";
 
 export default function layout({
