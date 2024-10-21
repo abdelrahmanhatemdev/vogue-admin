@@ -1,3 +1,5 @@
+import Container from "@/components/custom/Container";
+import Row from "@/components/custom/Row";
 import Footer from "@/components/modules/footer/Footer";
 import Header from "@/components/modules/header/Header";
 import MobileSidebar from "@/components/modules/sidebar/MobileSidebar";
@@ -9,13 +11,17 @@ export default function layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <Header />
-      <div>
-        <Sidebar className="hidden lg:block" />
-        <MobileSidebar />
-        <main>{children}</main>
-      </div>
-      <Footer />
+      <Row>
+        <Sidebar className="hidden lg:block w-80" />
+        <MobileSidebar className="lg:hidden" />
+        <main className="grow">
+          <Container>
+            <Header />
+            {children}
+            <Footer />
+          </Container>
+        </main>
+      </Row>
     </>
   );
 }

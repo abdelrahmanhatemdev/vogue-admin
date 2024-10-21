@@ -1,5 +1,11 @@
-export default function MobileSidebar() {
+import { cn } from "@/lib/utils";
+
+export default function MobileSidebar({
+  className,
+}: Readonly<{
+  className?: string;
+}>) {
   return (
-    <div>MobileSidebar</div>
+    <div className={cn("", className)}>MobileSidebar</div>
   )
 }

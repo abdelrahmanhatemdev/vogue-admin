@@ -1,5 +1,9 @@
-export default function Footer() {
+export default function () {
   return (
-    <div>Footer</div>
-  )
+    <footer>
+      <p>
+        <span>2042</span> &#64; Vogue
+      </p>
+    </footer>
+  );
 }
