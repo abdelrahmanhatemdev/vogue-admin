@@ -10,8 +10,6 @@ export default function AddUser() {
 
   const canAdd: boolean = [email, password, passwordConfirm].every(Boolean);
 
-  console.log("can add: ", canAdd);
-
   function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
