@@ -27,6 +27,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { error } from "console";
 
 const formSchema = z.object({
   name: z.string().max(20, {
@@ -56,6 +57,15 @@ export default function AddCategory() {
         if (res?.statusText === "OK" && res?.data?.message) {
           toast.success(res?.data?.message);
         }
+        if (res?.data?.error) {
+          toast.error(res?.data?.error)
+        }
+        console.log("res",res);
+        
+      }).catch(error => {
+        const message = error?.response?.data?.error || "Something Wrong"
+        toast.error(message)
+        
       })
   }
 

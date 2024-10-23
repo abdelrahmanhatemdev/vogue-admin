@@ -20,6 +20,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Category Added" }, { status: 200 });
     }
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Something Wrong"
+    return NextResponse.json({ error: message}, { status: 500 });
   }
 }
