@@ -18,6 +18,9 @@ export default function Sidebar({
           <li>
             <Link href="/admin/users" className="font-bold">Users</Link>
           </li>
+          <li>
+            <Link href="/admin/categories" className="font-bold">Categories</Link>
+          </li>
         </ul>
     </aside>
   )

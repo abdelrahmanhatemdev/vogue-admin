@@ -1,4 +1,5 @@
 import Container from "@/components/custom/Container";
+import ContentContainer from "@/components/custom/ContentContainer";
 import Row from "@/components/custom/Row";
 import Footer from "@/components/modules/admin/footer/Footer";
 import Header from "@/components/modules/admin/header/Header";
@@ -15,7 +16,7 @@ export default function layout({
           <Sidebar className="hidden lg:block w-80" />
           <main className="grow relative h-screen">
             <Header />
-            {children}
+            <ContentContainer>{children}</ContentContainer>
             <Footer />
           </main>
         </Row>

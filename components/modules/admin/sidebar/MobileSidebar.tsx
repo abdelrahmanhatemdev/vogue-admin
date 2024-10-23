@@ -34,6 +34,9 @@ export default function MobileSidebar({
           <li>
             <Link href="/admin/users" className="font-bold" onClick={close}>Users</Link>
           </li>
+          <li>
+            <Link href="/admin/categories" className="font-bold" onClick={close}>Categories</Link>
+          </li>
         </ul>
         </SheetContent>
       </Sheet>
