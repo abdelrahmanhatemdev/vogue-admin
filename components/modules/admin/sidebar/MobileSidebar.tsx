@@ -5,41 +5,44 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-
-import Sidebar from "./Sidebar";
-import { Dispatch, SetStateAction, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import Link from "next/link";
 
-export default function MobileSidebar({
-  className,
-}: Readonly<{
-  className?: string;
-}>) {
-  const [open, setOpen] = useState(false);
-
-  const close = () => setOpen(false)
+export default function SheetDemo() {
   return (
-    <div className={cn("", className)}>
-      <Sheet open={open}>
-        <SheetTrigger asChild>
-          <CiMenuBurger className="lg:hidden" onClick={() => setOpen(true)}/>
-        </SheetTrigger>
+    <Sheet>
+      <SheetTrigger asChild>
+        <CiMenuBurger className="lg:hidden" />
+      </SheetTrigger>
+      <SheetContent>
         <SheetContent side="left">
-        <ul className="p-4 border-e border-solid border-stone-800 w-full">
-          <li>
-            <Link href="/admin" className="font-bold" onClick={close}>Dashboard</Link>
-          </li>
-          <li>
-            <Link href="/admin/users" className="font-bold" onClick={close}>Users</Link>
-          </li>
-          <li>
-            <Link href="/admin/categories" className="font-bold" onClick={close}>Categories</Link>
-          </li>
-        </ul>
+          <ul className="p-4 border-e border-solid border-stone-800 w-full">
+            <li>
+              <SheetClose asChild>
+                <Link className="font-bold " href="/admin">
+                  Dashboard
+                </Link>
+              </SheetClose>
+            </li>
+            <li>
+              <SheetClose asChild>
+                <SheetClose asChild>
+                  <Link className="font-bold " href="/admin/users">
+                    Users
+                  </Link>
+                </SheetClose>
+              </SheetClose>
+            </li>
+            <li>
+              <SheetClose asChild>
+                <Link className="font-bold " href="/admin/categories">
+                  Categories
+                </Link>
+              </SheetClose>
+            </li>
+          </ul>
         </SheetContent>
-      </Sheet>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
