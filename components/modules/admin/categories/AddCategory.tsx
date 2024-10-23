@@ -42,10 +42,6 @@ export default function AddCategory() {
     },
   });
 
-  // toast({
-  //   title: "Try Toast"
-  // })
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     const date = new Date().toISOString();
     const data = {
@@ -58,11 +54,9 @@ export default function AddCategory() {
       .post(`${process.env.NEXT_PUBLIC_API}/categories`, data)
       .then((res) => {
         if (res?.statusText === "OK" && res?.data?.message) {
-          toast(res?.data?.message);
+          toast.success(res?.data?.message);
         }
-      });
-
-    console.log("values", data);
+      })
   }
 
   return (
