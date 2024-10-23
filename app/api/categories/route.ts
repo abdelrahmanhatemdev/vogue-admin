@@ -1,4 +1,25 @@
+import { NextResponse } from "next/server";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/firebase.config";
 
-export default function POST() {
-  
+interface ResponseData {
+  message: string;
+}
+
+// export  function GET() {
+
+//   return NextResponse.json("Categories GET Here")
+// }
+
+export async function POST(request: Request) {
+  const data = await request.json();
+
+  try {
+    const docRef = await addDoc(collection(db, "categories"), data);
+    if (docRef?.id) {
+      return NextResponse.json({ message: "Category Added" }, { status: 200 });
+    }
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
 }

@@ -9,17 +9,61 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { HiOutlinePlus } from "react-icons/hi2";
+import axios from "axios";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { DialogClose } from "@radix-ui/react-dialog";
+
+const formSchema = z.object({
+  name: z.string().max(20, {
+    message: "Name should not have more than 20 charachters.",
+  }),
+});
 
 export default function AddCategory() {
-  const form = useForm();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
 
-// const formSchema = 
+  // toast({
+  //   title: "Try Toast"
+  // })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const date = new Date().toISOString();
+    const data = {
+      ...values,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_API}/categories`, data)
+      .then((res) => {
+        if (res?.statusText === "OK" && res?.data?.message) {
+          toast(res?.data?.message);
+        }
+      });
+
+    console.log("values", data);
+  }
 
   return (
     <Dialog>
@@ -34,29 +78,29 @@ export default function AddCategory() {
           Add new Category here. Click Add when you'are done.
         </DialogDescription>
         <Form {...form}>
-          <form action="">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
-              name="name"
               control={form.control}
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                        <input {...field}/>
-                    </FormControl>
-                    <FormDescription>
-                        Your Category Name
-                    </FormDescription>
-                    <FormMessage/>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription>New Category Name</FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
+            <DialogFooter>
+              <DialogClose>
+                <Button type="submit">Add</Button>
+              </DialogClose>
+            </DialogFooter>
           </form>
         </Form>
-
-        <DialogFooter>
-          <Button>Add</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
