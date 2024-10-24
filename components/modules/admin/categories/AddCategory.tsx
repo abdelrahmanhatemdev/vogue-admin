@@ -50,7 +50,7 @@ export default function AddCategory() {
     };
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API}/categories`, data)
+      .post(`${process.env.NEXT_APP_PUBLIC_API}/categories`, data)
       .then((res) => {
         if (res?.statusText === "OK" && res?.data?.message) {
           toast.success(res?.data?.message);
