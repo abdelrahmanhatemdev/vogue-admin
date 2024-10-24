@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/sheet";
 import { CiMenuBurger } from "react-icons/ci";
 import Link from "next/link";
+import { SidebarLinks } from "./Sidebar";
+import { usePathname } from "next/navigation";
 
-export default function SheetDemo() {
+export default function MobileSidebar() {
+  const currentPath = usePathname()
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -16,30 +19,20 @@ export default function SheetDemo() {
       </SheetTrigger>
       <SheetContent>
         <SheetContent side="left">
-          <ul className="p-4 border-e border-solid border-stone-800 w-full">
-            <li>
-              <SheetClose asChild>
-                <Link className="font-bold " href="/admin">
-                  Dashboard
-                </Link>
-              </SheetClose>
-            </li>
-            <li>
-              <SheetClose asChild>
+          <ul className="p-4 border-e border-solid border-stone-800 w-full flex flex-col gap-2">
+            {SidebarLinks.map((link) => (
+              <li key={link.name}>
                 <SheetClose asChild>
-                  <Link className="font-bold " href="/admin/users">
-                    Users
+                  <Link
+                    className={"flex items-center gap-2 " + (currentPath === link.link ? "font-bold": "font-medium")}
+                    href={`${link.link}`}
+                  >
+                    {link.icon}
+                    <span>{link.name}</span>
                   </Link>
                 </SheetClose>
-              </SheetClose>
-            </li>
-            <li>
-              <SheetClose asChild>
-                <Link className="font-bold " href="/admin/categories">
-                  Categories
-                </Link>
-              </SheetClose>
-            </li>
+              </li>
+            ))}
           </ul>
         </SheetContent>
       </SheetContent>

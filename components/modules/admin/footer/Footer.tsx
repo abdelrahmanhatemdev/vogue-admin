@@ -1,7 +1,6 @@
-import Container from "@/components/custom/Container";
 import ContentContainer from "@/components/custom/ContentContainer";
 
-export default function () {
+export default function Footer() {
   return (
     <footer className="absolute bottom-0 py-3 w-full">
       <ContentContainer>

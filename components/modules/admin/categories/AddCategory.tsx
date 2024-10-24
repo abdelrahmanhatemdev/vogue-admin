@@ -12,7 +12,6 @@ import {
 import axios from "axios";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -27,7 +26,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { error } from "console";
 
 const formSchema = z.object({
   name: z.string().max(20, {
@@ -45,7 +43,7 @@ export default function AddCategory() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const date = new Date().toISOString();
-    const data = {
+    const data= {
       ...values,
       createdAt: date,
       updatedAt: date,
@@ -58,15 +56,14 @@ export default function AddCategory() {
           toast.success(res?.data?.message);
         }
         if (res?.data?.error) {
-          toast.error(res?.data?.error)
+          toast.error(res?.data?.error);
         }
-        console.log("res",res);
-        
-      }).catch(error => {
-        const message = error?.response?.data?.error || "Something Wrong"
-        toast.error(message)
-        
+        console.log("res", res);
       })
+      .catch((error) => {
+        const message = error?.response?.data?.error || "Something Wrong";
+        toast.error(message);
+      });
   }
 
   return (
