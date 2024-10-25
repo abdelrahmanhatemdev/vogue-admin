@@ -27,6 +27,13 @@ export default function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    defaultColumn: {
+      size: 200, 
+      minSize: 50, 
+      maxSize: 500
+    }, 
+    columnResizeMode: "onChange",
+    columnResizeDirection: "ltr"
   });
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
