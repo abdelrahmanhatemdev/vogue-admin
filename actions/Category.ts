@@ -8,8 +8,8 @@ export default async function getCategories() {
         let data: Category[] = [];
         if (res?.data?.data) {
             data = res.data.data
-            data = data.sort((a, b) => b.updatedAt.localeCompare(b.updatedAt))
-            return data
+            const sortedData = data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+            return sortedData
         }
         
     } catch (error) {

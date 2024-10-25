@@ -28,7 +28,7 @@ export default function Modal({
   item?: Category;
 }) {
   return (
-    <Dialog open={open} >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent onPointerDownOutside={() => setOpen(false)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

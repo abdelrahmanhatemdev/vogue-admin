@@ -29,7 +29,11 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Dispatch, SetStateAction } from "react";
 
 const formSchema = z.object({
-  name: z.string().max(20, {
+  name: z.string()
+  .min(1, {
+    message: "Name is required"
+  })
+  .max(20, {
     message: "Name should not have more than 20 charachters.",
   }),
 });
@@ -47,7 +51,11 @@ export default function AddCategory({
     mode: "onChange",
   });
 
+  const {isDirty, isSubmitSuccessful, isValid} = form.formState
+
   function onSubmit(values: z.infer<typeof formSchema>) {
+    
+    setOpen(false)
     const date = new Date().toISOString();
     const data = {
       ...values,
