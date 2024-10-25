@@ -1,16 +1,20 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Dispatch, ReactNode, SetStateAction } from "react";
+export type ModalProps = {
+  title: string;
+  description: string;
+  children: JSX.Element;
+}
+
+import { Dispatch, SetStateAction } from "react";
+
 
 export default function Modal({
   title,
@@ -20,9 +24,9 @@ export default function Modal({
   setOpen, 
   item
 }: {
-  title: string;
-  description: string;
-  children?: ReactNode;
+  title: ModalProps["title"];
+  description: ModalProps["description"];
+  children?: ModalProps["children"];
   open?: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>
   item?: Category;

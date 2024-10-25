@@ -11,7 +11,7 @@ export default async function getCategories() {
             const sortedData = data.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
             return sortedData
         }
-        
+        return data
     } catch (error) {
         return error
     }

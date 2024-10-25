@@ -1,13 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import axios from "axios";
 
@@ -25,10 +19,10 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Dispatch, SetStateAction } from "react";
 
-const formSchema = z.object({
+
+export const CategorySchema = z.object({
   name: z.string()
   .min(1, {
     message: "Name is required"
@@ -43,17 +37,15 @@ export default function AddCategory({
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof CategorySchema>>({
+    resolver: zodResolver(CategorySchema),
     defaultValues: {
       name: "",
     },
     mode: "onChange",
   });
 
-  const {isDirty, isSubmitSuccessful, isValid} = form.formState
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof CategorySchema>) {
     
     setOpen(false)
     const date = new Date().toISOString();
@@ -96,7 +88,6 @@ export default function AddCategory({
             </FormItem>
           )}
         />
-
         <DialogFooter>
           <Button type="submit">Add</Button>
         </DialogFooter>

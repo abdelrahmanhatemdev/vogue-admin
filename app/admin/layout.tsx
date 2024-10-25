@@ -17,7 +17,7 @@ export default function layout({
           <main className="grow relative h-screen">
             <Header />
             <ContentContainer>{children}</ContentContainer>
-            <Footer />
+            <Footer/>
           </main>
         </Row>
       </Container>

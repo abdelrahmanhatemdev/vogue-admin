@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase.config";
 
-export const dataCollection = collection(db, "categories");
+export const collectoinName = "categories";
+export const dataCollection = collection(db, collectoinName);
 
 export async function GET() {
   try {
@@ -32,6 +40,34 @@ export async function POST(request: Request) {
     if (docRef?.id) {
       return NextResponse.json({ message: "Category Added" }, { status: 200 });
     }
+
+    return new Error("Something Wrong");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  const { id, name } = await request.json();
+  console.log(id);
+
+  try {
+    const docRef = doc(db, collectoinName, id);
+
+    if (docRef?.id) {
+      const date = new Date().toISOString();
+      await updateDoc(docRef, {
+        name,
+        updatedAt: date,
+      });
+      return NextResponse.json(
+        { message: "Category Updated" },
+        { status: 200 }
+      );
+    }
+
+    return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
