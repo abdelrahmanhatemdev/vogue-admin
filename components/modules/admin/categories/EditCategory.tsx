@@ -19,7 +19,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { Dispatch, SetStateAction } from "react";
 import { CategorySchema } from "./AddCategory";
 
 
@@ -43,11 +42,8 @@ export default function EditCategory({item}: {item: Category}) {
         if (res?.data?.error) {
           toast.error(res?.data?.error);
         }
-        console.log("res", res);
       })
       .catch((error) => {
-        console.log("Put Error:", error);
-        
         const message = error?.response?.data?.error || "Something Wrong";
         toast.error(message);
       });

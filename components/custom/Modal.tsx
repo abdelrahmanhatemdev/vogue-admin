@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/dialog";
 
 export type ModalProps = {
-  title: string;
-  description: string;
-  children: JSX.Element;
+  title: ReactNode;
+  description: ReactNode;
+  children: ReactNode;
 }
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 
 export default function Modal({
@@ -37,7 +37,7 @@ export default function Modal({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogDescription asChild>{description}</DialogDescription>
         {children}
       </DialogContent>
     </Dialog>

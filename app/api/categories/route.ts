@@ -6,6 +6,7 @@ import {
   updateDoc,
   doc,
   getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase.config";
 
@@ -72,4 +73,28 @@ export async function PUT(request: Request) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+  console.log(id);
+
+  try {
+    const docRef = doc(db, collectoinName, id);
+
+    if (docRef?.id) {
+      await deleteDoc(docRef);
+      return NextResponse.json(
+        { message: "Category Deleted" },
+        { status: 200 }
+      );
+    }
+
+    return new Error("Something Wrong");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+  
+  return NextResponse.json({ message: "Hello" }, { status: 200 });
 }

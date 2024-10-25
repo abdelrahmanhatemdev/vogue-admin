@@ -7,6 +7,7 @@ import { TbEdit } from "react-icons/tb";
 import { Dispatch, SetStateAction } from "react";
 import EditCategory from "./EditCategory";
 import { ModalProps } from "@/components/custom/Modal";
+import DeleteCategory from "./DeleteCategory";
 
 export default function CategoriesList({ 
   data, 
@@ -70,7 +71,17 @@ export default function CategoriesList({
             }} 
             
             />
-            <Trash2Icon size={20} color="#dc2626" className="cursor-pointer" />
+            <Trash2Icon size={20} color="#dc2626" className="cursor-pointer"
+            onClick={()=> {
+              setOpen(true)
+                setModal({
+                  title: `Delete Category`, 
+                  description: <p className="font-medium">Are you sure To delete the category permenantly ?</p>,
+                  children: <DeleteCategory item={item}/>, 
+                  
+                })
+            }} 
+            />
           </div>
         )
       }

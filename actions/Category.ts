@@ -3,7 +3,7 @@ import { cache } from "react";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`
 
-export const getCategories = cache( async () =>{
+export const getCategories = async () =>{
     try {
         const res = await axios.get(apiURL)
         let data: Category[] = [];
@@ -16,6 +16,6 @@ export const getCategories = cache( async () =>{
     } catch (error) {
         return error
     }
-})
+}
 
 export default getCategories
