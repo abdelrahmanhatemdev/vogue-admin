@@ -5,7 +5,6 @@ import {
   getDocs,
   updateDoc,
   doc,
-  getDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase.config";
@@ -17,7 +16,7 @@ export async function GET() {
   try {
     const querySnapshot = await getDocs(dataCollection);
 
-    let data: Category[] = [];
+    const data: Category[] = [];
 
     querySnapshot.forEach((doc) => {
       if (doc?.id) {

@@ -65,7 +65,7 @@ export default function CategoriesList({
                 setModal({
                   title: `Edit Category`, 
                   description: "Update Category here. Click Update when you'are done.",
-                  children: <EditCategory item={item}/>, 
+                  children: <EditCategory item={item}  setOpen={setOpen}/>, 
                   
                 })
             }} 
@@ -77,7 +77,7 @@ export default function CategoriesList({
                 setModal({
                   title: `Delete Category`, 
                   description: <p className="font-medium">Are you sure To delete the category permenantly ?</p>,
-                  children: <DeleteCategory item={item}/>, 
+                  children: <DeleteCategory item={item} setOpen={setOpen}/>, 
                   
                 })
             }} 

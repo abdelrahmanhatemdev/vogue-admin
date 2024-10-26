@@ -1,8 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
 import axios from "axios";
 
 import { Input } from "@/components/ui/input";
@@ -20,18 +18,25 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { CategorySchema } from "./AddCategory";
+import { Dispatch, SetStateAction } from "react";
 
-
-export default function EditCategory({item}: {item: Category}) {
+export default function EditCategory({
+  item,
+  setOpen,
+}: {
+  item: Category;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
-      name: item.name
+      name: item.name,
     },
   });
 
   function onSubmit(values: z.infer<typeof CategorySchema>) {
-    const data= {id: item.id, ...values};
+    setOpen(false)
+    const data = { id: item.id, ...values };
 
     axios
       .put(`${process.env.NEXT_PUBLIC_APP_API}/categories`, data)

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`
 

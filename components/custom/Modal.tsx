@@ -21,15 +21,13 @@ export default function Modal({
   description,
   children,
   open, 
-  setOpen, 
-  item
+  setOpen
 }: {
   title: ModalProps["title"];
   description: ModalProps["description"];
   children?: ModalProps["children"];
   open?: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>
-  item?: Category;
 }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
