@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import AddCategory from "@/components/modules/admin/categories/AddCategory";
 import { ModalProps } from "@/components/custom/Modal";
+import NoResults from "@/components/custom/NoResults";
 
 export default function Categories({ data }: { data: Category[] }) {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,6 @@ export default function Categories({ data }: { data: Category[] }) {
           onClick={() => {
             setOpen(true);
             setModal({
-              type: "add",
               title: "Add Category",
               description:
                 "Add new Category here. Click Add when you'are done.",
@@ -36,7 +36,12 @@ export default function Categories({ data }: { data: Category[] }) {
         </Button>
       </Row>
 
-      <CategoriesList data={data} setOpen={setOpen} setModal={setModal} />
+      {
+        data?.length
+        ?<CategoriesList data={data} setOpen={setOpen} setModal={setModal} />
+        :<NoResults/>
+      }
+      
       <Modal
         title={modal.title}
         description={modal.description}

@@ -3,7 +3,8 @@ import { unstable_cache } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`
 
-export const getCategories = async () =>{
+export const getCategories = unstable_cache(
+    async () =>{
     try {
         const res = await axios.get(apiURL)
         let data: Category[] = [];
@@ -14,8 +15,9 @@ export const getCategories = async () =>{
         }
         return data
     } catch (error) {
-        return error
+        return console.log(error);
+        
     }
-}
+}, ["categories"], {revalidate: 3600, tags:["categories"]})
 
 export default getCategories

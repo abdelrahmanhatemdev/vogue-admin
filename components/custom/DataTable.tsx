@@ -60,7 +60,7 @@ export default function DataTable<TData, TValue>({
     ))
   ) : (
     <TableRow>
-      <TableCell colSpan={columns.length}>No results.</TableCell>
+      <TableCell colSpan={columns.length} className="w-full flex items-center justify-center">No results.</TableCell>
     </TableRow>
   );
 
