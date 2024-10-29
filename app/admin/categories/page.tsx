@@ -1,6 +1,6 @@
 
 import CategoriesModule from "@/components/modules/admin/categories";
-import getCategories from "@/actions/Category"
+import {getCategories} from "@/actions/Category"
 
 
 export default async function Categories() {

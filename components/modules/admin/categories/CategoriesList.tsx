@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 import EditCategory from "./EditCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import DeleteCategory from "./DeleteCategory";
+import Link from "next/link";
 
 export default function CategoriesList({ 
   data, 
@@ -51,6 +52,12 @@ export default function CategoriesList({
       id: "name",
       accessorKey: "name",
       header: "Name",
+      cell: ({row}) => {
+        const item: Category = row.original
+        return (
+          <Link href={`/admin/categories/${item.id}`}>{item.name}</Link>
+        )
+      }
     },
     {
       id: "actions",
