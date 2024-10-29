@@ -50,7 +50,6 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const { id, name } = await request.json();
-  console.log(id);
 
   try {
     const docRef = doc(db, collectoinName, id);
@@ -76,7 +75,6 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   const { id } = await request.json();
-  console.log(id);
 
   try {
     const docRef = doc(db, collectoinName, id);
@@ -94,6 +92,4 @@ export async function DELETE(request: Request) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
-  
-  return NextResponse.json({ message: "Hello" }, { status: 200 });
 }

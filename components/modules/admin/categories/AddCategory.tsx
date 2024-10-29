@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/dialog";
 import axios from "axios";
 
+
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import {
@@ -67,6 +68,8 @@ export default function AddCategory({
       })
       .catch((error) => {
         const message = error?.response?.data?.error || "Something Wrong";
+        console.log(error);
+        
         toast.error(message);
       });
   }
