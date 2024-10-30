@@ -4,7 +4,15 @@ import Modal from "@/components/custom/Modal";
 import Row from "@/components/custom/Row";
 import CategoriesList from "@/components/modules/admin/categories/CategoriesList";
 import { Button } from "@/components/ui/button";
-import { createContext, memo, useCallback, useMemo, useOptimistic, useState } from "react";
+import {
+  createContext,
+  memo,
+  startTransition,
+  useMemo,
+  useOptimistic,
+  useState,
+  useTransition,
+} from "react";
 import AddCategory from "@/components/modules/admin/categories/AddCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import NoResults from "@/components/custom/NoResults";
@@ -21,6 +29,7 @@ export const OptimisticContext = createContext<{
 });
 
 export default function Categories({ data }: { data: Category[] }) {
+  const [isPending, StartTransition] = useTransition();
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState<ModalProps>({
@@ -35,12 +44,15 @@ export default function Categories({ data }: { data: Category[] }) {
       )
     : [];
 
-    const addOptimistic = useMemo(()=> ({addOptimisticData}), [])
+  const addOptimistic = useMemo(
+    () => ({ addOptimisticData }),
+    []
+  );
 
   return (
     <OptimisticContext.Provider value={addOptimistic}>
       <div>
-        <CategoryBreadCrumb/>
+        <CategoryBreadCrumb />
         <Row className="justify-between items-center">
           <Heading title="Categories" />
           <Button

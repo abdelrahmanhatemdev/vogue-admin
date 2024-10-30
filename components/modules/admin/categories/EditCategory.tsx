@@ -17,7 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { CategorySchema } from "./AddCategory";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { OptimisticContext } from ".";
@@ -36,6 +36,8 @@ export default function EditCategory({
     },
   });
 
+  const [isPendin, startTransition] = useTransition();
+
   const { addOptimisticData } = useContext(OptimisticContext);
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
@@ -45,13 +47,15 @@ export default function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      pending: true,
+      isPending: true,
     };
 
-    addOptimisticData((prev) => [
-      ...prev.filter((item) => item.id !== data.id),
-      data,
-    ]);
+    startTransition(async () => {
+      addOptimisticData((prev) => [
+        ...prev.filter((item) => item.id !== data.id),
+        data,
+      ]);
+    });
 
     const res: ActionResponse = await editCategory(data);
     notify(res);

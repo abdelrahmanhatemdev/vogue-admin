@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { OptimisticContext } from ".";
@@ -15,13 +15,17 @@ export default function DeleteCategory({
 }) {
   const data = { id: item.id };
 
+  const [isPendin, startTransition] = useTransition();
+
   const { addOptimisticData } = useContext(OptimisticContext);
 
   async function onSubmit() {
     setOpen(false);
-    addOptimisticData((prev) => [
-      ...prev.filter((item) => item.id !== data.id),
-    ]);
+    startTransition(() => {
+      addOptimisticData((prev) => [
+        ...prev.filter((item) => item.id !== data.id),
+      ]);
+    });
     const res: ActionResponse = await deleteCategory(data);
     notify(res);
   }
