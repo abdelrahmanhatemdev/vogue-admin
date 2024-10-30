@@ -13,16 +13,17 @@ import {
   TableHead,
   TableRow,
 } from "../ui/table";
+import { useState } from "react";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData> {
+  columns: ColumnDef<TData>[];
   data: TData[];
 }
 
-export default function DataTable<TData, TValue>({
+export default function DataTable({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<Category>) {
   const table = useReactTable({
     data,
     columns,
@@ -32,9 +33,11 @@ export default function DataTable<TData, TValue>({
       minSize: 50, 
       maxSize: 500
     }, 
+    getRowId: row => row.id,
     columnResizeMode: "onChange",
     columnResizeDirection: "ltr"
   });
+  const [rowSelection, setRowSelection] = useState([])
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>

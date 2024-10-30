@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash2Icon } from "lucide-react";
 import { TbEdit } from "react-icons/tb";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import EditCategory from "./EditCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import DeleteCategory from "./DeleteCategory";
@@ -23,7 +23,7 @@ export default function CategoriesList({
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
 }) {
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<Category>[] = useMemo(() => ([
     {
       id: "select",
       header: ({ table }) => (
@@ -35,6 +35,7 @@ export default function CategoriesList({
           onCheckedChange={(value: boolean) =>
             table.toggleAllPageRowsSelected(!!value)
           }
+          onChange={table.getToggleAllRowsSelectedHandler()}
           aria-label="Select all"
         />
       ),
@@ -42,6 +43,7 @@ export default function CategoriesList({
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+          onChange={row.getToggleSelectedHandler()}
           aria-label="Select row"
         />
       ),
@@ -113,7 +115,7 @@ export default function CategoriesList({
         );
       },
     },
-  ];
+  ]), []);
 
   return (
     <div className="pb-12">
