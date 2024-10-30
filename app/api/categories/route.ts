@@ -12,6 +12,8 @@ import { db } from "@/firebase.config";
 export const collectoinName = "categories";
 export const dataCollection = collection(db, collectoinName);
 
+export const dynamic = 'force-static'
+
 export async function GET() {
   try {
     const querySnapshot = await getDocs(dataCollection);

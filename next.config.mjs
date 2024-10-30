@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    swcMinify: true,
+    // swcMinify: true,
     typescript:{
         ignoreBuildErrors: true,
+    }, 
+    experimental:{
+        staleTimes:{
+            dynamic: 30, 
+            static: 180
+        }
     }
 };
 

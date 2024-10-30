@@ -9,6 +9,7 @@ export async function getCategories() {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
+      cache: "force-cache"
     });
     let data: Category[] = [];
 
@@ -31,6 +32,7 @@ export async function getCategoryById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
       next: { tags: ["categories"] },
+      cache: "force-cache"
     });
 
     const { data } = await res.json();

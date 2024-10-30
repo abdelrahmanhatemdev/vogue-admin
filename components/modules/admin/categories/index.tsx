@@ -4,21 +4,21 @@ import Modal from "@/components/custom/Modal";
 import Row from "@/components/custom/Row";
 import CategoriesList from "@/components/modules/admin/categories/CategoriesList";
 import { Button } from "@/components/ui/button";
-import { createContext, useOptimistic, useState } from "react";
+import { createContext, memo, useCallback, useMemo, useOptimistic, useState } from "react";
 import AddCategory from "@/components/modules/admin/categories/AddCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import NoResults from "@/components/custom/NoResults";
 import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
 
-export const OptimisticContext = createContext<
-{
-  addOptimisticData: (action: Category[] | ((pendingState: Category[]) => Category[])) => void
-}
->(
-  {
-    addOptimisticData: () => {}
-  }
-);
+const CategoryBreadCrumb = memo(() => <AdminBreadcrumb page="Categories" />);
+
+export const OptimisticContext = createContext<{
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
+}>({
+  addOptimisticData: () => {},
+});
 
 export default function Categories({ data }: { data: Category[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
@@ -29,18 +29,18 @@ export default function Categories({ data }: { data: Category[] }) {
     children: <></>,
   });
 
-   
-
   const sortedOptimisicData = optimisicData?.length
     ? optimisicData.sort((a: Category, b: Category) =>
         b.updatedAt.localeCompare(a.updatedAt)
       )
     : [];
 
+    const addOptimistic = useMemo(()=> ({addOptimisticData}), [])
+
   return (
-    <OptimisticContext.Provider value={{addOptimisticData}}>
+    <OptimisticContext.Provider value={addOptimistic}>
       <div>
-        <AdminBreadcrumb page="Categories" />
+        <CategoryBreadCrumb/>
         <Row className="justify-between items-center">
           <Heading title="Categories" />
           <Button
@@ -68,7 +68,6 @@ export default function Categories({ data }: { data: Category[] }) {
             data={sortedOptimisicData}
             setOpen={setOpen}
             setModal={setModal}
-            addOptimisticData={addOptimisticData}
           />
         ) : (
           <NoResults />

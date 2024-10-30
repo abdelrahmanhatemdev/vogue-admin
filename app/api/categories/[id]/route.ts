@@ -4,10 +4,15 @@ import { collectoinName } from "../route";
 import { db } from "@/firebase.config";
 import { getCategories } from "@/actions/Category";
 
-export async function GET(
-  req: Request,
-  { params: { id } }: { params: { id: string } }
-) {
+export const dynamic = 'force-static'
+
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   try {
     const docRef = doc(db, collectoinName, id);
     const querySnapshot = await getDoc(docRef);
