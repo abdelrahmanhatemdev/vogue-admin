@@ -17,18 +17,17 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { CategorySchema } from "./AddCategory";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
+import { OptimisticContext } from ".";
 
 export default function EditCategory({
   item,
   setOpen,
-  addOptimisticData
 }: {
   item: Category;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData:  (action: Category[] | ((pendingState: Category[]) => Category[])) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -37,20 +36,25 @@ export default function EditCategory({
     },
   });
 
+  const { addOptimisticData } = useContext(OptimisticContext);
+
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    setOpen(false)
-    const data = { 
+    setOpen(false);
+    const data = {
       id: item.id,
-      createdAt: item.createdAt, 
+      createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
-      ...values, 
-      pending: true
+      ...values,
+      pending: true,
     };
 
-    addOptimisticData(prev => [...prev.filter(item => item.id !== data.id), data])
+    addOptimisticData((prev) => [
+      ...prev.filter((item) => item.id !== data.id),
+      data,
+    ]);
 
-    const res: ActionResponse  = await editCategory(data);
-    notify(res)
+    const res: ActionResponse = await editCategory(data);
+    notify(res);
   }
 
   return (

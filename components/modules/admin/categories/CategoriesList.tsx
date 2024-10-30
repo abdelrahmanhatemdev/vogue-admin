@@ -14,14 +14,10 @@ export default function CategoriesList({
   data,
   setOpen,
   setModal,
-  addOptimisticData,
 }: {
   data: Category[];
   setOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalProps>>;
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
 }) {
   const columns: ColumnDef<Category>[] = useMemo(() => ([
     {
@@ -82,7 +78,6 @@ export default function CategoriesList({
                     <EditCategory
                       item={item}
                       setOpen={setOpen}
-                      addOptimisticData={addOptimisticData}
                     />
                   ),
                 });
@@ -105,7 +100,6 @@ export default function CategoriesList({
                     <DeleteCategory
                       item={item}
                       setOpen={setOpen}
-                      addOptimisticData={addOptimisticData}
                     />
                   ),
                 });

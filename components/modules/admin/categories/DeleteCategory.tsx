@@ -1,22 +1,21 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
+import { OptimisticContext } from ".";
 
 export default function DeleteCategory({
   item,
   setOpen,
-  addOptimisticData,
 }: {
   item: Category;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
 }) {
   const data = { id: item.id };
+
+  const { addOptimisticData } = useContext(OptimisticContext);
 
   async function onSubmit() {
     setOpen(false);

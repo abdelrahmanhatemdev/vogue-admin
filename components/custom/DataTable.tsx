@@ -20,13 +20,24 @@ interface DataTableProps<TData> {
   data: TData[];
 }
 
+interface RowSelectionType {
+  [key: string]: boolean
+}
+
 export default function DataTable({
   columns,
   data,
 }: DataTableProps<Category>) {
+  
+  const [rowSelection, setRowSelection] = useState<RowSelectionType>({})
+
   const table = useReactTable({
     data,
     columns,
+    state: {
+      rowSelection,
+    },
+    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     defaultColumn: {
       size: 200, 
@@ -37,7 +48,9 @@ export default function DataTable({
     columnResizeMode: "onChange",
     columnResizeDirection: "ltr"
   });
-  const [rowSelection, setRowSelection] = useState([])
+
+  console.log("rowSelection", rowSelection);
+  
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>

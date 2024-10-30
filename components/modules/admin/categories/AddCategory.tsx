@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
+import { OptimisticContext } from ".";
 
 export const CategorySchema = z.object({
   name: z
@@ -31,10 +32,8 @@ export const CategorySchema = z.object({
 
 export default function AddCategory({
   setOpen,
-  addOptimisticData
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData:  (action: Category[] | ((pendingState: Category[]) => Category[])) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -43,6 +42,8 @@ export default function AddCategory({
     },
     mode: "onChange",
   });
+
+  const {addOptimisticData} = useContext(OptimisticContext)
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setOpen(false);
