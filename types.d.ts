@@ -8,4 +8,5 @@ interface Category {
   name: string;
   createdAt: string;
   updatedAt: string;
+  pending?: boolean
 }

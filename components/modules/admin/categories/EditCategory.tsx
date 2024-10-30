@@ -43,7 +43,9 @@ export default function EditCategory({
       id: item.id,
       createdAt: item.createdAt, 
       updatedAt: new Date().toISOString(),
-      ...values,  };
+      ...values, 
+      pending: true
+    };
 
     addOptimisticData(prev => [...prev.filter(item => item.id !== data.id), data])
 

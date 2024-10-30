@@ -58,6 +58,7 @@ export default function AddCategory({
     const optimisticObj: Category = {
       ...data, 
       id:`optimisticID-${ data.name}-${data.updatedAt}`, 
+      pending: true
     }
     addOptimisticData((prev: Category[]) => [...prev,optimisticObj])
 

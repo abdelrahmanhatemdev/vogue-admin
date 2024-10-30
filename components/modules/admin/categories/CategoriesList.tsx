@@ -57,7 +57,7 @@ export default function CategoriesList({
       header: "Name",
       cell: ({ row }) => {
         const item: Category = row.original;
-        return <Link href={`/admin/categories/${item.id}`}>{item.name}</Link>;
+        return <Link href={`/admin/categories/${item.id}`} className={item.pending ? "opacity-50": ""}>{item.name}</Link>;
       },
     },
     {
