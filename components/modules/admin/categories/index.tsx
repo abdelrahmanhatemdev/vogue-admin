@@ -8,6 +8,7 @@ import { useState } from "react";
 import AddCategory from "@/components/modules/admin/categories/AddCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import NoResults from "@/components/custom/NoResults";
+import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
 
 export default function Categories({ data }: { data: Category[] }) {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function Categories({ data }: { data: Category[] }) {
 
   return (
     <div>
+      <AdminBreadcrumb page="Categories" />
       <Row className="justify-between items-center">
         <Heading title="Categories" />
         <Button
