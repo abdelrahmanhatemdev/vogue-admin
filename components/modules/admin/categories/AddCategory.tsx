@@ -1,9 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  DialogFooter,
-} from "@/components/ui/dialog";
-import axios from "axios";
+import { DialogFooter } from "@/components/ui/dialog";
 
 
 import { Input } from "@/components/ui/input";
@@ -19,24 +16,28 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { Dispatch, SetStateAction } from "react";
 
+import { Dispatch, SetStateAction } from "react";
+import { addCategory } from "@/actions/Category";
+import { notify } from "@/lib/utils";
 
 export const CategorySchema = z.object({
-  name: z.string()
-  .min(1, {
-    message: "Name is required"
-  })
-  .max(20, {
-    message: "Name should not have more than 20 charachters.",
-  }),
+  name: z
+    .string()
+    .min(1, {
+      message: "Name is required",
+    })
+    .max(20, {
+      message: "Name should not have more than 20 charachters.",
+    }),
 });
 
 export default function AddCategory({
   setOpen,
+  addOptimisticData
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addOptimisticData:  (action: Category[] | ((pendingState: Category[]) => Category[])) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -46,32 +47,22 @@ export default function AddCategory({
     mode: "onChange",
   });
 
-  function onSubmit(values: z.infer<typeof CategorySchema>) {
-    
-    setOpen(false)
+  async function onSubmit(values: z.infer<typeof CategorySchema>) {
+    setOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,
       createdAt: date,
       updatedAt: date,
     };
+    const optimisticObj: Category = {
+      ...data, 
+      id:`optimisticID-${ data.name}-${data.updatedAt}`, 
+    }
+    addOptimisticData((prev: Category[]) => [...prev,optimisticObj])
 
-    axios
-      .post(`${process.env.NEXT_PUBLIC_APP_API}/categories`, data)
-      .then((res) => {
-        if (res?.statusText === "OK" && res?.data?.message) {
-          toast.success(res?.data?.message);
-        }
-        if (res?.data?.error) {
-          toast.error(res?.data?.error);
-        }
-      })
-      .catch((error) => {
-        const message = error?.response?.data?.error || "Something Wrong";
-        console.log(error);
-        
-        toast.error(message);
-      });
+    const res: ActionResponse = await addCategory(data);
+    notify(res)
   }
 
   return (

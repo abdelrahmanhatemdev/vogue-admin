@@ -1,38 +1,30 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { Dispatch, SetStateAction } from "react";
+import { deleteCategory } from "@/actions/Category";
+import { notify } from "@/lib/utils";
 
 export default function DeleteCategory({
   item,
   setOpen,
+  addOptimisticData,
 }: {
   item: Category;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
 }) {
   const data = { id: item.id };
-  console.log("id", item.id);
 
-  function onSubmit() {
-    setOpen(false)
-    axios
-      .delete(`${process.env.NEXT_PUBLIC_APP_API}/categories`, { data })
-      .then((res) => {
-        if (res?.statusText === "OK" && res?.data?.message) {
-          toast.success(res?.data?.message);
-        }
-        if (res?.data?.error) {
-          toast.error(res?.data?.error);
-        }
-      })
-      .catch((error) => {
-        console.log("Delete Error", error);
-
-        const message = error?.response?.data?.error || "Something Wrong";
-        toast.error(message);
-      });
+  async function onSubmit() {
+    setOpen(false);
+    addOptimisticData((prev) => [
+      ...prev.filter((item) => item.id !== data.id),
+    ]);
+    const res: ActionResponse = await deleteCategory(data);
+    notify(res);
   }
 
   return (

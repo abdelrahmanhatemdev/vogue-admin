@@ -10,16 +10,19 @@ import { ModalProps } from "@/components/custom/Modal";
 import DeleteCategory from "./DeleteCategory";
 import Link from "next/link";
 
-export default function CategoriesList({ 
-  data, 
-  setOpen, 
-  setModal
-}: { 
+export default function CategoriesList({
+  data,
+  setOpen,
+  setModal,
+  addOptimisticData,
+}: {
   data: Category[];
   setOpen: Dispatch<SetStateAction<boolean>>;
-  setModal: Dispatch<SetStateAction<ModalProps>>; 
+  setModal: Dispatch<SetStateAction<ModalProps>>;
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
 }) {
-
   const columns: ColumnDef<Category>[] = [
     {
       id: "select",
@@ -52,46 +55,63 @@ export default function CategoriesList({
       id: "name",
       accessorKey: "name",
       header: "Name",
-      cell: ({row}) => {
-        const item: Category = row.original
-        return (
-          <Link href={`/admin/categories/${item.id}`}>{item.name}</Link>
-        )
-      }
+      cell: ({ row }) => {
+        const item: Category = row.original;
+        return <Link href={`/admin/categories/${item.id}`}>{item.name}</Link>;
+      },
     },
     {
       id: "actions",
-      cell: ({ row }) =>{
-        const item: Category = row.original
+      cell: ({ row }) => {
+        const item: Category = row.original;
 
-        return  (
+        return (
           <div className="flex items-center gap-2 justify-end">
-            <TbEdit size={20} className="cursor-pointer"
-            onClick={()=> {
-              setOpen(true)
+            <TbEdit
+              size={20}
+              className="cursor-pointer"
+              onClick={() => {
+                setOpen(true);
                 setModal({
-                  title: `Edit Category`, 
-                  description: "Update Category here. Click Update when you'are done.",
-                  children: <EditCategory item={item}  setOpen={setOpen}/>, 
-                  
-                })
-            }} 
-            
+                  title: `Edit Category`,
+                  description:
+                    "Update Category here. Click Update when you'are done.",
+                  children: (
+                    <EditCategory
+                      item={item}
+                      setOpen={setOpen}
+                      addOptimisticData={addOptimisticData}
+                    />
+                  ),
+                });
+              }}
             />
-            <Trash2Icon size={20} color="#dc2626" className="cursor-pointer"
-            onClick={()=> {
-              setOpen(true)
+            <Trash2Icon
+              size={20}
+              color="#dc2626"
+              className="cursor-pointer"
+              onClick={() => {
+                setOpen(true);
                 setModal({
-                  title: `Delete Category`, 
-                  description: <p className="font-medium">Are you sure To delete the category permenantly ?</p>,
-                  children: <DeleteCategory item={item} setOpen={setOpen}/>, 
-                  
-                })
-            }} 
+                  title: `Delete Category`,
+                  description: (
+                    <p className="font-medium">
+                      Are you sure To delete the category permenantly ?
+                    </p>
+                  ),
+                  children: (
+                    <DeleteCategory
+                      item={item}
+                      setOpen={setOpen}
+                      addOptimisticData={addOptimisticData}
+                    />
+                  ),
+                });
+              }}
             />
           </div>
-        )
-      }
+        );
+      },
     },
   ];
 

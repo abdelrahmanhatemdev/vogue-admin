@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import axios from "axios";
 
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -19,13 +18,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { CategorySchema } from "./AddCategory";
 import { Dispatch, SetStateAction } from "react";
+import { editCategory } from "@/actions/Category";
+import { notify } from "@/lib/utils";
 
 export default function EditCategory({
   item,
   setOpen,
+  addOptimisticData
 }: {
   item: Category;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addOptimisticData:  (action: Category[] | ((pendingState: Category[]) => Category[])) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -34,24 +37,18 @@ export default function EditCategory({
     },
   });
 
-  function onSubmit(values: z.infer<typeof CategorySchema>) {
+  async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setOpen(false)
-    const data = { id: item.id, ...values };
+    const data = { 
+      id: item.id,
+      createdAt: item.createdAt, 
+      updatedAt: new Date().toISOString(),
+      ...values,  };
 
-    axios
-      .put(`${process.env.NEXT_PUBLIC_APP_API}/categories`, data)
-      .then((res) => {
-        if (res?.statusText === "OK" && res?.data?.message) {
-          toast.success(res?.data?.message);
-        }
-        if (res?.data?.error) {
-          toast.error(res?.data?.error);
-        }
-      })
-      .catch((error) => {
-        const message = error?.response?.data?.error || "Something Wrong";
-        toast.error(message);
-      });
+    addOptimisticData(prev => [...prev.filter(item => item.id !== data.id), data])
+
+    const res: ActionResponse  = await editCategory(data);
+    notify(res)
   }
 
   return (
