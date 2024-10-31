@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
-export default function Row({
+const Row = memo(function Row({
   children,
   className,
 }: Readonly<{
@@ -9,4 +9,7 @@ export default function Row({
   className?: string;
 }>) {
   return <div className={cn("row flex", className)}>{children}</div>;
-}
+})
+
+
+export default Row

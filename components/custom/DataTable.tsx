@@ -21,15 +21,11 @@ interface DataTableProps<TData> {
 }
 
 interface RowSelectionType {
-  [key: string]: boolean
+  [key: string]: boolean;
 }
 
-export default function DataTable({
-  columns,
-  data,
-}: DataTableProps<Category>) {
-  
-  const [rowSelection, setRowSelection] = useState<RowSelectionType>({})
+export default function DataTable({ columns, data }: DataTableProps<Category>) {
+  const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
 
   const table = useReactTable({
     data,
@@ -40,17 +36,16 @@ export default function DataTable({
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     defaultColumn: {
-      size: 200, 
-      minSize: 50, 
-      maxSize: 500
-    }, 
-    getRowId: row => row.id,
+      size: 200,
+      minSize: 50,
+      maxSize: 500,
+    },
+    getRowId: (row) => row.id,
     columnResizeMode: "onChange",
-    columnResizeDirection: "ltr"
+    columnResizeDirection: "ltr",
   });
 
   console.log("rowSelection", rowSelection);
-  
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>
@@ -76,7 +71,12 @@ export default function DataTable({
     ))
   ) : (
     <TableRow>
-      <TableCell colSpan={columns.length} className="w-full flex items-center justify-center">No results.</TableCell>
+      <TableCell
+        colSpan={columns.length}
+        className="w-full flex items-center justify-center"
+      >
+        No results.
+      </TableCell>
     </TableRow>
   );
 

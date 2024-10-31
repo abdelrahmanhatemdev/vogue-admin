@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
-export default function Heading({
+const Heading = memo(function Heading({
   children,
   className,
   title
@@ -16,4 +16,6 @@ export default function Heading({
       {children}
     </div>
   );
-}
+})
+
+export default Heading

@@ -4,21 +4,15 @@ import Modal from "@/components/custom/Modal";
 import Row from "@/components/custom/Row";
 import CategoriesList from "@/components/modules/admin/categories/CategoriesList";
 import { Button } from "@/components/ui/button";
-import {
-  createContext,
-  memo,
-  startTransition,
-  useMemo,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
+import { createContext, memo, useMemo, useOptimistic, useState } from "react";
 import AddCategory from "@/components/modules/admin/categories/AddCategory";
 import { ModalProps } from "@/components/custom/Modal";
 import NoResults from "@/components/custom/NoResults";
 import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
 
-const CategoryBreadCrumb = memo(() => <AdminBreadcrumb page="Categories" />);
+const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
+  return <AdminBreadcrumb page="Categories" />;
+});
 
 export const OptimisticContext = createContext<{
   addOptimisticData: (
@@ -29,7 +23,6 @@ export const OptimisticContext = createContext<{
 });
 
 export default function Categories({ data }: { data: Category[] }) {
-  const [isPending, StartTransition] = useTransition();
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState<ModalProps>({
@@ -38,16 +31,17 @@ export default function Categories({ data }: { data: Category[] }) {
     children: <></>,
   });
 
-  const sortedOptimisicData = optimisicData?.length
-    ? optimisicData.sort((a: Category, b: Category) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      )
-    : [];
+  const sortedOptimisicData = useMemo(() => {
+    return optimisicData?.length
+      ? optimisicData.sort((a: Category, b: Category) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        )
+      : [];
+  }, [optimisicData]);
 
-  const addOptimistic = useMemo(
-    () => ({ addOptimisticData }),
-    []
-  );
+  const addOptimistic = useMemo(() => ({ addOptimisticData }), [addOptimisticData]);
+
+ 
 
   return (
     <OptimisticContext.Provider value={addOptimistic}>
@@ -62,12 +56,7 @@ export default function Categories({ data }: { data: Category[] }) {
                 title: "Add Category",
                 description:
                   "Add new Category here. Click Add when you'are done.",
-                children: (
-                  <AddCategory
-                    setOpen={setOpen}
-                    // addOptimisticData={addOptimisticData}
-                  />
-                ),
+                children: <AddCategory setOpen={setOpen} />,
               });
             }}
           >

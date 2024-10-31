@@ -1,15 +1,16 @@
 "use server";
+// "use cache";
 import axios from "axios";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
-export async function getCategories() {
+export const getCategories = async () => {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
-      cache: "force-cache"
+      cache: "force-cache",
     });
     let data: Category[] = [];
 
@@ -32,7 +33,7 @@ export async function getCategoryById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
       next: { tags: ["categories"] },
-      cache: "force-cache"
+      cache: "force-cache",
     });
 
     const { data } = await res.json();

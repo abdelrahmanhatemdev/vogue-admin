@@ -11,7 +11,7 @@ export default function Category({ data }: { data: Category }) {
     <div>
       <AdminBreadcrumb page={`${data.name}`}>
         <BreadcrumbItem>
-          <BreadcrumbLink>
+          <BreadcrumbLink asChild>
             <Link href="/admin/categories">Categories</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>

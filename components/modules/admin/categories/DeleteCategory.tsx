@@ -15,7 +15,7 @@ export default function DeleteCategory({
 }) {
   const data = { id: item.id };
 
-  const [isPendin, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const { addOptimisticData } = useContext(OptimisticContext);
 
@@ -26,8 +26,11 @@ export default function DeleteCategory({
         ...prev.filter((item) => item.id !== data.id),
       ]);
     });
+    
     const res: ActionResponse = await deleteCategory(data);
     notify(res);
+
+    return isPending
   }
 
   return (

@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { CategorySchema } from "./AddCategory";
 import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
@@ -36,7 +35,7 @@ export default function EditCategory({
     },
   });
 
-  const [isPendin, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const { addOptimisticData } = useContext(OptimisticContext);
 
@@ -47,7 +46,7 @@ export default function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: true,
+      isPending: isPending? true: false,
     };
 
     startTransition(async () => {

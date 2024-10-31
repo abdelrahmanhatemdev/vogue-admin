@@ -13,10 +13,10 @@ export type ModalProps = {
   children: ReactNode;
 }
 
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 
 
-export default function Modal({
+const Modal = memo(function Modal({
   title,
   description,
   children,
@@ -40,4 +40,6 @@ export default function Modal({
       </DialogContent>
     </Dialog>
   );
-}
+})
+
+export default Modal

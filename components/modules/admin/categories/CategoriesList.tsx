@@ -109,7 +109,7 @@ export default function CategoriesList({
         );
       },
     },
-  ]), []);
+  ]), [setOpen, setModal]);
 
   return (
     <div className="pb-12">
