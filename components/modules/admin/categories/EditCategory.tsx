@@ -16,11 +16,11 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategorySchema } from "./AddCategory";
-import { Dispatch, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
-export default function EditCategory({
+const EditCategory = function EditCategory({
   item,
   setOpen,
   addOptimisticData,
@@ -85,3 +85,5 @@ export default function EditCategory({
     </Form>
   );
 }
+
+export default memo(EditCategory)

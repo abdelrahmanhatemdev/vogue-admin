@@ -11,7 +11,7 @@ const Heading = function Heading({
   title?: string;
 }>) {
   return (
-    <div className={cn("my-8", className)}>
+    <div className={cn("my-4", className)}>
         <h1 className="capitalize text-xl font-semibold text-neutral-900">{title}</h1>
       {children}
     </div>

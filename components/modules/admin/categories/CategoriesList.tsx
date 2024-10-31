@@ -129,7 +129,13 @@ const CategoriesList = function CategoriesList({
 
   return (
     <div className="pb-12">
-      <DataTable data={data} columns={columns} />
+      <DataTable
+        data={data}
+        columns={columns}
+        setOpen={setOpen}
+        setModal={setModal}
+        addOptimisticData={addOptimisticData}
+      />
     </div>
   );
 };

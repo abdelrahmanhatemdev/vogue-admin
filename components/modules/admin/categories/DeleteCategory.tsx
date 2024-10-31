@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
-export default function DeleteCategory({
+const DeleteCategory = function DeleteCategory({
   item,
   setOpen,
   addOptimisticData,
@@ -42,3 +42,5 @@ export default function DeleteCategory({
     </DialogFooter>
   );
 }
+
+export default memo(DeleteCategory)

@@ -13,19 +13,40 @@ import {
   TableHead,
   TableRow,
 } from "../ui/table";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction, useTransition } from "react";
+import { Button } from "../ui/button";
+import Row from "./Row";
+import { deleteCategory } from "@/actions/Category";
+import { notify } from "@/lib/utils";
+import { ModalProps } from "./Modal";
+import DeleteCategory from "../modules/admin/categories/DeleteCategory";
+import { DialogFooter } from "../ui/dialog";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setModal: Dispatch<SetStateAction<ModalProps>>;
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
 }
 
 interface RowSelectionType {
   [key: string]: boolean;
 }
 
-export default function DataTable({ columns, data }: DataTableProps<Category>) {
+export default function DataTable({
+  columns,
+  data,
+  setOpen,
+  setModal,
+  addOptimisticData,
+}: DataTableProps<Category>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
+  const selectedRows = Object.keys(rowSelection);
+  const [showDeleteAll, setShowDeleteAll] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -45,7 +66,47 @@ export default function DataTable({ columns, data }: DataTableProps<Category>) {
     columnResizeDirection: "ltr",
   });
 
-  console.log("rowSelection", rowSelection);
+  function deleteMultiple() {
+    setOpen(true);
+    setModal({
+      title: `Delete Categories`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the category "
+          ) : (
+            <strong> delete all categories </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter
+          onClick={async () => {
+            setOpen(false);
+            setShowDeleteAll(false)
+            startTransition(() => {
+              addOptimisticData((prev: Category[]) => [
+                ...prev.filter((item) => !selectedRows.includes(item.id)),
+              ]);
+            });
+            for (const row of selectedRows) {
+              const data = { id: row };
+              const res: ActionResponse = await deleteCategory(data);
+              notify(res);
+            }
+            
+            
+          }}
+        >
+          <Button type="submit" variant="destructive">
+            Delete
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>
@@ -81,9 +142,18 @@ export default function DataTable({ columns, data }: DataTableProps<Category>) {
   );
 
   return (
-    <Table>
-      <TableHeader>{tableHeader}</TableHeader>
-      <TableBody>{tableBody}</TableBody>
-    </Table>
+    <div>
+      {showDeleteAll && (
+        <Row className="justify-end">
+          <Button variant="destructive" onClick={deleteMultiple}>
+            Delete Selected
+          </Button>
+        </Row>
+      )}
+      <Table>
+        <TableHeader>{tableHeader}</TableHeader>
+        <TableBody>{tableBody}</TableBody>
+      </Table>
+    </div>
   );
 }

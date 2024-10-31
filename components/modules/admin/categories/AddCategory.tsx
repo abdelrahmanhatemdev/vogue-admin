@@ -34,7 +34,7 @@ export const CategorySchema = z.object({
     }),
 });
 
-const AddCategory = memo(function AddCategory({
+const AddCategory = function AddCategory({
   setOpen,
   addOptimisticData,
 }: {
@@ -67,7 +67,7 @@ const AddCategory = memo(function AddCategory({
       isPending: isPending ? true : false,
     };
 
-    startTransition(async () => {
+    startTransition(() => {
       addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addCategory(data);
@@ -97,6 +97,6 @@ const AddCategory = memo(function AddCategory({
       </form>
     </Form>
   );
-});
+};
 
-export default AddCategory;
+export default memo(AddCategory);

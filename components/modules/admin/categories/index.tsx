@@ -14,7 +14,6 @@ const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
   return <AdminBreadcrumb page="Categories" />;
 });
 
-
 export default function Categories({ data }: { data: Category[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [open, setOpen] = useState(false);
@@ -31,8 +30,6 @@ export default function Categories({ data }: { data: Category[] }) {
         )
       : [];
   }, [optimisicData]);
-
- 
 
   return (
       <div>
