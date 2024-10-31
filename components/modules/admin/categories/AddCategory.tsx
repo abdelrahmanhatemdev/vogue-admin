@@ -14,10 +14,14 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useContext, useTransition } from "react";
+import {
+  Dispatch,
+  memo,
+  SetStateAction,
+  useTransition,
+} from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import { OptimisticContext } from ".";
 
 export const CategorySchema = z.object({
   name: z
@@ -32,8 +36,12 @@ export const CategorySchema = z.object({
 
 const AddCategory = memo(function AddCategory({
   setOpen,
+  addOptimisticData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -43,9 +51,7 @@ const AddCategory = memo(function AddCategory({
     mode: "onChange",
   });
 
-  const [isPending, startTransition] = useTransition()
-
-  const { addOptimisticData } = useContext(OptimisticContext);
+  const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setOpen(false);
@@ -61,7 +67,7 @@ const AddCategory = memo(function AddCategory({
       isPending: isPending ? true : false,
     };
 
-    startTransition( async () => {
+    startTransition(async () => {
       addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addCategory(data);
@@ -91,6 +97,6 @@ const AddCategory = memo(function AddCategory({
       </form>
     </Form>
   );
-})
+});
 
-export default AddCategory
+export default AddCategory;

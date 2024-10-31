@@ -16,17 +16,20 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategorySchema } from "./AddCategory";
-import { Dispatch, SetStateAction, useContext, useTransition } from "react";
+import { Dispatch, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import { OptimisticContext } from ".";
 
 export default function EditCategory({
   item,
   setOpen,
+  addOptimisticData,
 }: {
   item: Category;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addOptimisticData: (
+    action: Category[] | ((pendingState: Category[]) => Category[])
+  ) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -37,8 +40,6 @@ export default function EditCategory({
 
   const [isPending, startTransition] = useTransition();
 
-  const { addOptimisticData } = useContext(OptimisticContext);
-
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setOpen(false);
     const data = {
@@ -46,7 +47,7 @@ export default function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: isPending? true: false,
+      isPending: isPending ? true : false,
     };
 
     startTransition(async () => {

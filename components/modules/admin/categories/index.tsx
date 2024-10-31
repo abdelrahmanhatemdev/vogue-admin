@@ -14,13 +14,6 @@ const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
   return <AdminBreadcrumb page="Categories" />;
 });
 
-export const OptimisticContext = createContext<{
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
-}>({
-  addOptimisticData: () => {},
-});
 
 export default function Categories({ data }: { data: Category[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
@@ -39,12 +32,9 @@ export default function Categories({ data }: { data: Category[] }) {
       : [];
   }, [optimisicData]);
 
-  const addOptimistic = useMemo(() => ({ addOptimisticData }), [addOptimisticData]);
-
  
 
   return (
-    <OptimisticContext.Provider value={addOptimistic}>
       <div>
         <CategoryBreadCrumb />
         <Row className="justify-between items-center">
@@ -56,7 +46,10 @@ export default function Categories({ data }: { data: Category[] }) {
                 title: "Add Category",
                 description:
                   "Add new Category here. Click Add when you'are done.",
-                children: <AddCategory setOpen={setOpen} />,
+                children: <AddCategory 
+                setOpen={setOpen} 
+                addOptimisticData={addOptimisticData}
+                />,
               });
             }}
           >
@@ -69,6 +62,7 @@ export default function Categories({ data }: { data: Category[] }) {
             data={sortedOptimisicData}
             setOpen={setOpen}
             setModal={setModal}
+            addOptimisticData={addOptimisticData}
           />
         ) : (
           <NoResults />
@@ -83,6 +77,5 @@ export default function Categories({ data }: { data: Category[] }) {
           <>{modal.children}</>
         </Modal>
       </div>
-    </OptimisticContext.Provider>
   );
 }
