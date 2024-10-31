@@ -23,15 +23,19 @@ const DeleteCategory = function DeleteCategory({
   async function onSubmit() {
     setOpen(false);
     startTransition(() => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
+      addOptimisticData((prev: Category[]) => [
+        ...prev.map((item) => {
+          if (item.id === data.id) {
+            const pendingItem = { ...item, isPending: !isPending };
+            return pendingItem;
+          }
+          return item;
+        }),
       ]);
     });
 
     const res: ActionResponse = await deleteCategory(data);
     notify(res);
-
-    return isPending;
   }
 
   return (
@@ -41,6 +45,6 @@ const DeleteCategory = function DeleteCategory({
       </Button>
     </DialogFooter>
   );
-}
+};
 
-export default memo(DeleteCategory)
+export default memo(DeleteCategory);

@@ -47,7 +47,7 @@ const EditCategory = function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: isPending ? true : false,
+      isPending: !isPending ,
     };
 
     startTransition(async () => {

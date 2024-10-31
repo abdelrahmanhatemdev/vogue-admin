@@ -47,6 +47,7 @@ export default function DataTable({
   const selectedRows = Object.keys(rowSelection);
   const [showDeleteAll, setShowDeleteAll] = useState(true);
   const [isPending, startTransition] = useTransition();
+  
 
   const table = useReactTable({
     data,
@@ -54,7 +55,10 @@ export default function DataTable({
     state: {
       rowSelection,
     },
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: (value) => {
+      setRowSelection(value)
+      setShowDeleteAll(true)
+    },
     getCoreRowModel: getCoreRowModel(),
     defaultColumn: {
       size: 200,
@@ -88,7 +92,13 @@ export default function DataTable({
             setShowDeleteAll(false)
             startTransition(() => {
               addOptimisticData((prev: Category[]) => [
-                ...prev.filter((item) => !selectedRows.includes(item.id)),
+                ...prev.map((item) => {
+                  if(selectedRows.includes(item.id)){
+                    const pendingItem = {...item, isPending: !isPending}
+                    return pendingItem
+                  }
+                  return item
+                }),
               ]);
             });
             for (const row of selectedRows) {
@@ -96,8 +106,6 @@ export default function DataTable({
               const res: ActionResponse = await deleteCategory(data);
               notify(res);
             }
-            
-            
           }}
         >
           <Button type="submit" variant="destructive">
@@ -143,13 +151,15 @@ export default function DataTable({
 
   return (
     <div>
-      {showDeleteAll && (
+      {(selectedRows.length > 0 && showDeleteAll)
+      ? (
         <Row className="justify-end">
           <Button variant="destructive" onClick={deleteMultiple}>
             Delete Selected
           </Button>
         </Row>
-      )}
+      )
+    : ""}
       <Table>
         <TableHeader>{tableHeader}</TableHeader>
         <TableBody>{tableBody}</TableBody>

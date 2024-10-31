@@ -64,7 +64,7 @@ const AddCategory = function AddCategory({
     const optimisticObj: Category = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: isPending ? true : false,
+      isPending: !isPending,
     };
 
     startTransition(() => {
