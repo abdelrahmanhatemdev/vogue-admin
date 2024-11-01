@@ -35,6 +35,7 @@ import {
 } from "react-icons/tfi";
 
 import { DialogFooter } from "../ui/dialog";
+import TablePagination from "./TablePagination";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
@@ -61,7 +62,7 @@ export default function DataTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 1,
   });
   const selectedRows = Object.keys(rowSelection);
   const totalRows = data?.length ? data.length : 0;
@@ -95,8 +96,8 @@ export default function DataTable({
     columnResizeDirection: "ltr",
   });
 
-  const canPrevious = table.getCanPreviousPage();
-  const canNext = table.getCanNextPage();
+  const currentPage =  pagination.pageIndex + 1
+  const totalPages = (data.length > 0) ? (Math.ceil(data.length/ pagination.pageSize)) : 1
 
   function deleteMultiple() {
     setOpen(true);
@@ -229,7 +230,7 @@ export default function DataTable({
         <TableHeader>{tableHeader}</TableHeader>
         <TableBody>{tableBody}</TableBody>
       </Table>
-      <Row className="items-center justify-between">
+      <Row className="items-center justify-between px-2">
         <div>
           {selectedRows.length} of {totalRows} row(s) selected.
         </div>
@@ -240,42 +241,20 @@ export default function DataTable({
             </div>
           </div>
           <div className="font-semibold text-sm text-neutral-700">
-            Page {pagination.pageIndex} of {pagination.pageSize}
+            Page {Number(pagination.pageIndex) + 1} of{" "}
+            {(data.length > 0) ? (Math.ceil(data.length/ pagination.pageSize)) : 1}
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              className="h-6 w-6 border-neutral-400 p-3"
-              variant="outline"
-              onClick={() => table.firstPage()}
-              disabled={!canPrevious}
-            >
-              <TfiAngleDoubleLeft size={10} />
-            </Button>
-            <Button
-              className="h-6 w-6 border-neutral-400 p-3"
-              variant="outline"
-              onClick={() => table.previousPage()}
-              disabled={!canPrevious}
-            >
-              <TfiAngleLeft size={10} />
-            </Button>
-            <Button
-              className="h-6 w-6 border-neutral-400 p-3"
-              variant="outline"
-              onClick={() => table.nextPage()}
-              disabled={!canNext}
-            >
-              <TfiAngleRight size={10} />
-            </Button>
-            <Button
-              className="h-6 w-6 border-neutral-400 p-3"
-              variant="outline"
-              onClick={() => table.lastPage()}
-              disabled={!canNext}
-            >
-              <TfiAngleDoubleRight size={10} />
-            </Button>
-          </div>
+          <TablePagination
+            canPrevious= {table.getCanPreviousPage()}
+            canNext= {table.getCanNextPage()}
+            firstPage = {() => table.firstPage()}
+            lastPage= {() => table.lastPage()}
+            previousPage= {() => table.previousPage()}
+            nextPage={() => table.nextPage()}
+            currentPage= {currentPage}
+            totalPages={totalPages}
+            setPagination= {setPagination}
+          />
         </div>
       </Row>
     </div>
