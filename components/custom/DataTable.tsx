@@ -62,7 +62,7 @@ export default function DataTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 1,
+    pageSize: 10,
   });
   const selectedRows = Object.keys(rowSelection);
   const totalRows = data?.length ? data.length : 0;
@@ -231,19 +231,9 @@ export default function DataTable({
         <TableBody>{tableBody}</TableBody>
       </Table>
       <Row className="items-center justify-between px-2">
-        <div>
+        <div className="text-neutral-600">
           {selectedRows.length} of {totalRows} row(s) selected.
         </div>
-        <div className="flex items-center justify-end gap-4">
-          <div>
-            <div className="font-semibold text-sm text-neutral-700">
-              Rows Per Page
-            </div>
-          </div>
-          <div className="font-semibold text-sm text-neutral-700">
-            Page {Number(pagination.pageIndex) + 1} of{" "}
-            {(data.length > 0) ? (Math.ceil(data.length/ pagination.pageSize)) : 1}
-          </div>
           <TablePagination
             canPrevious= {table.getCanPreviousPage()}
             canNext= {table.getCanNextPage()}
@@ -253,9 +243,9 @@ export default function DataTable({
             nextPage={() => table.nextPage()}
             currentPage= {currentPage}
             totalPages={totalPages}
+            pagination={pagination}
             setPagination= {setPagination}
           />
-        </div>
       </Row>
     </div>
   );
