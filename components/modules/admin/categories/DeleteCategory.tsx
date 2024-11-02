@@ -7,11 +7,11 @@ import { notify } from "@/lib/utils";
 
 const DeleteCategory = function DeleteCategory({
   item,
-  setOpen,
+  setModalOpen,
   addOptimisticData,
 }: {
   item: Category;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
@@ -21,7 +21,7 @@ const DeleteCategory = function DeleteCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit() {
-    setOpen(false);
+    setModalOpen(false);
     startTransition(() => {
       addOptimisticData((prev: Category[]) => [
         ...prev.map((item) => {

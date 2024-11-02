@@ -4,18 +4,23 @@ import { memo, ReactNode } from "react";
 const Heading = function Heading({
   children,
   className,
-  title
+  title,
+  description,
 }: Readonly<{
   children?: ReactNode;
   className?: string;
   title?: string;
+  description?: string;
 }>) {
   return (
-    <div className={cn("my-4", className)}>
-        <h1 className="capitalize text-xl font-semibold text-neutral-900">{title}</h1>
+    <div>
+      <h1 className="capitalize text-2xl font-semibold text-neutral-900">
+        {title}
+      </h1>
+      <p className="text-sm text-neutral-600">{description}</p>
       {children}
     </div>
   );
-}
+};
 
-export default memo(Heading)
+export default memo(Heading);

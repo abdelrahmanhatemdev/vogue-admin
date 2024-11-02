@@ -14,7 +14,7 @@ export default function layout({
       <Container>
         <Row>
           <Sidebar className="hidden lg:block w-80" />
-          <main className="grow relative h-screen">
+          <main className="grow h-screen">
             <Header />
             <ContentContainer>{children}</ContentContainer>
             <Footer/>

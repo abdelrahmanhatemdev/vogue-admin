@@ -35,10 +35,10 @@ export const CategorySchema = z.object({
 });
 
 const AddCategory = function AddCategory({
-  setOpen,
+  setModalOpen,
   addOptimisticData,
 }: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
@@ -54,7 +54,7 @@ const AddCategory = function AddCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    setOpen(false);
+    setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,

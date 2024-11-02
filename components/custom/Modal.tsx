@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export type ModalProps = {
+export type ModalState = {
   title: ReactNode;
   description: ReactNode;
   children: ReactNode;
@@ -20,18 +20,18 @@ const Modal = memo(function Modal({
   title,
   description,
   children,
-  open, 
-  setOpen
+  modalOpen, 
+  setModalOpen
 }: {
-  title: ModalProps["title"];
-  description: ModalProps["description"];
-  children?: ModalProps["children"];
-  open?: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>
+  title: ModalState["title"];
+  description: ModalState["description"];
+  children?: ModalState["children"];
+  modalOpen?: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>
 }) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent onPointerDownOutside={() => setOpen(false)}>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogContent onPointerDownOutside={() => setModalOpen(false)} aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

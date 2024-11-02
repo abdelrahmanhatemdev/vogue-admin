@@ -22,11 +22,11 @@ import { notify } from "@/lib/utils";
 
 const EditCategory = function EditCategory({
   item,
-  setOpen,
+  setModalOpen,
   addOptimisticData,
 }: {
   item: Category;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
@@ -41,7 +41,7 @@ const EditCategory = function EditCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    setOpen(false);
+    setModalOpen(false);
     const data = {
       id: item.id,
       createdAt: item.createdAt,

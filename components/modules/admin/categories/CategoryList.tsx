@@ -16,32 +16,32 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "../ui/table";
-import { useState, Dispatch, SetStateAction, useTransition } from "react";
-import { Button } from "../ui/button";
-import Row from "./Row";
+} from "@/components/ui/table";
+import {
+  useState,
+  Dispatch,
+  SetStateAction,
+  useTransition,
+} from "react";
+import { Button } from "@/components/ui/button";
+import Row from "@/components/custom/Row";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import { ModalProps } from "./Modal";
+import { ModalState } from "@/components/custom/Modal";
 import {
   LiaSortAmountUpAltSolid,
   LiaSortAmountDownSolid,
 } from "react-icons/lia";
-import {
-  TfiAngleDoubleLeft,
-  TfiAngleDoubleRight,
-  TfiAngleLeft,
-  TfiAngleRight,
-} from "react-icons/tfi";
 
-import { DialogFooter } from "../ui/dialog";
-import TablePagination from "./TablePagination";
+import { DialogFooter } from "@/components/ui/dialog";
+import TablePagination from "@/components/custom/TablePagination";
+import AddCategory from "./AddCategory";
 
-interface DataTableProps<TData> {
-  columns: ColumnDef<TData>[];
+interface CategoryListProps<TData> {
   data: TData[];
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setModal: Dispatch<SetStateAction<ModalProps>>;
+  columns: ColumnDef<Category>[];
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  setModal: Dispatch<SetStateAction<ModalState>>;
   addOptimisticData: (
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
@@ -51,13 +51,13 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-export default function DataTable({
-  columns,
+export default function CategoryList({
   data,
-  setOpen,
+  columns,
   setModal,
+  setModalOpen,
   addOptimisticData,
-}: DataTableProps<Category>) {
+}: CategoryListProps<Category>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -96,11 +96,12 @@ export default function DataTable({
     columnResizeDirection: "ltr",
   });
 
-  const currentPage =  pagination.pageIndex + 1
-  const totalPages = (data.length > 0) ? (Math.ceil(data.length/ pagination.pageSize)) : 1
+  const currentPage = pagination.pageIndex + 1;
+  const totalPages =
+    data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
   function deleteMultiple() {
-    setOpen(true);
+    setModalOpen(true);
     setModal({
       title: `Delete Categories`,
       description: (
@@ -120,7 +121,7 @@ export default function DataTable({
             type="submit"
             variant="destructive"
             onClick={async () => {
-              setOpen(false);
+              setModalOpen(false);
               setShowDeleteAll(false);
               startTransition(() => {
                 addOptimisticData((prev: Category[]) => [
@@ -217,15 +218,33 @@ export default function DataTable({
 
   return (
     <div className="flex flex-col gap-4">
-      {selectedRows.length > 0 && showDeleteAll ? (
-        <Row className="justify-end">
-          <Button variant="destructive" onClick={deleteMultiple}>
+      <Row className="justify-end gap-2">
+        {selectedRows.length > 0 && showDeleteAll && (
+          <Button variant="destructive" onClick={deleteMultiple} size="sm">
             Delete Selected
           </Button>
-        </Row>
-      ) : (
-        ""
-      )}
+        )}
+        <Button
+          size="sm"
+          onClick={() => {
+            setModalOpen(true);
+            setModal({
+              title: "Add Category",
+              description:
+                "Add new Category here. Click Add when you'are done.",
+              children: (
+                <AddCategory
+                  setModalOpen={setModalOpen}
+                  addOptimisticData={addOptimisticData}
+                />
+              ),
+            });
+          }}
+        >
+          Add New
+        </Button>
+      </Row>
+
       <Table>
         <TableHeader>{tableHeader}</TableHeader>
         <TableBody>{tableBody}</TableBody>
@@ -234,18 +253,18 @@ export default function DataTable({
         <div className="text-neutral-600">
           {selectedRows.length} of {totalRows} row(s) selected.
         </div>
-          <TablePagination
-            canPrevious= {table.getCanPreviousPage()}
-            canNext= {table.getCanNextPage()}
-            firstPage = {() => table.firstPage()}
-            lastPage= {() => table.lastPage()}
-            previousPage= {() => table.previousPage()}
-            nextPage={() => table.nextPage()}
-            currentPage= {currentPage}
-            totalPages={totalPages}
-            pagination={pagination}
-            setPagination= {setPagination}
-          />
+        <TablePagination
+          canPrevious={table.getCanPreviousPage()}
+          canNext={table.getCanNextPage()}
+          firstPage={() => table.firstPage()}
+          lastPage={() => table.lastPage()}
+          previousPage={() => table.previousPage()}
+          nextPage={() => table.nextPage()}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       </Row>
     </div>
   );
