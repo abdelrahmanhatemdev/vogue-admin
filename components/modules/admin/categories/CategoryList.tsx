@@ -235,7 +235,6 @@ export default function CategoryList({
     </TableRow>
   );
 
-  console.log("Filter", table.getState().columnFilters);
 
   return (
     <div className="flex flex-col gap-4">
@@ -276,7 +275,7 @@ export default function CategoryList({
           </Button>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
                 <CiSliderHorizontal />
                 <span>View</span>

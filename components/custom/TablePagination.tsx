@@ -115,11 +115,11 @@ const TablePagination = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="font-semibold text-sm text-neutral-700">
+      <div className="font-semibold text-sm text-neutral-700 min-w-fit">
         Page {currentPage} of {totalPages}
       </div>
 
-      <Pagination>
+      <Pagination className="justify-end w-auto">
         <PaginationContent>
           <PaginationItem>
             <Button
