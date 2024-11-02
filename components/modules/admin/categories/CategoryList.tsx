@@ -5,10 +5,12 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   PaginationState,
   SortingState,
   VisibilityState,
   useReactTable,
+  ColumnFiltersState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -43,6 +45,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CiSliderHorizontal } from "react-icons/ci";
 import { IoCheckmark } from "react-icons/io5";
+import { Value } from "@radix-ui/react-select";
+import { Input } from "@/components/ui/input";
 
 interface CategoryListProps<TData> {
   data: TData[];
@@ -76,6 +80,7 @@ export default function CategoryList({
     name: true,
     actions: true,
   });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const selectedRows = Object.keys(rowSelection);
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
@@ -87,11 +92,13 @@ export default function CategoryList({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
       sorting,
       pagination,
       columnVisibility,
+      columnFilters,
     },
     onRowSelectionChange: (value) => {
       setRowSelection(value);
@@ -105,9 +112,7 @@ export default function CategoryList({
       maxSize: 500,
     },
     onColumnVisibilityChange: setColumnVisibility,
-    getRowId: (row) => row.id,
-    columnResizeMode: "onChange",
-    columnResizeDirection: "ltr",
+    onColumnFiltersChange: setColumnFilters,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -230,76 +235,86 @@ export default function CategoryList({
     </TableRow>
   );
 
-  console.log("Columns", table.getAllColumns());
+  console.log("Filter", table.getState().columnFilters);
 
   return (
     <div className="flex flex-col gap-4">
-      <Row className="justify-end gap-2">
-        {selectedRows.length > 0 && showDeleteAll && (
-          <Button variant="destructive" onClick={deleteMultiple} size="sm">
-            Delete Selected
-          </Button>
-        )}
-        <Button
-          size="sm"
-          // variant={"outline"}
-          onClick={() => {
-            setModalOpen(true);
-            setModal({
-              title: "Add Category",
-              description:
-                "Add new Category here. Click Add when you'are done.",
-              children: (
-                <AddCategory
-                  setModalOpen={setModalOpen}
-                  addOptimisticData={addOptimisticData}
-                />
-              ),
-            });
-          }}
-        >
-          Add New
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="outline" size="sm">
-              <CiSliderHorizontal />
-              <span>View</span>
+      <Row className="justify-between gap-2">
+        <div>
+          <Input
+            type="text"
+            placeholder="Filter Categories..."
+            onChange={(e) =>
+              setColumnFilters([{ id: "name", value: e.target.value }])
+            }
+          />
+        </div>
+        <div className="flex items-center justify-end gap-2">
+          {selectedRows.length > 0 && showDeleteAll && (
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
+              Delete Selected
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {table.getAllColumns()?.length > 0
-                ? table.getAllColumns().map((col) => (
-                    <DropdownMenuItem
-                      className="capitalize"
-                      key={col.id}
-                      onClick={() =>
-                        setColumnVisibility((prev) => ({
-                          ...prev,
-                          [col.id]: !prev[col.id],
-                        }))
-                      }
-                    >
-                      <div className="flex justify-center items-center gap-4">
-                        <span className="w-3">
-                          {columnVisibility[col.id] === true ? (
-                            <IoCheckmark />
-                          ) : (
-                            ""
-                          )}
-                        </span>
-                        <span>{col.id}</span>
-                      </div>
-                    </DropdownMenuItem>
-                  ))
-                : ""}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+          <Button
+            size="sm"
+            onClick={() => {
+              setModalOpen(true);
+              setModal({
+                title: "Add Category",
+                description:
+                  "Add new Category here. Click Add when you'are done.",
+                children: (
+                  <AddCategory
+                    setModalOpen={setModalOpen}
+                    addOptimisticData={addOptimisticData}
+                  />
+                ),
+              });
+            }}
+          >
+            Add New
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="outline" size="sm">
+                <CiSliderHorizontal />
+                <span>View</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                {table.getAllColumns()?.length > 0
+                  ? table.getAllColumns().map((col) => (
+                      <DropdownMenuItem
+                        className="capitalize"
+                        key={col.id}
+                        onClick={() =>
+                          setColumnVisibility((prev) => ({
+                            ...prev,
+                            [col.id]: !prev[col.id],
+                          }))
+                        }
+                      >
+                        <div className="flex justify-center items-center gap-4">
+                          <span className="w-3">
+                            {columnVisibility[col.id] === true ? (
+                              <IoCheckmark />
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                          <span>{col.id}</span>
+                        </div>
+                      </DropdownMenuItem>
+                    ))
+                  : ""}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </Row>
 
       <Table>
