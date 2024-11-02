@@ -48,9 +48,6 @@ const TablePagination = ({
 }) => {
   let middleButtons: ReactNode = <></>;
 
-  console.log(currentPage);
-  console.log("currentPage", currentPage);
-
   if (totalPages && currentPage) {
     const pagesArray = Array.from({ length: totalPages });
 

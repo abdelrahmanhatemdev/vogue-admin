@@ -7,6 +7,7 @@ import {
   getSortedRowModel,
   PaginationState,
   SortingState,
+  VisibilityState,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -17,12 +18,7 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import {
-  useState,
-  Dispatch,
-  SetStateAction,
-  useTransition,
-} from "react";
+import { useState, Dispatch, SetStateAction, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import Row from "@/components/custom/Row";
 import { deleteCategory } from "@/actions/Category";
@@ -36,6 +32,17 @@ import {
 import { DialogFooter } from "@/components/ui/dialog";
 import TablePagination from "@/components/custom/TablePagination";
 import AddCategory from "./AddCategory";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { CiSliderHorizontal } from "react-icons/ci";
+import { IoCheckmark } from "react-icons/io5";
 
 interface CategoryListProps<TData> {
   data: TData[];
@@ -64,6 +71,11 @@ export default function CategoryList({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    select: true,
+    name: true,
+    actions: true,
+  });
   const selectedRows = Object.keys(rowSelection);
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
@@ -79,6 +91,7 @@ export default function CategoryList({
       rowSelection,
       sorting,
       pagination,
+      columnVisibility,
     },
     onRowSelectionChange: (value) => {
       setRowSelection(value);
@@ -91,6 +104,7 @@ export default function CategoryList({
       minSize: 50,
       maxSize: 500,
     },
+    onColumnVisibilityChange: setColumnVisibility,
     getRowId: (row) => row.id,
     columnResizeMode: "onChange",
     columnResizeDirection: "ltr",
@@ -216,6 +230,8 @@ export default function CategoryList({
     </TableRow>
   );
 
+  console.log("Columns", table.getAllColumns());
+
   return (
     <div className="flex flex-col gap-4">
       <Row className="justify-end gap-2">
@@ -226,6 +242,7 @@ export default function CategoryList({
         )}
         <Button
           size="sm"
+          // variant={"outline"}
           onClick={() => {
             setModalOpen(true);
             setModal({
@@ -243,6 +260,46 @@ export default function CategoryList({
         >
           Add New
         </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="outline" size="sm">
+              <CiSliderHorizontal />
+              <span>View</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {table.getAllColumns()?.length > 0
+                ? table.getAllColumns().map((col) => (
+                    <DropdownMenuItem
+                      className="capitalize"
+                      key={col.id}
+                      onClick={() =>
+                        setColumnVisibility((prev) => ({
+                          ...prev,
+                          [col.id]: !prev[col.id],
+                        }))
+                      }
+                    >
+                      <div className="flex justify-center items-center gap-4">
+                        <span className="w-3">
+                          {columnVisibility[col.id] === true ? (
+                            <IoCheckmark />
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                        <span>{col.id}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))
+                : ""}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </Row>
 
       <Table>
