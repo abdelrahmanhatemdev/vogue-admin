@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Heading from "@/components/custom/Heading";
 import Row from "@/components/custom/Row";
 import { memo, useMemo, useOptimistic, useState } from "react";
@@ -19,7 +19,6 @@ const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
 });
 
 export default function Categories({ data }: { data: Category[] }) {
-
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -57,9 +56,7 @@ export default function Categories({ data }: { data: Category[] }) {
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
-            onCheckedChange={(value: boolean) =>
-              row.toggleSelected(!!value)
-            }
+            onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
             onChange={row.getToggleSelectedHandler()}
             aria-label="Select row"
           />
@@ -79,7 +76,7 @@ export default function Categories({ data }: { data: Category[] }) {
           return (
             <Link
               href={`/admin/categories/${item.id}`}
-              className={item.isPending ? "opacity-50" : ""}
+              className={"hover:bg-" + (item.isPending ? " opacity-50" : "")}
             >
               {item.name}
             </Link>
@@ -155,12 +152,12 @@ export default function Categories({ data }: { data: Category[] }) {
         </Row>
 
         {data?.length ? (
-          <CategoryList 
-          data={sortedOptimisicData}  
-          columns= {columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-          addOptimisticData={addOptimisticData}
+          <CategoryList
+            data={sortedOptimisicData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+            addOptimisticData={addOptimisticData}
           />
         ) : (
           <NoResults />
