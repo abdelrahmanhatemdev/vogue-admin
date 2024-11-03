@@ -11,6 +11,7 @@ import {
   VisibilityState,
   useReactTable,
   ColumnFiltersState,
+  ColumnResizeMode,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -104,8 +105,8 @@ export default function CategoryList({
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     defaultColumn: {
-      size: 200,
-      minSize: 50,
+      size: 50,
+      minSize: 5,
       maxSize: 500,
     },
     onColumnVisibilityChange: setColumnVisibility,
@@ -166,7 +167,10 @@ export default function CategoryList({
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>
-      {hgroup.headers.map((header) => (
+      {hgroup.headers.map((header) => {
+        console.log("Get Size: ", header.getSize());
+        
+        return (
         <TableHead
           key={header.id}
           className={header.column.getCanSort() ? "cursor-pointer" : ""}
@@ -239,13 +243,13 @@ export default function CategoryList({
             </div>
           )}
         </TableHead>
-      ))}
+      )})}
     </TableRow>
   ));
 
   const tableBody = table.getRowModel().rows?.length ? (
     table.getRowModel().rows.map((row) => (
-      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} >
         {row.getVisibleCells().map((cell) => (
           <TableCell key={cell.id}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -13,6 +13,7 @@ import { TbEdit } from "react-icons/tb";
 import EditCategory from "./EditCategory";
 import { Trash2Icon } from "lucide-react";
 import DeleteCategory from "./DeleteCategory";
+import { motion } from "framer-motion";
 
 const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
   return <AdminBreadcrumb page="Categories" />;
@@ -65,7 +66,6 @@ export default function Categories({ data }: { data: Category[] }) {
         enableHiding: false,
         enableResizing: false,
         size: 50,
-        maxSize: 50,
       },
       {
         id: "name",
@@ -146,23 +146,40 @@ export default function Categories({ data }: { data: Category[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <CategoryBreadCrumb />
+      <motion.div
+        initial={{ x: 1000, opacity: 0  }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.3 }}
+      >
+        <CategoryBreadCrumb />
+      </motion.div>
       <div className=" flex flex-col gap-4 rounded-lg p-8 bg-background">
-        <Row className="justify-between items-center">
-          <Heading
-            title="Categories"
-            description="Here's a list of your categories!"
-          />
-        </Row>
-
+        <motion.div
+          initial={{ x: 400, opacity: 0 }}
+          animate={{ x: 0, opacity: 1  }}
+          transition={{ delay: 0.5, duration: 0.1 }}
+        >
+          <Row className="justify-between items-center">
+            <Heading
+              title="Categories"
+              description="Here's a list of your categories!"
+            />
+          </Row>
+        </motion.div>
         {data?.length ? (
-          <CategoryList
-            data={sortedOptimisicData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-            addOptimisticData={addOptimisticData}
-          />
+          <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <CategoryList
+              data={sortedOptimisicData}
+              columns={columns}
+              setModalOpen={setModalOpen}
+              setModal={setModal}
+              addOptimisticData={addOptimisticData}
+            />
+          </motion.div>
         ) : (
           <NoResults />
         )}
