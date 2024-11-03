@@ -14,7 +14,7 @@ export default async function layout({
 
   return (
     <>
-      <div className="lg:fixed w-[95vw] start-[2.5vw] lg:w-[70vw] lg:start-[15vw] lg:h-[95vh] lg:top-[2.5vh] rounded-lg bg-neutral-100 mx-auto overflow-y-hidden">
+      <div className="lg:fixed w-[95vw] start-[2.5vw] lg:w-[70vw] lg:start-[15vw] lg:h-[95vh] lg:top-[2.5vh] rounded-lg bg-main-100 mx-auto overflow-y-hidden">
         <SidebarProvider defaultOpen={defaultOpen}>
           <AdminSidebar/>
           <main className="grow lg:h-[90.25vh] lg:mt-[2.375vh] overflow-y-scroll">

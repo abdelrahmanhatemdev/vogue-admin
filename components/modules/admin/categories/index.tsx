@@ -76,7 +76,11 @@ export default function Categories({ data }: { data: Category[] }) {
           return (
             <Link
               href={`/admin/categories/${item.id}`}
-              className={"hover:bg-" + (item.isPending ? " opacity-50" : "")}
+              className={
+                "hover:bg-main-200 p-2 rounded-lg" +
+                (item.isPending ? " opacity-50" : "")
+              }
+              title="Go to Category page"
             >
               {item.name}
             </Link>

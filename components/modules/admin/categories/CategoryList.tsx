@@ -26,10 +26,7 @@ import Row from "@/components/custom/Row";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { ModalState } from "@/components/custom/Modal";
-import {
-  LiaSortAmountUpAltSolid,
-  LiaSortAmountDownSolid,
-} from "react-icons/lia";
+import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
 
 import { DialogFooter } from "@/components/ui/dialog";
 import TablePagination from "@/components/custom/TablePagination";
@@ -45,8 +42,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CiSliderHorizontal } from "react-icons/ci";
 import { IoCheckmark } from "react-icons/io5";
-import { Value } from "@radix-ui/react-select";
 import { Input } from "@/components/ui/input";
+import { TiArrowUnsorted } from "react-icons/ti";
 
 interface CategoryListProps<TData> {
   data: TData[];
@@ -172,43 +169,75 @@ export default function CategoryList({
       {hgroup.headers.map((header) => (
         <TableHead
           key={header.id}
-          className={
-            header.column.getCanSort() ? "cursor-pointer select-none" : ""
-          }
-          onClick={header.column.getToggleSortingHandler()}
-          title={
-            header.column.getCanSort()
-              ? header.column.getNextSortingOrder() === "asc"
-                ? "Sort ascending"
-                : header.column.getNextSortingOrder() === "desc"
-                ? "Sort descending"
-                : "Clear sort"
-              : ""
-          }
+          className={header.column.getCanSort() ? "cursor-pointer" : ""}
         >
-          <Row className="items-center gap-2">
-            <div className="hover:text-neutral-950">
-              {header.isPlaceholder
-                ? null
-                : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-            </div>
+          {header.column.getCanSort() ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2">
+                  <span className="text-main-800">
+                    {" "}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </span>
+                  <TiArrowUnsorted style={{ fill: "var(--main-800)" }} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
+                <DropdownMenuItem
+                  onClick={() =>
+                    setSorting([
+                      { desc: false, id: `${header.column.columnDef.id}` },
+                    ])
+                  }
+                >
+                  <div className="flex items-center gap-2 justify-between">
+                    <span>Asc</span>
+                    <IoIosArrowRoundUp size={20} />
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    setSorting([
+                      { desc: true, id: `${header.column.columnDef.id}` },
+                    ])
+                  }
+                >
+                  <div className="flex items-center gap-2 justify-between">
+                    <span>Desc</span>
+                    <IoIosArrowRoundDown size={20} />
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    setSorting([])
+                  }
+                >
+                  <div className="flex items-center gap-2 justify-between">
+                    <span>Reset</span>
+                    <IoIosArrowRoundUp size={20} />
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
             <div>
-              {header.column.getCanSort() ? (
-                header.column.getNextSortingOrder() === "asc" ? (
-                  ""
-                ) : header.column.getNextSortingOrder() === "desc" ? (
-                  <LiaSortAmountUpAltSolid size={20} />
-                ) : (
-                  <LiaSortAmountDownSolid size={20} />
-                )
-              ) : (
-                ""
-              )}
+              <span className="text-main-800">
+                {" "}
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </span>
             </div>
-          </Row>
+          )}
         </TableHead>
       ))}
     </TableRow>
@@ -235,13 +264,12 @@ export default function CategoryList({
     </TableRow>
   );
 
-
   return (
     <div className="flex flex-col gap-4">
       <Row className="justify-between gap-2">
         <div>
           <Input
-          className="bg-background"
+            className="bg-background"
             type="text"
             placeholder="Filter Categories..."
             onChange={(e) =>

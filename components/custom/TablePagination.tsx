@@ -67,9 +67,9 @@ const TablePagination = ({
           <PaginationItem key={index}>
             <Button
               className={
-                "h-6 w-6 border-neutral-400 p-3 hover:bg-neutral-200" +
+                "h-6 w-6 border-main-400 p-3 hover:bg-main-200" +
                 (isActive
-                  ? " bg-neutral-800 text-neutral-50 hover:bg-neutral-700 hover:text-neutral-200"
+                  ? " bg-main-800 text-main-50 hover:bg-main-900 hover:text-main-200"
                   : "")
               }
               variant="outline"
