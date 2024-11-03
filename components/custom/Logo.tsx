@@ -9,6 +9,7 @@ export default function Logo({ className }: Readonly<{ className?: string }>) {
         alt="Vogue Logo"
         height={100}
         width={80}
+        priority= {true}
       />
     </div>
   );

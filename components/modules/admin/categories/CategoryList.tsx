@@ -241,6 +241,7 @@ export default function CategoryList({
       <Row className="justify-between gap-2">
         <div>
           <Input
+          className="bg-background"
             type="text"
             placeholder="Filter Categories..."
             onChange={(e) =>
@@ -316,7 +317,7 @@ export default function CategoryList({
         </div>
       </Row>
 
-      <Table>
+      <Table className="border rounded-xl">
         <TableHeader>{tableHeader}</TableHeader>
         <TableBody>{tableBody}</TableBody>
       </Table>

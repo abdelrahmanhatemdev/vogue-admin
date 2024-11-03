@@ -8,5 +8,5 @@ export default function ContentContainer({
   children: ReactNode;
   className?: string;
 }>) {
-  return <div className={cn("w-[80%] mx-auto", className)}>{children}</div>;
+  return <div className={cn("w-[95%] lg:w-[90%] mx-auto", className)}>{children}</div>;
 }

@@ -146,7 +146,7 @@ export default function Categories({ data }: { data: Category[] }) {
   return (
     <div className="flex flex-col gap-4">
       <CategoryBreadCrumb />
-      <div className=" flex flex-col gap-4 border-solid border-2 border-neutral-200 rounded-md p-8">
+      <div className=" flex flex-col gap-4 rounded-lg p-8 bg-background">
         <Row className="justify-between items-center">
           <Heading
             title="Categories"

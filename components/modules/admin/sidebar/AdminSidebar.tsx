@@ -47,7 +47,7 @@ export const SidebarLinks = [
 const AdminSidebar = () => {
   const currentPath = usePathname();
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent">
       <SidebarHeader>
         <Logo />
       </SidebarHeader>

@@ -14,8 +14,18 @@ body {
 
 @layer base {
   * {
-    @apply border-border text-stone-700 ;
+    @apply border-border;
+    scrollbar-color: transparent transparent;
   }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    @apply hidden;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -50,10 +60,21 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
+
+    /* Custom Variables */
+    --primary-1: #ffffff;
+    --primary-2: #f6f6f6;
+    --primary-3: #ffffff;
+    --primary-4: #ffffff;
+    --primary-5: #fdfdfd;
+    --primary-6: #a6a6a6;
+    --primary-7: #616161;
+    --secondary-1: #000;
+    --secondary-2: #2d2d2d;
+    --secondary-3: #535353;
+    --red-1: #c55757;
+    --red-2: #d56363;
+    --red-3: #ff8989;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -88,14 +109,20 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
+    /* Custom Variables */
+    --primary-1: #181818;
+    --primary-2: #212121;
+    --primary-3: #272727;
+    --primary-4: #3c3c3c;
+    --primary-5: #373737;
+    --primary-6: #464646;
+    --primary-7: #8f8d8d;
+    --secondary-1: #fff;
+    --secondary-2: #eee;
+    --secondary-3: #ddd;
+    --red-1: #c55757;
+    --red-2: #d56363;
+    --red-3: #ff8989;
   }
 }
