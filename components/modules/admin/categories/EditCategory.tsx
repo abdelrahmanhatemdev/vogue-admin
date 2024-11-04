@@ -63,7 +63,7 @@ const EditCategory = function EditCategory({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
         <FormField
           control={form.control}
           name="name"

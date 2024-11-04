@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Category({ data }: { data: Category }) {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <AdminBreadcrumb page={`${data.name}`}>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
@@ -17,10 +17,12 @@ export default function Category({ data }: { data: Category }) {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
       </AdminBreadcrumb>
-      <div>ID : {data.id}</div>
-      <div>Name : {data.name}</div>
-      <div>Created At : {data.createdAt}</div>
-      <div>Updated At : {data.updatedAt}</div>
+      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+        <div>ID : {data.id}</div>
+        <div>Name : {data.name}</div>
+        <div>Created At : {data.createdAt}</div>
+        <div>Updated At : {data.updatedAt}</div>
+      </div>
     </div>
   );
 }

@@ -168,7 +168,6 @@ export default function CategoryList({
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>
       {hgroup.headers.map((header) => {
-        console.log("Get Size: ", header.getSize());
         
         return (
         <TableHead
@@ -270,7 +269,7 @@ export default function CategoryList({
 
   return (
     <div className="flex flex-col gap-4">
-      <Row className="justify-between gap-2">
+      <div className="flex justify-between gap-4 flex-col lg:flex-row flex-wrap">
         <div>
           <Input
             className="bg-background"
@@ -347,13 +346,13 @@ export default function CategoryList({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </Row>
+      </div>
 
       <Table className="border rounded-xl">
         <TableHeader>{tableHeader}</TableHeader>
         <TableBody>{tableBody}</TableBody>
       </Table>
-      <Row className="items-center justify-between px-2">
+      <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
         <div className="text-neutral-600">
           {selectedRows.length} of {totalRows} row(s) selected.
         </div>
@@ -369,7 +368,7 @@ export default function CategoryList({
           pagination={pagination}
           setPagination={setPagination}
         />
-      </Row>
+      </div>
     </div>
   );
 }

@@ -89,7 +89,7 @@ const TablePagination = ({
   }
 
   return (
-    <div className="flex items-center justify-end gap-8">
+    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-4 lg:gap-8">
       <div className="flex gap-4 items-center">
         <div className="font-semibold text-sm text-neutral-700 min-w-fit">
           Rows Per Page
@@ -119,7 +119,7 @@ const TablePagination = ({
         Page {currentPage} of {totalPages}
       </div>
 
-      <Pagination className="justify-end w-auto">
+      <Pagination className="justify-end lg:w-auto">
         <PaginationContent>
           <PaginationItem>
             <Button

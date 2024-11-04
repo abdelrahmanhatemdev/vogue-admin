@@ -153,7 +153,7 @@ export default function Categories({ data }: { data: Category[] }) {
       >
         <CategoryBreadCrumb />
       </motion.div>
-      <div className=" flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <motion.div
           initial={{ x: 400, opacity: 0 }}
           animate={{ x: 0, opacity: 1  }}
