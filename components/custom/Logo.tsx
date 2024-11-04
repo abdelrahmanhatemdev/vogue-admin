@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { memo } from "react";
 
-export default function Logo({ className }: Readonly<{ className?: string }>) {
+function Logo({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={cn("", className)}>
       <Image
@@ -14,3 +15,5 @@ export default function Logo({ className }: Readonly<{ className?: string }>) {
     </div>
   );
 }
+
+export default memo(Logo)

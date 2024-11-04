@@ -1,9 +1,11 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
-export default function NoResults({title}: {title?:string | ReactNode}) {
+function NoResults({title}: {title?:string | ReactNode}) {
   return (
     <div>
       {title}
     </div>
   );
 }
+
+export default memo(NoResults)

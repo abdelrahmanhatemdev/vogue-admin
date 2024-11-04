@@ -7,11 +7,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import Link from "next/link";
 import { SidebarTrigger } from "../ui/sidebar";
 
-export default function AdminBreadcrumb({
+function AdminBreadcrumb({
   children,
   page,
 }: Readonly<{
@@ -41,3 +41,5 @@ export default function AdminBreadcrumb({
     </Breadcrumb>
   );
 }
+
+export default memo(AdminBreadcrumb)

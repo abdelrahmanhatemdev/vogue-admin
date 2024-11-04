@@ -5,8 +5,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { memo } from "react";
 
-export default function Category({ data }: { data: Category }) {
+function Category({ data }: { data: Category }) {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page={`${data.name}`}>
@@ -26,3 +27,5 @@ export default function Category({ data }: { data: Category }) {
     </div>
   );
 }
+
+export default memo(Category)

@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 import { Button } from "../ui/button";
 import {
   Pagination,
@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "../ui/select";
 
-const TablePagination = ({
+function TablePagination ({
   canPrevious,
   canNext,
   firstPage,
@@ -45,7 +45,7 @@ const TablePagination = ({
   totalPages?: number;
   pagination: PaginationState;
   setPagination: Dispatch<SetStateAction<PaginationState>>;
-}) => {
+}) {
   let middleButtons: ReactNode = <></>;
 
   if (totalPages && currentPage) {
@@ -167,4 +167,4 @@ const TablePagination = ({
     </div>
   );
 };
-export default TablePagination;
+export default memo(TablePagination);

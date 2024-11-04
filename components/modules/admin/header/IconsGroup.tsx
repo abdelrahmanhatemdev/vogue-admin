@@ -1,7 +1,8 @@
 import { User } from "lucide-react";
 import Link from "next/link";
+import { memo } from "react";
 
-export default function IconsGroup() {
+function IconsGroup() {
   return (
     <>
       <Link href="/account">
@@ -10,3 +11,5 @@ export default function IconsGroup() {
     </>
   );
 }
+
+export default memo(IconsGroup)

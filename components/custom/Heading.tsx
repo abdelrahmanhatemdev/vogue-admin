@@ -1,16 +1,15 @@
 import { cn } from "@/lib/utils";
 import { memo, ReactNode } from "react";
 
-const Heading = function Heading({
+function Heading({
   children,
-  className,
   title,
   description,
 }: Readonly<{
   children?: ReactNode;
   className?: string;
-  title?: string;
-  description?: string;
+  title?: ReactNode;
+  description?: ReactNode;
 }>) {
   return (
     <div>

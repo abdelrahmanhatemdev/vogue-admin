@@ -27,9 +27,9 @@ import {
   SetStateAction,
   useTransition,
   useCallback,
+  memo,
 } from "react";
 import { Button } from "@/components/ui/button";
-import Row from "@/components/custom/Row";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { ModalState } from "@/components/custom/Modal";
@@ -68,7 +68,7 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-export default function CategoryList({
+function CategoryList({
   data,
   columns,
   setModal,
@@ -87,6 +87,7 @@ export default function CategoryList({
     actions: true,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  
   const selectedRows = Object.keys(rowSelection);
 
   const totalRows = data?.length ? data.length : 0;
@@ -322,3 +323,5 @@ export default function CategoryList({
     </div>
   );
 }
+
+export default memo(CategoryList) as typeof CategoryList

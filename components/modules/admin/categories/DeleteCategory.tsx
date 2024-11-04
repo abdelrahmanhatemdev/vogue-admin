@@ -5,7 +5,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
-const DeleteCategory = function DeleteCategory({
+function DeleteCategory({
   item,
   setModalOpen,
   addOptimisticData,

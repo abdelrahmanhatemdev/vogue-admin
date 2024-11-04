@@ -19,7 +19,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
-const EditCategory = function EditCategory({
+function EditCategory({
   item,
   setModalOpen,
   addOptimisticData,

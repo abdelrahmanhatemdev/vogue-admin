@@ -1,6 +1,5 @@
 "use client";
 import Heading from "@/components/custom/Heading";
-import Row from "@/components/custom/Row";
 import { memo, useMemo, useOptimistic, useState } from "react";
 import NoResults from "@/components/custom/NoResults";
 import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
@@ -15,11 +14,7 @@ import { Trash2Icon } from "lucide-react";
 import DeleteCategory from "./DeleteCategory";
 import { motion } from "framer-motion";
 
-const CategoryBreadCrumb = memo(function CategoryBreadCrumb() {
-  return <AdminBreadcrumb page="Categories" />;
-});
-
-export default function Categories({ data }: { data: Category[] }) {
+function Categories({ data }: { data: Category[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -65,7 +60,7 @@ export default function Categories({ data }: { data: Category[] }) {
         enableSorting: false,
         enableHiding: false,
         enableResizing: false,
-        size: 50,
+        size: 40,
       },
       {
         id: "name",
@@ -151,7 +146,7 @@ export default function Categories({ data }: { data: Category[] }) {
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.3 }}
       >
-        <CategoryBreadCrumb />
+        <AdminBreadcrumb page="Categories" />
       </motion.div>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <motion.div
@@ -159,12 +154,12 @@ export default function Categories({ data }: { data: Category[] }) {
           animate={{ x: 0, opacity: 1  }}
           transition={{ delay: 0.5, duration: 0.1 }}
         >
-          <Row className="justify-between items-center">
+          <div className="flex justify-between items-center">
             <Heading
               title="Categories"
               description="Here's a list of your categories!"
             />
-          </Row>
+          </div>
         </motion.div>
         {data?.length ? (
           <motion.div
@@ -195,3 +190,5 @@ export default function Categories({ data }: { data: Category[] }) {
     </div>
   );
 }
+
+export default memo(Categories)

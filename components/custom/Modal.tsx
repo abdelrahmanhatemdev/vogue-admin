@@ -15,7 +15,7 @@ export type ModalState = {
 
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 
-const Modal = memo(function Modal({
+function Modal({
   title,
   description,
   children,
@@ -43,6 +43,6 @@ const Modal = memo(function Modal({
       </DialogContent>
     </Dialog>
   );
-});
+};
 
-export default Modal;
+export default memo(Modal);

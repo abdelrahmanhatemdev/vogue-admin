@@ -1,6 +1,7 @@
 import ContentContainer from "@/components/custom/ContentContainer";
+import { memo } from "react";
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="flex items-center w-full  h-10 mt-6">
       <ContentContainer>
@@ -11,3 +12,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default  memo(Footer)

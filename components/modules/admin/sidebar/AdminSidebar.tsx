@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { User } from "lucide-react";
+import { memo } from "react";
 
 export const SidebarLinks = [
   {
@@ -44,7 +45,7 @@ export const SidebarLinks = [
   },
 ];
 
-const AdminSidebar = () => {
+function AdminSidebar ()  {
   const currentPath = usePathname();
   return (
     <Sidebar collapsible="icon" className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent">
@@ -94,4 +95,4 @@ const AdminSidebar = () => {
     </Sidebar>
   );
 };
-export default AdminSidebar;
+export default memo(AdminSidebar);

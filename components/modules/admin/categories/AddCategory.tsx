@@ -34,7 +34,7 @@ export const CategorySchema = z.object({
     }),
 });
 
-const AddCategory = function AddCategory({
+function AddCategory({
   setModalOpen,
   addOptimisticData,
 }: {

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
-export default function ContentContainer({
+function ContentContainer({
   children,
   className,
 }: Readonly<{
@@ -10,3 +10,5 @@ export default function ContentContainer({
 }>) {
   return <div className={cn("w-[95%] lg:w-[90%] mx-auto", className)}>{children}</div>;
 }
+
+export default memo(ContentContainer)
