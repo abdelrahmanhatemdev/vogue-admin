@@ -11,7 +11,7 @@ import {
   VisibilityState,
   useReactTable,
   ColumnFiltersState,
-  ColumnResizeMode,
+  Column,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -21,7 +21,13 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { useState, Dispatch, SetStateAction, useTransition } from "react";
+import {
+  useState,
+  Dispatch,
+  SetStateAction,
+  useTransition,
+  useCallback,
+} from "react";
 import { Button } from "@/components/ui/button";
 import Row from "@/components/custom/Row";
 import { deleteCategory } from "@/actions/Category";
@@ -45,6 +51,8 @@ import { CiSliderHorizontal } from "react-icons/ci";
 import { IoCheckmark } from "react-icons/io5";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
+import deleteMultiple from "@/lib/deleteMultiples";
+import ToggleColumnView from "@/components/custom/ToggleColumnView";
 
 interface CategoryListProps<TData> {
   data: TData[];
@@ -80,6 +88,7 @@ export default function CategoryList({
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const selectedRows = Object.keys(rowSelection);
+
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -111,144 +120,115 @@ export default function CategoryList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-  function deleteMultiple() {
-    setModalOpen(true);
-    setModal({
-      title: `Delete Categories`,
-      description: (
-        <p className="font-medium">
-          Are you sure to
-          {selectedRows.length === 1 ? (
-            " delete the category "
-          ) : (
-            <strong> delete all categories </strong>
-          )}
-          permenantly ?
-        </p>
-      ),
-      children: (
-        <DialogFooter>
-          <Button
-            type="submit"
-            variant="destructive"
-            onClick={async () => {
-              setModalOpen(false);
-              setShowDeleteAll(false);
-              startTransition(() => {
-                addOptimisticData((prev: Category[]) => [
-                  ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
-                      const pendingItem = { ...item, isPending: !isPending };
-                      return pendingItem;
-                    }
-                    return item;
-                  }),
-                ]);
-              });
-              for (const row of selectedRows) {
-                const data = { id: row };
-                const res: ActionResponse = await deleteCategory(data);
-                notify(res);
-              }
-            }}
-          >
-            Delete
-          </Button>
-        </DialogFooter>
-      ),
-    });
-  }
+  const deleteMultipleCallback = useCallback(
+    () =>
+      deleteMultiple({
+        setModalOpen,
+        setShowDeleteAll,
+        setModal,
+        selectedRows,
+        addOptimisticData,
+        isPending,
+        startTransition,
+      }),
+    [
+      setModalOpen,
+      setShowDeleteAll,
+      setModal,
+      selectedRows,
+      addOptimisticData,
+      isPending,
+      startTransition,
+    ]
+  );
 
   const tableHeader = table.getHeaderGroups().map((hgroup) => (
     <TableRow key={hgroup.id}>
       {hgroup.headers.map((header) => {
-        
         return (
-        <TableHead
-          key={header.id}
-          className={header.column.getCanSort() ? "cursor-pointer" : ""}
-        >
-          {header.column.getCanSort() ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2">
-                  <span className="text-main-800">
-                    {" "}
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </span>
-                  <TiArrowUnsorted style={{ fill: "var(--main-800)" }} />
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
-                <DropdownMenuItem
-                  onClick={() =>
-                    setSorting([
-                      { desc: false, id: `${header.column.columnDef.id}` },
-                    ])
-                  }
-                >
-                  <div className="flex items-center gap-2 justify-between">
-                    <span>Asc</span>
-                    <IoIosArrowRoundUp size={20} />
+          <TableHead
+            key={header.id}
+            className={header.column.getCanSort() ? "cursor-pointer" : ""}
+          >
+            {header.column.getCanSort() ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2">
+                    <span className="text-main-800">
+                      {" "}
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </span>
+                    <TiArrowUnsorted style={{ fill: "var(--main-800)" }} />
                   </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() =>
-                    setSorting([
-                      { desc: true, id: `${header.column.columnDef.id}` },
-                    ])
-                  }
-                >
-                  <div className="flex items-center gap-2 justify-between">
-                    <span>Desc</span>
-                    <IoIosArrowRoundDown size={20} />
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() =>
-                    setSorting([])
-                  }
-                >
-                  <div className="flex items-center gap-2 justify-between">
-                    <span>Reset</span>
-                    <IoIosArrowRoundUp size={20} />
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div>
-              <span className="text-main-800">
-                {" "}
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </span>
-            </div>
-          )}
-        </TableHead>
-      )})}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setSorting([
+                        { desc: false, id: `${header.column.columnDef.id}` },
+                      ])
+                    }
+                  >
+                    <div className="flex items-center gap-2 justify-between">
+                      <span>Asc</span>
+                      <IoIosArrowRoundUp size={20} />
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setSorting([
+                        { desc: true, id: `${header.column.columnDef.id}` },
+                      ])
+                    }
+                  >
+                    <div className="flex items-center gap-2 justify-between">
+                      <span>Desc</span>
+                      <IoIosArrowRoundDown size={20} />
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setSorting([])}>
+                    <div className="flex items-center gap-2 justify-between">
+                      <span>Reset</span>
+                      <IoIosArrowRoundUp size={20} />
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div>
+                <span className="text-main-800">
+                  {" "}
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </span>
+              </div>
+            )}
+          </TableHead>
+        );
+      })}
     </TableRow>
   ));
 
   const tableBody = table.getRowModel().rows?.length ? (
     table.getRowModel().rows.map((row) => (
-      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} >
+      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
         {row.getVisibleCells().map((cell) => (
           <TableCell key={cell.id}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -282,7 +262,11 @@ export default function CategoryList({
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button variant="destructive" onClick={deleteMultiple} size="sm">
+            <Button
+              variant="destructive"
+              onClick={deleteMultipleCallback}
+              size="sm"
+            >
               Delete Selected
             </Button>
           )}
@@ -306,45 +290,12 @@ export default function CategoryList({
             Add New
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <CiSliderHorizontal />
-                <span>View</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                {table.getAllColumns()?.length > 0
-                  ? table.getAllColumns().map((col) => (
-                      <DropdownMenuItem
-                        className="capitalize"
-                        key={col.id}
-                        onClick={() =>
-                          setColumnVisibility((prev) => ({
-                            ...prev,
-                            [col.id]: !prev[col.id],
-                          }))
-                        }
-                      >
-                        <div className="flex justify-center items-center gap-4">
-                          <span className="w-3">
-                            {columnVisibility[col.id] === true ? (
-                              <IoCheckmark />
-                            ) : (
-                              ""
-                            )}
-                          </span>
-                          <span>{col.id}</span>
-                        </div>
-                      </DropdownMenuItem>
-                    ))
-                  : ""}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+
+          <ToggleColumnView<Category>
+            columns={table.getAllColumns()}
+            setColumnVisibility={setColumnVisibility}
+            columnVisibility={columnVisibility}
+          />
         </div>
       </div>
 
