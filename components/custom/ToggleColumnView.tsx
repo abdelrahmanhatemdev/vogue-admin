@@ -71,4 +71,4 @@ function ToggleColumnView<Type>({
     </DropdownMenu>
   );
 };
-export default memo(ToggleColumnView);
+export default memo(ToggleColumnView) as typeof ToggleColumnView;

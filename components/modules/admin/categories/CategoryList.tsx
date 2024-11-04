@@ -290,7 +290,6 @@ export default function CategoryList({
             Add New
           </Button>
 
-
           <ToggleColumnView<Category>
             columns={table.getAllColumns()}
             setColumnVisibility={setColumnVisibility}
