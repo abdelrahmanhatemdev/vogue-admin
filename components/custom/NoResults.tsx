@@ -1,5 +1,9 @@
-export default function NoResults() {
+import { ReactNode } from "react";
+
+export default function NoResults({title}: {title?:string | ReactNode}) {
   return (
-    <div>No Results</div>
-  )
+    <div>
+      {title}
+    </div>
+  );
 }

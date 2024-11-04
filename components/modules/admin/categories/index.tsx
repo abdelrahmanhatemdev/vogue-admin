@@ -181,7 +181,7 @@ export default function Categories({ data }: { data: Category[] }) {
             />
           </motion.div>
         ) : (
-          <NoResults />
+          <NoResults title="Add some categories to show data!"/>
         )}
       </div>
       <Modal
