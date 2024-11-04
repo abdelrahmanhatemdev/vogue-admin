@@ -11,7 +11,6 @@ import {
   VisibilityState,
   useReactTable,
   ColumnFiltersState,
-  Column,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -30,30 +29,22 @@ import {
   memo,
 } from "react";
 import { Button } from "@/components/ui/button";
-import { deleteCategory } from "@/actions/Category";
-import { notify } from "@/lib/utils";
 import { ModalState } from "@/components/custom/Modal";
 import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
-
-import { DialogFooter } from "@/components/ui/dialog";
 import TablePagination from "@/components/custom/TablePagination";
 import AddCategory from "./AddCategory";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CiSliderHorizontal } from "react-icons/ci";
-import { IoCheckmark } from "react-icons/io5";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import deleteMultiple from "@/lib/deleteMultiples";
 import ToggleColumnView from "@/components/custom/ToggleColumnView";
-
+import { motion } from "framer-motion";
 interface CategoryListProps<TData> {
   data: TData[];
   columns: ColumnDef<Category>[];

@@ -1,7 +1,7 @@
 import { deleteCategory } from "@/actions/Category";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction, TransitionStartFunction, useTransition } from "react";
+import { Dispatch, SetStateAction, TransitionStartFunction } from "react";
 import { notify } from "./utils";
 import { ModalState } from "@/components/custom/Modal";
 

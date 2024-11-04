@@ -4,7 +4,6 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
 } from "../ui/pagination";
 
 import {
@@ -18,7 +17,6 @@ import {
   Select,
   SelectItem,
   SelectContent,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";

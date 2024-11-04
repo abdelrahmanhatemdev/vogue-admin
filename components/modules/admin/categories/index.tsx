@@ -12,7 +12,8 @@ import { TbEdit } from "react-icons/tb";
 import EditCategory from "./EditCategory";
 import { Trash2Icon } from "lucide-react";
 import DeleteCategory from "./DeleteCategory";
-import { motion } from "framer-motion";
+
+
 
 function Categories({ data }: { data: Category[] }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -136,37 +137,23 @@ function Categories({ data }: { data: Category[] }) {
         },
       },
     ],
-    [setModalOpen, setModal]
+    [setModalOpen, setModal, addOptimisticData]
   );
 
   return (
     <div className="flex flex-col gap-4">
-      <motion.div
-        initial={{ x: 1000, opacity: 0  }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.3 }}
-      >
+      
         <AdminBreadcrumb page="Categories" />
-      </motion.div>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
-        <motion.div
-          initial={{ x: 400, opacity: 0 }}
-          animate={{ x: 0, opacity: 1  }}
-          transition={{ delay: 0.5, duration: 0.1 }}
-        >
+        
           <div className="flex justify-between items-center">
             <Heading
               title="Categories"
               description="Here's a list of your categories!"
             />
           </div>
-        </motion.div>
         {data?.length ? (
-          <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
+          
             <CategoryList
               data={sortedOptimisicData}
               columns={columns}
@@ -174,7 +161,6 @@ function Categories({ data }: { data: Category[] }) {
               setModal={setModal}
               addOptimisticData={addOptimisticData}
             />
-          </motion.div>
         ) : (
           <NoResults title="Add some categories to show data!"/>
         )}
