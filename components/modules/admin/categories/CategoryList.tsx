@@ -44,7 +44,6 @@ import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import deleteMultiple from "@/lib/deleteMultiples";
 import ToggleColumnView from "@/components/custom/ToggleColumnView";
-import { motion } from "framer-motion";
 interface CategoryListProps<TData> {
   data: TData[];
   columns: ColumnDef<Category>[];

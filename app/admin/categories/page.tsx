@@ -1,4 +1,3 @@
-// "use cache"
 import CategoriesModule from "@/components/modules/admin/categories";
 import {getCategories} from "@/actions/Category"
 
