@@ -42,13 +42,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import deleteMultiple from "@/lib/deleteMultiples";
-const ToggleColumnView= dynamic(() => import("@/components/custom/ToggleColumnView"));
-const TablePagination= dynamic(() => import("@/components/custom/TablePagination"));
-const AddCategory= dynamic(() => import("./AddCategory"), {loading : ()=> <>Loading...</>});
 
-
-
-
+import Loading from "@/components/custom/Loading"
+const ToggleColumnView= dynamic(() => import("@/components/custom/ToggleColumnView"), {loading: Loading});
+const TablePagination= dynamic(() => import("@/components/custom/TablePagination"), {loading: Loading});
+const AddCategory= dynamic(() => import("./AddCategory"), {loading: Loading});
 
 interface CategoryListProps<TData> {
   data: TData[];

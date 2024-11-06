@@ -6,14 +6,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
-const Link = dynamic(() => import("next/link"));
-const Heading = dynamic(() => import("@/components/custom/Heading"));
-const AdminBreadcrumb = dynamic(() => import("@/components/custom/AdminBreadcrumb"));
-const NoResults = dynamic(() => import("@/components/custom/NoResults"));
-const Modal = dynamic(() => import("@/components/custom/Modal"));
-const EditCategory = dynamic(() => import("./EditCategory"));
-const DeleteCategory = dynamic(() => import("./DeleteCategory"));
-const CategoryList = dynamic(() => import("@/components/modules/admin/categories/CategoryList"));
+
+import Loading from "@/components/custom/Loading"
+
+const Link = dynamic(() => import("next/link"), {loading: Loading});
+const Heading = dynamic(() => import("@/components/custom/Heading"), {loading: Loading});
+const AdminBreadcrumb = dynamic(() => import("@/components/custom/AdminBreadcrumb"), {loading: Loading});
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {loading: Loading});
+const Modal = dynamic(() => import("@/components/custom/Modal"), {loading: Loading});
+const EditCategory = dynamic(() => import("./EditCategory"), {loading: Loading});
+const DeleteCategory = dynamic(() => import("./DeleteCategory"), {loading: Loading});
+const CategoryList = dynamic(() => import("@/components/modules/admin/categories/CategoryList"), {loading: Loading});
 
 function Categories({ data }: { data: Category[] }) {
   const [modalOpen, setModalOpen] = useState(false);
