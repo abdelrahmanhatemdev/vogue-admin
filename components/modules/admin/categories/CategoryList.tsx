@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import {
   ColumnDef,
   flexRender,
@@ -29,10 +30,8 @@ import {
   memo,
 } from "react";
 import { Button } from "@/components/ui/button";
-import { ModalState } from "@/components/custom/Modal";
+import type { ModalState } from "@/components/custom/Modal";
 import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
-import TablePagination from "@/components/custom/TablePagination";
-import AddCategory from "./AddCategory";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,7 +42,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import deleteMultiple from "@/lib/deleteMultiples";
-import ToggleColumnView from "@/components/custom/ToggleColumnView";
+const ToggleColumnView= dynamic(() => import("@/components/custom/ToggleColumnView"));
+const TablePagination= dynamic(() => import("@/components/custom/TablePagination"));
+const AddCategory= dynamic(() => import("./AddCategory"), {loading : ()=> <>Loading...</>});
+
+
+
+
+
 interface CategoryListProps<TData> {
   data: TData[];
   columns: ColumnDef<Category>[];

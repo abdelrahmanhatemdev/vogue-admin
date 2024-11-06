@@ -1,7 +1,6 @@
 "use server";
-// "use cache";
 import axios from "axios";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";

@@ -1,19 +1,19 @@
 "use client";
-import Heading from "@/components/custom/Heading";
+import dynamic from "next/dynamic";
 import { memo, useMemo, useOptimistic, useState } from "react";
-import NoResults from "@/components/custom/NoResults";
-import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
-import CategoryList from "@/components/modules/admin/categories/CategoryList";
-import Modal, { ModalState } from "@/components/custom/Modal";
+import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
 import { TbEdit } from "react-icons/tb";
-import EditCategory from "./EditCategory";
 import { Trash2Icon } from "lucide-react";
-import DeleteCategory from "./DeleteCategory";
-
-
+const Link = dynamic(() => import("next/link"));
+const Heading = dynamic(() => import("@/components/custom/Heading"));
+const AdminBreadcrumb = dynamic(() => import("@/components/custom/AdminBreadcrumb"));
+const NoResults = dynamic(() => import("@/components/custom/NoResults"));
+const Modal = dynamic(() => import("@/components/custom/Modal"));
+const EditCategory = dynamic(() => import("./EditCategory"));
+const DeleteCategory = dynamic(() => import("./DeleteCategory"));
+const CategoryList = dynamic(() => import("@/components/modules/admin/categories/CategoryList"));
 
 function Categories({ data }: { data: Category[] }) {
   const [modalOpen, setModalOpen] = useState(false);

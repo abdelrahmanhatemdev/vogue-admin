@@ -12,7 +12,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
+
+import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dispatch,
