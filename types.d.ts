@@ -10,3 +10,11 @@ interface Category {
   updatedAt: string;
   isPending?: boolean
 }
+
+interface Brand {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  isPending?: boolean
+}
