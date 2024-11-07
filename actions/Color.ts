@@ -11,12 +11,12 @@ export const getColors = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Size[] = [];
+    let data: Color[] = [];
 
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Size, b: Size) =>
+      const sortedData = data.sort((a: Color, b: Color) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -28,7 +28,7 @@ export const getColors = async () => {
   }
 }
 
-export async function getSizeById(id: string) {
+export async function getColorById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
       next: { tags: [tag] },
@@ -42,7 +42,7 @@ export async function getSizeById(id: string) {
   }
 }
 
-export async function addSize(data: Partial<Size>) {
+export async function addColor(data: Partial<Color>) {
   return axios
     .post(apiURL, data)
     .then((res) => {
@@ -60,7 +60,7 @@ export async function addSize(data: Partial<Size>) {
     });
 }
 
-export async function editSize(data: Partial<Size>) {
+export async function editColor(data: Partial<Color>) {
   return axios
     .put(apiURL, data)
     .then((res) => {
@@ -78,7 +78,7 @@ export async function editSize(data: Partial<Size>) {
     });
 }
 
-export async function deleteSize(data: { id: string }) {
+export async function deleteColor(data: { id: string }) {
   return axios
     .delete(apiURL, { data })
     .then((res) => {

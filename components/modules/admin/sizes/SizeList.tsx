@@ -163,7 +163,7 @@ function SizeList({
             <Input
               className="bg-background"
               type="text"
-              placeholder="Filter Categories..."
+              placeholder="Filter Sizes..."
               onChange={(e) =>
                 setColumnFilters([{ id: "name", value: e.target.value }])
               }

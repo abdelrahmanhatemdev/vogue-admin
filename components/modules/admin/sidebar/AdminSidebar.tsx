@@ -29,6 +29,7 @@ import {
 import { User } from "lucide-react";
 import { memo } from "react";
 import { CgSize } from "react-icons/cg";
+import { IoIosColorPalette } from "react-icons/io";
 
 export const SidebarLinks = [
   {
@@ -55,6 +56,11 @@ export const SidebarLinks = [
     title: "Sizes",
     link: "/admin/sizes",
     icon: CgSize,
+  },
+  {
+    title: "Colors",
+    link: "/admin/colors",
+    icon: IoIosColorPalette,
   },
 ];
 

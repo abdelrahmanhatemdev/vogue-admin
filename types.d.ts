@@ -29,6 +29,7 @@ interface Size {
 
 interface Color {
   id: string;
+  name: string;
   hex: string;
   createdAt: string;
   updatedAt: string;
