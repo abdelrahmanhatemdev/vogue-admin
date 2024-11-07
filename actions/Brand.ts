@@ -2,21 +2,21 @@
 import axios from "axios";
 import { revalidateTag } from "next/cache";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
-const tag: string = "categories";
+const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
+const tag: string = "brands";
 
-export const getCategories = async () => {
+export const getBrands = async () => {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Category[] = [];
+    let data: Brand[] = [];
 
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Category, b: Category) =>
+      const sortedData = data.sort((a: Brand, b: Brand) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -28,10 +28,10 @@ export const getCategories = async () => {
   }
 }
 
-export async function getCategoryById(id: string) {
+export async function getBrandById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
-      next: { tags: ["categories"] },
+      next: { tags: ["brands"] },
       cache: "force-cache",
     });
 
@@ -42,7 +42,7 @@ export async function getCategoryById(id: string) {
   }
 }
 
-export async function addCategory(data: Partial<Category>) {
+export async function addBrand(data: Partial<Brand>) {
   return axios
     .post(apiURL, data)
     .then((res) => {
@@ -60,7 +60,7 @@ export async function addCategory(data: Partial<Category>) {
     });
 }
 
-export async function editCategory(data: Partial<Category>) {
+export async function editBrand(data: Partial<Brand>) {
   return axios
     .put(apiURL, data)
     .then((res) => {
@@ -78,7 +78,7 @@ export async function editCategory(data: Partial<Category>) {
     });
 }
 
-export async function deleteCategory(data: { id: string }) {
+export async function deleteBrand(data: { id: string }) {
   return axios
     .delete(apiURL, { data })
     .then((res) => {

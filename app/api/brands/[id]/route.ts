@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getDoc, doc } from "firebase/firestore";
 import { collectoinName } from "../route";
 import { db } from "@/firebase.config";
-import { getCategories } from "@/actions/Category";
+import { getCategories } from "@/actions/Brand";
 
 export const dynamic = 'force-static'
 
@@ -26,7 +26,7 @@ export async function GET(req: Request, props: { params: Promise<{ id: string }>
 }
 
 export async function generateStaticParams() {
-  const list: Category[] = await getCategories();
+  const list: Brand[] = await getCategories();
 
   return list.map(({ id }: { id: string }) => ({id}));
 }
