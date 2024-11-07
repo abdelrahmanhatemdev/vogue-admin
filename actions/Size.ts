@@ -2,21 +2,21 @@
 import axios from "axios";
 import { revalidateTag } from "next/cache";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
-const tag: string = "brands";
+const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/sizes`;
+const tag: string = "sizes";
 
-export const getBrands = async () => {
+export const getSizes = async () => {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Brand[] = [];
+    let data: Size[] = [];
 
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Brand, b: Brand) =>
+      const sortedData = data.sort((a: Size, b: Size) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -28,7 +28,7 @@ export const getBrands = async () => {
   }
 }
 
-export async function getBrandById(id: string) {
+export async function getSizeById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
       next: { tags: [tag] },
@@ -42,7 +42,7 @@ export async function getBrandById(id: string) {
   }
 }
 
-export async function addBrand(data: Partial<Brand>) {
+export async function addSize(data: Partial<Size>) {
   return axios
     .post(apiURL, data)
     .then((res) => {
@@ -60,7 +60,7 @@ export async function addBrand(data: Partial<Brand>) {
     });
 }
 
-export async function editBrand(data: Partial<Brand>) {
+export async function editSize(data: Partial<Size>) {
   return axios
     .put(apiURL, data)
     .then((res) => {
@@ -78,7 +78,7 @@ export async function editBrand(data: Partial<Brand>) {
     });
 }
 
-export async function deleteBrand(data: { id: string }) {
+export async function deleteSize(data: { id: string }) {
   return axios
     .delete(apiURL, { data })
     .then((res) => {

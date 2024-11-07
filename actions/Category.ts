@@ -31,7 +31,7 @@ export const getCategories = async () => {
 export async function getCategoryById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
-      next: { tags: ["categories"] },
+      next: { tags: [tag] },
       cache: "force-cache",
     });
 
