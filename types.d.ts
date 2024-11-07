@@ -18,3 +18,11 @@ interface Brand {
   updatedAt: string;
   isPending?: boolean
 }
+
+interface Size {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  isPending?: boolean
+}
