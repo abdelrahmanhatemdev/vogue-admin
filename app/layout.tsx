@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+
+// import { Toaster } from "react-hot-toast";
 import { GeistSans } from "geist/font/sans";
+import dynamic from "next/dynamic";
+
+const Toaster = dynamic(() => import("react-hot-toast").then(module => module.Toaster))
 
 export const metadata: Metadata = {
   title: "Vogue Admin",

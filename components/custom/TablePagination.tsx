@@ -77,6 +77,7 @@ function TablePagination ({
                   pageSize: prev.pageSize,
                 }))
               }
+              aria-label = {`Paginaion Button ${index}`}
             >
               {displayIndex}
             </Button>
@@ -101,7 +102,7 @@ function TablePagination ({
             }))
           }
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label="Rows Per Page Select">
             <SelectValue>{pagination.pageSize}</SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -125,6 +126,7 @@ function TablePagination ({
               variant="outline"
               onClick={firstPage}
               disabled={!canPrevious}
+              aria-label = {`First Page`}
             >
               <TfiAngleDoubleLeft size={10} />
             </Button>
@@ -135,6 +137,7 @@ function TablePagination ({
               variant="outline"
               onClick={previousPage}
               disabled={!canPrevious}
+              aria-label = {`Previous Page`}
             >
               <TfiAngleLeft size={10} />
             </Button>
@@ -146,6 +149,7 @@ function TablePagination ({
               variant="outline"
               onClick={nextPage}
               disabled={!canNext}
+              aria-label = {`Next Page`}
             >
               <TfiAngleRight size={10} />
             </Button>
@@ -156,6 +160,7 @@ function TablePagination ({
               variant="outline"
               onClick={lastPage}
               disabled={!canNext}
+              aria-label = {`Last Page`}
             >
               <TfiAngleDoubleRight size={10} />
             </Button>

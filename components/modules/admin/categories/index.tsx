@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import { memo, useMemo, useOptimistic, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
@@ -7,8 +6,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 
+import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading"
-
 const Link = dynamic(() => import("next/link"), {loading: Loading});
 const Heading = dynamic(() => import("@/components/custom/Heading"), {loading: Loading});
 const AdminBreadcrumb = dynamic(() => import("@/components/custom/AdminBreadcrumb"), {loading: Loading});

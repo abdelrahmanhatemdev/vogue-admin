@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import {
   ColumnDef,
   flexRender,
@@ -43,6 +42,7 @@ import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import deleteMultiple from "@/lib/deleteMultiples";
 
+import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading"
 const ToggleColumnView= dynamic(() => import("@/components/custom/ToggleColumnView"), {loading: Loading});
 const TablePagination= dynamic(() => import("@/components/custom/TablePagination"), {loading: Loading});

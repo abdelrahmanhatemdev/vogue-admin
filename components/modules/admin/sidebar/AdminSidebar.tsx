@@ -62,8 +62,8 @@ function AdminSidebar ()  {
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={`${link.link}`}>
-                        <link.icon />
+                      <Link href={`${link.link}`} className="w-6 h-6">
+                        <link.icon/>
                         <span
                           className={isActive ? "font-bold" : "font-medium"}
                         >
@@ -81,7 +81,7 @@ function AdminSidebar ()  {
       <SidebarFooter>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Link href="/account">
+            <Link href="/admin/account" aria-label = {`Sidebar Account Dropdown`}  className="w-6 h-6">
               <User size={30} />
             </Link>
           </DropdownMenuTrigger>

@@ -1,11 +1,15 @@
-import Footer from "@/components/modules/admin/footer/Footer";
-import Header from "@/components/modules/admin/header/Header";
-import AdminSidebar from "@/components/modules/admin/sidebar/AdminSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
 import * as motion from "framer-motion/client";
-import ContentContainer from "@/components/custom/ContentContainer";
+
+
+import dynamic from "next/dynamic";
+import Loading from "@/components/custom/Loading"
+const Footer= dynamic(() => import("@/components/modules/admin/footer/Footer"), {loading: Loading});
+const Header=dynamic(() => import("@/components/modules/admin/header/Header"), {loading: Loading});
+const AdminSidebar= dynamic(() => import("@/components/modules/admin/sidebar/AdminSidebar"), {loading: Loading});
+const ContentContainer= dynamic(() => import("@/components/custom/ContentContainer"), {loading: Loading});
 
 export default async function layout({
   children,

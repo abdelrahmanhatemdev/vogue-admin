@@ -28,7 +28,7 @@ function ToggleColumnView<Type>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" aria-label = {`Toggle Columns`}>
           <CiSliderHorizontal />
           <span>View</span>
         </Button>

@@ -5,7 +5,7 @@ import { memo } from "react";
 function IconsGroup() {
   return (
     <>
-      <Link href="/account">
+      <Link href="/account" aria-label = {`Icons Group Account Dropdown`}>
         <User size={30}/>
       </Link>
     </>

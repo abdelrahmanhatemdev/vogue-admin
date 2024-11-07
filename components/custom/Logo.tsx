@@ -8,8 +8,8 @@ function Logo({ className }: Readonly<{ className?: string }>) {
       <Image
         src="/assets/images/logo.webp"
         alt="Vogue Logo"
-        height={100}
-        width={80}
+        height={96}
+        width={96}
         priority= {true}
       />
     </div>
