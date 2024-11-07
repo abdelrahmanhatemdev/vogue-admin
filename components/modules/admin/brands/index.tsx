@@ -84,7 +84,7 @@ function Brands({ data }: { data: Brand[] }) {
           const item: Brand = row.original;
           return (
             <Link
-              href={`/admin/Brands/${item.id}`}
+              href={`/admin/brands/${item.id}`}
               className={
                 "hover:bg-main-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")

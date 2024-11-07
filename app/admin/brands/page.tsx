@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
 const BrandsModule = dynamic(
-  () => import("@/components/modules/admin/Brands")
+  () => import("@/components/modules/admin/brands")
 );
 import { getBrands } from "@/actions/Brand";
 
