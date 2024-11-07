@@ -6,7 +6,6 @@ import { CiMenuBurger } from "react-icons/ci";
 import { useSidebar } from "@/components/ui/sidebar";
 import { memo } from "react";
 
-
 function Header() {
   const {toggleSidebar} = useSidebar()
 

@@ -54,7 +54,7 @@ function AdminSidebar ()  {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Vogue Admin</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-foreground">Vogue Admin</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {SidebarLinks.map((link) => {
@@ -62,7 +62,7 @@ function AdminSidebar ()  {
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={`${link.link}`} className="w-6 h-6">
+                      <Link href={`${link.link}`} className="w-6 h-6 text-foreground">
                         <link.icon/>
                         <span
                           className={isActive ? "font-bold" : "font-medium"}

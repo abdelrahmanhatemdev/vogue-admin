@@ -1,4 +1,4 @@
-// import { SidebarProvider } from "@/components/ui/sidebar";
+
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
 import * as motion from "framer-motion/client";
@@ -16,7 +16,7 @@ export default async function layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true" ;
 
   return (
     <>
