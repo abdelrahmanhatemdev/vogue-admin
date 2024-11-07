@@ -26,3 +26,11 @@ interface Size {
   updatedAt: string;
   isPending?: boolean
 }
+
+interface Color {
+  id: string;
+  hex: string;
+  createdAt: string;
+  updatedAt: string;
+  isPending?: boolean
+}
