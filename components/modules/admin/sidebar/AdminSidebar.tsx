@@ -28,6 +28,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { User } from "lucide-react";
 import { memo } from "react";
+import { CgSize } from "react-icons/cg";
 
 export const SidebarLinks = [
   {
@@ -49,6 +50,11 @@ export const SidebarLinks = [
     title: "Brands",
     link: "/admin/brands",
     icon: IoMdBusiness,
+  },
+  {
+    title: "Sizes",
+    link: "/admin/sizes",
+    icon: CgSize,
   },
 ];
 

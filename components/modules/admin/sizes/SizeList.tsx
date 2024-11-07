@@ -47,7 +47,7 @@ import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 
-const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
+const ToggleColumnView = dynamic<ToggleColumnViewProps<Size>>(
   () => import("@/components/custom/ToggleColumnView"),
   { loading: Loading }
 );
@@ -55,15 +55,15 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddCategory = dynamic(() => import("./AddCategory"), { loading: Loading });
+const AddSize = dynamic(() => import("./AddSize"), { loading: Loading });
 
-interface CategoryListProps<TData> {
+interface SizeListProps<TData> {
   data: TData[];
-  columns: ColumnDef<Category>[];
+  columns: ColumnDef<Size>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Size[] | ((pendingState: Size[]) => Size[])
   ) => void;
 }
 
@@ -71,13 +71,13 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-function CategoryList({
+function SizeList({
   data,
   columns,
   setModal,
   setModalOpen,
   addOptimisticData,
-}: CategoryListProps<Category>) {
+}: SizeListProps<Size>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -185,10 +185,10 @@ function CategoryList({
             onClick={() => {
               setModalOpen(true);
               setModal({
-                title: "Add Category",
-                description: "Add new Category here. Click Add when you'are done.",
+                title: "Add Size",
+                description: "Add new Size here. Click Add when you'are done.",
                 children: (
-                  <AddCategory
+                  <AddSize
                     setModalOpen={setModalOpen}
                     addOptimisticData={addOptimisticData}
                   />
@@ -348,10 +348,10 @@ function CategoryList({
           </div>
         </>
       ) : (
-        <NoResults title="Add some Categories to show data!" />
+        <NoResults title="Add some Sizes to show data!" />
       )}
     </div>
   );
 }
 
-export default memo(CategoryList);
+export default memo(SizeList);
