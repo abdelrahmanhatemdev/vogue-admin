@@ -1,10 +1,12 @@
 "use client";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/custom/Logo";
 import Link from "next/link";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
-import { usePathname } from "next/navigation";
+import { IoMdBusiness } from "react-icons/io";
+
 import {
   Sidebar,
   SidebarContent,
@@ -42,6 +44,11 @@ export const SidebarLinks = [
     title: "Categories",
     link: "/admin/categories",
     icon: BiSolidCategoryAlt,
+  },
+  {
+    title: "Brands",
+    link: "/admin/brands",
+    icon: IoMdBusiness,
   },
 ];
 

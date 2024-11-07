@@ -47,7 +47,7 @@ import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 
-const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
+const ToggleColumnView = dynamic<ToggleColumnViewProps<Brand>>(
   () => import("@/components/custom/ToggleColumnView"),
   { loading: Loading }
 );
@@ -55,15 +55,15 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddCategory = dynamic(() => import("./AddCategory"), { loading: Loading });
+const AddBrand = dynamic(() => import("./AddBrand"), { loading: Loading });
 
-interface CategoryListProps<TData> {
+interface BrandListProps<TData> {
   data: TData[];
-  columns: ColumnDef<Category>[];
+  columns: ColumnDef<Brand>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Brand[] | ((pendingState: Brand[]) => Brand[])
   ) => void;
 }
 
@@ -71,13 +71,13 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-function CategoryList({
+function BrandList({
   data,
   columns,
   setModal,
   setModalOpen,
   addOptimisticData,
-}: CategoryListProps<Category>) {
+}: BrandListProps<Brand>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -185,10 +185,10 @@ function CategoryList({
             onClick={() => {
               setModalOpen(true);
               setModal({
-                title: "Add Category",
-                description: "Add new Category here. Click Add when you'are done.",
+                title: "Add Brand",
+                description: "Add new Brand here. Click Add when you'are done.",
                 children: (
-                  <AddCategory
+                  <AddBrand
                     setModalOpen={setModalOpen}
                     addOptimisticData={addOptimisticData}
                   />
@@ -348,10 +348,10 @@ function CategoryList({
           </div>
         </>
       ) : (
-        <NoResults title="Add some Categorys to show data!" />
+        <NoResults title="Add some Brands to show data!" />
       )}
     </div>
   );
 }
 
-export default memo(CategoryList);
+export default memo(BrandList);
