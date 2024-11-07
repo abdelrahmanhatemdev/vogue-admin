@@ -1,4 +1,4 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+// import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
 import * as motion from "framer-motion/client";
@@ -10,6 +10,7 @@ const Footer= dynamic(() => import("@/components/modules/admin/footer/Footer"), 
 const Header=dynamic(() => import("@/components/modules/admin/header/Header"), {loading: Loading});
 const AdminSidebar= dynamic(() => import("@/components/modules/admin/sidebar/AdminSidebar"), {loading: Loading});
 const ContentContainer= dynamic(() => import("@/components/custom/ContentContainer"), {loading: Loading});
+const SidebarProvider= dynamic(() => import("@/components/ui/sidebar").then(module => module.SidebarProvider), {loading: Loading});
 
 export default async function layout({
   children,
