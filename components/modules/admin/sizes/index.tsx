@@ -19,10 +19,16 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditSize = dynamic(() => import("@/components/modules/admin/sizes/EditSize"), { loading: Loading });
-const DeleteSize = dynamic(() => import("@/components/modules/admin/sizes/DeleteSize"), {
-  loading: Loading,
-});
+const EditSize = dynamic(
+  () => import("@/components/modules/admin/sizes/EditSize"),
+  { loading: Loading }
+);
+const DeleteSize = dynamic(
+  () => import("@/components/modules/admin/sizes/DeleteSize"),
+  {
+    loading: Loading,
+  }
+);
 const SizeList = dynamic(
   () => import("@/components/modules/admin/sizes/SizeList"),
   { loading: Loading }
@@ -82,18 +88,7 @@ function Sizes({ data }: { data: Size[] }) {
         header: "Name",
         cell: ({ row }) => {
           const item: Size = row.original;
-          return (
-            <Link
-              href={`/admin/sizes/${item.id}`}
-              className={
-                "hover:bg-main-200 p-2 rounded-lg" +
-                (item.isPending ? " opacity-50" : "")
-              }
-              title="Go to Size page"
-            >
-              {item.name}
-            </Link>
-          );
+          return <span>{item.name}</span>;
         },
       },
       {

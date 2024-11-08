@@ -19,10 +19,16 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditColor = dynamic(() => import("@/components/modules/admin/colors/EditColor"), { loading: Loading });
-const DeleteColor = dynamic(() => import("@/components/modules/admin/colors/DeleteColor"), {
-  loading: Loading,
-});
+const EditColor = dynamic(
+  () => import("@/components/modules/admin/colors/EditColor"),
+  { loading: Loading }
+);
+const DeleteColor = dynamic(
+  () => import("@/components/modules/admin/colors/DeleteColor"),
+  {
+    loading: Loading,
+  }
+);
 const ColorList = dynamic(
   () => import("@/components/modules/admin/colors/ColorList"),
   { loading: Loading }
@@ -82,18 +88,7 @@ function Colors({ data }: { data: Color[] }) {
         header: "Name",
         cell: ({ row }) => {
           const item: Color = row.original;
-          return (
-            <Link
-              href={`/admin/colors/${item.id}`}
-              className={
-                "hover:bg-main-200 p-2 rounded-lg" +
-                (item.isPending ? " opacity-50" : "")
-              }
-              title="Go to Color page"
-            >
-              {item.name}
-            </Link>
-          );
+          return <span>{item.name}</span>;
         },
       },
       {
@@ -108,14 +103,17 @@ function Colors({ data }: { data: Color[] }) {
                 "p-2 rounded-lg flex gap-1 items-center" +
                 (item.isPending ? " opacity-50" : "")
               }
-            
             >
-              <div className={`h-4 w-4 rounded-sm block ring-ring ring-1`} style={{backgroundColor: item.hex}}></div>
+              <div
+                className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+                style={{ backgroundColor: item.hex }}
+              ></div>
               <span>{item.hex}</span>
             </div>
           );
         },
-        enableSorting: false
+        enableSorting: false,
+        
       },
       {
         id: "actions",

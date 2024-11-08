@@ -27,6 +27,7 @@ import {
   useTransition,
   useCallback,
   memo,
+  useMemo,
 } from "react";
 import { Button } from "@/components/ui/button";
 import type { ModalState } from "@/components/custom/Modal";
@@ -78,19 +79,20 @@ function ColorList({
   setModalOpen,
   addOptimisticData,
 }: ColorListProps<Color>) {
+  const visibleColumns = useMemo(() => {
+    return columns?.length > 0
+      ? Object.fromEntries([...columns.map((col) => [col.id, true])])
+      : {};
+  }, []);
+
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    select: true,
-    name: true,
-    hex: true,
-    actions: true,
-  });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
 
   const selectedRows = Object.keys(rowSelection);
 
@@ -204,7 +206,7 @@ function ColorList({
             <ToggleColumnView
               columns={table.getAllColumns()}
               setColumnVisibility={setColumnVisibility}
-              columnVisibility={columnVisibility}
+              columnVisibility= {columnVisibility}
             />
           )}
         </div>

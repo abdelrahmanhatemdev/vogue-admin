@@ -19,10 +19,16 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditBrand = dynamic(() => import("@/components/modules/admin/brands/EditBrand"), { loading: Loading });
-const DeleteBrand = dynamic(() => import("@/components/modules/admin/brands/DeleteBrand"), {
-  loading: Loading,
-});
+const EditBrand = dynamic(
+  () => import("@/components/modules/admin/brands/EditBrand"),
+  { loading: Loading }
+);
+const DeleteBrand = dynamic(
+  () => import("@/components/modules/admin/brands/DeleteBrand"),
+  {
+    loading: Loading,
+  }
+);
 const BrandList = dynamic(
   () => import("@/components/modules/admin/brands/BrandList"),
   { loading: Loading }
@@ -82,18 +88,7 @@ function Brands({ data }: { data: Brand[] }) {
         header: "Name",
         cell: ({ row }) => {
           const item: Brand = row.original;
-          return (
-            <Link
-              href={`/admin/brands/${item.id}`}
-              className={
-                "hover:bg-main-200 p-2 rounded-lg" +
-                (item.isPending ? " opacity-50" : "")
-              }
-              title="Go to Brand page"
-            >
-              {item.name}
-            </Link>
-          );
+          return <span>{item.name}</span>;
         },
       },
       {
