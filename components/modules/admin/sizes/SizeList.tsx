@@ -25,7 +25,6 @@ import {
   Dispatch,
   SetStateAction,
   useTransition,
-  useCallback,
   memo,
   useMemo,
 } from "react";
@@ -41,12 +40,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
-import deleteMultiple from "@/lib/deleteMultiples";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+import { DialogFooter } from "@/components/ui/dialog";
+import { notify } from "@/lib/utils";
+import { deleteSize } from "@/actions/Size";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Size>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -137,27 +138,53 @@ function SizeList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-  const deleteMultipleCallback = useCallback(
-    () =>
-      deleteMultiple({
-        setModalOpen,
-        setShowDeleteAll,
-        setModal,
-        selectedRows,
-        addOptimisticData,
-        isPending,
-        startTransition,
-      }),
-    [
-      setModalOpen,
-      setShowDeleteAll,
-      setModal,
-      selectedRows,
-      addOptimisticData,
-      isPending,
-      startTransition,
-    ]
-  );
+    function deleteMultiple() {
+      setModalOpen(true);
+      setModal({
+        title: `Delete Sizes`,
+        description: (
+          <p className="font-medium">
+            Are you sure to
+            {selectedRows.length === 1 ? (
+              " delete the size "
+            ) : (
+              <strong> delete all sizes </strong>
+            )}
+            permenantly ?
+          </p>
+        ),
+        children: (
+          <DialogFooter>
+            <Button
+              type="submit"
+              variant="destructive"
+              onClick={async () => {
+                setModalOpen(false);
+                setShowDeleteAll(false);
+                startTransition(() => {
+                  addOptimisticData((prev: Size[]) => [
+                    ...prev.map((item) => {
+                      if (selectedRows.includes(item.id)) {
+                        const pendingItem = { ...item, isPending: !isPending };
+                        return pendingItem;
+                      }
+                      return item;
+                    }),
+                  ]);
+                });
+                for (const row of selectedRows) {
+                  const data = { id: row };
+                  const res: ActionResponse = await deleteSize(data);
+                  notify(res);
+                }
+              }}
+            >
+              Delete All
+            </Button>
+          </DialogFooter>
+        ),
+      });
+    }
 
   return (
     <div className="flex flex-col gap-4">
@@ -178,7 +205,7 @@ function SizeList({
           {selectedRows.length > 0 && showDeleteAll && (
             <Button
               variant="destructive"
-              onClick={deleteMultipleCallback}
+              onClick={deleteMultiple}
               size="sm"
             >
               Delete Selected

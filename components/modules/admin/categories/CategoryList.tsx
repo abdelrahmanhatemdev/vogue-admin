@@ -25,7 +25,6 @@ import {
   Dispatch,
   SetStateAction,
   useTransition,
-  useCallback,
   memo,
   useMemo,
 } from "react";
@@ -41,12 +40,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
-import deleteMultiple from "@/lib/deleteMultiples";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+import { DialogFooter } from "@/components/ui/dialog";
+import { deleteCategory } from "@/actions/Category";
+import { notify } from "@/lib/utils";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -56,7 +57,9 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddCategory = dynamic(() => import("./AddCategory"), { loading: Loading });
+const AddCategory = dynamic(() => import("./AddCategory"), {
+  loading: Loading,
+});
 
 interface CategoryListProps<TData> {
   data: TData[];
@@ -91,7 +94,8 @@ function CategoryList({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>(visibleColumns);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const selectedRows = Object.keys(rowSelection);
@@ -136,27 +140,53 @@ function CategoryList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-  const deleteMultipleCallback = useCallback(
-    () =>
-      deleteMultiple({
-        setModalOpen,
-        setShowDeleteAll,
-        setModal,
-        selectedRows,
-        addOptimisticData,
-        isPending,
-        startTransition,
-      }),
-    [
-      setModalOpen,
-      setShowDeleteAll,
-      setModal,
-      selectedRows,
-      addOptimisticData,
-      isPending,
-      startTransition,
-    ]
-  );
+  function deleteMultiple() {
+    setModalOpen(true);
+    setModal({
+      title: `Delete Categories`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the category "
+          ) : (
+            <strong> delete all categories </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              setShowDeleteAll(false);
+              startTransition(() => {
+                addOptimisticData((prev: Category[]) => [
+                  ...prev.map((item) => {
+                    if (selectedRows.includes(item.id)) {
+                      const pendingItem = { ...item, isPending: !isPending };
+                      return pendingItem;
+                    }
+                    return item;
+                  }),
+                ]);
+              });
+              for (const row of selectedRows) {
+                const data = { id: row };
+                const res: ActionResponse = await deleteCategory(data);
+                notify(res);
+              }
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -175,11 +205,7 @@ function CategoryList({
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button
-              variant="destructive"
-              onClick={deleteMultipleCallback}
-              size="sm"
-            >
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
               Delete Selected
             </Button>
           )}
@@ -189,7 +215,8 @@ function CategoryList({
               setModalOpen(true);
               setModal({
                 title: "Add Category",
-                description: "Add new Category here. Click Add when you'are done.",
+                description:
+                  "Add new Category here. Click Add when you'are done.",
                 children: (
                   <AddCategory
                     setModalOpen={setModalOpen}

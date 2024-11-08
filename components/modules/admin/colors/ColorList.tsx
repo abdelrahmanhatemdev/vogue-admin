@@ -25,7 +25,6 @@ import {
   Dispatch,
   SetStateAction,
   useTransition,
-  useCallback,
   memo,
   useMemo,
 } from "react";
@@ -41,12 +40,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
-import deleteMultiple from "@/lib/deleteMultiples";
+
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+import { DialogFooter } from "@/components/ui/dialog";
+import { deleteColor } from "@/actions/Color";
+import { notify } from "@/lib/utils";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Color>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -136,27 +138,53 @@ function ColorList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-  const deleteMultipleCallback = useCallback(
-    () =>
-      deleteMultiple({
-        setModalOpen,
-        setShowDeleteAll,
-        setModal,
-        selectedRows,
-        addOptimisticData,
-        isPending,
-        startTransition,
-      }),
-    [
-      setModalOpen,
-      setShowDeleteAll,
-      setModal,
-      selectedRows,
-      addOptimisticData,
-      isPending,
-      startTransition,
-    ]
-  );
+    function deleteMultiple() {
+      setModalOpen(true);
+      setModal({
+        title: `Delete Colors`,
+        description: (
+          <p className="font-medium">
+            Are you sure to
+            {selectedRows.length === 1 ? (
+              " delete the color "
+            ) : (
+              <strong> delete all colors </strong>
+            )}
+            permenantly ?
+          </p>
+        ),
+        children: (
+          <DialogFooter>
+            <Button
+              type="submit"
+              variant="destructive"
+              onClick={async () => {
+                setModalOpen(false);
+                setShowDeleteAll(false);
+                startTransition(() => {
+                  addOptimisticData((prev: Color[]) => [
+                    ...prev.map((item) => {
+                      if (selectedRows.includes(item.id)) {
+                        const pendingItem = { ...item, isPending: !isPending };
+                        return pendingItem;
+                      }
+                      return item;
+                    }),
+                  ]);
+                });
+                for (const row of selectedRows) {
+                  const data = { id: row };
+                  const res: ActionResponse = await deleteColor(data);
+                  notify(res);
+                }
+              }}
+            >
+              Delete All
+            </Button>
+          </DialogFooter>
+        ),
+      });
+    }
 
   return (
     <div className="flex flex-col gap-4">
@@ -177,7 +205,7 @@ function ColorList({
           {selectedRows.length > 0 && showDeleteAll && (
             <Button
               variant="destructive"
-              onClick={deleteMultipleCallback}
+              onClick={deleteMultiple}
               size="sm"
             >
               Delete Selected
