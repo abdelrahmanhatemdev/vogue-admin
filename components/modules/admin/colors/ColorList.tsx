@@ -83,7 +83,7 @@ function ColorList({
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
       : {};
-  }, []);
+  }, [columns]);
 
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
