@@ -87,6 +87,7 @@ function ColorList({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     select: true,
     name: true,
+    hex: true,
     actions: true,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

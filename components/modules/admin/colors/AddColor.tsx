@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { Sketch } from "@uiw/react-color";
 import {
   Form,
   FormControl,
@@ -25,17 +26,12 @@ export const ColorSchema = z.object({
     .min(1, {
       message: "Name is required",
     })
-    .max(7, {
-      message: "Name should not have more than 20 charachters.",
+    .max(9, {
+      message: "Name should not have more than 9 charachters.",
     }),
-  hex: z
-    .string()
-    .min(1, {
-      message: "Hex Code is required",
-    })
-    .max(7, {
-      message: "Hex Code should not have more than 7 charachters.",
-    }),
+  hex: z.string().min(1, {
+    message: "Hex code is required",
+  }),
 });
 
 function AddColor({
@@ -50,6 +46,7 @@ function AddColor({
   const form = useForm<z.infer<typeof ColorSchema>>({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
+      name: "",
       hex: "",
     },
     mode: "onChange",
@@ -59,6 +56,7 @@ function AddColor({
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);
+
     const date = new Date().toISOString();
     const data = {
       ...values,
@@ -82,36 +80,44 @@ function AddColor({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-0"
+        className="flex flex-col gap-4"
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>New Color Code</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="hex"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Hex Code</FormLabel>
-              <FormControl>
-                <Input {...field} type="color" />
-              </FormControl>
-              <FormDescription>New Color Code</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col lg:flex-row gap-2 lg:justify-between">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription>New Color Name</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hex"
+            render={() => (
+              <FormItem>
+                <FormLabel>Hex Code</FormLabel>
+                <FormControl>
+                  <Sketch
+                    className="min-w-full"
+                    onChange={(e: { hex: string }) => {
+                      form.setValue("hex", e.hex);
+                      form.clearErrors("hex");
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>New Hex Color Code</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <DialogFooter>
           <Button type="submit">Add</Button>
         </DialogFooter>

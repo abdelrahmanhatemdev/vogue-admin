@@ -18,6 +18,7 @@ import { ColorSchema } from "./AddColor";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
+import { Sketch } from "@uiw/react-color";
 
 function EditColor({
   item,
@@ -46,7 +47,7 @@ function EditColor({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending ,
+      isPending: !isPending,
     };
 
     startTransition(async () => {
@@ -62,41 +63,53 @@ function EditColor({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>Update Color Name</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-         <FormField
-          control={form.control}
-          name="hex"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Hex Code</FormLabel>
-              <FormControl>
-                <Input {...field} type="color"/>
-              </FormControl>
-              <FormDescription>Update Color Code</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
+        <div className="flex flex-col lg:flex-row gap-2 lg:justify-between">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} defaultValue={item.name} />
+                </FormControl>
+                <FormDescription>New Color Name</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hex"
+            render={() => (
+              <FormItem>
+                <FormLabel>Hex Code</FormLabel>
+                <FormControl>
+                  <Sketch
+                    color={item.hex}
+                    className="min-w-full"
+                    onChange={(e: { hex: string }) => {
+                      form.setValue("hex", e.hex);
+                      form.clearErrors("hex");
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>New Hex Color Code</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <DialogFooter>
-          <Button type="submit">Update</Button>
+          <Button type="submit">Add</Button>
         </DialogFooter>
       </form>
     </Form>
   );
 }
 
-export default memo(EditColor)
+export default memo(EditColor);

@@ -105,16 +105,17 @@ function Colors({ data }: { data: Color[] }) {
           return (
             <div
               className={
-                "p-2 rounded-lg flex gap-2" +
+                "p-2 rounded-lg flex gap-1 items-center" +
                 (item.isPending ? " opacity-50" : "")
               }
             
             >
-              <div className={`h-4 w-4 bg-[${item.hex}] rounded-sm`}></div>
+              <div className={`h-4 w-4 rounded-sm block ring-ring ring-1`} style={{backgroundColor: item.hex}}></div>
               <span>{item.hex}</span>
             </div>
           );
         },
+        enableSorting: false
       },
       {
         id: "actions",
