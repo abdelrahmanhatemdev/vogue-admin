@@ -14,52 +14,39 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CategorySchema } from "./AddCategory";
+import { ProductSchema } from "./AddProduct";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { editCategory } from "@/actions/Category";
+import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
 
-function EditCategory({
+function EditProduct({
   item,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Category;
+  item: Product;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const form = useForm<z.infer<typeof CategorySchema>>({
-    resolver: zodResolver(CategorySchema),
+  const form = useForm<z.infer<typeof ProductSchema>>({
+    resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: item.name,
-      slug: item.slug,
     },
   });
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    const isValid = await isValidSlug({
-      slug: values.slug,
-      collection: "categories",
-      id: item.id,
-    });
-
-    if (!isValid) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
-
+  async function onSubmit(values: z.infer<typeof ProductSchema>) {
     setModalOpen(false);
     const data = {
       id: item.id,
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending,
+      isPending: !isPending ,
     };
 
     startTransition(async () => {
@@ -69,16 +56,13 @@ function EditCategory({
       ]);
     });
 
-    const res: ActionResponse = await editCategory(data);
+    const res: ActionResponse = await editProduct(data);
     notify(res);
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-0"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
         <FormField
           control={form.control}
           name="name"
@@ -86,9 +70,9 @@ function EditCategory({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} defaultValue={item.name}/>
               </FormControl>
-              <FormDescription>Update Category Name</FormDescription>
+              <FormDescription>Update Product Name</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -100,15 +84,13 @@ function EditCategory({
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <div className="relative">
-                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
-                  /
-                </span>
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">/</span>
 
                 <FormControl>
-                  <Input {...field} className="ps-4" />
+                  <Input {...field} className="ps-4" defaultValue={item.slug}/>
                 </FormControl>
               </div>
-              <FormDescription>Update Category slug</FormDescription>
+              <FormDescription>Update Product slug</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -121,4 +103,4 @@ function EditCategory({
   );
 }
 
-export default memo(EditCategory);
+export default memo(EditProduct)

@@ -16,11 +16,11 @@ import {
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { addCategory } from "@/actions/Category";
+import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
+import checkSlug from "@/lib/isValidSlug";
 
-export const CategorySchema = z.object({
+export const ProductSchema = z.object({
   name: z
     .string()
     .min(1, {
@@ -31,20 +31,23 @@ export const CategorySchema = z.object({
     }),
   slug: z.string().min(1, {
     message: "Slug is required",
-  }),
+  })
+  .refine(async val => await checkSlug(val, "products"), {
+    message: `Slug is already used!`
+  })
 });
 
-function AddCategory({
+function AddProduct({
   setModalOpen,
   addOptimisticData,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const form = useForm<z.infer<typeof CategorySchema>>({
-    resolver: zodResolver(CategorySchema),
+  const form = useForm<z.infer<typeof ProductSchema>>({
+    resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: "",
     },
@@ -53,35 +56,26 @@ function AddCategory({
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    const isValid = await isValidSlug({
-      slug: values.slug,
-      collection: "categories",
-    });
-
-    if (!isValid) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
+  async function onSubmit(values: z.infer<typeof ProductSchema>) {
 
     setModalOpen(false);
-    const date = new Date().toISOString();
-    const data = {
-      ...values,
-      createdAt: date,
-      updatedAt: date,
-    };
-    const optimisticObj: Category = {
-      ...data,
-      id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: !isPending,
-    };
+      const date = new Date().toISOString();
+      const data = {
+        ...values,
+        createdAt: date,
+        updatedAt: date,
+      };
+      const optimisticObj: Product = {
+        ...data,
+        id: `optimisticID-${data.name}-${data.updatedAt}`,
+        isPending: !isPending,
+      };
 
-    startTransition(() => {
-      addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
-    });
-    const res: ActionResponse = await addCategory(data);
-    notify(res);
+      startTransition(() => {
+        addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
+      });
+      const res: ActionResponse = await addProduct(data);
+      notify(res);
   }
 
   return (
@@ -91,7 +85,7 @@ function AddCategory({
         className="flex flex-col gap-4 lg:gap-0"
       >
         <FormField
-          // control={form.control}
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -99,13 +93,13 @@ function AddCategory({
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormDescription>New Category Name</FormDescription>
+              <FormDescription>New Product Name</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          // control={form.control}
+          control={form.control}
           name="slug"
           render={({ field }) => (
             <FormItem>
@@ -119,7 +113,7 @@ function AddCategory({
                   <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
-              <FormDescription>New Category slug</FormDescription>
+              <FormDescription>New Product slug</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -132,4 +126,4 @@ function AddCategory({
   );
 }
 
-export default memo(AddCategory);
+export default memo(AddProduct);

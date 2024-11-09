@@ -22,10 +22,10 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditCategory = dynamic(() => import("./EditCategory"), {
+const EditCategory = dynamic(() => import("./EditProduct"), {
   loading: Loading,
 });
-const DeleteCategory = dynamic(() => import("./DeleteCategory"), {
+const DeleteCategory = dynamic(() => import("./DeleteProduct"), {
   loading: Loading,
 });
 const CategoryList = dynamic(

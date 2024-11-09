@@ -95,3 +95,5 @@ export async function deleteCategory(data: { id: string }) {
       return { status: "error", message };
     });
 }
+
+
