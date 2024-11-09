@@ -13,14 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import z from "zod"
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Dispatch,
-  memo,
-  SetStateAction,
-  useTransition,
-} from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
@@ -33,6 +28,9 @@ export const CategorySchema = z.object({
     .max(20, {
       message: "Name should not have more than 20 charachters.",
     }),
+  slug: z.string().min(1, {
+    message: "Slug is required",
+  }),
 });
 
 function AddCategory({
@@ -77,7 +75,10 @@ function AddCategory({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-0"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -92,12 +93,30 @@ function AddCategory({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <div className="relative">
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">/</span>
+
+                <FormControl>
+                  <Input {...field} className="ps-4"/>
+                </FormControl>
+              </div>
+              <FormDescription>New Category slug</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <DialogFooter>
           <Button type="submit">Add</Button>
         </DialogFooter>
       </form>
     </Form>
   );
-};
+}
 
 export default memo(AddCategory);

@@ -70,7 +70,7 @@ function EditCategory({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} defaultValue={item.name}/>
               </FormControl>
               <FormDescription>Update Category Name</FormDescription>
               <FormMessage />

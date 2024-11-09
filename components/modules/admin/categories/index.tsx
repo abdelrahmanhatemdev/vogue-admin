@@ -7,15 +7,31 @@ import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading"
-const Link = dynamic(() => import("next/link"), {loading: Loading});
-const Heading = dynamic(() => import("@/components/custom/Heading"), {loading: Loading});
-const AdminBreadcrumb = dynamic(() => import("@/components/custom/AdminBreadcrumb"), {loading: Loading});
-const NoResults = dynamic(() => import("@/components/custom/NoResults"), {loading: Loading});
-const Modal = dynamic(() => import("@/components/custom/Modal"), {loading: Loading});
-const EditCategory = dynamic(() => import("./EditCategory"), {loading: Loading});
-const DeleteCategory = dynamic(() => import("./DeleteCategory"), {loading: Loading});
-const CategoryList = dynamic(() => import("@/components/modules/admin/categories/CategoryList"), {loading: Loading});
+import Loading from "@/components/custom/Loading";
+const Link = dynamic(() => import("next/link"), { loading: Loading });
+const Heading = dynamic(() => import("@/components/custom/Heading"), {
+  loading: Loading,
+});
+const AdminBreadcrumb = dynamic(
+  () => import("@/components/custom/AdminBreadcrumb"),
+  { loading: Loading }
+);
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
+const Modal = dynamic(() => import("@/components/custom/Modal"), {
+  loading: Loading,
+});
+const EditCategory = dynamic(() => import("./EditCategory"), {
+  loading: Loading,
+});
+const DeleteCategory = dynamic(() => import("./DeleteCategory"), {
+  loading: Loading,
+});
+const CategoryList = dynamic(
+  () => import("@/components/modules/admin/categories/CategoryList"),
+  { loading: Loading }
+);
 
 function Categories({ data }: { data: Category[] }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -73,7 +89,7 @@ function Categories({ data }: { data: Category[] }) {
           const item: Category = row.original;
           return (
             <Link
-              href={`/admin/categories/${item.id}`}
+              href={`/admin/categories/${item.slug}`}
               className={
                 "hover:bg-main-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
@@ -84,6 +100,16 @@ function Categories({ data }: { data: Category[] }) {
             </Link>
           );
         },
+      },
+      {
+        id: "slug",
+        accessorKey: "slug",
+        header: "Slug",
+        cell: ({ row }) => {
+          const item: Category = row.original;
+          return <span>{item.slug ? "/" + item.slug : ""}</span>;
+        },
+        enableSorting: false,
       },
       {
         id: "actions",
@@ -144,27 +170,24 @@ function Categories({ data }: { data: Category[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      
-        <AdminBreadcrumb page="Categories" />
+      <AdminBreadcrumb page="Categories" />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
-        
-          <div className="flex justify-between items-center">
-            <Heading
-              title="Categories"
-              description="Here's a list of your categories!"
-            />
-          </div>
+        <div className="flex justify-between items-center">
+          <Heading
+            title="Categories"
+            description="Here's a list of your categories!"
+          />
+        </div>
         {data?.length ? (
-          
-            <CategoryList
-              data={sortedOptimisicData}
-              columns={columns}
-              setModalOpen={setModalOpen}
-              setModal={setModal}
-              addOptimisticData={addOptimisticData}
-            />
+          <CategoryList
+            data={sortedOptimisicData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+            addOptimisticData={addOptimisticData}
+          />
         ) : (
-          <NoResults title="Add some categories to show data!"/>
+          <NoResults title="Add some categories to show data!" />
         )}
       </div>
       <Modal
@@ -179,4 +202,4 @@ function Categories({ data }: { data: Category[] }) {
   );
 }
 
-export default memo(Categories)
+export default memo(Categories);

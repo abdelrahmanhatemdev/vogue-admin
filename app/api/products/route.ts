@@ -9,16 +9,16 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase.config";
 
-export const collectoinName = "categories";
+export const collectoinName = "products";
 export const dataCollection = collection(db, collectoinName);
 
-export const dynamic = 'force-static'
+export const dynamic = "force-static";
 
 export async function GET() {
   try {
     const querySnapshot = await getDocs(dataCollection);
 
-    const data: Category[] = [];
+    const data: Product[] = [];
 
     querySnapshot.forEach((doc) => {
       if (doc?.id) {
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   try {
     const docRef = await addDoc(dataCollection, data);
     if (docRef?.id) {
-      return NextResponse.json({ message: "Category Added" }, { status: 200 });
+      return NextResponse.json({ message: "Product Added" }, { status: 200 });
     }
 
     return new Error("Something Wrong");
@@ -63,10 +63,7 @@ export async function PUT(request: Request) {
         slug,
         updatedAt: date,
       });
-      return NextResponse.json(
-        { message: "Category Updated" },
-        { status: 200 }
-      );
+      return NextResponse.json({ message: "Product Updated" }, { status: 200 });
     }
 
     return new Error("Something Wrong");
@@ -84,10 +81,7 @@ export async function DELETE(request: Request) {
 
     if (docRef?.id) {
       await deleteDoc(docRef);
-      return NextResponse.json(
-        { message: "Category Deleted" },
-        { status: 200 }
-      );
+      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
 
     return new Error("Something Wrong");

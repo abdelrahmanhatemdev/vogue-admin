@@ -1,4 +1,4 @@
-import { getCategoryById } from "@/actions/Category";
+import { getCategoryBySlug } from "@/actions/Category";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
@@ -8,12 +8,12 @@ const Category = dynamic(
 );
 
 export default async function CatergoryPage(props: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
   const params = await props.params;
 
-  const { id } = params;
+  const { slug } = params;
 
-  const data: Category = await getCategoryById(id);
+  const data: Category = await getCategoryBySlug(slug);
   return <Category data={data} />;
 }

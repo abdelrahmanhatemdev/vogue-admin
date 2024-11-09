@@ -34,6 +34,7 @@ function EditColor({
   const form = useForm<z.infer<typeof ColorSchema>>({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
+      name: item.name,
       hex: item.hex,
     },
   });
