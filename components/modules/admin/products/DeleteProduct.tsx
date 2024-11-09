@@ -2,18 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { deleteCategory } from "@/actions/Category";
+import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 
-function DeleteCategory({
+function DeleteProduct({
   item,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Category;
+  item: Product;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
   const data = { id: item.id };
@@ -23,7 +23,7 @@ function DeleteCategory({
   async function onSubmit() {
     setModalOpen(false);
     startTransition(() => {
-      addOptimisticData((prev: Category[]) => [
+      addOptimisticData((prev: Product[]) => [
         ...prev.map((item) => {
           if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
@@ -34,7 +34,7 @@ function DeleteCategory({
       ]);
     });
 
-    const res: ActionResponse = await deleteCategory(data);
+    const res: ActionResponse = await deleteProduct(data);
     notify(res);
   }
 
@@ -47,4 +47,4 @@ function DeleteCategory({
   );
 };
 
-export default memo(DeleteCategory);
+export default memo(DeleteProduct);

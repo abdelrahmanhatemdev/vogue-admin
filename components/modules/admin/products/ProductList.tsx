@@ -46,10 +46,10 @@ import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteCategory } from "@/actions/Category";
+import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 
-const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
+const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
   () => import("@/components/custom/ToggleColumnView"),
   { loading: Loading }
 );
@@ -57,17 +57,17 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddCategory = dynamic(() => import("./AddProduct"), {
+const AddProduct = dynamic(() => import("./AddProduct"), {
   loading: Loading,
 });
 
-interface CategoryListProps<TData> {
+interface ProductListProps<TData> {
   data: TData[];
-  columns: ColumnDef<Category>[];
+  columns: ColumnDef<Product>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
   addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
+    action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }
 
@@ -75,13 +75,13 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-function CategoryList({
+function ProductList({
   data,
   columns,
   setModal,
   setModalOpen,
   addOptimisticData,
-}: CategoryListProps<Category>) {
+}: ProductListProps<Product>) {
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -143,14 +143,14 @@ function CategoryList({
   function deleteMultiple() {
     setModalOpen(true);
     setModal({
-      title: `Delete Categories`,
+      title: `Delete Products`,
       description: (
         <p className="font-medium">
           Are you sure to
           {selectedRows.length === 1 ? (
-            " delete the category "
+            " delete the Product "
           ) : (
-            <strong> delete all categories </strong>
+            <strong> delete all products </strong>
           )}
           permenantly ?
         </p>
@@ -164,7 +164,7 @@ function CategoryList({
               setModalOpen(false);
               setShowDeleteAll(false);
               startTransition(() => {
-                addOptimisticData((prev: Category[]) => [
+                addOptimisticData((prev: Product[]) => [
                   ...prev.map((item) => {
                     if (selectedRows.includes(item.id)) {
                       const pendingItem = { ...item, isPending: !isPending };
@@ -176,7 +176,7 @@ function CategoryList({
               });
               for (const row of selectedRows) {
                 const data = { id: row };
-                const res: ActionResponse = await deleteCategory(data);
+                const res: ActionResponse = await deleteProduct(data);
                 notify(res);
               }
             }}
@@ -196,7 +196,7 @@ function CategoryList({
             <Input
               className="bg-background"
               type="text"
-              placeholder="Filter Categories..."
+              placeholder="Filter Products..."
               onChange={(e) =>
                 setColumnFilters([{ id: "name", value: e.target.value }])
               }
@@ -214,11 +214,11 @@ function CategoryList({
             onClick={() => {
               setModalOpen(true);
               setModal({
-                title: "Add Category",
+                title: "Add Product",
                 description:
-                  "Add new Category here. Click Add when you'are done.",
+                  "Add new product here. Click Add when you'are done.",
                 children: (
-                  <AddCategory
+                  <AddProduct
                     setModalOpen={setModalOpen}
                     addOptimisticData={addOptimisticData}
                   />
@@ -378,10 +378,10 @@ function CategoryList({
           </div>
         </>
       ) : (
-        <NoResults title="Add some Categories to show data!" />
+        <NoResults title="Add some products to show data!" />
       )}
     </div>
   );
 }
 
-export default memo(CategoryList);
+export default memo(ProductList);

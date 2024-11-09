@@ -1,4 +1,4 @@
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
+const apiURL = process.env.NEXT_PUBLIC_APP_API;
 const isValidSlug = async ({
   slug,
   collection,
@@ -9,7 +9,7 @@ const isValidSlug = async ({
   id?: string;
 }) => {
   try {
-    const res = await fetch(apiURL, {
+    const res = await fetch(`${apiURL}/${collection}`, {
       next: { tags: [collection] },
       cache: "force-cache",
     });

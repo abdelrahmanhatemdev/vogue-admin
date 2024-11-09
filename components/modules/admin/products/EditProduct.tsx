@@ -18,6 +18,7 @@ import { ProductSchema } from "./AddProduct";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
+import isValidSlug from "@/lib/isValidSlug";
 
 function EditProduct({
   item,
@@ -34,19 +35,31 @@ function EditProduct({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: item.name,
+      slug: item.slug,
     },
   });
 
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
+    const isValid = await isValidSlug({
+      slug: values.slug,
+      collection: "products",
+      id: item.id,
+    });
+
+    if (!isValid) {
+      form.setError("slug", { message: "Slug is already used!" });
+      return;
+    }
+
     setModalOpen(false);
     const data = {
       id: item.id,
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending ,
+      isPending: !isPending,
     };
 
     startTransition(async () => {
@@ -62,7 +75,10 @@ function EditProduct({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-0"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -70,7 +86,7 @@ function EditProduct({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} defaultValue={item.name}/>
+                <Input {...field} />
               </FormControl>
               <FormDescription>Update Product Name</FormDescription>
               <FormMessage />
@@ -84,10 +100,12 @@ function EditProduct({
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <div className="relative">
-                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">/</span>
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
+                  /
+                </span>
 
                 <FormControl>
-                  <Input {...field} className="ps-4" defaultValue={item.slug}/>
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>Update Product slug</FormDescription>
@@ -103,4 +121,4 @@ function EditProduct({
   );
 }
 
-export default memo(EditProduct)
+export default memo(EditProduct);

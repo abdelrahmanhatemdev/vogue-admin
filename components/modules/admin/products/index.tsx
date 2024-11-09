@@ -22,18 +22,18 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditCategory = dynamic(() => import("./EditProduct"), {
+const EditProduct = dynamic(() => import("./EditProduct"), {
   loading: Loading,
 });
-const DeleteCategory = dynamic(() => import("./DeleteProduct"), {
+const DeleteProduct = dynamic(() => import("./DeleteProduct"), {
   loading: Loading,
 });
-const CategoryList = dynamic(
-  () => import("@/components/modules/admin/categories/CategoryList"),
+const ProductList = dynamic(
+  () => import("@/components/modules/admin/products/ProductList"),
   { loading: Loading }
 );
 
-function Categories({ data }: { data: Category[] }) {
+function Products({ data }: { data: Product[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -45,13 +45,13 @@ function Categories({ data }: { data: Category[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Category, b: Category) =>
+      ? optimisicData.sort((a: Product, b: Product) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
   }, [optimisicData]);
 
-  const columns: ColumnDef<Category>[] = useMemo(
+  const columns: ColumnDef<Product>[] = useMemo(
     () => [
       {
         id: "select",
@@ -86,15 +86,15 @@ function Categories({ data }: { data: Category[] }) {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
-          const item: Category = row.original;
+          const item: Product = row.original;
           return (
             <Link
-              href={`/admin/categories/${item.slug}`}
+              href={`/admin/products/${item.slug}`}
               className={
                 "hover:bg-main-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
-              title="Go to Category page"
+              title="Go to Product page"
             >
               {item.name}
             </Link>
@@ -106,7 +106,7 @@ function Categories({ data }: { data: Category[] }) {
         accessorKey: "slug",
         header: "Slug",
         cell: ({ row }) => {
-          const item: Category = row.original;
+          const item: Product = row.original;
           return (
             <span
               className={
@@ -123,7 +123,7 @@ function Categories({ data }: { data: Category[] }) {
       {
         id: "actions",
         cell: ({ row }) => {
-          const item: Category = row.original;
+          const item: Product = row.original;
 
           return (
             <div className="flex items-center gap-2 justify-end">
@@ -133,11 +133,11 @@ function Categories({ data }: { data: Category[] }) {
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
-                    title: `Edit Category`,
+                    title: `Edit Product`,
                     description:
-                      "Update Category here. Click Update when you'are done.",
+                      "Update Product here. Click Update when you'are done.",
                     children: (
-                      <EditCategory
+                      <EditProduct
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
@@ -153,14 +153,14 @@ function Categories({ data }: { data: Category[] }) {
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
-                    title: `Delete Category`,
+                    title: `Delete Product`,
                     description: (
                       <p className="font-medium">
-                        Are you sure To delete the category permenantly ?
+                        Are you sure To delete the Product permenantly ?
                       </p>
                     ),
                     children: (
-                      <DeleteCategory
+                      <DeleteProduct
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
@@ -179,16 +179,16 @@ function Categories({ data }: { data: Category[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page="Categories" />
+      <AdminBreadcrumb page="Products" />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
-            title="Categories"
-            description="Here's a list of your categories!"
+            title="Products"
+            description="Here's a list of your Products!"
           />
         </div>
         {data?.length ? (
-          <CategoryList
+          <ProductList
             data={sortedOptimisicData}
             columns={columns}
             setModalOpen={setModalOpen}
@@ -196,7 +196,7 @@ function Categories({ data }: { data: Category[] }) {
             addOptimisticData={addOptimisticData}
           />
         ) : (
-          <NoResults title="Add some categories to show data!" />
+          <NoResults title="Add some Products to show data!" />
         )}
       </div>
       <Modal
@@ -211,4 +211,4 @@ function Categories({ data }: { data: Category[] }) {
   );
 }
 
-export default memo(Categories);
+export default memo(Products);

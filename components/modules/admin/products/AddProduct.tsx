@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import checkSlug from "@/lib/isValidSlug";
+import isValidSlug from "@/lib/isValidSlug";
 
 export const ProductSchema = z.object({
   name: z
@@ -31,10 +31,7 @@ export const ProductSchema = z.object({
     }),
   slug: z.string().min(1, {
     message: "Slug is required",
-  })
-  .refine(async val => await checkSlug(val, "products"), {
-    message: `Slug is already used!`
-  })
+  }),
 });
 
 function AddProduct({
@@ -57,25 +54,34 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
+    const isValid = await isValidSlug({
+      slug: values.slug,
+      collection: "products",
+    });
+
+    if (!isValid) {
+      form.setError("slug", { message: "Slug is already used!" });
+      return;
+    }
 
     setModalOpen(false);
-      const date = new Date().toISOString();
-      const data = {
-        ...values,
-        createdAt: date,
-        updatedAt: date,
-      };
-      const optimisticObj: Product = {
-        ...data,
-        id: `optimisticID-${data.name}-${data.updatedAt}`,
-        isPending: !isPending,
-      };
+    const date = new Date().toISOString();
+    const data = {
+      ...values,
+      createdAt: date,
+      updatedAt: date,
+    };
+    const optimisticObj: Product = {
+      ...data,
+      id: `optimisticID-${data.name}-${data.updatedAt}`,
+      isPending: !isPending,
+    };
 
-      startTransition(() => {
-        addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
-      });
-      const res: ActionResponse = await addProduct(data);
-      notify(res);
+    startTransition(() => {
+      addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
+    });
+    const res: ActionResponse = await addProduct(data);
+    notify(res);
   }
 
   return (
@@ -85,7 +91,7 @@ function AddProduct({
         className="flex flex-col gap-4 lg:gap-0"
       >
         <FormField
-          control={form.control}
+          // control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -99,7 +105,7 @@ function AddProduct({
           )}
         />
         <FormField
-          control={form.control}
+          // control={form.control}
           name="slug"
           render={({ field }) => (
             <FormItem>
