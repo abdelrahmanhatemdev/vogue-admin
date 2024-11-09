@@ -77,6 +77,24 @@ function EditCategory({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <div className="relative">
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">/</span>
+
+                <FormControl>
+                  <Input {...field} className="ps-4" defaultValue={item.slug}/>
+                </FormControl>
+              </div>
+              <FormDescription>Update Category slug</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <DialogFooter>
           <Button type="submit">Update</Button>
         </DialogFooter>
