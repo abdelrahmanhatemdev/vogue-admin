@@ -28,13 +28,13 @@ interface Size {
   createdAt: string;
   updatedAt: string;
   isPending?: boolean;
-  guide: SizeGuide
+  guide: SizeGuide;
 }
 
-interface SizeGuide{
+interface SizeGuide {
   id: string;
   inches: string;
-  cm: string
+  cm: string;
 }
 
 interface Color {
@@ -51,7 +51,7 @@ interface Product {
   name: string;
   slug: string;
   // categories: Category[];
-  // description: Paragraph[] 
+  // description: Paragraph[]
   // brand: Brand;
   // subProducts: SupProduct[];
   // reviews: Review[];
@@ -60,12 +60,12 @@ interface Product {
   // tags: Tag[];
   createdAt: string;
   updatedAt: string;
-  isPending: !isPending,
+  isPending: !isPending;
 }
 
-interface Paragraph{
-  id: string
-  content: string
+interface Paragraph {
+  id: string;
+  content: string;
 }
 
 interface SupProduct {
@@ -73,10 +73,10 @@ interface SupProduct {
   images: ProductImage[];
   sizes: Size;
   colors: Color;
-  price: number
-  discount: number
-  qty: number
-  sold: number
+  price: number;
+  discount: number;
+  qty: number;
+  sold: number;
 }
 
 interface ProductImage {

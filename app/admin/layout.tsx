@@ -6,6 +6,9 @@ import * as motion from "framer-motion/client";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading"
+import Link from "next/link";
+import { auth } from "@/firebase.config";
+import Logout from "@/components/modules/admin/auth/Logout";
 const Footer= dynamic(() => import("@/components/modules/admin/footer/Footer"), {loading: Loading});
 const Header=dynamic(() => import("@/components/modules/admin/header/Header"), {loading: Loading});
 const AdminSidebar= dynamic(() => import("@/components/modules/admin/sidebar/AdminSidebar"), {loading: Loading});
@@ -41,6 +44,12 @@ export default async function layout({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
+                <div className="px-8">
+                  <Link href="/login">
+                    Login
+                  </Link>
+                  <Logout/>
+                </div>
                 <Header />
                 <ContentContainer>
                     {children}

@@ -3,8 +3,11 @@ import "./globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import dynamic from "next/dynamic";
+import Providers from "@/providers";
 
-const Toaster = dynamic(() => import("react-hot-toast").then(module => module.Toaster))
+const Toaster = dynamic(() =>
+  import("react-hot-toast").then((module) => module.Toaster)
+);
 
 export const metadata: Metadata = {
   title: "Vogue Admin",
@@ -17,13 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${GeistSans.className} antialiased`}
-      >
-        {children}
-        <Toaster/>
-      </body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body className={`${GeistSans.className} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </Providers>
   );
 }
