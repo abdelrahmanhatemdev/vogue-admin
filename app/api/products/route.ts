@@ -7,7 +7,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "@/firebase.config";
+import { db } from "@/firebase/firebase.config";
 
 export const collectoinName = "products";
 export const dataCollection = collection(db, collectoinName);

@@ -7,7 +7,7 @@ import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading"
 import Link from "next/link";
-import { auth } from "@/firebase.config";
+import { auth } from "@/firebase/firebase.config";
 import Logout from "@/components/modules/admin/auth/Logout";
 const Footer= dynamic(() => import("@/components/modules/admin/footer/Footer"), {loading: Loading});
 const Header=dynamic(() => import("@/components/modules/admin/header/Header"), {loading: Loading});

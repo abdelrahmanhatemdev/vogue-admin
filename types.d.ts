@@ -50,13 +50,13 @@ interface Product {
   id: string;
   name: string;
   slug: string;
-  // categories: Category[];
-  // description: Paragraph[]
-  // brand: Brand;
-  // subProducts: SupProduct[];
-  // reviews: Review[];
   // featured: boolean;
   // inStock: boolean;
+  // brand: Brand;
+  // description: Paragraph[]
+  // categories: Category[];
+  // subProducts: SupProduct[];
+  // reviews: Review[];
   // tags: Tag[];
   createdAt: string;
   updatedAt: string;

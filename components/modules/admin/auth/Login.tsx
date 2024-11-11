@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/firebase.config";
+import { auth } from "@/firebase/firebase.config";
 import useAuth from "@/hooks/useAuth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ChangeEvent, FormEvent, useState } from "react";

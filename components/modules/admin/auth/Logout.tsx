@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/firebase.config";
+import { auth } from "@/firebase/firebase.config";
 
 const Logout = () => {
   return (
