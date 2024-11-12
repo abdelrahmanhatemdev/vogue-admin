@@ -12,12 +12,10 @@ export async function POST(req: Request, res: Response) {
       password
     );
 
-
     return NextResponse.json(
       { message: "Sign up successfully", user: userCredential.user },
       { status: 200 }
     );
-
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
