@@ -25,12 +25,19 @@ const Signup: React.FC = () => {
     setLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/'); // Redirect to a welcome page or dashboard after signup
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log('User registered successfully!');
+      } else {
+        console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
