@@ -20,23 +20,21 @@ const Login = () => {
   async function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    if (userCredential?.user) {
-      const idToken = await auth.currentUser?.getIdToken();
-      
-      console.log("auth.currentUser", idToken);
-      
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log('User registered successfully!');
+      } else {
+        console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-
-
-
-    // const res: ActionResponse = await login(data)
-    // notify(res);
 
   }
 
