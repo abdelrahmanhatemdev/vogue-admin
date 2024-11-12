@@ -1,9 +1,9 @@
 import admin, { ServiceAccount } from "firebase-admin";
 
 const serviceaccount: ServiceAccount = {
-  projectId: process.env.NEXT_PUBLIC_APP_FIRBASE_ADMIN_TYPE,
-  privateKey: process.env.NEXT_PUBLIC_APP_FIRBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+  projectId: process.env.NEXT_PUBLIC_APP_FIRBASE_ADMIN_PROJECT_ID,
   clientEmail: process.env.NEXT_PUBLIC_APP_FIRBASE_ADMIN_CLIENT_EMAIL,
+  privateKey: process.env.NEXT_PUBLIC_APP_FIRBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
 };
 
 if (!admin.apps.length) {

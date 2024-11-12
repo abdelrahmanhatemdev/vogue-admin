@@ -19,9 +19,24 @@ const Login = () => {
 
   async function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = {email, password}
-    const res: ActionResponse = await login(data)
-    notify(res);
+
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    if (userCredential?.user) {
+      const idToken = await auth.currentUser?.getIdToken();
+      
+      console.log("auth.currentUser", idToken);
+      
+    }
+
+
+
+
+    // const res: ActionResponse = await login(data)
+    // notify(res);
 
   }
 

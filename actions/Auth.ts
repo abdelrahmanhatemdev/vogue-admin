@@ -10,11 +10,13 @@ export async function login(data: {email: string, password: string;}) {
     
   return axios
     .post(`${apiURL}/login`, data)
-    .then((res) => {
+    .then(async (res) => {
         
       if (res?.statusText === "OK" && res?.data?.message) {
-        const userCredential =  res.data.user
-        console.log("user token", userCredential.user);
+        const userCredential =  res.data.userCredential
+
+        // const token = await userCredential.user.getIdToken()
+        // console.log("user token", token);
         
         return { status: "success", message: res.data.message };
       }

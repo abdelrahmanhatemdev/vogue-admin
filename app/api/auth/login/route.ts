@@ -1,15 +1,33 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/firebase/firebase.config";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { cookies } from "next/headers";
+import admin from "@/firebase/firebase-admin.config";
 
-export async function POST(request: Request) {
-  const { email, password } = await request.json();
+export async function POST(req: Request, res: Response) {
+  const { email, password } = await req.json();
 
   try {
-    const user = await signInWithEmailAndPassword(auth, email, password);
-    if (user?.user) {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    if (userCredential?.user) {
+      const idToken = await userCredential.user.getIdToken();
+
+      // log
+
+      const decodeToken = await admin.auth().verifyIdToken(idToken);
+      const cookieStore = await cookies();
+
+      cookieStore.set("authToken", idToken, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 5,
+      });
+
       return NextResponse.json(
-        { message: "Login successfully", user },
+        { message: "Login successfully", userCredential },
         { status: 200 }
       );
     }
