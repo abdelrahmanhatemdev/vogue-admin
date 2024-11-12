@@ -19,6 +19,10 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
+import useSWR from "swr" 
+
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
 
 export const ProductSchema = z.object({
   name: z
@@ -50,6 +54,15 @@ function AddProduct({
     },
     mode: "onChange",
   });
+
+  const {isLoading , data, error} = useSWR(`${process.env.NEXT_PUBLIC_APP_API}/categories`, fetcher)
+
+  console.log("isLoading", isLoading);
+  console.log("data", data);
+  console.log("error", error);
+  
+  
+
 
   const [isPending, startTransition] = useTransition();
 
@@ -91,7 +104,7 @@ function AddProduct({
         className="flex flex-col gap-4 lg:gap-0"
       >
         <FormField
-          // control={form.control}
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -105,7 +118,7 @@ function AddProduct({
           )}
         />
         <FormField
-          // control={form.control}
+          control={form.control}
           name="slug"
           render={({ field }) => (
             <FormItem>
@@ -122,6 +135,30 @@ function AddProduct({
               <FormDescription>New Product slug</FormDescription>
               <FormMessage />
             </FormItem>
+            
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categories</FormLabel>
+
+                <FormControl>
+                  <Select {...field} >
+                    <SelectTrigger>
+                      Category
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cate"></SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              <FormDescription>New Product Categories</FormDescription>
+              <FormMessage />
+            </FormItem>
+            
           )}
         />
         <DialogFooter>

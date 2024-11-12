@@ -5,8 +5,8 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   
 
-  console.log("pathname", req.nextUrl.clone());
-  console.log("headers", req.headers.get("Authorization"));
+  // console.log("pathname", req.nextUrl.clone());
+  // console.log("headers", req.headers.get("Authorization"));
 
   // if (pathname.startsWith("/admin")) {
   //   // const user = auth.currentUser

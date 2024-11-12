@@ -1,6 +1,8 @@
 "use client";
+import { login } from "@/actions/Auth";
 import { auth } from "@/firebase/firebase.config";
 import useAuth from "@/hooks/useAuth";
+import { notify } from "@/lib/utils";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -15,15 +17,12 @@ const Login = () => {
 
   const canAdd: boolean = [email, password].every(Boolean);
 
-  function handleAdd(e: FormEvent<HTMLFormElement>) {
+  async function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        console.log("user", user.user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const data = {email, password}
+    const res: ActionResponse = await login(data)
+    notify(res);
+
   }
 
   return (
