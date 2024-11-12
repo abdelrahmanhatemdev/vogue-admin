@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
