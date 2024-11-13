@@ -1,7 +1,8 @@
 "use client";
 import { login } from "@/actions/Auth";
-import { auth } from "@/firebase/firebase.config";
+import { auth } from "@/firebase/firebaseClient.config";
 import useAuth from "@/hooks/useAuth";
+import { loginUser } from "@/lib/authService";
 import { notify } from "@/lib/utils";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -11,7 +12,7 @@ const Login = () => {
 
   console.log("checkUser", checkUser);
   console.log("auth.currentUser", auth.currentUser);
-  
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -19,23 +20,7 @@ const Login = () => {
 
   async function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        console.log('User registered successfully!');
-      } else {
-        console.log(data.error);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
+    const res = await loginUser({ email, password });
   }
 
   return (

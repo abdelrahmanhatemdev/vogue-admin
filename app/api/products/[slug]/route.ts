@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, where, getDocs } from "firebase/firestore";
 import { dataCollection } from "../route";
-import { db } from "@/firebase/firebase.config";
+import { db } from "@/firebase/firebaseClient.config";
 import { getCategories } from "@/actions/Category";
 
 export const dynamic = "force-static";

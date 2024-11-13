@@ -1,4 +1,4 @@
-import { auth } from "@/firebase/firebase.config";
+import { auth } from "@/firebase/firebaseClient.config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { NextResponse } from "next/server";
 
@@ -12,8 +12,10 @@ export async function POST(req: Request, res: Response) {
       password
     );
 
+    const token = await userCredential.user.getIdToken();
+
     return NextResponse.json(
-      { message: "Sign up successfully", user: userCredential.user },
+      { message: "Sign up successfully", token },
       { status: 200 }
     );
   } catch (error) {

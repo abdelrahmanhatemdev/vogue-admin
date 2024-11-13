@@ -13,5 +13,6 @@ admin.initializeApp({
 });
 }
 
+const auth = admin.auth()
 
-export default admin;
+export {auth as AdminAuth};

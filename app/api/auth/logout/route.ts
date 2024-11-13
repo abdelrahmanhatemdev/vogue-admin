@@ -1,8 +1,7 @@
-import { auth } from "@/firebase/firebase.config";
+import { auth } from "@/firebase/firebaseClient.config";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request, res: Response) {
-  const { email, password } = await req.json();
+export async function GET(req: Request, res: Response) {
 
   try {
     await auth.signOut()

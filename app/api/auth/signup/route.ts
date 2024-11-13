@@ -1,4 +1,4 @@
-import { auth } from "@/firebase/firebase.config";
+import { auth } from "@/firebase/firebaseClient.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { NextResponse } from "next/server";
 

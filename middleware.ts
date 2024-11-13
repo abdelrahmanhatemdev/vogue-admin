@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { auth } from "./firebase/firebase.config";
+import { auth } from "./firebase/firebaseClient.config";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
