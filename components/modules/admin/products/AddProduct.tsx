@@ -15,7 +15,7 @@ import {
 
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useState, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCategories } from "@/hooks/productsHooks";
+import { MultiSelect } from "@/components/ui/multiselect";
+import Link from "next/link";
 
 export const ProductSchema = z.object({
   name: z
@@ -52,12 +54,14 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories, loading: catLoading } = useCategories();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const { data: categories } = useCategories();
+
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: "",
-      categories: categories ? categories[0]?.id : "",
+      categories: "",
     },
     mode: "onChange",
   });
@@ -65,12 +69,12 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    const isValid = await isValidSlug({
+    const checkSlug = await isValidSlug({
       slug: values.slug,
       collection: "products",
     });
 
-    if (!isValid) {
+    if (!checkSlug) {
       form.setError("slug", { message: "Slug is already used!" });
       return;
     }
@@ -141,26 +145,25 @@ function AddProduct({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Categories</FormLabel>
-
-              <FormControl>
-                <Select {...field}
-                onValueChange={(data) => console.log(data)
-                }
-                
-                >
-                  <SelectTrigger  aria-label="Categories">
-                    <SelectValue>{categories && categories[0].name}</SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories &&
-                      categories.map((item) => (
-                        <SelectItem value={`${item.id}`}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+              {categories ? (
+                <MultiSelect
+                  options={categories.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                  }))}
+                  onValueChange={setSelectedCategories}
+                  defaultValue={selectedCategories}
+                  placeholder="Select Categories"
+                  animation={2}
+                />
+              ) : (
+                <Link href={`/admin/categories`} className="block text-sm">
+                  Add some categories to select from{" "}
+                  <Button variant={"outline"} size={"sm"}>
+                    Go To Categories
+                  </Button>
+                </Link>
+              )}
               <FormDescription>New Product Categories</FormDescription>
               <FormMessage />
             </FormItem>

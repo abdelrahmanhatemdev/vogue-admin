@@ -80,7 +80,7 @@ export const SidebarLinks = [
 function AdminSidebar() {
   const { user } = useAuth();
 
-  console.log("user", user);
+  // console.log("user", user);
 
 
   const currentPath = usePathname();

@@ -50,17 +50,28 @@ interface Product {
   id: string;
   name: string;
   slug: string;
-  // featured: boolean;
-  // inStock: boolean;
-  // brand: Brand;
-  // description: Paragraph[]
-  // categories: Category[];
-  // subProducts: SupProduct[];
-  // reviews: Review[];
-  // tags: Tag[];
+  brand: Brand;
+  description: Paragraph[]
+  categories: Category[];
+  subProducts: SupProduct[];
   createdAt: string;
   updatedAt: string;
-  isPending: !isPending;
+  isPending?: !isPending;``
+  reviews?: Review[];
+  // tags: Tag[];
+}
+
+interface SupProduct {
+  sku: string;
+  color: Color;
+  images: ProductImage[];
+  size: Size;
+  price: number;
+  discount: number;
+  qty: number;
+  sold: number;
+  featured: boolean;
+  inStock: boolean;
 }
 
 interface Paragraph {
@@ -68,16 +79,6 @@ interface Paragraph {
   content: string;
 }
 
-interface SupProduct {
-  sku: string;
-  images: ProductImage[];
-  sizes: Size;
-  colors: Color;
-  price: number;
-  discount: number;
-  qty: number;
-  sold: number;
-}
 
 interface ProductImage {
   id: string;
