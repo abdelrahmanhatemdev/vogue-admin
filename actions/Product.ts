@@ -1,5 +1,5 @@
 "use server";
-import axios from "axios";
+import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/products`;
@@ -16,7 +16,7 @@ export const getProducts = async () => {
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Product, b: Product) =>
+      const sortedData = data?.sort((a: Product, b: Product) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -43,7 +43,7 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function addProduct(data: Partial<Product>) {
-  return axios
+  return api
     .post(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -61,7 +61,7 @@ export async function addProduct(data: Partial<Product>) {
 }
 
 export async function editProduct(data: Partial<Product>) {
-  return axios
+  return api
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -79,7 +79,7 @@ export async function editProduct(data: Partial<Product>) {
 }
 
 export async function deleteProduct(data: { id: string }) {
-  return axios
+  return api
     .delete(apiURL, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {

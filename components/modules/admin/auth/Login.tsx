@@ -1,17 +1,11 @@
 "use client";
-import { login } from "@/actions/Auth";
 import { auth } from "@/firebase/firebaseClient.config";
 import useAuth from "@/hooks/useAuth";
 import { loginUser } from "@/lib/authService";
-import { notify } from "@/lib/utils";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 const Login = () => {
   const checkUser = useAuth();
-
-  console.log("checkUser", checkUser);
-  console.log("auth.currentUser", auth.currentUser);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -20,7 +14,7 @@ const Login = () => {
 
   async function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const res = await loginUser({ email, password });
+    await loginUser({ email, password });
   }
 
   return (

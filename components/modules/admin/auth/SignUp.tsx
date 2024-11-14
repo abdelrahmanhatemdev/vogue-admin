@@ -1,8 +1,5 @@
 "use client"
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebaseClient.config";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -10,8 +7,6 @@ const Signup: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -33,7 +33,12 @@ const ProductList = dynamic(
   { loading: Loading }
 );
 
-function Products({ data }: { data: Product[] }) {
+function Products({
+  data,
+}: {
+  data: Product[];
+
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",

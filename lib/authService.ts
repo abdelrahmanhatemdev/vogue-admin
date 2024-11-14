@@ -1,5 +1,4 @@
 import { auth } from "@/firebase/firebaseClient.config";
-import { signOut } from "firebase/auth";
 
 export const loginUser = async ({
   email,

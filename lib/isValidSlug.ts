@@ -26,7 +26,7 @@ const isValidSlug = async ({
       return !check;
     }
     return true;
-  } catch (error) {
+  } catch {
     return true;
   }
 };

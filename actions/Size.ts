@@ -1,5 +1,5 @@
 "use server";
-import axios from "axios";
+import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/sizes`;
@@ -16,7 +16,7 @@ export const getSizes = async () => {
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Size, b: Size) =>
+      const sortedData = data?.sort((a: Size, b: Size) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -43,7 +43,7 @@ export async function getSizeById(id: string) {
 }
 
 export async function addSize(data: Partial<Size>) {
-  return axios
+  return api
     .post(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -61,7 +61,7 @@ export async function addSize(data: Partial<Size>) {
 }
 
 export async function editSize(data: Partial<Size>) {
-  return axios
+  return api
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -79,7 +79,7 @@ export async function editSize(data: Partial<Size>) {
 }
 
 export async function deleteSize(data: { id: string }) {
-  return axios
+  return api
     .delete(apiURL, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {

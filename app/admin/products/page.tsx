@@ -7,5 +7,10 @@ import { getProducts } from "@/actions/Product";
 
 export default async function Products() {
   const data: Product[] = await getProducts();
-  return <ProductsModule data={data} />;
+
+  return (
+    <ProductsModule
+      data={data}
+    />
+  );
 }

@@ -32,6 +32,12 @@ import { CgSize } from "react-icons/cg";
 import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 
+import dynamic from "next/dynamic";
+import Loading from "@/components/custom/Loading";
+import useAuth from "@/hooks/useAuth";
+const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
+  loading: Loading,
+});
 
 export const SidebarLinks = [
   {
@@ -71,16 +77,26 @@ export const SidebarLinks = [
   },
 ];
 
-function AdminSidebar ()  {
+function AdminSidebar() {
+  const { user } = useAuth();
+
+  console.log("user", user);
+
+
   const currentPath = usePathname();
   return (
-    <Sidebar collapsible="icon" className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent">
+    <Sidebar
+      collapsible="icon"
+      className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent"
+    >
       <SidebarHeader>
-        <Logo className="hidden lg:block"/>
+        <Logo className="hidden lg:block" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-foreground">Vogue Admin</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-foreground">
+            Vogue Admin
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {SidebarLinks.map((link) => {
@@ -88,8 +104,11 @@ function AdminSidebar ()  {
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={`${link.link}`} className="w-6 h-6 text-foreground">
-                        <link.icon/>
+                      <Link
+                        href={`${link.link}`}
+                        className="w-6 h-6 text-foreground"
+                      >
+                        <link.icon />
                         <span
                           className={isActive ? "font-bold" : "font-medium"}
                         >
@@ -105,20 +124,29 @@ function AdminSidebar ()  {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Link href="/admin/account" aria-label = {`Sidebar Account Dropdown`}  className="w-6 h-6">
-              <User size={30} />
-            </Link>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>Setting</DropdownMenuItem>
-            <DropdownMenuItem>Orders</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Link
+                href="/admin/account"
+                aria-label={`Sidebar Account Dropdown`}
+                className="w-6 h-6"
+              >
+                <User size={30} />
+              </Link>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Setting</DropdownMenuItem>
+              <DropdownMenuItem>Orders</DropdownMenuItem>
+              <Logout />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Link href={`/admin/login`}>Login</Link>
+        )}
       </SidebarFooter>
-      <SidebarRail/>
+      <SidebarRail />
     </Sidebar>
   );
-};
+}
 export default memo(AdminSidebar);

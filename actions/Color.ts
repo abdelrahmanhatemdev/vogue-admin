@@ -1,5 +1,5 @@
 "use server";
-import axios from "axios";
+import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/colors`;
@@ -16,7 +16,7 @@ export const getColors = async () => {
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Color, b: Color) =>
+      const sortedData = data?.sort((a: Color, b: Color) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -43,7 +43,7 @@ export async function getColorById(id: string) {
 }
 
 export async function addColor(data: Partial<Color>) {
-  return axios
+  return api
     .post(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -61,7 +61,7 @@ export async function addColor(data: Partial<Color>) {
 }
 
 export async function editColor(data: Partial<Color>) {
-  return axios
+  return api
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -79,7 +79,7 @@ export async function editColor(data: Partial<Color>) {
 }
 
 export async function deleteColor(data: { id: string }) {
-  return axios
+  return api
     .delete(apiURL, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {

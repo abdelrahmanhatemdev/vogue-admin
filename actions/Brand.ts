@@ -1,22 +1,27 @@
 "use server";
-import axios from "axios";
+import { getToken } from "@/lib/authService";
+import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
+  const token = await getToken()
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
     });
     let data: Brand[] = [];
 
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data.sort((a: Brand, b: Brand) =>
+      const sortedData = data?.sort((a: Brand, b: Brand) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -43,7 +48,7 @@ export async function getBrandById(id: string) {
 }
 
 export async function addBrand(data: Partial<Brand>) {
-  return axios
+  return api
     .post(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -61,7 +66,7 @@ export async function addBrand(data: Partial<Brand>) {
 }
 
 export async function editBrand(data: Partial<Brand>) {
-  return axios
+  return api
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
@@ -79,7 +84,7 @@ export async function editBrand(data: Partial<Brand>) {
 }
 
 export async function deleteBrand(data: { id: string }) {
-  return axios
+  return api
     .delete(apiURL, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {

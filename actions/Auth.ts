@@ -1,5 +1,5 @@
 "use server";
-import axios from "axios";
+import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/auth`;
@@ -8,7 +8,7 @@ const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/auth`;
 export async function login(data: {email: string, password: string;}) {
     
     
-  return axios
+  return api
     .post(`${apiURL}/login`, data)
     .then(async (res) => {
         

@@ -19,10 +19,14 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import useSWR from "swr" 
-
-const fetcher = (url:string) => fetch(url).then((res) => res.json());
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useCategories } from "@/hooks/productsHooks";
 
 export const ProductSchema = z.object({
   name: z
@@ -36,6 +40,7 @@ export const ProductSchema = z.object({
   slug: z.string().min(1, {
     message: "Slug is required",
   }),
+  categories: z.string(),
 });
 
 function AddProduct({
@@ -47,22 +52,15 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
+  const { data: categories, loading: catLoading } = useCategories();
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: "",
+      categories: categories ? categories[0]?.id : "",
     },
     mode: "onChange",
   });
-
-  const {isLoading , data, error} = useSWR(`${process.env.NEXT_PUBLIC_APP_API}/categories`, fetcher)
-
-  console.log("isLoading", isLoading);
-  console.log("data", data);
-  console.log("error", error);
-  
-  
-
 
   const [isPending, startTransition] = useTransition();
 
@@ -135,7 +133,6 @@ function AddProduct({
               <FormDescription>New Product slug</FormDescription>
               <FormMessage />
             </FormItem>
-            
           )}
         />
         <FormField
@@ -145,20 +142,28 @@ function AddProduct({
             <FormItem>
               <FormLabel>Categories</FormLabel>
 
-                <FormControl>
-                  <Select {...field} >
-                    <SelectTrigger>
-                      Category
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cate"></SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
+              <FormControl>
+                <Select {...field}
+                onValueChange={(data) => console.log(data)
+                }
+                
+                >
+                  <SelectTrigger  aria-label="Categories">
+                    <SelectValue>{categories && categories[0].name}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories &&
+                      categories.map((item) => (
+                        <SelectItem value={`${item.id}`}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
               <FormDescription>New Product Categories</FormDescription>
               <FormMessage />
             </FormItem>
-            
           )}
         />
         <DialogFooter>
