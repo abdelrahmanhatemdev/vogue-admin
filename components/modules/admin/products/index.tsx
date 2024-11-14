@@ -33,12 +33,7 @@ const ProductList = dynamic(
   { loading: Loading }
 );
 
-function Products({
-  data,
-}: {
-  data: Product[];
-
-}) {
+function Products({ data }: { data: Product[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -192,17 +187,14 @@ function Products({
             description="Here's a list of your Products!"
           />
         </div>
-        {data?.length ? (
-          <ProductList
-            data={sortedOptimisicData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-            addOptimisticData={addOptimisticData}
-          />
-        ) : (
-          <NoResults title="Add some Products to show data!" />
-        )}
+
+        <ProductList
+          data={sortedOptimisicData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+          addOptimisticData={addOptimisticData}
+        />
       </div>
       <Modal
         title={modal.title}

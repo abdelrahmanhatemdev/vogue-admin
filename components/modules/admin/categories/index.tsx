@@ -187,17 +187,14 @@ function Categories({ data }: { data: Category[] }) {
             description="Here's a list of your categories!"
           />
         </div>
-        {data?.length ? (
-          <CategoryList
-            data={sortedOptimisicData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-            addOptimisticData={addOptimisticData}
-          />
-        ) : (
-          <NoResults title="Add some categories to show data!" />
-        )}
+
+        <CategoryList
+          data={sortedOptimisicData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+          addOptimisticData={addOptimisticData}
+        />
       </div>
       <Modal
         title={modal.title}

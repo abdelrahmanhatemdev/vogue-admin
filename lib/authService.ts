@@ -42,6 +42,7 @@ export const logoutUser = async () => {
 
 export const getToken = async () => {
     const user = auth.currentUser
+    
     if (user) {
         return user.getIdToken()
     }

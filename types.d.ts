@@ -56,7 +56,7 @@ interface Product {
   subProducts: SupProduct[];
   createdAt: string;
   updatedAt: string;
-  isPending?: !isPending;``
+  isPending?: !isPending;
   reviews?: Review[];
   // tags: Tag[];
 }

@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCategories } from "@/hooks/productsHooks";
+import { useBrands, useCategories } from "@/hooks/productsHooks";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 
@@ -43,6 +43,7 @@ export const ProductSchema = z.object({
     message: "Slug is required",
   }),
   categories: z.string(),
+  brand: z.string(),
 });
 
 function AddProduct({
@@ -56,6 +57,7 @@ function AddProduct({
 }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const { data: categories } = useCategories();
+  const { data: brands } = useBrands();
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
@@ -165,6 +167,37 @@ function AddProduct({
                 </Link>
               )}
               <FormDescription>New Product Categories</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+          <FormField
+          control={form.control}
+          name="brand"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Brand</FormLabel>
+              {brands ? (
+                <Select
+                onValueChange={field.onChange}
+                value={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose brand"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map(item => <SelectItem value={`${item.id}`}>{item.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Link href={`/admin/brands`} className="block text-sm">
+                  Add some brands to select from{" "}
+                  <Button variant={"outline"} size={"sm"}>
+                    Go To Brand
+                  </Button>
+                </Link>
+              )}
+              <FormDescription>New Product Brand</FormDescription>
               <FormMessage />
             </FormItem>
           )}

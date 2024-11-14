@@ -100,7 +100,7 @@ function BrandList({
 
   const isData = data?.length > 0 ? true : false;
 
-  const totalRows = data?.length ? data.length : 0;
+  const totalRows = isData ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
   const [isPending, startTransition] = useTransition();
 
@@ -135,8 +135,7 @@ function BrandList({
   });
 
   const currentPage = pagination.pageIndex + 1;
-  const totalPages =
-    data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
+  const totalPages = isData ? Math.ceil(data.length / pagination.pageSize) : 1;
 
   function deleteMultiple() {
     setModalOpen(true);
