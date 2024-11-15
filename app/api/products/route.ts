@@ -22,8 +22,27 @@ export async function GET() {
 
     querySnapshot.forEach((doc) => {
       if (doc?.id) {
-        const { name, slug, createdAt, updatedAt } = doc.data();
-        data.push({ id: doc.id, name, slug, createdAt, updatedAt });
+        const {
+          name,
+          slug,
+          brand,
+          categories,
+          descriptionBrief,
+          descriptionDetails,
+          createdAt,
+          updatedAt,
+        } = doc.data();
+        data.push({
+          id: doc.id,
+          name,
+          slug,
+          brand,
+          categories,
+          descriptionBrief,
+          descriptionDetails,
+          createdAt,
+          updatedAt,
+        });
       }
     });
 

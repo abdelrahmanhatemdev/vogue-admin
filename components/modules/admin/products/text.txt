@@ -1,0 +1,6 @@
+ border-input bg-transparent 
+ px-3 py-1   shadow-sm  file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground    disabled:cursor-not-allowed 
+
+
+gap-2 whitespace-nowrap  font-medium     disabled:pointer-events-none  
+[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow  p-1   min-h-auto items-center justify-between bg-inherit hover:bg-inherit     

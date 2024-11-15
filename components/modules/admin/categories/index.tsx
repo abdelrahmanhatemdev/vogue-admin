@@ -118,7 +118,6 @@ function Categories({ data }: { data: Category[] }) {
             </span>
           );
         },
-        enableSorting: false,
       },
       {
         id: "actions",

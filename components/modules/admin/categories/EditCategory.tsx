@@ -42,16 +42,6 @@ function EditCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    const isValid = await isValidSlug({
-      slug: values.slug,
-      collection: "categories",
-      id: item.id,
-    });
-
-    if (!isValid) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
 
     setModalOpen(false);
     const data = {
@@ -105,7 +95,27 @@ function EditCategory({
                 </span>
 
                 <FormControl>
-                  <Input {...field} className="ps-4" />
+                  <Input
+                    {...field}
+                    className="ps-4"
+                    onChange={async (e) => {
+                      field.onChange(e.target.value);
+
+                      const checkSlug: boolean = await isValidSlug({
+                        slug: e.target.value,
+                        collection: "products",
+                      });
+
+                      if (!checkSlug) {
+                        form.setError("slug", {
+                          message: "Slug is already used!",
+                        });
+                        return;
+                      } else {
+                        form.clearErrors("slug");
+                      }
+                    }}
+                  />
                 </FormControl>
               </div>
               <FormDescription>Update Category slug</FormDescription>

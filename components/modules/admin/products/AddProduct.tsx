@@ -29,6 +29,7 @@ import {
 import { useBrands, useCategories } from "@/hooks/productsHooks";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
 
 export const ProductSchema = z.object({
   name: z
@@ -42,8 +43,13 @@ export const ProductSchema = z.object({
   slug: z.string().min(1, {
     message: "Slug is required",
   }),
-  categories: z.string(),
+  categories: z.array(z.string(), {
+    message: "Choose at least one category"
+  }),
   brand: z.string(),
+  // description: z.string(),
+  descriptionBrief: z.string(),
+  descriptionDetails: z.string(),
 });
 
 function AddProduct({
@@ -71,20 +77,18 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    const checkSlug = await isValidSlug({
-      slug: values.slug,
-      collection: "products",
-    });
+    // console.log("selectedCategories.length ", selectedCategories.length);
 
-    if (!checkSlug) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
+    // if (selectedCategories.length === 0) {
+    //   form.setError("categories", { message: "Choose at least one Category!" });
+    //   return;
+    // }
 
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,
+      categories: selectedCategories,
       createdAt: date,
       updatedAt: date,
     };
@@ -105,7 +109,7 @@ function AddProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-0"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2" 
       >
         <FormField
           control={form.control}
@@ -131,9 +135,28 @@ function AddProduct({
                 <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
                   /
                 </span>
-
                 <FormControl>
-                  <Input {...field} className="ps-4" />
+                  <Input
+                    {...field}
+                    className="ps-4"
+                    onChange={async (e) => {
+                      field.onChange(e.target.value);
+
+                      const checkSlug: boolean = await isValidSlug({
+                        slug: e.target.value,
+                        collection: "products",
+                      });
+
+                      if (!checkSlug) {
+                        form.setError("slug", {
+                          message: "Slug is already used!",
+                        });
+                        return;
+                      } else {
+                        form.clearErrors("slug");
+                      }
+                    }}
+                  />
                 </FormControl>
               </div>
               <FormDescription>New Product slug</FormDescription>
@@ -145,7 +168,7 @@ function AddProduct({
           control={form.control}
           name="categories"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="lg:w-[calc(50%-.75rem)]">
               <FormLabel>Categories</FormLabel>
               {categories ? (
                 <MultiSelect
@@ -153,10 +176,16 @@ function AddProduct({
                     value: item.id,
                     label: item.name,
                   }))}
-                  onValueChange={setSelectedCategories}
+                  onValueChange={(val) => {
+                    setSelectedCategories(val);
+                    field.onChange(val)
+
+                    // selectedCategories.length > 0
+                    //   ? form.clearErrors("categories")
+                    //   : null;
+                  }}
                   defaultValue={selectedCategories}
                   placeholder="Select Categories"
-                  animation={2}
                 />
               ) : (
                 <Link href={`/admin/categories`} className="block text-sm">
@@ -171,22 +200,23 @@ function AddProduct({
             </FormItem>
           )}
         />
-          <FormField
+        <FormField
           control={form.control}
           name="brand"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>
               {brands ? (
-                <Select
-                onValueChange={field.onChange}
-                value={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose brand"/>
+                    <SelectValue placeholder="Choose brand" />
                   </SelectTrigger>
                   <SelectContent>
-                    {brands.map(item => <SelectItem value={`${item.id}`}>{item.name}</SelectItem>)}
+                    {brands.map((item) => (
+                      <SelectItem value={`${item.id}`} key={item.id}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               ) : (
@@ -198,6 +228,34 @@ function AddProduct({
                 </Link>
               )}
               <FormDescription>New Product Brand</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="descriptionBrief"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description Brief</FormLabel>
+              <FormControl>
+                <Textarea {...field} placeholder="Add Description Brief" />
+              </FormControl>
+              <FormDescription>New Product Description Brief</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="descriptionDetails"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description Details</FormLabel>
+              <FormControl>
+                <Textarea {...field} placeholder="Add Description Brief" rows={5}/>
+              </FormControl>
+              <FormDescription>New Product Description Details</FormDescription>
               <FormMessage />
             </FormItem>
           )}

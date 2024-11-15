@@ -1,3 +1,5 @@
+import api from "./axiosClient";
+
 const apiURL = process.env.NEXT_PUBLIC_APP_API;
 const isValidSlug = async ({
   slug,
@@ -9,17 +11,16 @@ const isValidSlug = async ({
   id?: string;
 }) => {
   try {
-    const res = await fetch(`${apiURL}/${collection}`, {
-      next: { tags: [collection] },
-      cache: "force-cache",
-    });
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
-      const { data } = await res.json();
+      const { data:{data} } = res;
+      
       const check = data.some((item: { id: string; slug: string }) => {
         if (item.id === id) {
           return false
         }
+    
         return item.slug === slug;
       });
 

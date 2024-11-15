@@ -50,12 +50,13 @@ interface Product {
   id: string;
   name: string;
   slug: string;
-  brand: Brand;
-  description: Paragraph[]
-  categories: Category[];
-  subProducts: SupProduct[];
+  brand: Brand | string;
+  categories: Category[] | string[];
+  descriptionBrief: string;
+  descriptionDetails: string;
   createdAt: string;
   updatedAt: string;
+  subProducts?: SupProduct[];
   isPending?: !isPending;
   reviews?: Review[];
   // tags: Tag[];
@@ -78,7 +79,6 @@ interface Paragraph {
   id: string;
   content: string;
 }
-
 
 interface ProductImage {
   id: string;

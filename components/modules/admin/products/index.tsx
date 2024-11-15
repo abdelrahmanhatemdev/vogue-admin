@@ -118,7 +118,26 @@ function Products({ data }: { data: Product[] }) {
             </span>
           );
         },
-        enableSorting: false,
+      },
+      {
+        id: "brand",
+        accessorKey: "brand",
+        header: "Brand",
+        cell: ({ row }) => {
+          const item: Product = row.original;
+          return (
+            <Link
+              href={`/admin/brands/${item.slug}`}
+              className={
+                "hover:bg-main-200 p-2 rounded-lg" +
+                (item.isPending ? " opacity-50" : "")
+              }
+              title="Go to brand page"
+            >
+              {item.name}
+            </Link>
+          );
+        },
       },
       {
         id: "actions",

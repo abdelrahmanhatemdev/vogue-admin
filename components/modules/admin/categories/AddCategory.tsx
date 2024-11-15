@@ -54,16 +54,7 @@ function AddCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    const isValid = await isValidSlug({
-      slug: values.slug,
-      collection: "categories",
-    });
-
-    if (!isValid) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
-
+  
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
@@ -91,7 +82,7 @@ function AddCategory({
         className="flex flex-col gap-4 lg:gap-0"
       >
         <FormField
-          // control={form.control}
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -105,7 +96,7 @@ function AddCategory({
           )}
         />
         <FormField
-          // control={form.control}
+          control={form.control}
           name="slug"
           render={({ field }) => (
             <FormItem>
@@ -116,7 +107,27 @@ function AddCategory({
                 </span>
 
                 <FormControl>
-                  <Input {...field} className="ps-4" />
+                  <Input
+                    {...field}
+                    className="ps-4"
+                    onChange={async (e) => {
+                      field.onChange(e.target.value);
+
+                      const checkSlug: boolean = await isValidSlug({
+                        slug: e.target.value,
+                        collection: "products",
+                      });
+
+                      if (!checkSlug) {
+                        form.setError("slug", {
+                          message: "Slug is already used!",
+                        });
+                        return;
+                      } else {
+                        form.clearErrors("slug");
+                      }
+                    }}
+                  />
                 </FormControl>
               </div>
               <FormDescription>New Category slug</FormDescription>
