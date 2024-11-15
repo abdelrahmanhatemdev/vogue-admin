@@ -13,7 +13,7 @@ function Brand({ data }: { data: Brand }) {
       <AdminBreadcrumb page={`${data.name}`}>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/admin/categories">Categories</Link>
+            <Link href="/admin/brands">Brands</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
@@ -21,6 +21,7 @@ function Brand({ data }: { data: Brand }) {
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div>ID : {data.id}</div>
         <div>Name : {data.name}</div>
+        <div>Slug : {data.slug}</div>
         <div>Created At : {data.createdAt}</div>
         <div>Updated At : {data.updatedAt}</div>
       </div>

@@ -8,6 +8,8 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import { getBrandBySlug } from "@/actions/Brand";
+import { useBrands } from "@/hooks/productsHooks";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -40,6 +42,8 @@ function Products({ data }: { data: Product[] }) {
     description: "",
     children: <></>,
   });
+
+  const { data: brands } = useBrands();
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
@@ -108,12 +112,7 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: Product = row.original;
           return (
-            <span
-              className={
-                "p-2" +
-                (item.isPending ? " opacity-50" : "")
-              }
-            >
+            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
               {item.slug ? "/" + item.slug : ""}
             </span>
           );
@@ -125,16 +124,20 @@ function Products({ data }: { data: Product[] }) {
         header: "Brand",
         cell: ({ row }) => {
           const item: Product = row.original;
+          const brand = brands
+            ? brands.find(({ slug }) => slug === item.brand)
+            : undefined;
+
           return (
             <Link
-              href={`/admin/brands/${item.slug}`}
+              href={`/admin/brands/${item.brand}`}
               className={
                 "hover:bg-main-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to brand page"
             >
-              {item.name}
+              {brand ? brand.name : (item.brand as string)}
             </Link>
           );
         },
@@ -193,7 +196,7 @@ function Products({ data }: { data: Product[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, addOptimisticData, brands]
   );
 
   return (

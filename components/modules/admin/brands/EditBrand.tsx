@@ -35,6 +35,7 @@ function EditBrand({
     resolver: zodResolver(BrandSchema),
     defaultValues: {
       name: item.name,
+      slug: item.slug,
     },
   });
 
