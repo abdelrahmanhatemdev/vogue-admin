@@ -33,9 +33,9 @@ export const getBrands = async () => {
   }
 }
 
-export async function getBrandById(id: string) {
+export async function getBrandBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${id}`, {
+    const res = await fetch(`${apiURL}/${slug}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });

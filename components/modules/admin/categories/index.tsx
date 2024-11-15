@@ -94,7 +94,7 @@ function Categories({ data }: { data: Category[] }) {
                 "hover:bg-main-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
-              title="Go to Category page"
+              title="Go to category page"
             >
               {item.name}
             </Link>
@@ -110,7 +110,7 @@ function Categories({ data }: { data: Category[] }) {
           return (
             <span
               className={
-                "hover:bg-main-200 p-2 rounded-lg" +
+                "p-2" +
                 (item.isPending ? " opacity-50" : "")
               }
             >

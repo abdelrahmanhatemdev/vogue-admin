@@ -22,8 +22,8 @@ export async function GET() {
 
     querySnapshot.forEach((doc) => {
       if (doc?.id) {
-        const { name, createdAt, updatedAt } = doc.data();
-        data.push({ id: doc.id, name, createdAt, updatedAt });
+        const { name, slug, createdAt, updatedAt } = doc.data();
+        data.push({ id: doc.id, name, slug, createdAt, updatedAt });
       }
     });
 
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name } = await request.json();
+  const { id, name, slug } = await request.json();
 
   try {
     const docRef = doc(db, collectoinName, id);
@@ -60,6 +60,7 @@ export async function PUT(request: Request) {
       const date = new Date().toISOString();
       await updateDoc(docRef, {
         name,
+        slug,
         updatedAt: date,
       });
       return NextResponse.json(

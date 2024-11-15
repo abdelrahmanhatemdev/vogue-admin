@@ -17,6 +17,7 @@ interface Category {
 interface Brand {
   id: string;
   name: string;
+  slug: string;
   createdAt: string;
   updatedAt: string;
   isPending?: boolean;

@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import Link from "next/link";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -90,7 +91,36 @@ function Brands({ data }: { data: Brand[] }) {
         header: "Name",
         cell: ({ row }) => {
           const item: Brand = row.original;
-          return <span>{item.name}</span>;
+          return (
+            <Link
+              href={`/admin/brands/${item.slug}`}
+              className={
+                "hover:bg-main-200 p-2 rounded-lg" +
+                (item.isPending ? " opacity-50" : "")
+              }
+              title="Go to brand page"
+            >
+              {item.name}
+            </Link>
+          );
+        },
+      },
+      {
+        id: "slug",
+        accessorKey: "slug",
+        header: "Slug",
+        cell: ({ row }) => {
+          const item: Brand = row.original;
+          return (
+            <span
+              className={
+                "p-2" +
+                (item.isPending ? " opacity-50" : "")
+              }
+            >
+              {item.slug ? "/" + item.slug : ""}
+            </span>
+          );
         },
       },
       {

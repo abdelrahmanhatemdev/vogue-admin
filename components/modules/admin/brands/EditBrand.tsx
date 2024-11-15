@@ -18,6 +18,7 @@ import { BrandSchema } from "./AddBrand";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
+import isValidSlug from "@/lib/isValidSlug";
 
 function EditBrand({
   item,
@@ -73,6 +74,46 @@ function EditBrand({
                 <Input {...field} />
               </FormControl>
               <FormDescription>Update Brand Name</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <div className="relative">
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
+                  /
+                </span>
+
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="ps-4"
+                    onChange={async (e) => {
+                      field.onChange(e.target.value);
+
+                      const checkSlug: boolean = await isValidSlug({
+                        slug: e.target.value,
+                        collection: "brands",
+                      });
+
+                      if (!checkSlug) {
+                        form.setError("slug", {
+                          message: "Slug is already used!",
+                        });
+                        return;
+                      } else {
+                        form.clearErrors("slug");
+                      }
+                    }}
+                  />
+                </FormControl>
+              </div>
+              <FormDescription>New Category slug</FormDescription>
               <FormMessage />
             </FormItem>
           )}

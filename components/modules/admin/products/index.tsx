@@ -110,7 +110,7 @@ function Products({ data }: { data: Product[] }) {
           return (
             <span
               className={
-                "hover:bg-main-200 p-2 rounded-lg" +
+                "p-2" +
                 (item.isPending ? " opacity-50" : "")
               }
             >

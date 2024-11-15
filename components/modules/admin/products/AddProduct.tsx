@@ -15,7 +15,7 @@ import {
 
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useState, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
@@ -43,13 +43,22 @@ export const ProductSchema = z.object({
   slug: z.string().min(1, {
     message: "Slug is required",
   }),
-  categories: z.array(z.string(), {
+  categories: z
+  .array(z.string())
+  .nonempty({
     message: "Choose at least one category"
   }),
-  brand: z.string(),
-  // description: z.string(),
-  descriptionBrief: z.string(),
-  descriptionDetails: z.string(),
+  brand: z.string().min(1, {
+    message: "Brand is required",
+  }),
+  descriptionBrief: z
+  .string()
+  .min(1, {
+    message: "Description Brief is required",
+  }),
+  descriptionDetails: z.string().min(1, {
+    message: "Description Details is required",
+  }),
 });
 
 function AddProduct({
@@ -61,7 +70,6 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const { data: categories } = useCategories();
   const { data: brands } = useBrands();
 
@@ -69,7 +77,10 @@ function AddProduct({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: "",
-      categories: "",
+      categories: [],
+      brand: "", 
+      descriptionBrief: "", 
+      descriptionDetails: ""
     },
     mode: "onChange",
   });
@@ -77,18 +88,11 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    // console.log("selectedCategories.length ", selectedCategories.length);
-
-    // if (selectedCategories.length === 0) {
-    //   form.setError("categories", { message: "Choose at least one Category!" });
-    //   return;
-    // }
 
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,
-      categories: selectedCategories,
       createdAt: date,
       updatedAt: date,
     };
@@ -173,18 +177,10 @@ function AddProduct({
               {categories ? (
                 <MultiSelect
                   options={categories.map((item) => ({
-                    value: item.id,
+                    value: item.slug,
                     label: item.name,
                   }))}
-                  onValueChange={(val) => {
-                    setSelectedCategories(val);
-                    field.onChange(val)
-
-                    // selectedCategories.length > 0
-                    //   ? form.clearErrors("categories")
-                    //   : null;
-                  }}
-                  defaultValue={selectedCategories}
+                  onValueChange={field.onChange}
                   placeholder="Select Categories"
                 />
               ) : (
@@ -213,7 +209,7 @@ function AddProduct({
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map((item) => (
-                      <SelectItem value={`${item.id}`} key={item.id}>
+                      <SelectItem value={`${item.slug}`} key={item.id}>
                         {item.name}
                       </SelectItem>
                     ))}
