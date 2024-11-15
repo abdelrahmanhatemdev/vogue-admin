@@ -203,6 +203,7 @@ export const MultiSelect = React.forwardRef<
               "flex w-full p-1 rounded-md border min-h-9 h-auto items-center justify-between bg-inherit hover:bg-inherit",
               className
             )}
+            asChild
           >
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">

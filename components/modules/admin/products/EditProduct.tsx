@@ -19,6 +19,11 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
+import { useBrands, useCategories } from "@/hooks/productsHooks";
+import { MultiSelect } from "@/components/ui/multiselect";
+import Link from "next/link";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 function EditProduct({
   item,
@@ -31,44 +36,44 @@ function EditProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
+  const { data: categories } = useCategories();
+  const { data: brands } = useBrands();
+
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       name: item.name,
       slug: item.slug,
+      categories: item?.categories as string[],
+      brand: item?.brand as string, 
+      descriptionBrief: item.descriptionBrief, 
+      descriptionDetails: item.descriptionDetails
     },
+    mode: "onChange",
   });
 
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    const isValid = await isValidSlug({
-      slug: values.slug,
-      collection: "products",
-      id: item.id,
-    });
-
-    if (!isValid) {
-      form.setError("slug", { message: "Slug is already used!" });
-      return;
-    }
 
     setModalOpen(false);
+    const date = new Date().toISOString();
     const data = {
       id: item.id,
-      createdAt: item.createdAt,
-      updatedAt: new Date().toISOString(),
       ...values,
+      createdAt: item.createdAt,
+      updatedAt: date,
+    };
+    const optimisticObj: Product = {
+      ...data,
+      id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,
     };
 
-    startTransition(async () => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
-        data,
-      ]);
+    startTransition(() => {
+      addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
-
+    
     const res: ActionResponse = await editProduct(data);
     notify(res);
   }
@@ -77,7 +82,7 @@ function EditProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-0"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2" 
       >
         <FormField
           control={form.control}
@@ -103,12 +108,120 @@ function EditProduct({
                 <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
                   /
                 </span>
-
                 <FormControl>
-                  <Input {...field} className="ps-4" />
+                  <Input
+                    {...field}
+                    className="ps-4"
+                    onChange={async (e) => {
+                      field.onChange(e.target.value);
+
+                      const checkSlug: boolean = await isValidSlug({
+                        slug: e.target.value,
+                        collection: "products",
+                      });
+
+                      if (!checkSlug) {
+                        form.setError("slug", {
+                          message: "Slug is already used!",
+                        });
+                        return;
+                      } else {
+                        form.clearErrors("slug");
+                      }
+                    }}
+                  />
                 </FormControl>
               </div>
               <FormDescription>Update Product slug</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem className="lg:w-[calc(50%-.75rem)]">
+              <FormLabel>Categories</FormLabel>
+              {categories ? (
+                <MultiSelect
+                  options={categories.map((item) => ({
+                    value: item.slug,
+                    label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
+                  }))}
+                  onValueChange={field.onChange}
+                  placeholder="Select Categories"
+                  defaultValue={field.value}
+                />
+              ) : (
+                <Link href={`/admin/categories`} className="block text-sm">
+                  Add some categories to select from{" "}
+                  <Button variant={"outline"} size={"sm"}>
+                    Go To Categories
+                  </Button>
+                </Link>
+              )}
+              <FormDescription>Update Product Categories</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="brand"
+          render={({ field }) => (
+            <FormItem className="lg:w-[calc(50%-.75rem)]">
+              <FormLabel>Brand</FormLabel>
+              {brands ? (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map((item) => (
+                      <SelectItem value={`${item.slug}`} key={item.id}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Link href={`/admin/brands`} className="block text-sm">
+                  Add some brands to select from{" "}
+                  <Button variant={"outline"} size={"sm"}>
+                    Go To Brand
+                  </Button>
+                </Link>
+              )}
+              <FormDescription>Update Product Brand</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="descriptionBrief"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description Brief</FormLabel>
+              <FormControl>
+                <Textarea {...field} placeholder="Add Description Brief" />
+              </FormControl>
+              <FormDescription>Update Product Description Brief</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="descriptionDetails"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description Details</FormLabel>
+              <FormControl>
+                <Textarea {...field} placeholder="Add Description Brief" rows={5}/>
+              </FormControl>
+              <FormDescription>Update Product Description Details</FormDescription>
               <FormMessage />
             </FormItem>
           )}

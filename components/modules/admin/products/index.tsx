@@ -8,8 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import { getBrandBySlug } from "@/actions/Brand";
-import { useBrands } from "@/hooks/productsHooks";
+import { useBrands, useCategories } from "@/hooks/productsHooks";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -44,6 +43,7 @@ function Products({ data }: { data: Product[] }) {
   });
 
   const { data: brands } = useBrands();
+  const { data: categories } = useCategories();
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
@@ -143,6 +143,59 @@ function Products({ data }: { data: Product[] }) {
         },
       },
       {
+        id: "categories",
+        accessorKey: "categories",
+        header: "categories",
+        cell: ({ row }) => {
+          const item: Product = row.original;
+          const itemCatsSlugs = item.categories;
+          let itemCats: Category[] = [];
+
+          if (categories) {
+            if (itemCatsSlugs?.length > 0 && categories?.length > 0) {
+              for (let i = 0; i < itemCatsSlugs.length; i++) {
+                const cat = categories.find(
+                  ({ slug }) => slug === itemCatsSlugs[i]
+                );
+                cat && itemCats.push(cat);
+              }
+            }
+          }
+
+          return itemCats?.length > 0 ? (
+            itemCats.map((cat) => (
+              <Link
+                href={`/admin/categories/${cat.slug}`}
+                className={
+                  "hover:bg-main-200 p-2 rounded-lg text-xs" +
+                  (item.isPending ? " opacity-50" : "")
+                }
+                title="Go to categories page"
+                key={cat.id}
+              >
+                {cat.name.length > 8 ? `${cat.name.slice(0, 8)}...` : cat.name}
+              </Link>
+            ))
+          ) : (
+            <></>
+          );
+        },
+        enableSorting: false,
+      },
+      {
+        id: "subProducts",
+        accessorKey: "subProducts",
+        header: "Sub Products",
+        cell: ({ row }) => {
+          const item: Product = row.original;
+          const subProductsCount: number = item?.subProducts
+            ? item.subProducts.length
+            : 0;
+
+          return <span>{subProductsCount}</span>;
+        },
+      },
+      {
         id: "actions",
         cell: ({ row }) => {
           const item: Product = row.original;
@@ -196,7 +249,7 @@ function Products({ data }: { data: Product[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData, brands]
+    [setModalOpen, setModal, addOptimisticData, brands, categories]
   );
 
   return (
@@ -209,7 +262,6 @@ function Products({ data }: { data: Product[] }) {
             description="Here's a list of your Products!"
           />
         </div>
-
         <ProductList
           data={sortedOptimisicData}
           columns={columns}

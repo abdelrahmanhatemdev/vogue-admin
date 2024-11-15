@@ -70,17 +70,36 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name, slug } = await request.json();
+
+
+
+"Solid213"
+updatedAt
+: 
+"2024-11-15T16:12:37.473Z"
+  const {
+    id,
+    name,
+    slug,
+    brand,
+    categories,
+    descriptionBrief,
+    descriptionDetails,
+    updatedAt
+  } = await request.json();
 
   try {
     const docRef = doc(db, collectoinName, id);
 
     if (docRef?.id) {
-      const date = new Date().toISOString();
       await updateDoc(docRef, {
         name,
         slug,
-        updatedAt: date,
+        brand,
+        categories,
+        descriptionBrief,
+        descriptionDetails,
+        updatedAt
       });
       return NextResponse.json({ message: "Product Updated" }, { status: 200 });
     }

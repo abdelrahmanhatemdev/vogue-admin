@@ -63,7 +63,7 @@ interface Product {
   // tags: Tag[];
 }
 
-interface SupProduct {
+interface SubProduct {
   sku: string;
   color: Color;
   images: ProductImage[];
