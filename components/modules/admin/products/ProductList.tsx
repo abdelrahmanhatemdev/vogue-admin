@@ -117,6 +117,8 @@ function ProductList({
   const [showDeleteAll, setShowDeleteAll] = useState(true);
   const [isPending, startTransition] = useTransition();
 
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
   const table = useReactTable({
     data,
     columns,
@@ -213,9 +215,9 @@ function ProductList({
               }
             />
           )}
-          {isData && categories.length > 0 && (
+          {/* {isData && categories.length > 0 && (
             <Popover>
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
                   variant={"ghost"}
                   className="border-dashed border-main-300 border-2 font-bold"
@@ -224,26 +226,30 @@ function ProductList({
                   Categories
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="flex flex-col gap-2 w-40 p-2">
-                {categories.map((item) => (
-                  <Button
-                    variant={"ghost"}
-                    className="w-full flex gap-2 justify-start items-center"
-                    onClick={() =>
-                      setColumnFilters([{ id: "categories", value: [item.id] }])
-                    }
-                    key={item.id}
-                  >
-                    <Checkbox />
-                    <span>{item.name}</span>
-                  </Button>
-                ))}
+              <PopoverContent className="w-40 p-2" asChild>
+                <div className="flex flex-col gap-2 ">
+                  {categories.map((item) => (
+                    <Button
+                      variant={"ghost"}
+                      className="w-full flex gap-2 justify-start items-center"
+                      onClick={() => {
+                        setColumnFilters([
+                          { id: "categories", value: item.id },
+                        ]);
+                      }}
+                      key={item.id}
+                    >
+                      <Checkbox />
+                      <span>{item.name}</span>
+                    </Button>
+                  ))}
+                </div>
               </PopoverContent>
             </Popover>
-          )}
-          {isData && categories.length > 0 && (
+          )} */}
+          {isData && brands.length > 0 && (
             <Popover>
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
                   variant={"ghost"}
                   className="border-dashed border-main-300 border-2 font-bold"
@@ -252,20 +258,42 @@ function ProductList({
                   Brands
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="flex flex-col gap-2 w-40 p-2">
-                {brands.map((item) => (
-                  <Button
-                    variant={"ghost"}
-                    className="w-full flex gap-2 justify-start items-center"
-                    onClick={() =>
-                      setColumnFilters([{ id: "brand", value: item.id }])
-                    }
-                    key={item.id}
-                  >
-                    <Checkbox />
-                    <span>{item.name}</span>
-                  </Button>
-                ))}
+              <PopoverContent className="w-40 p-2" asChild>
+                <div className="flex flex-col gap-2 ">
+                  {brands.map((item) => (
+                    <Button
+                      variant={"ghost"}
+                      className="w-full flex gap-2 justify-start items-center"
+                      key={item.id}
+                    >
+                      <Checkbox
+                        checked={selectedBrands.includes(item.id)}
+                        onCheckedChange={() => {
+                          setSelectedBrands((prev) => {
+                            const updatedBrandFilter = prev.includes(item.id)
+                              ? prev.filter((b) => b !== item.id)
+                              : [...prev, item.id];
+
+                            setColumnFilters((prevFilters) => {
+                              const newFilters = prevFilters.filter(
+                                (filter) => filter.id !== "brand"
+                              );
+                              return [
+                                ...newFilters,
+                                {
+                                  id: "brand",
+                                  value: updatedBrandFilter,
+                                },
+                              ];
+                            });
+                            return updatedBrandFilter;
+                          });
+                        }}
+                      />
+                      <span>{item.name}</span>
+                    </Button>
+                  ))}
+                </div>
               </PopoverContent>
             </Popover>
           )}

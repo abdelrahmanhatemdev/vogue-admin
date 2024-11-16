@@ -1,6 +1,127 @@
- border-input bg-transparent 
- px-3 py-1   shadow-sm  file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground    disabled:cursor-not-allowed 
+import { useState } from "react";
 
+function App() {
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
-gap-2 whitespace-nowrap  font-medium     disabled:pointer-events-none  
-[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow  p-1   min-h-auto items-center justify-between bg-inherit hover:bg-inherit     
+  const handleCheckboxChange = (filterStateSetter: React.Dispatch<React.SetStateAction<string[]>>, value: string) => {
+    filterStateSetter((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    );
+  };
+
+  // Available options for filters
+  const brands = ["Brand A", "Brand B", "Brand C"];
+  const categories = ["Category X", "Category Y", "Category Z"];
+  const sizes = ["Small", "Medium", "Large"];
+
+  const columns = [
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "brand",
+      header: "Brand",
+      filterFn: arrayFilter, // Attach the custom filter
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
+      filterFn: arrayFilter, // Attach the custom filter
+    },
+    {
+      accessorKey: "size",
+      header: "Size",
+      filterFn: arrayFilter, // Attach the custom filter
+    },
+  ];
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnFilters: [
+        { id: "brand", value: selectedBrands },
+        { id: "category", value: selectedCategories },
+        { id: "size", value: selectedSizes },
+      ],
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+  });
+
+  return (
+    <div>
+      {/* Render Brand Filters */}
+      <div>
+        <h3>Filter by Brand</h3>
+        {brands.map((brand) => (
+          <label key={brand} className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={selectedBrands.includes(brand)}
+              onChange={() => handleCheckboxChange(setSelectedBrands, brand)}
+            />
+            <span>{brand}</span>
+          </label>
+        ))}
+      </div>
+
+      {/* Render Category Filters */}
+      <div>
+        <h3>Filter by Category</h3>
+        {categories.map((category) => (
+          <label key={category} className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes(category)}
+              onChange={() => handleCheckboxChange(setSelectedCategories, category)}
+            />
+            <span>{category}</span>
+          </label>
+        ))}
+      </div>
+
+      {/* Render Size Filters */}
+      <div>
+        <h3>Filter by Size</h3>
+        {sizes.map((size) => (
+          <label key={size} className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={selectedSizes.includes(size)}
+              onChange={() => handleCheckboxChange(setSelectedSizes, size)}
+            />
+            <span>{size}</span>
+          </label>
+        ))}
+      </div>
+
+      {/* Render Table */}
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>{header.isPlaceholder ? null : header.renderHeader()}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>{cell.renderCell()}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default App;

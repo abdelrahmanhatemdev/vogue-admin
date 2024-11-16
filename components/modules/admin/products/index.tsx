@@ -42,9 +42,6 @@ function Products({ data }: { data: Product[] }) {
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
-  console.log("data", data);
-  
-
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
   const sortedOptimisicData = useMemo(() => {
@@ -142,6 +139,11 @@ function Products({ data }: { data: Product[] }) {
           );
         },
         enableSorting: false,
+        filterFn: (row, columnId, filterValue) => {
+          const rowValue = row.getValue(columnId)
+          
+          return filterValue.length === 0 || filterValue.includes(rowValue)
+        }
       },
       {
         id: "categories",
@@ -149,18 +151,14 @@ function Products({ data }: { data: Product[] }) {
         header: "categories",
         cell: ({ row }) => {
           const item: Product = row.original;
-          const itemCatsIds = item.categories;
+          const itemCatsIds = item.categories as string[];
           const itemCats: Category[] = [];
 
-          if (categories) {
-            if (itemCatsIds?.length > 0 && categories?.length > 0) {
-              for (let i = 0; i < itemCatsIds.length; i++) {
-                const cat = categories.find(
-                  ({ id }) => id === itemCatsIds[i]
-                );
-                if (cat) {
-                  itemCats.push(cat);
-                }
+          if (itemCatsIds.length > 0 && categories.length > 0) {
+            for (let i = 0; i < itemCatsIds.length; i++) {
+              const cat = categories.find(({ id }) => id === itemCatsIds[i]);
+              if (cat) {
+                itemCats.push(cat);
               }
             }
           }
@@ -184,6 +182,7 @@ function Products({ data }: { data: Product[] }) {
           );
         },
         enableSorting: false,
+        filterFn: "includesString"
       },
       {
         id: "subProducts",
