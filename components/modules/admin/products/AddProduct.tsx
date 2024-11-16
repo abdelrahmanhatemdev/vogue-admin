@@ -70,7 +70,7 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories } = useData("categories");
+  const { data: categories }  = useData("categories");
   const { data: brands } = useData("brands");
 
   const form = useForm<z.infer<typeof ProductSchema>>({
