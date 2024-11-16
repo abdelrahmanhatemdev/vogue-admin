@@ -49,7 +49,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import { PiPlusCircle } from "react-icons/pi";
-import { useBrands, useCategories } from "@/hooks/productsHooks";
+import { useData } from "@/hooks/useData";
 
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
@@ -86,8 +86,8 @@ function ProductList({
   addOptimisticData,
 }: ProductListProps<Product>) {
 
-  const {data: categories} = useCategories()
-  const {data: brands} = useBrands()
+  const { data: categories } = useData("categories");
+  const { data: brands } = useData("brands");
 
 
 

@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useBrands, useCategories } from "@/hooks/productsHooks";
+import { useData } from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,8 +70,8 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories } = useCategories();
-  const { data: brands } = useBrands();
+  const { data: categories } = useData("categories");
+  const { data: brands } = useData("brands");
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),

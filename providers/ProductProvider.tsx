@@ -2,7 +2,7 @@
 import { getBrands } from "@/actions/Brand";
 import { getCategories } from "@/actions/Category";
 import { getColors } from "@/actions/Color";
-import ProductContext from "@/context/ProductContext";
+import ProductContext from "@/context/DataContext";
 import { ReactNode, useEffect, useState } from "react";
 
 const ProductProvider = ({ children }: { children: ReactNode }) => {
