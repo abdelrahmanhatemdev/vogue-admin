@@ -182,6 +182,7 @@ function AddProduct({
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
+                  asChild
                 />
               ) : (
                 <Link href={`/admin/categories`} className="block text-sm">

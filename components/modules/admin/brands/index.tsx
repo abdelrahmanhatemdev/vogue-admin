@@ -33,9 +33,6 @@ const BrandList = dynamic(
   () => import("@/components/modules/admin/brands/BrandList"),
   { loading: Loading }
 );
-const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
-  loading: Loading,
-});
 
 function Brands({ data }: { data: Brand[] }) {
   const [modalOpen, setModalOpen] = useState(false);

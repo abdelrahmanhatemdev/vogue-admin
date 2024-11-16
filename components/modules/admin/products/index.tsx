@@ -17,9 +17,6 @@ const AdminBreadcrumb = dynamic(
   () => import("@/components/custom/AdminBreadcrumb"),
   { loading: Loading }
 );
-const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
-  loading: Loading,
-});
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
@@ -141,6 +138,7 @@ function Products({ data }: { data: Product[] }) {
             </Link>
           );
         },
+        enableSorting: false,
       },
       {
         id: "categories",
@@ -149,7 +147,7 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: Product = row.original;
           const itemCatsSlugs = item.categories;
-          let itemCats: Category[] = [];
+          const itemCats: Category[] = [];
 
           if (categories) {
             if (itemCatsSlugs?.length > 0 && categories?.length > 0) {
@@ -157,7 +155,9 @@ function Products({ data }: { data: Product[] }) {
                 const cat = categories.find(
                   ({ slug }) => slug === itemCatsSlugs[i]
                 );
-                cat && itemCats.push(cat);
+                if (cat) {
+                  itemCats.push(cat)
+                }
               }
             }
           }
@@ -194,6 +194,7 @@ function Products({ data }: { data: Product[] }) {
 
           return <span>{subProductsCount}</span>;
         },
+        enableSorting: false,
       },
       {
         id: "actions",

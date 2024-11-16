@@ -70,13 +70,6 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-
-
-
-"Solid213"
-updatedAt
-: 
-"2024-11-15T16:12:37.473Z"
   const {
     id,
     name,

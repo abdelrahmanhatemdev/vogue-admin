@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 const HomeModule = dynamic(
-    () => import("@/components/modules/home")
+    () => import("@/components/modules/website")
   );
 
 export default function Home() {

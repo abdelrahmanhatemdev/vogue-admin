@@ -16,9 +16,6 @@ const AdminBreadcrumb = dynamic(
   () => import("@/components/custom/AdminBreadcrumb"),
   { loading: Loading }
 );
-const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
-  loading: Loading,
-});
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });

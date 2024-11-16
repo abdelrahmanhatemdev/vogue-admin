@@ -1,11 +1,8 @@
 "use client";
-import { auth } from "@/firebase/firebaseClient.config";
-import useAuth from "@/hooks/useAuth";
 import { loginUser } from "@/lib/authService";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 const Login = () => {
-  const checkUser = useAuth();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

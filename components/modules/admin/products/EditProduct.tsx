@@ -152,6 +152,7 @@ function EditProduct({
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
                   defaultValue={field.value}
+                  asChild
                 />
               ) : (
                 <Link href={`/admin/categories`} className="block text-sm">

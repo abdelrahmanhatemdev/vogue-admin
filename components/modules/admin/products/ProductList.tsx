@@ -48,6 +48,9 @@ import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
+import { PiPlusCircle } from "react-icons/pi";
+import { useBrands, useCategories } from "@/hooks/productsHooks";
+
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -82,6 +85,12 @@ function ProductList({
   setModalOpen,
   addOptimisticData,
 }: ProductListProps<Product>) {
+
+  const {data: categories} = useCategories()
+  const {data: brands} = useBrands()
+
+
+
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -191,7 +200,7 @@ function ProductList({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 flex-col lg:flex-row flex-wrap">
-        <div>
+        <div className="flex gap-2 items-center">
           {isData && (
             <Input
               className="bg-background"
@@ -202,6 +211,11 @@ function ProductList({
               }
             />
           )}
+          <Button variant={"ghost"} className="border-dashed border-main-300 border-2 font-bold">
+           <PiPlusCircle size={30} />
+           
+           Brands
+          </Button>
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
