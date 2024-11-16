@@ -206,11 +206,11 @@ function ProductList({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between gap-4 flex-col lg:flex-row flex-wrap">
-        <div className="flex gap-2 items-center">
+      <div className="grid grid-cols-[80%_200px] items-start">
+        <div className="flex gap-2 items-center flex-wrap">
           {isData && (
             <Input
-              className="bg-background"
+              className="bg-background min-w-24 w-44"
               type="text"
               placeholder="Filter Products..."
               onChange={(e) =>
@@ -229,38 +229,6 @@ function ProductList({
               }
             />
           )}
-          {/* {isData && categories.length > 0 && (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"ghost"}
-                  className="border-dashed border-main-300 border-2 font-bold"
-                >
-                  <PiPlusCircle size={30} />
-                  Categories
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-40 p-2" asChild>
-                <div className="flex flex-col gap-2 ">
-                  {categories.map((item) => (
-                    <Button
-                      variant={"ghost"}
-                      className="w-full flex gap-2 justify-start items-center"
-                      onClick={() => {
-                        setColumnFilters([
-                          { id: "categories", value: item.id },
-                        ]);
-                      }}
-                      key={item.id}
-                    >
-                      <Checkbox />
-                      <span>{item.name}</span>
-                    </Button>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-          )} */}
           {isData && brands.length > 0 && (
             <>
               <Popover>
@@ -276,14 +244,20 @@ function ProductList({
                     {selectedBrands.length > 0 && (
                       <>
                         <Separator orientation="vertical" />
-                        {selectedBrands.map((id) => (
-                          <span
-                            key={id}
-                            className="bg-main-200 p-1 rounded-md text-xs"
-                          >
-                            {brands.find((b) => b.id === id)?.name}
+                        {selectedBrands.length > 2 ? (
+                          <span className="bg-main-200 p-1 rounded-md text-xs">
+                            {selectedBrands.length} Selected
                           </span>
-                        ))}
+                        ) : (
+                          selectedBrands.map((id) => (
+                            <span
+                              key={id}
+                              className="bg-main-200 p-1 rounded-md text-xs"
+                            >
+                              {brands.find((b) => b.id === id)?.name}
+                            </span>
+                          ))
+                        )}
                       </>
                     )}
                   </Button>
@@ -292,7 +266,7 @@ function ProductList({
                   <div className="flex flex-col gap-2 ">
                     {brands.map((item) => (
                       <Button
-                       className="w-full flex gap-2 justify-start items-center cursor-pointer"
+                        className="w-full flex gap-2 justify-start items-center cursor-pointer"
                         variant={"ghost"}
                         key={item.id}
                         onClick={() =>
@@ -346,14 +320,20 @@ function ProductList({
                     {selectedCategories.length > 0 && (
                       <>
                         <Separator orientation="vertical" />
-                        {selectedCategories.map((id) => (
-                          <span
-                            key={id}
-                            className="bg-main-200 p-1 rounded-md text-xs"
-                          >
-                            {categories.find((c) => c.id === id)?.name}
+                        {selectedCategories.length > 2 ? (
+                          <span className="bg-main-200 p-1 rounded-md text-xs">
+                            {selectedCategories.length} Selected
                           </span>
-                        ))}
+                        ) : (
+                          selectedCategories.map((id) => (
+                            <span
+                              key={id}
+                              className="bg-main-200 p-1 rounded-md text-xs"
+                            >
+                              {categories.find((c) => c.id === id)?.name}
+                            </span>
+                          ))
+                        )}
                       </>
                     )}
                   </Button>
@@ -362,7 +342,7 @@ function ProductList({
                   <div className="flex flex-col gap-2 ">
                     {categories.map((item) => (
                       <Button
-                       className="w-full flex gap-2 justify-start items-center cursor-pointer"
+                        className="w-full flex gap-2 justify-start items-center cursor-pointer"
                         variant={"ghost"}
                         key={item.id}
                         onClick={() =>
@@ -401,21 +381,38 @@ function ProductList({
               </Popover>
             </>
           )}
-          {selectedBrands.length > 0 && (
+          {(selectedBrands.length > 0 || selectedCategories.length > 0 ) && (
             <Button
               variant={"ghost"}
               onClick={() => {
-                setSelectedBrands(() => {
-                  const updatedFilter: string[] = [];
-
-                  setColumnFilters((prevFilters) => {
-                    const newFilters = prevFilters.filter(
-                      (filter) => filter.id !== "brand"
-                    );
-                    return [...newFilters];
+                if (selectedBrands.length > 0 ) {
+                  setSelectedBrands(() => {
+                    const updatedFilter: string[] = [];
+  
+                    setColumnFilters((prevFilters) => {
+                      const newFilters = prevFilters.filter(
+                        (filter) => filter.id !== "brand"
+                      );
+                      return [...newFilters];
+                    });
+                    return updatedFilter;
                   });
-                  return updatedFilter;
-                });
+                }
+                if (selectedCategories.length > 0 ) {
+                  setSelectedCategories(() => {
+                    const updatedFilter: string[] = [];
+  
+                    setColumnFilters((prevFilters) => {
+                      const newFilters = prevFilters.filter(
+                        (filter) => filter.id !== "categories"
+                      );
+                      return [...newFilters];
+                    });
+                    return updatedFilter;
+                  });
+                }
+                
+                
               }}
               className="flex gap-1 rounded-md p-2 font-bold"
             >
