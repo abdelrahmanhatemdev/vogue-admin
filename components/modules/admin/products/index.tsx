@@ -138,11 +138,25 @@ function Products({ data }: { data: Product[] }) {
             </Link>
           );
         },
-        enableSorting: false,
         filterFn: (row, columnId, filterValue) => {
-          const rowValue = row.getValue(columnId)
-          return filterValue.length === 0 || filterValue.includes(rowValue)
-        }, 
+          const rowValue = row.getValue(columnId);
+          return filterValue.length === 0 || filterValue.includes(rowValue);
+        },
+        sortingFn: (rowA, rowB) => {
+          const brandA = brands
+            .find((b) => b.id === rowA.original.brand)
+            ?.name?.toLowerCase();
+          const brandB = brands
+            ?.find((b) => b.id === rowB.original.brand)
+            ?.name?.toLowerCase();
+
+          if (brandA && brandB) {
+            if (brandA > brandB) return 1;
+            if (brandA < brandB) return -1;
+          }
+
+          return 0;
+        },
       },
       {
         id: "categories",
@@ -180,11 +194,44 @@ function Products({ data }: { data: Product[] }) {
             <></>
           );
         },
-        enableSorting: false,
         filterFn: (row, columnId, filterValue) => {
           const rowValue: string[] = row.getValue(columnId);
-          return filterValue.length === 0 || rowValue.some(item => filterValue.includes(item))
-        }
+          return (
+            filterValue.length === 0 ||
+            rowValue.some((item) => filterValue.includes(item))
+          );
+        },
+        sortingFn: (rowA, rowB) => {
+          if (categories) {
+            const categoriesRowA = rowA.original.categories as string[];
+            const categoriesA = categoriesRowA
+              .map((id) =>
+                categories.find((c) => c.id === id)?.name?.toLowerCase()
+              )
+              .sort();
+
+            const categoriesRowB = rowB.original.categories as string[];
+            const categoriesB = categoriesRowB
+              .map((id) =>
+                categories.find((c) => c.id === id)?.name?.toLowerCase()
+              )
+              .sort();
+
+            if (!categoriesA.length && !categoriesB.length) return 0;
+            if (!categoriesA.length) return 1;
+            if (!categoriesB.length) return -1;
+
+            if (
+              typeof categoriesA[0] !== "undefined" &&
+              typeof categoriesB[0] !== "undefined"
+            ) {
+              if (categoriesA[0] < categoriesB[0]) return -1;
+              if (categoriesA[0] > categoriesB[0]) return 1;
+            }
+          }
+
+          return 0;
+        },
       },
       {
         id: "subProducts",
@@ -196,9 +243,8 @@ function Products({ data }: { data: Product[] }) {
             ? item.subProducts.length
             : 0;
 
-          return <span>{subProductsCount}</span>;
+          return subProductsCount;
         },
-        enableSorting: false,
       },
       {
         id: "actions",
