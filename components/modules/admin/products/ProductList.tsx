@@ -211,7 +211,18 @@ function ProductList({
               type="text"
               placeholder="Filter Products..."
               onChange={(e) =>
-                setColumnFilters([{ id: "name", value: e.target.value }])
+                setColumnFilters((prevFilters) => {
+                  const newFilters = prevFilters.filter(
+                    (filter) => filter.id !== "name"
+                  );
+                  return [
+                    ...newFilters,
+                    {
+                      id: "name",
+                      value: e.target.value ,
+                    },
+                  ];
+                })
               }
             />
           )}
