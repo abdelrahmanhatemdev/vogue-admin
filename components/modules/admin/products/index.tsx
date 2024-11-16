@@ -229,7 +229,6 @@ function Products({ data }: { data: Product[] }) {
               if (categoriesA[0] > categoriesB[0]) return 1;
             }
           }
-
           return 0;
         },
       },
@@ -242,7 +241,6 @@ function Products({ data }: { data: Product[] }) {
           const subProductsCount: number = item?.subProducts
             ? item.subProducts.length
             : 0;
-
           return subProductsCount;
         },
       },

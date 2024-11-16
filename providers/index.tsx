@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { AuthProvider } from "./AuthProvider";
-import ProductProvider from "./ProductProvider";
+import DataProvider from "./DataProvider";
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <AuthProvider>
-      <ProductProvider>{children}</ProductProvider>
+      <DataProvider>{children}</DataProvider>
     </AuthProvider>
   );
 };

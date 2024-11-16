@@ -2,10 +2,10 @@
 import { getBrands } from "@/actions/Brand";
 import { getCategories } from "@/actions/Category";
 import { getColors } from "@/actions/Color";
-import ProductContext from "@/context/DataContext";
+import DataContext from "@/context/DataContext";
 import { ReactNode, useEffect, useState } from "react";
 
-const ProductProvider = ({ children }: { children: ReactNode }) => {
+const DataProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState([]);
   const [colors, setColors] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -29,7 +29,7 @@ const ProductProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <ProductContext.Provider
+    <DataContext.Provider
       value={{
         categories: { data: categories, loading: categoriesLoading },
         brands: { data: brands, loading: brandsLoading },
@@ -37,7 +37,7 @@ const ProductProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </ProductContext.Provider>
+    </DataContext.Provider>
   );
 };
-export default ProductProvider;
+export default DataProvider;
