@@ -142,7 +142,7 @@ function Products({ data }: { data: Product[] }) {
         filterFn: (row, columnId, filterValue) => {
           const rowValue = row.getValue(columnId)
           return filterValue.length === 0 || filterValue.includes(rowValue)
-        }
+        }, 
       },
       {
         id: "categories",

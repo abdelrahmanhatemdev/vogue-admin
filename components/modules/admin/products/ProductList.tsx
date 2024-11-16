@@ -206,7 +206,7 @@ function ProductList({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-[80%_200px] items-start">
+      <div className="grid grid-cols-[80%_20%] items-start">
         <div className="flex gap-2 items-center flex-wrap">
           {isData && (
             <Input
