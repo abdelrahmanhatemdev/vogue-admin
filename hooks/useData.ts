@@ -17,4 +17,4 @@ function useData<T extends keyof DataContextType>(tag: T): DataContextType[T] {
   };
 }
 
-export { useData };
+export default useData;

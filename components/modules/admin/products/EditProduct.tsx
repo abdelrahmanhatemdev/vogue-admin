@@ -19,7 +19,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
-import { useData } from "@/hooks/useData";
+import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -146,7 +146,7 @@ function EditProduct({
               {categories ? (
                 <MultiSelect
                   options={categories.map((item) => ({
-                    value: item.slug,
+                    value: item.id,
                     label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
                   }))}
                   onValueChange={field.onChange}
@@ -180,7 +180,7 @@ function EditProduct({
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map((item) => (
-                      <SelectItem value={`${item.slug}`} key={item.id}>
+                      <SelectItem value={`${item.id}`} key={item.id}>
                         {item.name}
                       </SelectItem>
                     ))}

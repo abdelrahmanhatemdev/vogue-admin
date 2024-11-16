@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useData } from "@/hooks/useData";
+import useData  from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
@@ -177,7 +177,7 @@ function AddProduct({
               {categories ? (
                 <MultiSelect
                   options={categories.map((item) => ({
-                    value: item.slug,
+                    value: item.id,
                     label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
                   }))}
                   onValueChange={field.onChange}
@@ -210,7 +210,7 @@ function AddProduct({
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map((item) => (
-                      <SelectItem value={`${item.slug}`} key={item.id}>
+                      <SelectItem value={`${item.id}`} key={item.id}>
                         {item.name}
                       </SelectItem>
                     ))}

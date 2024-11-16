@@ -49,8 +49,13 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import { PiPlusCircle } from "react-icons/pi";
-import { useData } from "@/hooks/useData";
-
+import useData from "@/hooks/useData";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -85,11 +90,8 @@ function ProductList({
   setModalOpen,
   addOptimisticData,
 }: ProductListProps<Product>) {
-
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
-
-
 
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
@@ -211,11 +213,62 @@ function ProductList({
               }
             />
           )}
-          <Button variant={"ghost"} className="border-dashed border-main-300 border-2 font-bold">
-           <PiPlusCircle size={30} />
-           
-           Brands
-          </Button>
+          {isData && categories.length > 0 && (
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  variant={"ghost"}
+                  className="border-dashed border-main-300 border-2 font-bold"
+                >
+                  <PiPlusCircle size={30} />
+                  Categories
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="flex flex-col gap-2 w-40 p-2">
+                {categories.map((item) => (
+                  <Button
+                    variant={"ghost"}
+                    className="w-full flex gap-2 justify-start items-center"
+                    onClick={() =>
+                      setColumnFilters([{ id: "categories", value: [item.id] }])
+                    }
+                    key={item.id}
+                  >
+                    <Checkbox />
+                    <span>{item.name}</span>
+                  </Button>
+                ))}
+              </PopoverContent>
+            </Popover>
+          )}
+          {isData && categories.length > 0 && (
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  variant={"ghost"}
+                  className="border-dashed border-main-300 border-2 font-bold"
+                >
+                  <PiPlusCircle size={30} />
+                  Brands
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="flex flex-col gap-2 w-40 p-2">
+                {brands.map((item) => (
+                  <Button
+                    variant={"ghost"}
+                    className="w-full flex gap-2 justify-start items-center"
+                    onClick={() =>
+                      setColumnFilters([{ id: "brand", value: item.id }])
+                    }
+                    key={item.id}
+                  >
+                    <Checkbox />
+                    <span>{item.name}</span>
+                  </Button>
+                ))}
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (

@@ -8,7 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import { useData } from "@/hooks/useData";
+import useData from "@/hooks/useData";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -41,6 +41,9 @@ function Products({ data }: { data: Product[] }) {
 
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
+
+  console.log("data", data);
+  
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
@@ -122,7 +125,7 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: Product = row.original;
           const brand = brands
-            ? brands.find(({ slug }) => slug === item.brand)
+            ? brands.find(({ id }) => id === item.brand)
             : undefined;
 
           return (
@@ -146,17 +149,17 @@ function Products({ data }: { data: Product[] }) {
         header: "categories",
         cell: ({ row }) => {
           const item: Product = row.original;
-          const itemCatsSlugs = item.categories;
+          const itemCatsIds = item.categories;
           const itemCats: Category[] = [];
 
           if (categories) {
-            if (itemCatsSlugs?.length > 0 && categories?.length > 0) {
-              for (let i = 0; i < itemCatsSlugs.length; i++) {
+            if (itemCatsIds?.length > 0 && categories?.length > 0) {
+              for (let i = 0; i < itemCatsIds.length; i++) {
                 const cat = categories.find(
-                  ({ slug }) => slug === itemCatsSlugs[i]
+                  ({ id }) => id === itemCatsIds[i]
                 );
                 if (cat) {
-                  itemCats.push(cat)
+                  itemCats.push(cat);
                 }
               }
             }
