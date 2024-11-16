@@ -141,7 +141,6 @@ function Products({ data }: { data: Product[] }) {
         enableSorting: false,
         filterFn: (row, columnId, filterValue) => {
           const rowValue = row.getValue(columnId)
-          
           return filterValue.length === 0 || filterValue.includes(rowValue)
         }
       },
@@ -182,7 +181,10 @@ function Products({ data }: { data: Product[] }) {
           );
         },
         enableSorting: false,
-        filterFn: "includesString"
+        filterFn: (row, columnId, filterValue) => {
+          const rowValue: string[] = row.getValue(columnId);
+          return filterValue.length === 0 || rowValue.some(item => filterValue.includes(item))
+        }
       },
       {
         id: "subProducts",

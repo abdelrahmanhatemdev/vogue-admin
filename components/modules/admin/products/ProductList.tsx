@@ -120,6 +120,7 @@ function ProductList({
   const [isPending, startTransition] = useTransition();
 
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const table = useReactTable({
     data,
@@ -296,7 +297,7 @@ function ProductList({
                         key={item.id}
                         onClick={() =>
                           setSelectedBrands((prev) => {
-                            const updatedBrandFilter = prev.includes(item.id)
+                            const updatedFilter = prev.includes(item.id)
                               ? prev.filter((b) => b !== item.id)
                               : [...prev, item.id];
 
@@ -308,11 +309,11 @@ function ProductList({
                                 ...newFilters,
                                 {
                                   id: "brand",
-                                  value: updatedBrandFilter,
+                                  value: updatedFilter,
                                 },
                               ];
                             });
-                            return updatedBrandFilter;
+                            return updatedFilter;
                           })
                         }
                         asChild
@@ -330,12 +331,82 @@ function ProductList({
               </Popover>
             </>
           )}
+          {isData && categories.length > 0 && (
+            <>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    className="border-dashed border-main-300 border-2"
+                  >
+                    <div className="flex items-center justify-center gap-1 font-bold">
+                      <PiPlusCircle size={30} />
+                      <span>categories</span>
+                    </div>
+                    {selectedCategories.length > 0 && (
+                      <>
+                        <Separator orientation="vertical" />
+                        {selectedCategories.map((id) => (
+                          <span
+                            key={id}
+                            className="bg-main-200 p-1 rounded-md text-xs"
+                          >
+                            {categories.find((c) => c.id === id)?.name}
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-2">
+                  <div className="flex flex-col gap-2 ">
+                    {categories.map((item) => (
+                      <Button
+                       className="w-full flex gap-2 justify-start items-center cursor-pointer"
+                        variant={"ghost"}
+                        key={item.id}
+                        onClick={() =>
+                          setSelectedCategories((prev) => {
+                            const updatedFilter = prev.includes(item.id)
+                              ? prev.filter((c) => c !== item.id)
+                              : [...prev, item.id];
+
+                            setColumnFilters((prevFilters) => {
+                              const newFilters = prevFilters.filter(
+                                (filter) => filter.id !== "categories"
+                              );
+                              return [
+                                ...newFilters,
+                                {
+                                  id: "categories",
+                                  value: updatedFilter,
+                                },
+                              ];
+                            });
+                            return updatedFilter;
+                          })
+                        }
+                        asChild
+                      >
+                        <div>
+                          <Checkbox
+                            checked={selectedCategories.includes(item.id)}
+                          />
+                          <span>{item.name}</span>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </>
+          )}
           {selectedBrands.length > 0 && (
             <Button
               variant={"ghost"}
               onClick={() => {
                 setSelectedBrands(() => {
-                  const updatedBrandFilter: string[] = [];
+                  const updatedFilter: string[] = [];
 
                   setColumnFilters((prevFilters) => {
                     const newFilters = prevFilters.filter(
@@ -343,7 +414,7 @@ function ProductList({
                     );
                     return [...newFilters];
                   });
-                  return updatedBrandFilter;
+                  return updatedFilter;
                 });
               }}
               className="flex gap-1 rounded-md p-2 font-bold"
