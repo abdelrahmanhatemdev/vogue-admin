@@ -153,6 +153,7 @@ function EditProduct({
                   placeholder="Select Categories"
                   defaultValue={field.value}
                   asChild
+                  className="cursor-pointer"
                 />
               ) : (
                 <Link href={`/admin/categories`} className="block text-sm">
