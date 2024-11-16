@@ -56,6 +56,8 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import { X } from "lucide-react";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -219,7 +221,7 @@ function ProductList({
                     ...newFilters,
                     {
                       id: "name",
-                      value: e.target.value ,
+                      value: e.target.value,
                     },
                   ];
                 })
@@ -259,27 +261,40 @@ function ProductList({
             </Popover>
           )} */}
           {isData && brands.length > 0 && (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"ghost"}
-                  className="border-dashed border-main-300 border-2 font-bold"
-                >
-                  <PiPlusCircle size={30} />
-                  Brands
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-40 p-2" asChild>
-                <div className="flex flex-col gap-2 ">
-                  {brands.map((item) => (
-                    <Button
-                      variant={"ghost"}
-                      className="w-full flex gap-2 justify-start items-center"
-                      key={item.id}
-                    >
-                      <Checkbox
-                        checked={selectedBrands.includes(item.id)}
-                        onCheckedChange={() => {
+            <>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    className="border-dashed border-main-300 border-2"
+                  >
+                    <div className="flex items-center justify-center gap-1 font-bold">
+                      <PiPlusCircle size={30} />
+                      <span>Brands</span>
+                    </div>
+                    {selectedBrands.length > 0 && (
+                      <>
+                        <Separator orientation="vertical" />
+                        {selectedBrands.map((id) => (
+                          <span
+                            key={id}
+                            className="bg-main-200 p-1 rounded-md text-xs"
+                          >
+                            {brands.find((b) => b.id === id)?.name}
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-2">
+                  <div className="flex flex-col gap-2 ">
+                    {brands.map((item) => (
+                      <Button
+                       className="w-full flex gap-2 justify-start items-center cursor-pointer"
+                        variant={"ghost"}
+                        key={item.id}
+                        onClick={() =>
                           setSelectedBrands((prev) => {
                             const updatedBrandFilter = prev.includes(item.id)
                               ? prev.filter((b) => b !== item.id)
@@ -298,15 +313,44 @@ function ProductList({
                               ];
                             });
                             return updatedBrandFilter;
-                          });
-                        }}
-                      />
-                      <span>{item.name}</span>
-                    </Button>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
+                          })
+                        }
+                        asChild
+                      >
+                        <div>
+                          <Checkbox
+                            checked={selectedBrands.includes(item.id)}
+                          />
+                          <span>{item.name}</span>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </>
+          )}
+          {selectedBrands.length > 0 && (
+            <Button
+              variant={"ghost"}
+              onClick={() => {
+                setSelectedBrands(() => {
+                  const updatedBrandFilter: string[] = [];
+
+                  setColumnFilters((prevFilters) => {
+                    const newFilters = prevFilters.filter(
+                      (filter) => filter.id !== "brand"
+                    );
+                    return [...newFilters];
+                  });
+                  return updatedBrandFilter;
+                });
+              }}
+              className="flex gap-1 rounded-md p-2 font-bold"
+            >
+              <span> Reset</span>
+              <X />
+            </Button>
           )}
         </div>
         <div className="flex items-center justify-end gap-2">
