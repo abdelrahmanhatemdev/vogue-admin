@@ -57,7 +57,7 @@ export async function GET(
 }
 
 export async function generateStaticParams() {
-  const list: Subproduct[] = await getSubProducts();
+  const list: Subproduct[] = await getSubproducts();
 
   return list.map(({ sku }: { sku: string }) => ({ sku }));
 }

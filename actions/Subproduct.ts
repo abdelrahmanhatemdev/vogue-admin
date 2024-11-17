@@ -5,18 +5,18 @@ import { revalidateTag } from "next/cache";
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 
-export const getSubProducts = async () => {
+export const getSubproducts = async () => {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: SubProduct[] = [];
+    let data: Subproduct[] = [];
 
     if (res) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: SubProduct, b: SubProduct) =>
+      const sortedData = data?.sort((a: Subproduct, b: Subproduct) =>
         b.updatedAt.localeCompare(a.updatedAt)
       );
 
@@ -28,7 +28,7 @@ export const getSubProducts = async () => {
   }
 }
 
-export async function getSubProductBySlug(slug: string) {
+export async function getSubproductBySlug(slug: string) {
   try {
     const res = await fetch(`${apiURL}/${slug}`, {
       next: { tags: [tag] },
@@ -42,7 +42,7 @@ export async function getSubProductBySlug(slug: string) {
   }
 }
 
-export async function addSubProduct(data: Partial<SubProduct>) {
+export async function addSubproduct(data: Partial<Subproduct>) {
   return api
     .post(apiURL, data)
     .then((res) => {
@@ -60,7 +60,7 @@ export async function addSubProduct(data: Partial<SubProduct>) {
     });
 }
 
-export async function editSubProduct(data: Partial<SubProduct>) {
+export async function editSubproduct(data: Partial<Subproduct>) {
   return api
     .put(apiURL, data)
     .then((res) => {
@@ -78,7 +78,7 @@ export async function editSubProduct(data: Partial<SubProduct>) {
     });
 }
 
-export async function deleteSubProduct(data: { id: string }) {
+export async function deleteSubproduct(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
