@@ -63,17 +63,21 @@ interface Product {
   // tags: Tag[];
 }
 
-interface SubProduct {
+interface Subproduct {
+  id: string;
   sku: string;
-  color: Color;
-  images: ProductImage[];
-  size: Size;
+  colors: Color[] | string[];
+  sizes: Size[] | string[];
   price: number;
   discount: number;
   qty: number;
   sold: number;
   featured: boolean;
   inStock: boolean;
+  createdAt: string;
+  updatedAt: string;
+  isPending?: !isPending;
+  // images: ProductImage[];
 }
 
 interface Paragraph {

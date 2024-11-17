@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, where, getDocs } from "firebase/firestore";
 import { dataCollection } from "../route";
-import { getProducts } from "@/actions/Product";
+import { getSubproducts } from "@/actions/Subproduct";
 
 export const dynamic = "force-static";
 
@@ -20,27 +20,31 @@ export async function GET(
 
     if (doc?.id) {
       const {
-        name,
-        slug,
-        brand,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
+        sku,
+        colors,
+        sizes,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
         createdAt,
         updatedAt,
-        subProducts
       } = doc.data();
-      const data: Product = {
+      const data: Subproduct = {
         id: doc.id,
-        name,
-        slug,
-        brand,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
+        sku,
+        colors,
+        sizes,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
         createdAt,
         updatedAt,
-        subProducts
       };
       return NextResponse.json({ data }, { status: 200 });
     }
@@ -53,7 +57,7 @@ export async function GET(
 }
 
 export async function generateStaticParams() {
-  const list: Product[] = await getProducts();
+  const list: Subproduct[] = await getSubProducts();
 
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  return list.map(({ sku }: { sku: string }) => ({ sku }));
 }

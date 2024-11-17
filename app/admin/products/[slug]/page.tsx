@@ -7,13 +7,14 @@ const Product = dynamic(
   { loading: Loading }
 );
 
-export default async function CatergoryPage(props: {
+export default async function ProductPage(props: {
   params: Promise<{ slug: string }>;
 }) {
   const params = await props.params;
 
   const { slug } = params;
 
-  const data: Product = await getProductBySlug(slug);
-  return <Product data={data} />;
+  const product: Product = await getProductBySlug(slug);
+  const subProducts = product?.subProducts ? product?.subProducts : []
+  return <Product subProducts={subProducts} product={product} />;
 }

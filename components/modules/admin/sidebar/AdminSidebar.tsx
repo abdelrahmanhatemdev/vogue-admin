@@ -82,7 +82,6 @@ function AdminSidebar() {
 
   // console.log("user", user);
 
-
   const currentPath = usePathname();
   return (
     <Sidebar
@@ -100,7 +99,22 @@ function AdminSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {SidebarLinks.map((link) => {
-                const isActive = currentPath === link.link;
+                const isActive =
+                  link.link !== "/admin"
+                    ? currentPath.startsWith(link.link)
+                    : false
+
+
+                console.log(
+                  "link.link",
+                  link.link,
+                  "link.title",
+                  link.title,
+                  "isActive",
+                  isActive, 
+                  "link.link !== /admin", 
+                  link.link !== "/admin"
+                );
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>
