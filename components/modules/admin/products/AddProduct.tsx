@@ -172,7 +172,7 @@ function AddProduct({
           control={form.control}
           name="categories"
           render={({ field }) => (
-            <FormItem className="lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Categories</FormLabel>
               {categories ? (
                 <MultiSelect
@@ -202,7 +202,7 @@ function AddProduct({
           control={form.control}
           name="brand"
           render={({ field }) => (
-            <FormItem className="lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>
               {brands ? (
                 <Select onValueChange={field.onChange} value={field.value}>

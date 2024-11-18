@@ -7,14 +7,14 @@ export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ slug: string }> }
+  props: { params: Promise<{ id: string }> }
 ) {
   const params = await props.params;
 
-  const { slug } = params;
+  const { id } = params;
 
   try {
-    const q = query(dataCollection, where("slug", "==", slug));
+    const q = query(dataCollection, where("id", "==", id));
     const querySnapshot = (await getDocs(q)).docs;
     const doc = querySnapshot[0];
 
@@ -59,5 +59,5 @@ export async function GET(
 export async function generateStaticParams() {
   const list: Subproduct[] = await getSubproducts();
 
-  return list.map(({ sku }: { sku: string }) => ({ sku }));
+  return list.map(({ id }: { id: string }) => ({ id }));
 }

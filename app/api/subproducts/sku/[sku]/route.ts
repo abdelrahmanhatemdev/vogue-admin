@@ -1,46 +1,50 @@
 import { NextResponse } from "next/server";
 import { query, where, getDocs } from "firebase/firestore";
-import { dataCollection } from "../route";
-import { getProducts } from "@/actions/Product";
+import { dataCollection } from "@/app/api/subproducts/route";
+import { getSubproducts } from "@/actions/Subproduct";
 
 export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ slug: string }> }
+  props: { params: Promise<{ sku: string }> }
 ) {
   const params = await props.params;
 
-  const { slug } = params;
+  const { sku } = params;
 
   try {
-    const q = query(dataCollection, where("slug", "==", slug));
+    const q = query(dataCollection, where("sku", "==", sku));
     const querySnapshot = (await getDocs(q)).docs;
     const doc = querySnapshot[0];
 
     if (doc?.id) {
       const {
-        name,
-        slug,
-        brand,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
+        sku,
+        colors,
+        sizes,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
         createdAt,
         updatedAt,
-        subproducts
       } = doc.data();
-      const data: Product = {
+      const data: Subproduct = {
         id: doc.id,
-        name,
-        slug,
-        brand,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
+        sku,
+        colors,
+        sizes,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
         createdAt,
         updatedAt,
-        subproducts
       };
       return NextResponse.json({ data }, { status: 200 });
     }
@@ -53,7 +57,7 @@ export async function GET(
 }
 
 export async function generateStaticParams() {
-  const list: Product[] = await getProducts();
+  const list: Subproduct[] = await getSubproducts();
 
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  return list.map(({ sku }: { sku: string }) => ({ sku }));
 }

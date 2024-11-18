@@ -67,7 +67,7 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddProduct = dynamic(() => import("./AddProduct"), {
+const AddProduct = dynamic(() => import("@/components/modules/admin/products/AddProduct"), {
   loading: Loading,
 });
 

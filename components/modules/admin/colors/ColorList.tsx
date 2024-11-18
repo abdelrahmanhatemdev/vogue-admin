@@ -58,7 +58,7 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddColor = dynamic(() => import("./AddColor"), { loading: Loading });
+const AddColor = dynamic(() => import("@/components/modules/admin/colors/AddColor"), { loading: Loading });
 
 interface ColorListProps<TData> {
   data: TData[];

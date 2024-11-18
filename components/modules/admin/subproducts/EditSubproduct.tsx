@@ -12,104 +12,69 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import z from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ProductSchema } from "./AddSubproduct";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { addSubProduct } from "@/actions/Subproduct";
+import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import isValidSlug from "@/lib/isValidSlug";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-export const SubProductSchema = z.object({
-  sku: z
-    .string()
-    .min(1, {
-      message: "SKU is required",
-    })
-    .max(12, {
-      message: "SKU should not have more than 20 charachters.",
-    }),
-  colors: z.array(z.string()).nonempty({
-    message: "Choose at least one color",
-  }),
-  sizes: z.array(z.string()).nonempty({
-    message: "Choose at least one size",
-  }),
-  price: z.string().min(1, {
-    message: "Price is required",
-  }),
-  discount: z
-    .string()
-    .min(1, {
-      message: "Discount is required",
-    })
-    .max(100, {
-      message: "Discount cannot be more than 100%",
-    }),
-  qty: z.number(),
-  sold: z.boolean(),
-  featured: z.boolean(),
-  inStock: z.boolean(),
-  descriptionDetails: z.string().min(1, {
-    message: "Description Details is required",
-  }),
-});
-
-function AddSubProduct({
+function EditProduct({
+  item,
   setModalOpen,
   addOptimisticData,
 }: {
+  item: Product;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
-    action: SubProduct[] | ((pendingState: SubProduct[]) => SubProduct[])
+    action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
-  const form = useForm<z.infer<typeof SubProductSchema>>({
-    resolver: zodResolver(SubProductSchema),
+  const form = useForm<z.infer<typeof ProductSchema>>({
+    resolver: zodResolver(ProductSchema),
     defaultValues: {
-      name: "",
-      categories: [],
-      brand: "",
-      descriptionBrief: "",
-      descriptionDetails: "",
+      name: item.name,
+      slug: item.slug,
+      categories: item?.categories as string[],
+      brand: item?.brand as string, 
+      descriptionBrief: item.descriptionBrief, 
+      descriptionDetails: item.descriptionDetails
     },
     mode: "onChange",
   });
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof SubProductSchema>) {
+  async function onSubmit(values: z.infer<typeof ProductSchema>) {
+
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
+      id: item.id,
       ...values,
-      createdAt: date,
+      createdAt: item.createdAt,
       updatedAt: date,
     };
-    const optimisticObj: SubProduct = {
+    const optimisticObj: Product = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,
     };
 
     startTransition(() => {
-      addOptimisticData((prev: SubProduct[]) => [...prev, optimisticObj]);
+      addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
-    const res: ActionResponse = await addSubProduct(data);
+    
+    const res: ActionResponse = await editProduct(data);
     notify(res);
   }
 
@@ -117,7 +82,7 @@ function AddSubProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2" 
       >
         <FormField
           control={form.control}
@@ -128,7 +93,7 @@ function AddSubProduct({
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormDescription>New SubProduct Name</FormDescription>
+              <FormDescription>Update Product Name</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -152,7 +117,7 @@ function AddSubProduct({
 
                       const checkSlug: boolean = await isValidSlug({
                         slug: e.target.value,
-                        collection: "SubProducts",
+                        collection: "products",
                       });
 
                       if (!checkSlug) {
@@ -167,7 +132,7 @@ function AddSubProduct({
                   />
                 </FormControl>
               </div>
-              <FormDescription>New SubProduct slug</FormDescription>
+              <FormDescription>Update Product slug</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -182,13 +147,11 @@ function AddSubProduct({
                 <MultiSelect
                   options={categories.map((item) => ({
                     value: item.id,
-                    label:
-                      item.name?.length > 5
-                        ? item.name.slice(0, 5) + ".."
-                        : item.name,
+                    label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
+                  defaultValue={field.value}
                   asChild
                   className="cursor-pointer"
                 />
@@ -200,7 +163,7 @@ function AddSubProduct({
                   </Button>
                 </Link>
               )}
-              <FormDescription>New SubProduct Categories</FormDescription>
+              <FormDescription>Update Product Categories</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -232,7 +195,7 @@ function AddSubProduct({
                   </Button>
                 </Link>
               )}
-              <FormDescription>New SubProduct Brand</FormDescription>
+              <FormDescription>Update Product Brand</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -246,9 +209,7 @@ function AddSubProduct({
               <FormControl>
                 <Textarea {...field} placeholder="Add Description Brief" />
               </FormControl>
-              <FormDescription>
-                New SubProduct Description Brief
-              </FormDescription>
+              <FormDescription>Update Product Description Brief</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -260,25 +221,19 @@ function AddSubProduct({
             <FormItem className="w-full">
               <FormLabel>Description Details</FormLabel>
               <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="Add Description Brief"
-                  rows={5}
-                />
+                <Textarea {...field} placeholder="Add Description Brief" rows={5}/>
               </FormControl>
-              <FormDescription>
-                New SubProduct Description Details
-              </FormDescription>
+              <FormDescription>Update Product Description Details</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <DialogFooter>
-          <Button type="submit">Add</Button>
+          <Button type="submit">Update</Button>
         </DialogFooter>
       </form>
     </Form>
   );
 }
 
-export default memo(AddSubProduct);
+export default memo(EditProduct);

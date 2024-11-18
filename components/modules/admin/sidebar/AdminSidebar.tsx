@@ -105,16 +105,16 @@ function AdminSidebar() {
                     : false
 
 
-                console.log(
-                  "link.link",
-                  link.link,
-                  "link.title",
-                  link.title,
-                  "isActive",
-                  isActive, 
-                  "link.link !== /admin", 
-                  link.link !== "/admin"
-                );
+                // console.log(
+                //   "link.link",
+                //   link.link,
+                //   "link.title",
+                //   link.title,
+                //   "isActive",
+                //   isActive, 
+                //   "link.link !== /admin", 
+                //   link.link !== "/admin"
+                // );
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>

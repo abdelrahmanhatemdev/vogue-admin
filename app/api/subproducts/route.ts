@@ -6,10 +6,11 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseClient.config";
+import { collectoinName } from "../products/route";
 
-export const collectoinName = "subproducts";
 export const dataCollection = collection(db, collectoinName);
 
 export const dynamic = "force-static";
@@ -64,15 +65,30 @@ export async function POST(request: Request) {
   const data = await request.json();
 
   try {
-    const docRef = await addDoc(dataCollection, data);
-    if (docRef?.id) {
-      return NextResponse.json(
-        { message: "Subproduct Added" },
-        { status: 200 }
-      );
+    if (data?.productId) {
+      const { productId, ...rest } = data;
+
+      const productRef = doc(db, collectoinName, productId);
+      const prductDocSnap = await getDoc(productRef);
+
+      if (prductDocSnap.exists()) {
+
+        console.log([...prductDocSnap.data()?.subproducts, { ...rest }]);
+        
+        await updateDoc(productRef, {
+          subproducts: [...prductDocSnap.data()?.subproducts, { ...rest }],
+        });
+
+        // console.log("checkUpdate",checkUpdate);
+
+        return NextResponse.json(
+          { message: "Subproduct Added" },
+          { status: 200 }
+        );
+      }
     }
 
-    return new Error("Something Wrong");
+    throw new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

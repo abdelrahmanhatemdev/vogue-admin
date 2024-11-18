@@ -57,7 +57,7 @@ interface Product {
   descriptionDetails: string;
   createdAt: string;
   updatedAt: string;
-  subProducts?: SupProduct[];
+  subproducts?: Subproduct[] | number;
   isPending?: !isPending;
   reviews?: Review[];
   // tags: Tag[];
@@ -76,7 +76,7 @@ interface Subproduct {
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
-  isPending?: !isPending;
+  isPending?: !boolean;
   // images: ProductImage[];
 }
 

@@ -57,7 +57,7 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddCategory = dynamic(() => import("./AddCategory"), {
+const AddCategory = dynamic(() => import("@/components/modules/admin/categories/AddCategory"), {
   loading: Loading,
 });
 

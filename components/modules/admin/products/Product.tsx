@@ -9,6 +9,7 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
+import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -20,23 +21,29 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(() => import("@/components/modules/admin/products/EditProduct"), {
-  loading: Loading,
-});
-const DeleteProduct = dynamic(() => import("@/components/modules/admin/products/DeleteProduct"), {
-  loading: Loading,
-});
+const EditProduct = dynamic(
+  () => import("@/components/modules/admin/products/EditProduct"),
+  {
+    loading: Loading,
+  }
+);
+const DeleteProduct = dynamic(
+  () => import("@/components/modules/admin/products/DeleteProduct"),
+  {
+    loading: Loading,
+  }
+);
 const SubproductList = dynamic(
-  () => import("@/components/modules/admin/products/subproducts/SubproductList"),
+  () => import("@/components/modules/admin/subproducts/SubproductList"),
   { loading: Loading }
 );
 
 function Product({
   product,
-  subProducts,
+  subproducts,
 }: {
   product: Product;
-  subProducts: SubProduct[];
+  subproducts: Subproduct[];
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -45,22 +52,21 @@ function Product({
     children: <></>,
   });
 
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 
-  const [optimisicData, addOptimisticData] = useOptimistic(subProducts);
+  const [optimisicData, addOptimisticData] = useOptimistic(subproducts);
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: SubProduct, b: SubProduct) =>
+      ? 
+      optimisicData.sort((a: Subproduct, b: Subproduct) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
   }, [optimisicData]);
 
-  const columns: ColumnDef<SubProduct>[] = useMemo(
+  const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
       {
         id: "select",
@@ -95,7 +101,7 @@ function Product({
         accessorKey: "sku",
         header: "SKU",
         cell: ({ row }) => {
-          const item: SubProduct = row.original;
+          const item: Subproduct = row.original;
           return (
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
@@ -115,7 +121,7 @@ function Product({
         accessorKey: "color",
         header: "color",
         cell: ({ row }) => {
-          const item: SubProduct = row.original;
+          const item: Subproduct = row.original;
           return (
             <div
               className={
@@ -142,12 +148,12 @@ function Product({
         accessorKey: "sizes",
         header: "Sizes",
         cell: ({ row }) => {
-          const item: SubProduct = row.original;
-          const itemSizes = row.original.sizes as string[];
+          const item: Subproduct = row.original;
+          const itemSizes = item.sizes as string[];
 
           return (
             <div className="rounded-lg flex gap-1 items-center">
-              {sizes &&
+              {sizes && itemSizes?.length > 0 &&
                 itemSizes.map((is) => {
                   return <span>{sizes.find((s) => s.id === is)?.name}</span>;
                 })}
@@ -179,10 +185,9 @@ function Product({
         accessorKey: "price",
         header: "Price",
         cell: ({ row }) => {
-          const item: SubProduct = row.original;
-    
+          const item: Subproduct = row.original;
 
-          return <span>{item.price}</span>
+          return <span>{item.price}</span>;
         },
         // filterFn: (row, columnId, filterValue) => {
         //   const rowValue: string[] = row.getValue(columnId);
@@ -223,21 +228,21 @@ function Product({
         // },
       },
       // {
-      //   id: "subProducts",
-      //   accessorKey: "subProducts",
+      //   id: "subproducts",
+      //   accessorKey: "subproducts",
       //   header: "Sub Products",
       //   cell: ({ row }) => {
       //     const item: Product = row.original;
-      //     const subProductsCount: number = item?.subProducts
-      //       ? item.subProducts.length
+      //     const subproductsCount: number = item?.subproducts
+      //       ? item.subproducts.length
       //       : 0;
-      //     return subProductsCount;
+      //     return subproductsCount;
       //   },
       // },
       {
         id: "actions",
         cell: ({ row }) => {
-          const item: SubProduct = row.original;
+          const item: Subproduct = row.original;
 
           return (
             <div className="flex items-center gap-2 justify-end">
@@ -255,12 +260,13 @@ function Product({
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
+                         productId={product.id}
                       />
                     ),
                   });
                 }}
-              />
-              <Trash2Icon
+              /> */}
+              {/* <Trash2Icon
                 size={20}
                 color="#dc2626"
                 className="cursor-pointer"
@@ -278,6 +284,7 @@ function Product({
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
+                        productId={product.id}
                       />
                     ),
                   });
@@ -293,12 +300,19 @@ function Product({
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page="Products" />
+      <AdminBreadcrumb page={product.slug}>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/admin/products">Products</Link>
+          </BreadcrumbLink>
+          <BreadcrumbSeparator />
+        </BreadcrumbItem>
+      </AdminBreadcrumb>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
-            title="Products"
-            description="Here's a list of your Products!"
+            title={`${product.name}`}
+            description={`Here's a subproduct list of ${product.name}!`}
           />
         </div>
         <SubproductList
@@ -307,6 +321,7 @@ function Product({
           setModalOpen={setModalOpen}
           setModal={setModal}
           addOptimisticData={addOptimisticData}
+          product= {product}
         />
       </div>
       <Modal

@@ -31,6 +31,7 @@ export async function GET() {
           descriptionDetails,
           createdAt,
           updatedAt,
+          subproducts
         } = doc.data();
         data.push({
           id: doc.id,
@@ -42,6 +43,7 @@ export async function GET() {
           descriptionDetails,
           createdAt,
           updatedAt,
+          subproducts: subproducts?.length
         });
       }
     });

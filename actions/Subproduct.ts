@@ -28,9 +28,23 @@ export const getSubproducts = async () => {
   }
 }
 
-export async function getSubproductBySlug(slug: string) {
+export async function getSubproductBySku(sku: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}`, {
+    const res = await fetch(`${apiURL}/sku/${sku}`, {
+      next: { tags: [tag] },
+      cache: "force-cache",
+    });
+
+    const { data } = await res.json();
+    return data;
+  } catch (error) {
+    return console.log(error);
+  }
+}
+
+export async function getSubproductById(id: string) {
+  try {
+    const res = await fetch(`${apiURL}/id/${id}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
@@ -48,6 +62,7 @@ export async function addSubproduct(data: Partial<Subproduct>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag("products");
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

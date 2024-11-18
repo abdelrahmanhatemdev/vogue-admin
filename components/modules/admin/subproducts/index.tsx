@@ -20,10 +20,10 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(() => import("./EditProduct"), {
+const EditProduct = dynamic(() => import("./EditSubproduct"), {
   loading: Loading,
 });
-const DeleteProduct = dynamic(() => import("./DeleteProduct"), {
+const DeleteProduct = dynamic(() => import("./DeleteSubproduct"), {
   loading: Loading,
 });
 const ProductList = dynamic(
@@ -238,11 +238,10 @@ function Products({ data }: { data: Product[] }) {
         header: "Sub Products",
         cell: ({ row }) => {
           const item: Product = row.original;
-
-          const subProductsCount: number = item?.subproducts 
-            ? item.subproducts as number
+          const subProductsCount: number = item?.subProducts
+            ? item.subProducts.length
             : 0;
-          return <>{subProductsCount}</>;
+          return subProductsCount;
         },
       },
       {

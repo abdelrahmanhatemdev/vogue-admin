@@ -46,7 +46,7 @@ import Loading from "@/components/custom/Loading";
 import NoResults from "@/components/custom/NoResults";
 import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteProduct } from "@/actions/Product";
+import { deleteSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
 import { PiPlusCircle } from "react-icons/pi";
 import useData from "@/hooks/useData";
@@ -59,7 +59,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
 
-const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
+const ToggleColumnView = dynamic<ToggleColumnViewProps<Subproduct>>(
   () => import("@/components/custom/ToggleColumnView"),
   { loading: Loading }
 );
@@ -67,17 +67,18 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddProduct = dynamic(() => import("@/components/modules/admin/products/AddProduct"), {
+const AddSubproduct = dynamic(() => import("@/components/modules/admin/subproducts/AddSubproduct"), {
   loading: Loading,
 });
 
-interface ProductListProps<TData> {
+interface SubproductListProps<TData> {
+  product: Category;
   data: TData[];
-  columns: ColumnDef<SubProduct>[];
+  columns: ColumnDef<Subproduct>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
   addOptimisticData: (
-    action: SubProduct[] | ((pendingState: SubProduct[]) => SubProduct[])
+    action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
 }
 
@@ -86,12 +87,13 @@ interface RowSelectionType {
 }
 
 function SubproductList({
+  product,
   data,
   columns,
   setModal,
   setModalOpen,
   addOptimisticData,
-}: ProductListProps<SubProduct>) {
+}: SubproductListProps<Subproduct>) {
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
@@ -159,14 +161,14 @@ function SubproductList({
   function deleteMultiple() {
     setModalOpen(true);
     setModal({
-      title: `Delete Products`,
+      title: `Delete Subproducts`,
       description: (
         <p className="font-medium">
           Are you sure to
           {selectedRows.length === 1 ? (
-            " delete the Product "
+            " delete the Subproduct "
           ) : (
-            <strong> delete all products </strong>
+            <strong> delete all Subproducts </strong>
           )}
           permenantly ?
         </p>
@@ -180,7 +182,7 @@ function SubproductList({
               setModalOpen(false);
               setShowDeleteAll(false);
               startTransition(() => {
-                addOptimisticData((prev: SubProduct[]) => [
+                addOptimisticData((prev: Subproduct[]) => [
                   ...prev.map((item) => {
                     if (selectedRows.includes(item.id)) {
                       const pendingItem = { ...item, isPending: !isPending };
@@ -192,7 +194,7 @@ function SubproductList({
               });
               for (const row of selectedRows) {
                 const data = { id: row };
-                const res: ActionResponse = await deleteProduct(data);
+                const res: ActionResponse = await deleteSubproduct(data);
                 notify(res);
               }
             }}
@@ -212,7 +214,7 @@ function SubproductList({
             <Input
               className="bg-background min-w-24 w-44"
               type="text"
-              placeholder="Filter Products..."
+              placeholder="Filter Subproducts..."
               onChange={(e) =>
                 setColumnFilters((prevFilters) => {
                   const newFilters = prevFilters.filter(
@@ -427,33 +429,34 @@ function SubproductList({
               Delete Selected
             </Button>
           )}
-          {/* <Button
+          <Button
             size="sm"
             onClick={() => {
               setModalOpen(true);
               setModal({
-                title: "Add Product",
+                title: "Add Subproduct",
                 description:
-                  "Add new product here. Click Add when you'are done.",
+                  "Add new Subproduct here. Click Add when you'are done.",
                 children: (
-                  <AddProduct
+                  <AddSubproduct
                     setModalOpen={setModalOpen}
                     addOptimisticData={addOptimisticData}
+                    productId={product.id}
                   />
                 ),
               });
             }}
           >
             Add New
-          </Button> */}
+          </Button>
 
-          {/* {isData && (
+          {isData && (
             <ToggleColumnView
               columns={table.getAllColumns()}
               setColumnVisibility={setColumnVisibility}
               columnVisibility={columnVisibility}
             />
-          )} */}
+          )}
         </div>
       </div>
 
@@ -596,7 +599,7 @@ function SubproductList({
           </div>
         </>
       ) : (
-        <NoResults title="Add some products to show data!" />
+        <NoResults title="Add some Subproducts to show data!" />
       )}
     </div>
   );

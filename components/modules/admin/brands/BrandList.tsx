@@ -57,7 +57,7 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddBrand = dynamic(() => import("./AddBrand"), { loading: Loading });
+const AddBrand = dynamic(() => import("@/components/modules/admin/brands/AddBrand"), { loading: Loading });
 
 interface BrandListProps<TData> {
   data: TData[];
