@@ -157,6 +157,7 @@ function AddSubproduct({
                 <MultiSelect
                   options={colors.map((item) => ({
                     value: item.id,
+                    color: item.hex,
                     label:
                       item.name?.length > 5
                         ? item.name.slice(0, 5) + ".."

@@ -68,6 +68,7 @@ interface MultiSelectProps
     value: string;
     /** Optional icon component to display alongside the option. */
     icon?: React.ComponentType<{ className?: string }>;
+    color?: string;
   }[];
 
   /**
@@ -203,7 +204,7 @@ export const MultiSelect = React.forwardRef<
               "flex w-full p-1 rounded-md border min-h-9 h-auto items-center justify-between bg-inherit hover:bg-inherit",
               className
             )}
-            asChild= {asChild}
+            asChild={asChild}
           >
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
@@ -224,7 +225,17 @@ export const MultiSelect = React.forwardRef<
                         {IconComponent && (
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
-                        {option?.label}
+                        {option?.color ? (
+                          <div className={"rounded-lg flex gap-1 items-center"}>
+                            <div
+                              className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+                              style={{ backgroundColor: option.color }}
+                            ></div>
+                            <span>{option.label}</span>
+                          </div>
+                        ) : (
+                          <span>{option?.label}</span>
+                        )}
                         <Button
                           onClick={(event) => {
                             event.stopPropagation();
@@ -271,9 +282,7 @@ export const MultiSelect = React.forwardRef<
                     variant={"nostyle"}
                     className="p-0 bg-none hovre:bg-none h-auto"
                   >
-                    <XIcon
-                      className="h-4 mx-2 cursor-pointer text-muted-foreground"
-                    />
+                    <XIcon className="h-4 mx-2 cursor-pointer text-muted-foreground" />
                   </Button>
                   <Separator
                     orientation="vertical"
@@ -343,7 +352,17 @@ export const MultiSelect = React.forwardRef<
                       {option.icon && (
                         <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                       )}
-                      <span>{option.label}</span>
+                      {option?.color ? (
+                        <div className={"rounded-lg flex gap-1 items-center"}>
+                          <div
+                            className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+                            style={{ backgroundColor: option.color }}
+                          ></div>
+                          <span>{option.label}</span>
+                        </div>
+                      ) : (
+                        <span>{option.label}</span>
+                      )}
                     </CommandItem>
                   );
                 })}
