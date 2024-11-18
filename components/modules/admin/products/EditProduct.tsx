@@ -18,7 +18,7 @@ import { ProductSchema } from "./AddProduct";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
+import {isValidSlug} from "@/lib/isValid";
 import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";

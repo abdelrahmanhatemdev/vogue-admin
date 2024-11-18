@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
+import {isValidSlug} from "@/lib/isValid";
 import {
   Select,
   SelectContent,

@@ -23,7 +23,7 @@ import {
 } from "react";
 import { addBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
+import {isValidSlug} from "@/lib/isValid";
 
 export const BrandSchema = z.object({
   name: z

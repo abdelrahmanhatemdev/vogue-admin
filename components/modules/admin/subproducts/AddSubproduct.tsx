@@ -22,6 +22,7 @@ import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
+import { isValidSku } from "@/lib/isValid";
 
 export const SubproductSchema = z.object({
   sku: z
@@ -54,18 +55,18 @@ export const SubproductSchema = z.object({
   featured: z.boolean(),
   inStock: z.boolean(),
 });
-import {v4 as uuid4} from "uuid"
+import { v4 as uuid4 } from "uuid";
 
 function AddSubproduct({
   setModalOpen,
   addOptimisticData,
-  productId
+  productId,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
-  productId: string
+  productId: string;
 }) {
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
@@ -82,7 +83,6 @@ function AddSubproduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof SubproductSchema>) {
-
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
@@ -99,7 +99,6 @@ function AddSubproduct({
     };
 
     console.log("isPending", isPending);
-    
 
     startTransition(() => {
       addOptimisticData((prev: Subproduct[]) => [...prev, optimisticObj]);
@@ -121,7 +120,27 @@ function AddSubproduct({
             <FormItem className="w-full">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  onChange={async (e) => {
+                    field.onChange(e.target.value);
+
+                    const checkSku: boolean = await isValidSku({
+                      productId,
+                      sku: e.target.value,
+                      collection: "products",
+                    });
+
+                    if (!checkSku) {
+                      form.setError("sku", {
+                        message: "Sku is already used!",
+                      });
+                      return;
+                    } else {
+                      form.clearErrors("sku");
+                    }
+                  }}
+                />
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
@@ -229,7 +248,7 @@ function AddSubproduct({
             <FormItem>
               <FormLabel>Qty</FormLabel>
               <FormControl>
-                <Input {...field}/>
+                <Input {...field} />
               </FormControl>
               <FormDescription>New subproduct qty</FormDescription>
               <FormMessage />
@@ -243,7 +262,7 @@ function AddSubproduct({
             <FormItem>
               <FormLabel>Sold</FormLabel>
               <FormControl>
-                <Input {...field}/>
+                <Input {...field} />
               </FormControl>
               <FormDescription>New subproduct sold</FormDescription>
               <FormMessage />

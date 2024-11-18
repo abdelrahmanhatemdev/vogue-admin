@@ -22,6 +22,7 @@ import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
+import { isValidSku } from "@/lib/isValid";
 
 function EditSubproduct({
   item,
@@ -96,7 +97,24 @@ function EditSubproduct({
             <FormItem className="w-full">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} onChange={async (e) => {
+                    field.onChange(e.target.value);
+
+                    const checkSku: boolean = await isValidSku({
+                      productId,
+                      sku: e.target.value,
+                      collection: "products",
+                    });
+
+                    if (!checkSku) {
+                      form.setError("sku", {
+                        message: "Sku is already used!",
+                      });
+                      return;
+                    } else {
+                      form.clearErrors("sku");
+                    }
+                  }}/>
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />

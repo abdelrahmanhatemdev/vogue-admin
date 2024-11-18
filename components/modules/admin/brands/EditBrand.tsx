@@ -18,7 +18,7 @@ import { BrandSchema } from "./AddBrand";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
+import {isValidSlug} from "@/lib/isValid";
 
 function EditBrand({
   item,
