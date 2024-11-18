@@ -239,8 +239,8 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: Product = row.original;
 
-          const subProductsCount: number = item?.subproducts 
-            ? item.subproducts as number
+          const subProductsCount: number = item?.subproducts
+            ? (item.subproducts as number)
             : 0;
           return <>{subProductsCount}</>;
         },
@@ -286,7 +286,7 @@ function Products({ data }: { data: Product[] }) {
                     ),
                     children: (
                       <DeleteProduct
-                        item={item}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

@@ -6,17 +6,17 @@ import { deleteSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 
 function DeleteSize({
-  item,
+  itemId,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Size;
+  itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Size[] | ((pendingState: Size[]) => Size[])
   ) => void;
 }) {
-  const data = { id: item.id };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 

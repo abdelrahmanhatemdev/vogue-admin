@@ -6,17 +6,17 @@ import { deleteBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
 
 function DeleteBrand({
-  item,
+  itemId,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Brand;
+  itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Brand[] | ((pendingState: Brand[]) => Brand[])
   ) => void;
 }) {
-  const data = { id: item.id };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 

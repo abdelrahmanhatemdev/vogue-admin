@@ -105,12 +105,7 @@ function Categories({ data }: { data: Category[] }) {
         cell: ({ row }) => {
           const item: Category = row.original;
           return (
-            <span
-              className={
-                "p-2" +
-                (item.isPending ? " opacity-50" : "")
-              }
-            >
+            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
               {item.slug ? "/" + item.slug : ""}
             </span>
           );
@@ -157,7 +152,7 @@ function Categories({ data }: { data: Category[] }) {
                     ),
                     children: (
                       <DeleteCategory
-                        item={item}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

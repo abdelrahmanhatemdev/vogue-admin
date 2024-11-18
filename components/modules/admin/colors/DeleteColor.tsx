@@ -6,17 +6,17 @@ import { deleteColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 
 function DeleteColor({
-  item,
+  itemId,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Color;
+  itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Color[] | ((pendingState: Color[]) => Color[])
   ) => void;
 }) {
-  const data = { id: item.id };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 

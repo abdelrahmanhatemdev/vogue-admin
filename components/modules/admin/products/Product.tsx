@@ -69,9 +69,7 @@ function Product({
       : [];
   }, [optimisicData]);
 
-
   // console.log("sortedOptimisicData", sortedOptimisicData);
-  
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -277,7 +275,7 @@ function Product({
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
-                        productId={product.id}
+                        productId={product.id as string}
                       />
                     ),
                   });
@@ -301,7 +299,7 @@ function Product({
                         itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
-                        productId={product.id}
+                        productId={product.id as string}
                       />
                     ),
                   });
@@ -317,7 +315,7 @@ function Product({
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={product.slug}>
+      <AdminBreadcrumb page={product.slug  as string}>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/admin/products">Products</Link>
@@ -338,7 +336,7 @@ function Product({
           setModalOpen={setModalOpen}
           setModal={setModal}
           addOptimisticData={addOptimisticData}
-          productId={product.id}
+          productId={product.id as string}
         />
       </div>
       <Modal

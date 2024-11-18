@@ -6,17 +6,17 @@ import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 
 function DeleteCategory({
-  item,
+  itemId,
   setModalOpen,
   addOptimisticData,
 }: {
-  item: Category;
+  itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Category[] | ((pendingState: Category[]) => Category[])
   ) => void;
 }) {
-  const data = { id: item.id };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 

@@ -112,7 +112,6 @@ function Colors({ data }: { data: Color[] }) {
           );
         },
         enableSorting: false,
-        
       },
       {
         id: "actions",
@@ -155,7 +154,7 @@ function Colors({ data }: { data: Color[] }) {
                     ),
                     children: (
                       <DeleteColor
-                        item={item}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
