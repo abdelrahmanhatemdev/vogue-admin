@@ -67,9 +67,12 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddSubproduct = dynamic(() => import("@/components/modules/admin/subproducts/AddSubproduct"), {
-  loading: Loading,
-});
+const AddSubproduct = dynamic(
+  () => import("@/components/modules/admin/subproducts/AddSubproduct"),
+  {
+    loading: Loading,
+  }
+);
 
 interface SubproductListProps<TData> {
   productId: string;
@@ -192,11 +195,10 @@ function SubproductList({
                   }),
                 ]);
               });
-              for (const id of selectedRows) {
-                const data = { id, productId };
-                const res: ActionResponse = await deleteSubproduct(data);
-                notify(res);
-              }
+
+              const data = { id: selectedRows, productId };
+              const res: ActionResponse = await deleteSubproduct(data);
+              notify(res);
             }}
           >
             Delete All
@@ -383,14 +385,14 @@ function SubproductList({
               </Popover>
             </>
           )}
-          {(selectedBrands.length > 0 || selectedCategories.length > 0 ) && (
+          {(selectedBrands.length > 0 || selectedCategories.length > 0) && (
             <Button
               variant={"ghost"}
               onClick={() => {
-                if (selectedBrands.length > 0 ) {
+                if (selectedBrands.length > 0) {
                   setSelectedBrands(() => {
                     const updatedFilter: string[] = [];
-  
+
                     setColumnFilters((prevFilters) => {
                       const newFilters = prevFilters.filter(
                         (filter) => filter.id !== "brand"
@@ -400,10 +402,10 @@ function SubproductList({
                     return updatedFilter;
                   });
                 }
-                if (selectedCategories.length > 0 ) {
+                if (selectedCategories.length > 0) {
                   setSelectedCategories(() => {
                     const updatedFilter: string[] = [];
-  
+
                     setColumnFilters((prevFilters) => {
                       const newFilters = prevFilters.filter(
                         (filter) => filter.id !== "categories"
@@ -413,8 +415,6 @@ function SubproductList({
                     return updatedFilter;
                   });
                 }
-                
-                
               }}
               className="flex gap-1 rounded-md p-2 font-bold"
             >

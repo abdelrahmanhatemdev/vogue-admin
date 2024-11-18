@@ -105,11 +105,10 @@ export async function PUT(request: Request) {
 
         const newSubproducts = [
           ...oldSubproducts.filter((sub: Subproduct) => sub.id !== rest.id),
-          {...rest}
+          { ...rest },
         ];
 
         console.log("newSubproducts", newSubproducts);
-        
 
         await updateDoc(productRef, {
           subproducts: newSubproducts,
@@ -142,16 +141,27 @@ export async function DELETE(request: Request) {
       if (prductDocSnap.exists()) {
         const oldSubproducts = prductDocSnap.data()?.subproducts;
 
-        const newSubproducts = [
-          ...oldSubproducts.filter((sub: Subproduct) => sub.id !== id),
-        ];
+        const newSubproducts =
+          typeof id === "string"
+            ? [...oldSubproducts.filter((sub: Subproduct) => sub.id !== id)]
+            : id?.length > 0
+            ? [
+                ...oldSubproducts.filter(
+                  (sub: Subproduct) => !id.includes(sub.id)
+                ),
+              ]
+            : [];
 
         await updateDoc(productRef, {
           subproducts: newSubproducts,
         });
 
         return NextResponse.json(
-          { message: "Subproduct Deleted" },
+          {
+            message:
+              (typeof id === "string" ? "Subproduct" : "Subproducts") +
+              " Deleted",
+          },
           { status: 200 }
         );
       }

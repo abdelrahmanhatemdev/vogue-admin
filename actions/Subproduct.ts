@@ -95,7 +95,7 @@ export async function editSubproduct(data: Partial<Subproduct>) {
     });
 }
 
-export async function deleteSubproduct(data: { id: string }) {
+export async function deleteSubproduct(data: { id: string | string[] }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
