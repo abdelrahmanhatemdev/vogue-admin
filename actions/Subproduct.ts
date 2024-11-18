@@ -1,6 +1,7 @@
 "use server";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
+import { tag as productTag } from "./Product";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
@@ -62,7 +63,7 @@ export async function addSubproduct(data: Partial<Subproduct>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag("products");
+        revalidateTag(productTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -81,6 +82,7 @@ export async function editSubproduct(data: Partial<Subproduct>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(productTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -99,6 +101,7 @@ export async function deleteSubproduct(data: { id: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(productTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

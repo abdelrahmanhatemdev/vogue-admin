@@ -72,14 +72,9 @@ export async function POST(request: Request) {
       const prductDocSnap = await getDoc(productRef);
 
       if (prductDocSnap.exists()) {
-
-        console.log([...prductDocSnap.data()?.subproducts, { ...rest }]);
-        
         await updateDoc(productRef, {
           subproducts: [...prductDocSnap.data()?.subproducts, { ...rest }],
         });
-
-        // console.log("checkUpdate",checkUpdate);
 
         return NextResponse.json(
           { message: "Subproduct Added" },
@@ -96,43 +91,38 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const {
-    id,
-    sku,
-    colors,
-    sizes,
-    price,
-    discount,
-    qty,
-    sold,
-    featured,
-    inStock,
-    updatedAt,
-  } = await request.json();
+  const data = await request.json();
 
   try {
-    const docRef = doc(db, collectoinName, id);
+    if (data?.productId) {
+      const { productId, ...rest } = data;
 
-    if (docRef?.id) {
-      await updateDoc(docRef, {
-        sku,
-        colors,
-        sizes,
-        price,
-        discount,
-        qty,
-        sold,
-        featured,
-        inStock,
-        updatedAt,
-      });
-      return NextResponse.json(
-        { message: "Subproduct Updated" },
-        { status: 200 }
-      );
+      const productRef = doc(db, collectoinName, productId);
+      const prductDocSnap = await getDoc(productRef);
+
+      if (prductDocSnap.exists()) {
+        const oldSubproducts = prductDocSnap.data()?.subproducts;
+
+        const newSubproducts = [
+          ...oldSubproducts.filter((sub: Subproduct) => sub.id !== rest.id),
+          {...rest}
+        ];
+
+        console.log("newSubproducts", newSubproducts);
+        
+
+        await updateDoc(productRef, {
+          subproducts: newSubproducts,
+        });
+
+        return NextResponse.json(
+          { message: "Subproduct Updated" },
+          { status: 200 }
+        );
+      }
     }
 
-    return new Error("Something Wrong");
+    throw new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -140,20 +130,34 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
+  const data = await request.json();
 
   try {
-    const docRef = doc(db, collectoinName, id);
+    if (data?.productId) {
+      const { productId, id } = data;
 
-    if (docRef?.id) {
-      await deleteDoc(docRef);
-      return NextResponse.json(
-        { message: "Subproduct Deleted" },
-        { status: 200 }
-      );
+      const productRef = doc(db, collectoinName, productId);
+      const prductDocSnap = await getDoc(productRef);
+
+      if (prductDocSnap.exists()) {
+        const oldSubproducts = prductDocSnap.data()?.subproducts;
+
+        const newSubproducts = [
+          ...oldSubproducts.filter((sub: Subproduct) => sub.id !== id),
+        ];
+
+        await updateDoc(productRef, {
+          subproducts: newSubproducts,
+        });
+
+        return NextResponse.json(
+          { message: "Subproduct Deleted" },
+          { status: 200 }
+        );
+      }
     }
 
-    return new Error("Something Wrong");
+    throw new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

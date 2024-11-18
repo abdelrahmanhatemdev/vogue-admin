@@ -2,30 +2,32 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { deleteProduct } from "@/actions/Product";
+import { deleteSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
 
-function DeleteProduct({
-  item,
+function DeleteSubproduct({
+  itemId,
   setModalOpen,
   addOptimisticData,
+  productId
 }: {
-  item: Product;
+  itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
-    action: Product[] | ((pendingState: Product[]) => Product[])
+    action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
+  productId: string;
 }) {
-  const data = { id: item.id };
+  const data = { id: itemId, productId };
 
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit() {
     setModalOpen(false);
     startTransition(() => {
-      addOptimisticData((prev: Product[]) => [
+      addOptimisticData((prev: Subproduct[]) => [
         ...prev.map((item) => {
-          if (item.id === data.id) {
+          if (item.id === itemId) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }
@@ -34,7 +36,7 @@ function DeleteProduct({
       ]);
     });
 
-    const res: ActionResponse = await deleteProduct(data);
+    const res: ActionResponse = await deleteSubproduct(data);
     notify(res);
   }
 
@@ -47,4 +49,4 @@ function DeleteProduct({
   );
 };
 
-export default memo(DeleteProduct);
+export default memo(DeleteSubproduct);

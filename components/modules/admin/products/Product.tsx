@@ -9,7 +9,11 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
-import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -21,14 +25,14 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(
-  () => import("@/components/modules/admin/products/EditProduct"),
+const EditSubproduct = dynamic(
+  () => import("@/components/modules/admin/subproducts/EditSubproduct"),
   {
     loading: Loading,
   }
 );
-const DeleteProduct = dynamic(
-  () => import("@/components/modules/admin/products/DeleteProduct"),
+const DeleteSubproduct = dynamic(
+  () => import("@/components/modules/admin/subproducts/DeleteSubproduct"),
   {
     loading: Loading,
   }
@@ -42,7 +46,7 @@ function Product({
   product,
   subproducts,
 }: {
-  product: Product;
+  product: Partial<Product>;
   subproducts: Subproduct[];
 }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -59,12 +63,15 @@ function Product({
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? 
-      optimisicData.sort((a: Subproduct, b: Subproduct) =>
+      ? optimisicData.sort((a: Subproduct, b: Subproduct) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
   }, [optimisicData]);
+
+
+  // console.log("sortedOptimisicData", sortedOptimisicData);
+  
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -107,7 +114,7 @@ function Product({
               href={`/admin/products/${product.slug}/${item.sku}`}
               className={
                 "hover:bg-main-200 p-2 rounded-lg" +
-                (product.isPending ? " opacity-50" : "")
+                (item.isPending ? " opacity-50" : "")
               }
               title="Go to Product page"
             >
@@ -152,8 +159,14 @@ function Product({
           const itemSizes = item.sizes as string[];
 
           return (
-            <div className="rounded-lg flex gap-1 items-center">
-              {sizes && itemSizes?.length > 0 &&
+            <div
+              className={
+                "rounded-lg flex gap-1 items-center" +
+                (item.isPending ? " opacity-50" : "")
+              }
+            >
+              {sizes &&
+                itemSizes?.length > 0 &&
                 itemSizes.map((is) => {
                   return <span>{sizes.find((s) => s.id === is)?.name}</span>;
                 })}
@@ -187,7 +200,11 @@ function Product({
         cell: ({ row }) => {
           const item: Subproduct = row.original;
 
-          return <span>{item.price}</span>;
+          return (
+            <span className={item.isPending ? " opacity-50" : ""}>
+              {item.price}
+            </span>
+          );
         },
         // filterFn: (row, columnId, filterValue) => {
         //   const rowValue: string[] = row.getValue(columnId);
@@ -246,41 +263,17 @@ function Product({
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              {/* <TbEdit
+              <TbEdit
                 size={20}
                 className="cursor-pointer"
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
-                    title: `Edit Product`,
+                    title: `Edit Sub Product`,
                     description:
-                      "Update Product here. Click Update when you'are done.",
+                      "Update Sub Product here. Click Update when you'are done.",
                     children: (
-                      <EditProduct
-                        item={item}
-                        setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
-                         productId={product.id}
-                      />
-                    ),
-                  });
-                }}
-              /> */}
-              {/* <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
-                onClick={() => {
-                  setModalOpen(true);
-                  setModal({
-                    title: `Delete Product`,
-                    description: (
-                      <p className="font-medium">
-                        Are you sure To delete the Product permenantly ?
-                      </p>
-                    ),
-                    children: (
-                      <DeleteProduct
+                      <EditSubproduct
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
@@ -289,7 +282,31 @@ function Product({
                     ),
                   });
                 }}
-              /> */}
+              />
+              <Trash2Icon
+                size={20}
+                color="#dc2626"
+                className="cursor-pointer"
+                onClick={() => {
+                  setModalOpen(true);
+                  setModal({
+                    title: `Delete Sub Product`,
+                    description: (
+                      <p className="font-medium">
+                        Are you sure To delete the Sub Product permenantly ?
+                      </p>
+                    ),
+                    children: (
+                      <DeleteSubproduct
+                        itemId={item.id}
+                        setModalOpen={setModalOpen}
+                        addOptimisticData={addOptimisticData}
+                        productId={product.id}
+                      />
+                    ),
+                  });
+                }}
+              />
             </div>
           );
         },
@@ -321,7 +338,7 @@ function Product({
           setModalOpen={setModalOpen}
           setModal={setModal}
           addOptimisticData={addOptimisticData}
-          product= {product}
+          productId={product.id}
         />
       </div>
       <Modal

@@ -72,7 +72,7 @@ const AddSubproduct = dynamic(() => import("@/components/modules/admin/subproduc
 });
 
 interface SubproductListProps<TData> {
-  product: Category;
+  productId: string;
   data: TData[];
   columns: ColumnDef<Subproduct>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -87,7 +87,7 @@ interface RowSelectionType {
 }
 
 function SubproductList({
-  product,
+  productId,
   data,
   columns,
   setModal,
@@ -192,8 +192,8 @@ function SubproductList({
                   }),
                 ]);
               });
-              for (const row of selectedRows) {
-                const data = { id: row };
+              for (const id of selectedRows) {
+                const data = { id, productId };
                 const res: ActionResponse = await deleteSubproduct(data);
                 notify(res);
               }
@@ -441,7 +441,7 @@ function SubproductList({
                   <AddSubproduct
                     setModalOpen={setModalOpen}
                     addOptimisticData={addOptimisticData}
-                    productId={product.id}
+                    productId={productId}
                   />
                 ),
               });

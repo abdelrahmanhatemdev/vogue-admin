@@ -18,18 +18,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
-import isValidSlug from "@/lib/isValidSlug";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export const SubproductSchema = z.object({
@@ -101,11 +92,14 @@ function AddSubproduct({
       createdAt: date,
       updatedAt: date,
     };
+
     const optimisticObj: Subproduct = {
       ...data,
-      id: `optimisticID-${data.sku}-${data.updatedAt}`,
       isPending: !isPending,
     };
+
+    console.log("isPending", isPending);
+    
 
     startTransition(() => {
       addOptimisticData((prev: Subproduct[]) => [...prev, optimisticObj]);
