@@ -69,7 +69,7 @@ interface Subproduct {
   colors: Color[] | string[];
   sizes: Size[] | string[];
   price: number;
-  // currency: string;
+  currency: string;
   discount: number;
   qty: number;
   sold: number;
@@ -99,3 +99,8 @@ interface Tag {
 interface Review {
   id: string;
 }
+
+type Currency = {
+  name: string;
+  code: string;
+};

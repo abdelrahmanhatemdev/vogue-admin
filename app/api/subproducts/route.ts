@@ -35,6 +35,7 @@ export async function GET() {
           inStock,
           createdAt,
           updatedAt,
+          currency
         } = doc.data();
 
         data.push({
@@ -50,6 +51,7 @@ export async function GET() {
           inStock,
           createdAt,
           updatedAt,
+          currency
         });
       }
     });
@@ -95,7 +97,7 @@ export async function PUT(request: Request) {
 
   try {
     if (data?.productId) {
-      const { productId, ...rest } = data;
+      const { productId, subproduct, ...rest } = data;
 
       const productRef = doc(db, collectoinName, productId);
       const prductDocSnap = await getDoc(productRef);
@@ -103,16 +105,36 @@ export async function PUT(request: Request) {
       if (prductDocSnap.exists()) {
         const oldSubproducts = prductDocSnap.data()?.subproducts;
 
-        const newSubproducts = [
-          ...oldSubproducts.filter((sub: Subproduct) => sub.id !== rest.id),
-          { ...rest },
-        ];
-
-        console.log("newSubproducts", newSubproducts);
-
-        await updateDoc(productRef, {
-          subproducts: newSubproducts,
-        });
+        if (subproduct) {
+          
+          if (subproduct.id) {
+            const targetSubproduct = oldSubproducts?.find((sub:Subproduct) => sub.id === subproduct.id)
+            const date = new Date().toISOString()
+            
+            targetSubproduct[subproduct?.property]= subproduct?.value
+            targetSubproduct.updatedAt= date
+            
+            await updateDoc(productRef, {
+              subproducts: [
+                ...oldSubproducts.filter((sub: Subproduct) => sub.id !== subproduct.id),
+                {...targetSubproduct}
+              ],
+            });
+          }
+          
+          
+          
+        }else {
+          const newSubproducts = [
+            ...oldSubproducts.filter((sub: Subproduct) => sub.id !== rest.id),
+            { ...rest },
+          ];
+  
+          await updateDoc(productRef, {
+            subproducts: newSubproducts,
+          });
+        }
+       
 
         return NextResponse.json(
           { message: "Subproduct Updated" },

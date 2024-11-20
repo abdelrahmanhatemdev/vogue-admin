@@ -23,6 +23,8 @@ import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { isValidSku } from "@/lib/isValid";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { currencies } from "@/constants/currencies";
 
 function EditSubproduct({
   item,
@@ -47,6 +49,7 @@ function EditSubproduct({
       colors: item.colors as string[],
       sizes: item.sizes as string[],
       price: item.price,
+      currency: item.currency,
       discount: item.discount,
       qty: item.qty,
       sold: item.sold,
@@ -190,20 +193,58 @@ function EditSubproduct({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>New subproduct price</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormControl>
+          <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormLabel>Price</FormLabel>
+            <div className="flex">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <Input {...field} className="min-w-[60%] rounded-e-none" />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="currency"
+                render={({ field }) => (
+                  <FormItem className="w-[40%] text-xs">
+                    <Select
+                      {...field}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="bg-main-200 rounded-s-none">
+                        <SelectValue
+                          placeholder="Select Currency"
+                          className="truncate"
+                        >
+                          {field.value}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currencies.map((c) => (
+                          <SelectItem
+                            value={`${c.code}`}
+                            title={`${c.name}`}
+                            className="cursor-pointer"
+                          >
+                            {`${c.code}  (${c.name})`}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormDescription>New subproduct price</FormDescription>
+            <FormMessage>
+              <div>{form.formState?.errors?.price?.message}</div>
+              <div>{form.formState?.errors?.currency?.message}</div>
+            </FormMessage>
+          </FormItem>
+        </FormControl>
         <FormField
           control={form.control}
           name="discount"

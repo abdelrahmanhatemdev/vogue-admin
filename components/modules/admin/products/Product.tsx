@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,8 +14,11 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { cn } from "@/lib/utils";
+import { cn, notify } from "@/lib/utils";
 import { discountPrice, currencyPrice } from "@/lib/productService";
+import { editSubproduct } from "@/actions/Subproduct";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -62,6 +65,7 @@ function Product({
   const { data: sizes } = useData("sizes");
 
   const [optimisicData, addOptimisticData] = useOptimistic(subproducts);
+  const [isPending, startTransition] = useTransition();
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
@@ -70,8 +74,6 @@ function Product({
         )
       : [];
   }, [optimisicData]);
-
-  // console.log("sortedOptimisicData", sortedOptimisicData);
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -123,93 +125,94 @@ function Product({
           );
         },
       },
-      {
-        id: "color",
-        accessorKey: "color",
-        header: "color",
-        cell: ({ row }) => {
-          const item: Subproduct = row.original;
-          return (
-            <div
-              className={
-                "rounded-lg flex gap-1 items-center" +
-                (item.isPending ? " opacity-50" : "")
-              }
-            >
-              {item.colors.map((color) => {
-                console.log("color", color);
-                const itemColor = colors.find(
-                  (c) => c.id === (color as string)
-                );
+      // {
+      //   id: "color",
+      //   accessorKey: "color",
+      //   header: "color",
+      //   cell: ({ row }) => {
+      //     const item: Subproduct = row.original;
+      //     return (
+      //       <div
+      //         className={
+      //           "rounded-lg flex gap-1 items-center" +
+      //           (item.isPending ? " opacity-50" : "")
+      //         }
+      //       >
+      //         {item.colors.map((color) => {
+      //           console.log("color", color);
+      //           const itemColor = colors.find(
+      //             (c) => c.id === (color as string)
+      //           );
 
-                return (
-                  <div
-                    className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
-                    title={`${itemColor?.name}`}
-                    style={{
-                      backgroundColor: itemColor?.hex,
-                    }}
-                  ></div>
-                );
-              })}
-            </div>
-          );
-        },
-      },
-      {
-        id: "sizes",
-        accessorKey: "sizes",
-        header: "Sizes",
-        cell: ({ row }) => {
-          const item: Subproduct = row.original;
-          const itemSizes = item.sizes as string[];
+      //           return (
+      //             <div
+      //               className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+      //               title={`${itemColor?.name}`}
+      //               style={{
+      //                 backgroundColor: itemColor?.hex,
+      //               }}
+      //             ></div>
+      //           );
+      //         })}
+      //       </div>
+      //     );
+      //   },
+      // },
+      // {
+      //   id: "sizes",
+      //   accessorKey: "sizes",
+      //   header: "Sizes",
+      //   cell: ({ row }) => {
+      //     const item: Subproduct = row.original;
+      //     const itemSizes = item.sizes as string[];
 
-          return (
-            <div
-              className={
-                "rounded-lg flex gap-1 items-center" +
-                (item.isPending ? " opacity-50" : "")
-              }
-            >
-              {sizes &&
-                itemSizes?.length > 0 &&
-                itemSizes.map((is) => {
-                  return <span>{sizes.find((s) => s.id === is)?.name}</span>;
-                })}
-            </div>
-          );
-        },
-        filterFn: (row, columnId, filterValue) => {
-          const rowValue = row.getValue(columnId);
-          return filterValue.length === 0 || filterValue.includes(rowValue);
-        },
-        // sortingFn: (rowA, rowB) => {
-        //   const brandA = brands
-        //     .find((b) => b.id === rowA.original.brand)
-        //     ?.name?.toLowerCase();
-        //   const brandB = brands
-        //     ?.find((b) => b.id === rowB.original.brand)
-        //     ?.name?.toLowerCase();
+      //     return (
+      //       <div
+      //         className={
+      //           "rounded-lg flex gap-1 items-center" +
+      //           (item.isPending ? " opacity-50" : "")
+      //         }
+      //       >
+      //         {sizes &&
+      //           itemSizes?.length > 0 &&
+      //           itemSizes.map((is) => {
+      //             return <span>{sizes.find((s) => s.id === is)?.name}</span>;
+      //           })}
+      //       </div>
+      //     );
+      //   },
+      //   filterFn: (row, columnId, filterValue) => {
+      //     const rowValue = row.getValue(columnId);
+      //     return filterValue.length === 0 || filterValue.includes(rowValue);
+      //   },
+      //   // sortingFn: (rowA, rowB) => {
+      //   //   const brandA = brands
+      //   //     .find((b) => b.id === rowA.original.brand)
+      //   //     ?.name?.toLowerCase();
+      //   //   const brandB = brands
+      //   //     ?.find((b) => b.id === rowB.original.brand)
+      //   //     ?.name?.toLowerCase();
 
-        //   if (brandA && brandB) {
-        //     if (brandA > brandB) return 1;
-        //     if (brandA < brandB) return -1;
-        //   }
+      //   //   if (brandA && brandB) {
+      //   //     if (brandA > brandB) return 1;
+      //   //     if (brandA < brandB) return -1;
+      //   //   }
 
-        //   return 0;
-        // },
-      },
+      //   //   return 0;
+      //   // },
+      // },
       {
         id: "price",
         accessorKey: "price",
-        header: "Price",
+        header: () => <span title="Price before discount">Price</span>,
         cell: ({ row }) => {
           const item: Subproduct = row.original;
-          const { price } = item;
+          const { price, currency } = item;
+          
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
-              {currencyPrice({ price, currency: "USD" })}
+              {currencyPrice({ price, currency })}
             </span>
           );
         },
@@ -217,7 +220,7 @@ function Product({
       {
         id: "discount",
         accessorKey: "discount",
-        header: "discount",
+        header: () => <span title="Discount Percentage">Disc.</span>,
         cell: ({ row }) => {
           const item: Subproduct = row.original;
 
@@ -231,10 +234,10 @@ function Product({
       {
         id: "discountPrice",
         accessorKey: "price",
-        header: "Discount Price",
+        header: () => <span title="Net Price">N</span>,
         cell: ({ row }) => {
           const item: Subproduct = row.original;
-          const { price, discount } = item;
+          const { price, discount, currency } = item;
 
           return (
             <span
@@ -245,7 +248,7 @@ function Product({
             >
               {currencyPrice({
                 price: discountPrice({ price, discount }),
-                currency: "USD",
+                currency,
               })}
             </span>
           );
@@ -253,11 +256,123 @@ function Product({
         sortingFn: (rowA, rowB) => {
           const { price: priceA, discount: discountA } = rowA.original;
           const { price: priceB, discount: discountB } = rowB.original;
-          return (
-            discountPrice({ price: priceA, discount: discountA }) >
+          return discountPrice({ price: priceA, discount: discountA }) >
             discountPrice({ price: priceB, discount: discountB })
             ? 1
-            : -1 
+            : -1;
+        },
+      },
+      {
+        id: "qty",
+        accessorKey: "qty",
+        header: () => <span title="Quantity">Qty</span>,
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+
+          return (
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              {item.qty}
+            </span>
+          );
+        },
+      },
+      {
+        id: "sold",
+        accessorKey: "sold",
+        header: () => <span title="Total sold items">Sold</span>,
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+
+          return (
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              {item.sold}
+            </span>
+          );
+        },
+      },
+      {
+        id: "featured",
+        accessorKey: "featured",
+        header: "featured",
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+
+          return (
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              <Switch
+                checked={item.featured}
+                onCheckedChange={async () => {
+                  const { featured, ...rest } = item;
+
+                  const optimisticObj: Subproduct = {
+                    ...rest,
+                    featured: !featured,
+                    isPending: !isPending,
+                  };
+
+                  startTransition(() => {
+                    addOptimisticData((prev: Subproduct[]) => [
+                      ...prev.filter((sub) => sub.id !== item.id),
+                      optimisticObj,
+                    ]);
+                  });
+
+                  const res: ActionResponse = await editSubproduct({
+                    productId: product.id,
+                    subproduct: {
+                      id: item.id,
+                      property: "featured",
+                      value: !item.featured,
+                    },
+                  });
+
+                  notify(res);
+                }}
+              />
+            </span>
+          );
+        },
+      },
+      {
+        id: "inStock",
+        accessorKey: "inStock",
+        header: "inStock",
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+
+          return (
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              <Switch
+                checked={item.inStock}
+                onCheckedChange={async () => {
+                  const { inStock, ...rest } = item;
+
+                  const optimisticObj: Subproduct = {
+                    ...rest,
+                    inStock: !inStock,
+                    isPending: !isPending,
+                  };
+
+                  startTransition(() => {
+                    addOptimisticData((prev: Subproduct[]) => [
+                      ...prev.filter((sub) => sub.id !== item.id),
+                      optimisticObj,
+                    ]);
+                  });
+
+                  const res: ActionResponse = await editSubproduct({
+                    productId: product.id,
+                    subproduct: {
+                      id: item.id,
+                      property: "inStock",
+                      value: !item.inStock,
+                    },
+                  });
+
+                  notify(res);
+                }}
+              />
+            </span>
           );
         },
       },

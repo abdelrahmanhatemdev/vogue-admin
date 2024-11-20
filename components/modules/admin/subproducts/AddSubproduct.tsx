@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -24,6 +24,8 @@ import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { isValidSku } from "@/lib/isValid";
 
+const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
+
 export const SubproductSchema = z.object({
   sku: z
     .string()
@@ -39,23 +41,37 @@ export const SubproductSchema = z.object({
   sizes: z.array(z.string()).nonempty({
     message: "Choose at least one size",
   }),
-  price: z.coerce.number().min(1, {
-    message: "Price is required",
-  }),
+  price: z.coerce
+    .number({message: "Price is required"})
+    .min(1, {
+      message: "Price is required",
+    })
+    .positive("Price must be positive"),
+  currency: z.enum(validCurrencies, { message: "Invalid currency" }),
   discount: z.coerce
     .number()
+    .positive("Discount must be positive")
     .min(1, {
       message: "Discount is required",
     })
     .max(100, {
       message: "Discount cannot be more than 100%",
     }),
-  qty: z.coerce.number(),
-  sold: z.coerce.number(),
+  qty: z.coerce.number().positive("Price must be positive"),
+  sold: z.coerce.number().positive("Price must be positive"),
   featured: z.boolean(),
   inStock: z.boolean(),
 });
 import { v4 as uuid4 } from "uuid";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { currencies } from "@/constants/currencies";
+import { ChevronDown } from "lucide-react";
 
 function AddSubproduct({
   setModalOpen,
@@ -74,8 +90,9 @@ function AddSubproduct({
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
+      currency: "USD",
       featured: false,
-      inStock: true,
+      inStock: false,
     },
     mode: "onChange",
   });
@@ -214,20 +231,60 @@ function AddSubproduct({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>New subproduct price</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
+        <FormControl>
+          <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormLabel>Price</FormLabel>
+            <div className="flex">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <Input {...field} className="min-w-[60%] rounded-e-none" />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="currency"
+                render={({ field }) => (
+                  <FormItem className="w-[40%] text-xs">
+                    <Select
+                      {...field}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="bg-main-200 rounded-s-none">
+                        <SelectValue
+                          placeholder="Select Currency"
+                          className="truncate"
+                        >
+                          {field.value}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currencies.map((c) => (
+                          <SelectItem
+                            value={`${c.code}`}
+                            title={`${c.name}`}
+                            className="cursor-pointer"
+                          >
+                            {`${c.code}  (${c.name})`}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormDescription>New subproduct price</FormDescription>
+            <FormMessage>
+              <div>{form.formState?.errors?.price?.message}</div>
+              <div>{form.formState?.errors?.currency?.message}</div>
+            </FormMessage>
+          </FormItem>
+        </FormControl>
+
         <FormField
           control={form.control}
           name="discount"

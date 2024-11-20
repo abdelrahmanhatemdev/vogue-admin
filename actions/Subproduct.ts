@@ -27,7 +27,7 @@ export const getSubproducts = async () => {
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getSubproductBySku(sku: string) {
   try {
@@ -76,7 +76,18 @@ export async function addSubproduct(data: Partial<Subproduct>) {
     });
 }
 
-export async function editSubproduct(data: Partial<Subproduct>) {
+export async function editSubproduct(
+  data: Partial<
+    Subproduct & {
+      productId: string;
+      subproduct?: {
+        id: string;
+        property: string;
+        value: string | boolean | number | string[] | Color[] | Size[];
+      };
+    }
+  >
+) {
   return api
     .put(apiURL, data)
     .then((res) => {
