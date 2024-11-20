@@ -69,6 +69,7 @@ interface Subproduct {
   colors: Color[] | string[];
   sizes: Size[] | string[];
   price: number;
+  // currency: string;
   discount: number;
   qty: number;
   sold: number;

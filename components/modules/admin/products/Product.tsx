@@ -14,6 +14,8 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { cn } from "@/lib/utils";
+import { discountPrice, currencyPrice } from "@/lib/productService";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -111,7 +113,7 @@ function Product({
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
               className={
-                "hover:bg-main-200 p-2 rounded-lg" +
+                "hover:bg-main-200 p-2 rounded-lg bg-main-100 transition-colors" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to Product page"
@@ -134,16 +136,22 @@ function Product({
                 (item.isPending ? " opacity-50" : "")
               }
             >
-              {item.colors.map((color) => (
-                <div
-                  className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
-                  style={{
-                    backgroundColor: colors.find(
-                      (c) => c.hex === (color as string)
-                    )?.hex,
-                  }}
-                ></div>
-              ))}
+              {item.colors.map((color) => {
+                console.log("color", color);
+                const itemColor = colors.find(
+                  (c) => c.id === (color as string)
+                );
+
+                return (
+                  <div
+                    className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+                    title={`${itemColor?.name}`}
+                    style={{
+                      backgroundColor: itemColor?.hex,
+                    }}
+                  ></div>
+                );
+              })}
             </div>
           );
         },
@@ -197,63 +205,62 @@ function Product({
         header: "Price",
         cell: ({ row }) => {
           const item: Subproduct = row.original;
+          const { price } = item;
 
           return (
-            <span className={item.isPending ? " opacity-50" : ""}>
-              {item.price}
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              {currencyPrice({ price, currency: "USD" })}
             </span>
           );
         },
-        // filterFn: (row, columnId, filterValue) => {
-        //   const rowValue: string[] = row.getValue(columnId);
-        //   return (
-        //     filterValue.length === 0 ||
-        //     rowValue.some((item) => filterValue.includes(item))
-        //   );
-        // },
-        // sortingFn: (rowA, rowB) => {
-        //   if (categories) {
-        //     const categoriesRowA = rowA.original.categories as string[];
-        //     const categoriesA = categoriesRowA
-        //       .map((id) =>
-        //         categories.find((c) => c.id === id)?.name?.toLowerCase()
-        //       )
-        //       .sort();
-
-        //     const categoriesRowB = rowB.original.categories as string[];
-        //     const categoriesB = categoriesRowB
-        //       .map((id) =>
-        //         categories.find((c) => c.id === id)?.name?.toLowerCase()
-        //       )
-        //       .sort();
-
-        //     if (!categoriesA.length && !categoriesB.length) return 0;
-        //     if (!categoriesA.length) return 1;
-        //     if (!categoriesB.length) return -1;
-
-        //     if (
-        //       typeof categoriesA[0] !== "undefined" &&
-        //       typeof categoriesB[0] !== "undefined"
-        //     ) {
-        //       if (categoriesA[0] < categoriesB[0]) return -1;
-        //       if (categoriesA[0] > categoriesB[0]) return 1;
-        //     }
-        //   }
-        //   return 0;
-        // },
       },
-      // {
-      //   id: "subproducts",
-      //   accessorKey: "subproducts",
-      //   header: "Sub Products",
-      //   cell: ({ row }) => {
-      //     const item: Product = row.original;
-      //     const subproductsCount: number = item?.subproducts
-      //       ? item.subproducts.length
-      //       : 0;
-      //     return subproductsCount;
-      //   },
-      // },
+      {
+        id: "discount",
+        accessorKey: "discount",
+        header: "discount",
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+
+          return (
+            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+              {item.discount}%
+            </span>
+          );
+        },
+      },
+      {
+        id: "discountPrice",
+        accessorKey: "price",
+        header: "Discount Price",
+        cell: ({ row }) => {
+          const item: Subproduct = row.original;
+          const { price, discount } = item;
+
+          return (
+            <span
+              className={`${cn(
+                item.isPending ? " opacity-50" : "",
+                "font-bold"
+              )}`}
+            >
+              {currencyPrice({
+                price: discountPrice({ price, discount }),
+                currency: "USD",
+              })}
+            </span>
+          );
+        },
+        sortingFn: (rowA, rowB) => {
+          const { price: priceA, discount: discountA } = rowA.original;
+          const { price: priceB, discount: discountB } = rowB.original;
+          return (
+            discountPrice({ price: priceA, discount: discountA }) >
+            discountPrice({ price: priceB, discount: discountB })
+            ? 1
+            : -1 
+          );
+        },
+      },
       {
         id: "actions",
         cell: ({ row }) => {
@@ -315,7 +322,7 @@ function Product({
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={product.slug  as string}>
+      <AdminBreadcrumb page={product.slug as string}>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/admin/products">Products</Link>

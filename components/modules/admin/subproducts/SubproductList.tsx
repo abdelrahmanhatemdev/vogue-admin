@@ -477,7 +477,7 @@ function SubproductList({
                         {header.column.getCanSort() ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2">
+                              <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2 -ms-2">
                                 <span className="text-main-800">
                                   {" "}
                                   {header.isPlaceholder
