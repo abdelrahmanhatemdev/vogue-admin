@@ -106,6 +106,7 @@ function EditSubproduct({
                     const checkSku: boolean = await isValidSku({
                       sku: e.target.value,
                       collection: "products",
+                      id: item.id
                     });
 
                     if (!checkSku) {

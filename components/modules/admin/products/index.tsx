@@ -239,8 +239,10 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: Product = row.original;
 
-          const subProductsCount: number = item?.subproducts
-            ? (item.subproducts as number)
+          const itemSubs = item?.subproducts as {sku:string; id: string;}[]
+
+          const subProductsCount: number = itemSubs
+            ? itemSubs?.length
             : 0;
           return <>{subProductsCount}</>;
         },

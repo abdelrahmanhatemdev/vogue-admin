@@ -71,7 +71,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { currencies } from "@/constants/currencies";
-import { ChevronDown } from "lucide-react";
 
 function AddSubproduct({
   setModalOpen,
@@ -90,6 +89,7 @@ function AddSubproduct({
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
+      price: 0,
       currency: "USD",
       featured: false,
       inStock: false,
@@ -235,14 +235,14 @@ function AddSubproduct({
           <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
             <FormLabel>Price</FormLabel>
             <div className="flex">
-              <FormField
+              <Controller
                 control={form.control}
                 name="price"
                 render={({ field }) => (
                   <Input {...field} className="min-w-[60%] rounded-e-none" />
                 )}
               />
-              <FormField
+              <Controller
                 control={form.control}
                 name="currency"
                 render={({ field }) => (

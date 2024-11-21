@@ -57,7 +57,7 @@ interface Product {
   descriptionDetails: string;
   createdAt: string;
   updatedAt: string;
-  subproducts?: Subproduct[] | number;
+  subproducts?: Subproduct[] | number | {sku:string; id: string;}[];
   isPending?: !isPending;
   reviews?: Review[];
   // tags: Tag[];

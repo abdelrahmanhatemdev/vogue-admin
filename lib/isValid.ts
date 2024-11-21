@@ -48,23 +48,24 @@ const isValidSku = async ({
 
     if (res) {
       const {
-        data: { data },
+        data: { data: products },
       } = res;
 
-      
+      const suproducts = products?.map(
+        (product: { subproducts: { id: string; sku: string }[] }) => {
+          return product.subproducts;
+        }
+      );
+      const subsFlatArray = suproducts.flat().filter((sub: string) => sub);
 
-      const check = data?.some((product:{subproducts: { id: string; sku: string }[]}) => {
+      const check = subsFlatArray?.some((sub: { id: string; sku: string }) => {
+        
+        if (sub.id === id) {
+          return false;
+        }
 
-        return product?.subproducts?.some((sub: { id: string; sku: string }) => {
-            if (sub.id === id) {
-              return false;
-            }
-    
-            return sub.sku === sku;
-          });
-      })
-
-      console.log("check", check);
+        return sub.sku === sku;
+      });
 
       return !check;
     }

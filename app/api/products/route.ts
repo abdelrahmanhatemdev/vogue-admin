@@ -31,7 +31,7 @@ export async function GET() {
           descriptionDetails,
           createdAt,
           updatedAt,
-          subproducts
+          subproducts,
         } = doc.data();
         data.push({
           id: doc.id,
@@ -43,11 +43,14 @@ export async function GET() {
           descriptionDetails,
           createdAt,
           updatedAt,
-          subproducts: subproducts?.length
+          subproducts: subproducts?.map((sub: Subproduct) => ({
+            sku: sub.sku,
+            id: sub.id,
+          })),
         });
       }
     });
-
+    
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
@@ -80,7 +83,7 @@ export async function PUT(request: Request) {
     categories,
     descriptionBrief,
     descriptionDetails,
-    updatedAt
+    updatedAt,
   } = await request.json();
 
   try {
@@ -94,7 +97,7 @@ export async function PUT(request: Request) {
         categories,
         descriptionBrief,
         descriptionDetails,
-        updatedAt
+        updatedAt,
       });
       return NextResponse.json({ message: "Product Updated" }, { status: 200 });
     }
