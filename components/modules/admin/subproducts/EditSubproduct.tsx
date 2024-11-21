@@ -104,7 +104,6 @@ function EditSubproduct({
                     field.onChange(e.target.value);
 
                     const checkSku: boolean = await isValidSku({
-                      productId,
                       sku: e.target.value,
                       collection: "products",
                     });

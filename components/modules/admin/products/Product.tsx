@@ -208,7 +208,6 @@ function Product({
         cell: ({ row }) => {
           const item: Subproduct = row.original;
           const { price, currency } = item;
-          
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -442,8 +441,8 @@ function Product({
           <BreadcrumbLink asChild>
             <Link href="/admin/products">Products</Link>
           </BreadcrumbLink>
-          <BreadcrumbSeparator />
         </BreadcrumbItem>
+        <BreadcrumbSeparator />
       </AdminBreadcrumb>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
