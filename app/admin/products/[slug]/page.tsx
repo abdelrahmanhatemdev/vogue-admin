@@ -19,9 +19,9 @@ export default async function ProductPage(props: {
 
   const subproducts = productRes?.subproducts as Subproduct[];
   const product = {
-    id: productRes.id,
-    name: productRes.name,
-    slug: productRes.slug,
+    id: productRes?.id,
+    name: productRes?.name,
+    slug: productRes?.slug,
   };
 
   return <Product subproducts={subproducts} product={product} />;

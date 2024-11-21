@@ -23,7 +23,13 @@ import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { isValidSku } from "@/lib/isValid";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { currencies } from "@/constants/currencies";
 
 function EditSubproduct({
@@ -100,13 +106,15 @@ function EditSubproduct({
             <FormItem className="w-full">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input {...field} onChange={async (e) => {
+                <Input
+                  {...field}
+                  onChange={async (e) => {
                     field.onChange(e.target.value);
 
                     const checkSku: boolean = await isValidSku({
                       sku: e.target.value,
                       collection: "products",
-                      id: item.id
+                      id: item.id,
                     });
 
                     if (!checkSku) {
@@ -117,7 +125,8 @@ function EditSubproduct({
                     } else {
                       form.clearErrors("sku");
                     }
-                  }}/>
+                  }}
+                />
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
@@ -210,7 +219,6 @@ function EditSubproduct({
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
                     <Select
-                      {...field}
                       value={field.value}
                       onValueChange={field.onChange}
                     >
@@ -240,10 +248,10 @@ function EditSubproduct({
               />
             </div>
             <FormDescription>New subproduct price</FormDescription>
-            <FormMessage>
-              <div>{form.formState?.errors?.price?.message}</div>
-              <div>{form.formState?.errors?.currency?.message}</div>
-            </FormMessage>
+            <div className="text-[0.8rem] font-medium text-destructive">
+              <p>{form.formState?.errors?.price?.message}</p>
+              <p>{form.formState?.errors?.currency?.message}</p>
+            </div>
           </FormItem>
         </FormControl>
         <FormField

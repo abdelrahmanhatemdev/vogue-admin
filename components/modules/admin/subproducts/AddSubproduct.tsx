@@ -42,7 +42,7 @@ export const SubproductSchema = z.object({
     message: "Choose at least one size",
   }),
   price: z.coerce
-    .number({message: "Price is required"})
+    .number({ message: "Price is required" })
     .min(1, {
       message: "Price is required",
     })
@@ -235,20 +235,19 @@ function AddSubproduct({
           <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
             <FormLabel>Price</FormLabel>
             <div className="flex">
-              <Controller
+              <FormField
                 control={form.control}
                 name="price"
                 render={({ field }) => (
                   <Input {...field} className="min-w-[60%] rounded-e-none" />
                 )}
               />
-              <Controller
+              <FormField
                 control={form.control}
                 name="currency"
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
                     <Select
-                      {...field}
                       value={field.value}
                       onValueChange={field.onChange}
                     >
@@ -278,10 +277,10 @@ function AddSubproduct({
               />
             </div>
             <FormDescription>New subproduct price</FormDescription>
-            <FormMessage>
-              <div>{form.formState?.errors?.price?.message}</div>
-              <div>{form.formState?.errors?.currency?.message}</div>
-            </FormMessage>
+            <div className="text-[0.8rem] font-medium text-destructive">
+              <p>{form.formState?.errors?.price?.message}</p>
+              <p>{form.formState?.errors?.currency?.message}</p>
+            </div>
           </FormItem>
         </FormControl>
 
