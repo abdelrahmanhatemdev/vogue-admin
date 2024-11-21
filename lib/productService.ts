@@ -15,8 +15,6 @@ export const currencyPrice = ({
   price: number;
   currency?: string;
 }): string => {
-  
-  console.log("currency", currency);
   return Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currency ? currency : "USD",

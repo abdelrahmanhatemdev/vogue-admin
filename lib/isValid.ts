@@ -35,31 +35,36 @@ const isValidSlug = async ({
 };
 
 const isValidSku = async ({
-  productId,
   sku,
   collection,
   id,
 }: {
-  productId: string;
   sku: string;
   collection: string;
   id?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}/id/${productId}`);
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
       const {
         data: { data },
       } = res;
 
-      const check = data?.subproducts.some((item: { id: string; sku: string }) => {
-        if (item.id === id) {
-          return false;
-        }
+      
 
-        return item.sku === sku;
-      });
+      const check = data?.some((product:{subproducts: { id: string; sku: string }[]}) => {
+
+        return product?.subproducts?.some((sub: { id: string; sku: string }) => {
+            if (sub.id === id) {
+              return false;
+            }
+    
+            return sub.sku === sku;
+          });
+      })
+
+      console.log("check", check);
 
       return !check;
     }

@@ -143,7 +143,6 @@ function AddSubproduct({
                     field.onChange(e.target.value);
 
                     const checkSku: boolean = await isValidSku({
-                      productId,
                       sku: e.target.value,
                       collection: "products",
                     });
@@ -267,6 +266,7 @@ function AddSubproduct({
                             value={`${c.code}`}
                             title={`${c.name}`}
                             className="cursor-pointer"
+                            key={`${c.code}`}
                           >
                             {`${c.code}  (${c.name})`}
                           </SelectItem>

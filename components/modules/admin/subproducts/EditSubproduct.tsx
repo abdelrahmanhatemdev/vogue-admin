@@ -228,6 +228,7 @@ function EditSubproduct({
                             value={`${c.code}`}
                             title={`${c.name}`}
                             className="cursor-pointer"
+                            key={`${c.code}`}
                           >
                             {`${c.code}  (${c.name})`}
                           </SelectItem>
