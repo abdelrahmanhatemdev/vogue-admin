@@ -220,12 +220,12 @@ function SubproductList({
               onChange={(e) =>
                 setColumnFilters((prevFilters) => {
                   const newFilters = prevFilters.filter(
-                    (filter) => filter.id !== "name"
+                    (filter) => filter.id !== "sku"
                   );
                   return [
                     ...newFilters,
                     {
-                      id: "name",
+                      id: "sku",
                       value: e.target.value,
                     },
                   ];

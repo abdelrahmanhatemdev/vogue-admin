@@ -374,6 +374,7 @@ function Product({
             </span>
           );
         },
+        filterFn: "equals"
       },
       {
         id: "actions",
