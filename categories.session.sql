@@ -5,7 +5,8 @@ CREATE TABLE categories(
     name VARCHAR(225) NOT NULL, 
     slug VARCHAR(225) NOT NULL UNIQUE, 
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deletedAt TIMESTAMP DEFAULT NULL
 );
 
 --@block 
@@ -19,10 +20,10 @@ VALUES
 ("Kids", "kids"), 
 ("Fashion", "fashion")
 
-
-
 --@block 
 drop table categories
 
 --@block 
 TRUNCATE categories
+
+

@@ -78,7 +78,7 @@ export async function editCategory(data: Partial<Category>) {
     });
 }
 
-export async function deleteCategory(data: { id: string }) {
+export async function deleteCategory(data: { uuid: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

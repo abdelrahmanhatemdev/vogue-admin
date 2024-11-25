@@ -34,6 +34,7 @@ function Categories({ data }: { data: Category[] }) {
 
   console.log("data", data);
   
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -155,7 +156,7 @@ function Categories({ data }: { data: Category[] }) {
                     ),
                     children: (
                       <DeleteCategory
-                        itemId={item.id}
+                        itemId={item.uuid}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
