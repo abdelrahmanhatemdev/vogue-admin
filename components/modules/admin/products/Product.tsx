@@ -115,7 +115,7 @@ function Product({
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
               className={
-                "hover:bg-main-200 p-2 rounded-lg bg-main-100 transition-colors" +
+                "hover:bg-main-300 p-2 rounded-lg bg-main-200 transition-colors" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to Product page"
@@ -466,6 +466,7 @@ function Product({
         description={modal.description}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        
       >
         <>{modal.children}</>
       </Modal>

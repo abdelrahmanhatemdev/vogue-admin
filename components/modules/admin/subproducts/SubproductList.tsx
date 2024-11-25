@@ -48,16 +48,6 @@ import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
-import { PiPlusCircle } from "react-icons/pi";
-import useData from "@/hooks/useData";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import { X } from "lucide-react";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Subproduct>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -97,8 +87,6 @@ function SubproductList({
   setModalOpen,
   addOptimisticData,
 }: SubproductListProps<Subproduct>) {
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
 
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
@@ -123,9 +111,6 @@ function SubproductList({
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
   const [isPending, startTransition] = useTransition();
-
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const table = useReactTable({
     data,
@@ -233,195 +218,7 @@ function SubproductList({
               }
             />
           )}
-          {isData && brands.length > 0 && (
-            <>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"ghost"}
-                    className="border-dashed border-main-300 border-2"
-                  >
-                    <div className="flex items-center justify-center gap-1 font-bold">
-                      <PiPlusCircle size={30} />
-                      <span>Brands</span>
-                    </div>
-                    {selectedBrands.length > 0 && (
-                      <>
-                        <Separator orientation="vertical" />
-                        {selectedBrands.length > 2 ? (
-                          <span className="bg-main-200 p-1 rounded-md text-xs">
-                            {selectedBrands.length} Selected
-                          </span>
-                        ) : (
-                          selectedBrands.map((id) => (
-                            <span
-                              key={id}
-                              className="bg-main-200 p-1 rounded-md text-xs"
-                            >
-                              {brands.find((b) => b.id === id)?.name}
-                            </span>
-                          ))
-                        )}
-                      </>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-40 p-2">
-                  <div className="flex flex-col gap-2 ">
-                    {brands.map((item) => (
-                      <Button
-                        className="w-full flex gap-2 justify-start items-center cursor-pointer"
-                        variant={"ghost"}
-                        key={item.id}
-                        onClick={() =>
-                          setSelectedBrands((prev) => {
-                            const updatedFilter = prev.includes(item.id)
-                              ? prev.filter((b) => b !== item.id)
-                              : [...prev, item.id];
-
-                            setColumnFilters((prevFilters) => {
-                              const newFilters = prevFilters.filter(
-                                (filter) => filter.id !== "brand"
-                              );
-                              return [
-                                ...newFilters,
-                                {
-                                  id: "brand",
-                                  value: updatedFilter,
-                                },
-                              ];
-                            });
-                            return updatedFilter;
-                          })
-                        }
-                        asChild
-                      >
-                        <div>
-                          <Checkbox
-                            checked={selectedBrands.includes(item.id)}
-                          />
-                          <span>{item.name}</span>
-                        </div>
-                      </Button>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </>
-          )}
-          {isData && categories.length > 0 && (
-            <>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"ghost"}
-                    className="border-dashed border-main-300 border-2"
-                  >
-                    <div className="flex items-center justify-center gap-1 font-bold">
-                      <PiPlusCircle size={30} />
-                      <span>categories</span>
-                    </div>
-                    {selectedCategories.length > 0 && (
-                      <>
-                        <Separator orientation="vertical" />
-                        {selectedCategories.length > 2 ? (
-                          <span className="bg-main-200 p-1 rounded-md text-xs">
-                            {selectedCategories.length} Selected
-                          </span>
-                        ) : (
-                          selectedCategories.map((id) => (
-                            <span
-                              key={id}
-                              className="bg-main-200 p-1 rounded-md text-xs"
-                            >
-                              {categories.find((c) => c.id === id)?.name}
-                            </span>
-                          ))
-                        )}
-                      </>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-40 p-2">
-                  <div className="flex flex-col gap-2 ">
-                    {categories.map((item) => (
-                      <Button
-                        className="w-full flex gap-2 justify-start items-center cursor-pointer"
-                        variant={"ghost"}
-                        key={item.id}
-                        onClick={() =>
-                          setSelectedCategories((prev) => {
-                            const updatedFilter = prev.includes(item.id)
-                              ? prev.filter((c) => c !== item.id)
-                              : [...prev, item.id];
-
-                            setColumnFilters((prevFilters) => {
-                              const newFilters = prevFilters.filter(
-                                (filter) => filter.id !== "categories"
-                              );
-                              return [
-                                ...newFilters,
-                                {
-                                  id: "categories",
-                                  value: updatedFilter,
-                                },
-                              ];
-                            });
-                            return updatedFilter;
-                          })
-                        }
-                        asChild
-                      >
-                        <div>
-                          <Checkbox
-                            checked={selectedCategories.includes(item.id)}
-                          />
-                          <span>{item.name}</span>
-                        </div>
-                      </Button>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </>
-          )}
-          {(selectedBrands.length > 0 || selectedCategories.length > 0) && (
-            <Button
-              variant={"ghost"}
-              onClick={() => {
-                if (selectedBrands.length > 0) {
-                  setSelectedBrands(() => {
-                    const updatedFilter: string[] = [];
-
-                    setColumnFilters((prevFilters) => {
-                      const newFilters = prevFilters.filter(
-                        (filter) => filter.id !== "brand"
-                      );
-                      return [...newFilters];
-                    });
-                    return updatedFilter;
-                  });
-                }
-                if (selectedCategories.length > 0) {
-                  setSelectedCategories(() => {
-                    const updatedFilter: string[] = [];
-
-                    setColumnFilters((prevFilters) => {
-                      const newFilters = prevFilters.filter(
-                        (filter) => filter.id !== "categories"
-                      );
-                      return [...newFilters];
-                    });
-                    return updatedFilter;
-                  });
-                }
-              }}
-              className="flex gap-1 rounded-md p-2 font-bold"
-            >
-              <span> Reset</span>
-              <X />
-            </Button>
-          )}
+       
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (

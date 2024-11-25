@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -61,6 +61,15 @@ export const SubproductSchema = z.object({
   sold: z.coerce.number().positive("Price must be positive"),
   featured: z.boolean(),
   inStock: z.boolean(),
+  images: z
+  .any()
+    // .custom<FileList>(files => files instanceof FileList, {
+    //   message: "Must be a valid file input"
+    // })
+    // .refine(files => files && files.length > 0 , {
+    //   message: "At least one photo is required"
+    // })
+   
 });
 import { v4 as uuid4 } from "uuid";
 import {
@@ -71,6 +80,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { currencies } from "@/constants/currencies";
+import { addImage } from "@/actions/Image";
+import { storage } from "@/firebase/firebaseClient.config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function AddSubproduct({
   setModalOpen,
@@ -86,6 +98,9 @@ function AddSubproduct({
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 
+
+  
+
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
@@ -93,6 +108,7 @@ function AddSubproduct({
       currency: "USD",
       featured: false,
       inStock: false,
+      images: ""
     },
     mode: "onChange",
   });
@@ -109,19 +125,26 @@ function AddSubproduct({
       createdAt: date,
       updatedAt: date,
     };
+    // console.log("data", data);
 
     const optimisticObj: Subproduct = {
       ...data,
       isPending: !isPending,
     };
 
-    console.log("isPending", isPending);
 
-    startTransition(() => {
-      addOptimisticData((prev: Subproduct[]) => [...prev, optimisticObj]);
-    });
-    const res: ActionResponse = await addSubproduct(data);
-    notify(res);
+    if (data.images.length > 0) {
+      
+    }
+    
+    
+   
+
+    // startTransition(() => {
+    //   addOptimisticData((prev: Subproduct[]) => [...prev, optimisticObj]);
+    // });
+    // const res: ActionResponse = await addSubproduct(data);
+    // notify(res);
   }
 
   return (
@@ -129,12 +152,13 @@ function AddSubproduct({
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2"
+        encType="multipart/form-data"
       >
         <FormField
           control={form.control}
           name="sku"
           render={({ field }) => (
-            <FormItem className="w-full">
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>SKU</FormLabel>
               <FormControl>
                 <Input
@@ -160,6 +184,57 @@ function AddSubproduct({
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="images"
+          render={({ field }) => (
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+              <FormLabel className="border border-dashed border-main-200 bg-main-100 flex justify-center rounded-lg items-center h-full cursor-pointer">
+                <div className="flex flex-col items-center gap-1 justify-center">
+                  <div>Choose Photos</div>
+                  <div>
+                    <FormMessage />
+                  </div>
+                </div>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  multiple
+                  type="file"
+                  
+                  onChange={async (e) => {
+                    const files = e.target?.files ? Array.from(e.target?.files) : []
+                   
+                     form.setValue("files", files)
+
+                     console.log("files", files);
+                     
+
+                     try {
+                      const uploadPromises = files.map(async file => {
+
+                      const fileRef = ref(storage, `subproducts/${file.name}-${Date.now()}`)
+                      await uploadBytes(fileRef, file)
+                      const downloadURL = await getDownloadURL(fileRef)
+
+                      console.log("downloadURL", downloadURL);
+                      
+                      }
+                      )
+
+                     } catch (error) {
+                      
+                    
+                     
+                    }
+                   
+                  }}
+                  className="hidden"
+                />
+              </FormControl>
             </FormItem>
           )}
         />
@@ -247,10 +322,7 @@ function AddSubproduct({
                 name="currency"
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="bg-main-200 rounded-s-none">
                         <SelectValue
                           placeholder="Select Currency"
@@ -368,6 +440,7 @@ function AddSubproduct({
             </FormItem>
           )}
         />
+
         <DialogFooter className="w-full">
           <Button type="submit">Add</Button>
         </DialogFooter>

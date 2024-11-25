@@ -66,30 +66,33 @@ export async function GET() {
 export async function POST(request: Request) {
   const data = await request.json();
 
-  try {
-    if (data?.productId) {
-      const { productId, ...rest } = data;
+  console.log("data", data);
+  
 
-      const productRef = doc(db, collectoinName, productId);
-      const prductDocSnap = await getDoc(productRef);
+  // try {
+  //   if (data?.productId) {
+  //     const { productId, ...rest } = data;
 
-      if (prductDocSnap.exists()) {
-        await updateDoc(productRef, {
-          subproducts: [...prductDocSnap.data()?.subproducts, { ...rest }],
-        });
+  //     const productRef = doc(db, collectoinName, productId);
+  //     const prductDocSnap = await getDoc(productRef);
 
-        return NextResponse.json(
-          { message: "Subproduct Added" },
-          { status: 200 }
-        );
-      }
-    }
+  //     if (prductDocSnap.exists()) {
+  //       await updateDoc(productRef, {
+  //         subproducts: [...prductDocSnap.data()?.subproducts, { ...rest }],
+  //       });
 
-    throw new Error("Something Wrong");
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  //       return NextResponse.json(
+  //         { message: "Subproduct Added" },
+  //         { status: 200 }
+  //       );
+  //     }
+  //   }
+
+  //   throw new Error("Something Wrong");
+  // } catch (error) {
+  //   const message = error instanceof Error ? error.message : "Something Wrong";
+  //   return NextResponse.json({ error: message }, { status: 500 });
+  // }
 }
 
 export async function PUT(request: Request) {

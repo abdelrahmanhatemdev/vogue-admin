@@ -14,25 +14,12 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
+import { CategorySchema } from "@/lib/validation/categorySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import {isValidSlug} from "@/lib/isValid";
-
-export const CategorySchema = z.object({
-  name: z
-    .string()
-    .min(1, {
-      message: "Name is required",
-    })
-    .max(20, {
-      message: "Name should not have more than 20 charachters.",
-    }),
-  slug: z.string().min(1, {
-    message: "Slug is required",
-  }),
-});
+import { v4 as uuidv4 } from "uuid";
 
 function AddCategory({
   setModalOpen,
@@ -46,7 +33,7 @@ function AddCategory({
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
-      name: "",
+      uuid: uuidv4()
     },
     mode: "onChange",
   });
@@ -54,14 +41,14 @@ function AddCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-  
+    
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,
       createdAt: date,
       updatedAt: date,
-    };
+    };    
     const optimisticObj: Category = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
@@ -107,27 +94,7 @@ function AddCategory({
                 </span>
 
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="ps-4"
-                    onChange={async (e) => {
-                      field.onChange(e.target.value);
-
-                      const checkSlug: boolean = await isValidSlug({
-                        slug: e.target.value,
-                        collection: "products",
-                      });
-
-                      if (!checkSlug) {
-                        form.setError("slug", {
-                          message: "Slug is already used!",
-                        });
-                        return;
-                      } else {
-                        form.clearErrors("slug");
-                      }
-                    }}
-                  />
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>New Category slug</FormDescription>

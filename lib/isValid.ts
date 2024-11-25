@@ -3,30 +3,30 @@ import api from "./axiosClient";
 const apiURL = process.env.NEXT_PUBLIC_APP_API;
 const isValidSlug = async ({
   slug,
-  collection,
-  id,
+  table,
+  uuid,
 }: {
   slug: string;
-  collection: string;
-  id?: string;
+  table: string;
+  uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${apiURL}/${table}`);
 
     if (res) {
       const {
         data: { data },
       } = res;
 
-      const check = data.some((item: { id: string; slug: string }) => {
-        if (item.id === id) {
+      const check = data.some((item: { uuid: string; slug: string }) => {
+        if (item.uuid === uuid) {
           return false;
         }
 
         return item.slug === slug;
       });
 
-      return !check;
+      return check;
     }
     return true;
   } catch {
@@ -36,15 +36,15 @@ const isValidSlug = async ({
 
 const isValidSku = async ({
   sku,
-  collection,
+  table,
   id,
 }: {
   sku: string;
-  collection: string;
+  table: string;
   id?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${apiURL}/${table}`);
 
     if (res) {
       const {

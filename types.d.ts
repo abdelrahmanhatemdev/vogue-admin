@@ -7,6 +7,7 @@ type ActionResponse =
 
 interface Category {
   id: string;
+  uuid: string;
   slug: string;
   name: string;
   createdAt: string;
@@ -16,6 +17,7 @@ interface Category {
 
 interface Brand {
   id: string;
+  uuid: string;
   name: string;
   slug: string;
   createdAt: string;
@@ -25,6 +27,7 @@ interface Brand {
 
 interface Size {
   id: string;
+  uuid: string;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -32,14 +35,9 @@ interface Size {
   guide: SizeGuide;
 }
 
-interface SizeGuide {
-  id: string;
-  inches: string;
-  cm: string;
-}
-
 interface Color {
   id: string;
+  uuid: string;
   name: string;
   hex: string;
   createdAt: string;
@@ -49,6 +47,7 @@ interface Color {
 
 interface Product {
   id: string;
+  uuid: string;
   name: string;
   slug: string;
   brand: Brand | string;
@@ -65,6 +64,7 @@ interface Product {
 
 interface Subproduct {
   id: string;
+  uuid: string;
   sku: string;
   colors: Color[] | string[];
   sizes: Size[] | string[];
@@ -78,7 +78,7 @@ interface Subproduct {
   createdAt: string;
   updatedAt: string;
   isPending?: !boolean;
-  // images: ProductImage[];
+  images?: ProductImage[];
 }
 
 interface Paragraph {

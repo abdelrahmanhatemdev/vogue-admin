@@ -12,13 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CategorySchema } from "./AddCategory";
+import z from "zod";
+import { CategorySchema } from "@/lib/validation/categorySchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import {isValidSlug} from "@/lib/isValid";
+import { isValidSlug } from "@/lib/isValid";
 
 function EditCategory({
   item,
@@ -36,13 +36,13 @@ function EditCategory({
     defaultValues: {
       name: item.name,
       slug: item.slug,
+      uuid: item.uuid,
     },
   });
 
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-
     setModalOpen(false);
     const data = {
       id: item.id,
@@ -95,27 +95,7 @@ function EditCategory({
                 </span>
 
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="ps-4"
-                    onChange={async (e) => {
-                      field.onChange(e.target.value);
-
-                      const checkSlug: boolean = await isValidSlug({
-                        slug: e.target.value,
-                        collection: "products",
-                      });
-
-                      if (!checkSlug) {
-                        form.setError("slug", {
-                          message: "Slug is already used!",
-                        });
-                        return;
-                      } else {
-                        form.clearErrors("slug");
-                      }
-                    }}
-                  />
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>Update Category slug</FormDescription>
