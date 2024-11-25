@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { query, where, getDocs } from "firebase/firestore";
-import { dataCollection } from "../route";
 import { getCategories } from "@/actions/Category";
+import db from "@/lib/db";
+import { tableName } from "../route";
 
 export const dynamic = "force-static";
 
@@ -14,13 +14,15 @@ export async function GET(
   const { slug } = params;
 
   try {
-    const q = query(dataCollection, where("slug", "==", slug));
-    const querySnapshot = (await getDocs(q)).docs;
-    const doc = querySnapshot[0];
+    const [rows] = await db.query(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`, [slug]
+    );
 
-    if (doc?.id) {
-      const { name, slug, createdAt, updatedAt } = doc.data();
-      const data: Category = { id: doc.id, name, slug, createdAt, updatedAt };
+    const items = rows as Category[];
+
+    const data = items[0]
+
+    if (data) {
       return NextResponse.json({ data }, { status: 200 });
     }
 

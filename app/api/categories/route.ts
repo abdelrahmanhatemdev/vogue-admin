@@ -5,8 +5,6 @@ import { CategorySchema } from "@/lib/validation/categorySchema";
 
 export const tableName = "categories";
 
-export const dynamic = "force-static";
-
 export async function GET() {
   try {
     const [rows] = await db.query(
