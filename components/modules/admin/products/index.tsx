@@ -288,7 +288,7 @@ function Products({ data }: { data: Product[] }) {
                     ),
                     children: (
                       <DeleteProduct
-                        itemId={item.id}
+                        itemId={item.uuid}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

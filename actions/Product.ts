@@ -92,7 +92,7 @@ export async function editProduct(data: Partial<Product>) {
     });
 }
 
-export async function deleteProduct(data: { id: string }) {
+export async function deleteProduct(data: { uuid: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

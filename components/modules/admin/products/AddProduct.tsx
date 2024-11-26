@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
+import { ProductSchema } from "@/lib/validation/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import {isValidSlug} from "@/lib/isValid";
 import {
   Select,
   SelectContent,
@@ -26,40 +26,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useData  from "@/hooks/useData";
+import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
-
-export const ProductSchema = z.object({
-  name: z
-    .string()
-    .min(1, {
-      message: "Name is required",
-    })
-    .max(20, {
-      message: "Name should not have more than 20 charachters.",
-    }),
-  slug: z.string().min(1, {
-    message: "Slug is required",
-  }),
-  categories: z
-  .array(z.string())
-  .nonempty({
-    message: "Choose at least one category"
-  }),
-  brand: z.string().min(1, {
-    message: "Brand is required",
-  }),
-  descriptionBrief: z
-  .string()
-  .min(1, {
-    message: "Description Brief is required",
-  }),
-  descriptionDetails: z.string().min(1, {
-    message: "Description Details is required",
-  }),
-});
+import { v4 as uuidv4 } from "uuid";
 
 function AddProduct({
   setModalOpen,
@@ -70,17 +41,14 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories }  = useData("categories");
+  const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      name: "",
+      uuid: uuidv4(),
       categories: [],
-      brand: "", 
-      descriptionBrief: "", 
-      descriptionDetails: ""
     },
     mode: "onChange",
   });
@@ -88,7 +56,6 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
@@ -113,7 +80,7 @@ function AddProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2" 
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2"
       >
         <FormField
           control={form.control}
@@ -140,27 +107,7 @@ function AddProduct({
                   /
                 </span>
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="ps-4"
-                    onChange={async (e) => {
-                      field.onChange(e.target.value);
-
-                      const checkSlug: boolean = await isValidSlug({
-                        slug: e.target.value,
-                        collection: "products",
-                      });
-
-                      if (!checkSlug) {
-                        form.setError("slug", {
-                          message: "Slug is already used!",
-                        });
-                        return;
-                      } else {
-                        form.clearErrors("slug");
-                      }
-                    }}
-                  />
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>New Product slug</FormDescription>
@@ -178,7 +125,10 @@ function AddProduct({
                 <MultiSelect
                   options={categories.map((item) => ({
                     value: item.id,
-                    label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
+                    label:
+                      item.name?.length > 5
+                        ? item.name.slice(0, 5) + ".."
+                        : item.name,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
@@ -251,7 +201,11 @@ function AddProduct({
             <FormItem className="w-full">
               <FormLabel>Description Details</FormLabel>
               <FormControl>
-                <Textarea {...field} placeholder="Add Description Brief" rows={5}/>
+                <Textarea
+                  {...field}
+                  placeholder="Add Description Brief"
+                  rows={5}
+                />
               </FormControl>
               <FormDescription>New Product Description Details</FormDescription>
               <FormMessage />

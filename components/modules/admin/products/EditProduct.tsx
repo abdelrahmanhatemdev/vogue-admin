@@ -13,16 +13,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import { ProductSchema } from "@/lib/validation/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductSchema } from "./AddProduct";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import {isValidSlug} from "@/lib/isValid";
+import { isValidSlug } from "@/lib/isValid";
 import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 function EditProduct({
@@ -42,12 +48,13 @@ function EditProduct({
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
+      uuid: item.uuid,
       name: item.name,
       slug: item.slug,
       categories: item?.categories as string[],
-      brand: item?.brand as string, 
-      descriptionBrief: item.descriptionBrief, 
-      descriptionDetails: item.descriptionDetails
+      brand: item?.brand as string,
+      descriptionBrief: item.descriptionBrief,
+      descriptionDetails: item.descriptionDetails,
     },
     mode: "onChange",
   });
@@ -55,7 +62,6 @@ function EditProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
@@ -73,7 +79,7 @@ function EditProduct({
     startTransition(() => {
       addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
-    
+
     const res: ActionResponse = await editProduct(data);
     notify(res);
   }
@@ -82,7 +88,7 @@ function EditProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2" 
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2"
       >
         <FormField
           control={form.control}
@@ -109,27 +115,7 @@ function EditProduct({
                   /
                 </span>
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="ps-4"
-                    onChange={async (e) => {
-                      field.onChange(e.target.value);
-
-                      const checkSlug: boolean = await isValidSlug({
-                        slug: e.target.value,
-                        collection: "products",
-                      });
-
-                      if (!checkSlug) {
-                        form.setError("slug", {
-                          message: "Slug is already used!",
-                        });
-                        return;
-                      } else {
-                        form.clearErrors("slug");
-                      }
-                    }}
-                  />
+                  <Input {...field} className="ps-4"/>
                 </FormControl>
               </div>
               <FormDescription>Update Product slug</FormDescription>
@@ -147,7 +133,10 @@ function EditProduct({
                 <MultiSelect
                   options={categories.map((item) => ({
                     value: item.id,
-                    label: item.name?.length > 5 ? (item.name.slice(0, 5) + "..") : item.name ,
+                    label:
+                      item.name?.length > 5
+                        ? item.name.slice(0, 5) + ".."
+                        : item.name,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
@@ -209,7 +198,9 @@ function EditProduct({
               <FormControl>
                 <Textarea {...field} placeholder="Add Description Brief" />
               </FormControl>
-              <FormDescription>Update Product Description Brief</FormDescription>
+              <FormDescription>
+                Update Product Description Brief
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -221,9 +212,15 @@ function EditProduct({
             <FormItem className="w-full">
               <FormLabel>Description Details</FormLabel>
               <FormControl>
-                <Textarea {...field} placeholder="Add Description Brief" rows={5}/>
+                <Textarea
+                  {...field}
+                  placeholder="Add Description Brief"
+                  rows={5}
+                />
               </FormControl>
-              <FormDescription>Update Product Description Details</FormDescription>
+              <FormDescription>
+                Update Product Description Details
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
