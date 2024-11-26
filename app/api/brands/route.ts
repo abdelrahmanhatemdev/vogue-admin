@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const { uuid, name, slug } = await request.json();
 
     // Ensure Server Validation
-    BrandSchema.parseAsync({ name, slug, uuid });
+    BrandSchema.parseAsync({ uuid, name, slug });
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE slug = ?`,
@@ -65,7 +65,7 @@ export async function PUT(request: Request) {
     const { uuid, name, slug } = await request.json();
 
     // Ensure Server Validation
-    BrandSchema.parseAsync({ name, slug, uuid });
+    BrandSchema.parseAsync({ uuid, name, slug });
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE slug = ? AND uuid != ?`,

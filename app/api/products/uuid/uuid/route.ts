@@ -7,15 +7,15 @@ export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ slug: string }> }
+  props: { params: Promise<{ uuid: string }> }
 ) {
   const params = await props.params;
 
-  const { slug } = params;
+  const { uuid } = params;
 
   try {
     const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`, [slug]
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND uuid = ? LIMIT 1`, [uuid]
     );
 
     const items = rows as Product[];
@@ -36,5 +36,5 @@ export async function GET(
 export async function generateStaticParams() {
   const list: Product[] = await getProducts();
 
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  return list.map(({ uuid }: { uuid: string }) => ({ uuid }));
 }
