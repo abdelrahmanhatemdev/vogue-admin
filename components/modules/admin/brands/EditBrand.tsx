@@ -13,12 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import { BrandSchema } from "@/lib/validation/brandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BrandSchema } from "./AddBrand";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
-import {isValidSlug} from "@/lib/isValid";
 
 function EditBrand({
   item,
@@ -36,6 +35,7 @@ function EditBrand({
     defaultValues: {
       name: item.name,
       slug: item.slug,
+      uuid: item.uuid,
     },
   });
 
@@ -48,7 +48,7 @@ function EditBrand({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending ,
+      isPending: !isPending,
     };
 
     startTransition(async () => {
@@ -64,7 +64,10 @@ function EditBrand({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-0"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -91,27 +94,7 @@ function EditBrand({
                 </span>
 
                 <FormControl>
-                  <Input
-                    {...field}
-                    className="ps-4"
-                    onChange={async (e) => {
-                      field.onChange(e.target.value);
-
-                      const checkSlug: boolean = await isValidSlug({
-                        slug: e.target.value,
-                        collection: "brands",
-                      });
-
-                      if (!checkSlug) {
-                        form.setError("slug", {
-                          message: "Slug is already used!",
-                        });
-                        return;
-                      } else {
-                        form.clearErrors("slug");
-                      }
-                    }}
-                  />
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>New Category slug</FormDescription>
@@ -127,4 +110,4 @@ function EditBrand({
   );
 }
 
-export default memo(EditBrand)
+export default memo(EditBrand);

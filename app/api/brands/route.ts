@@ -1,31 +1,17 @@
 import { NextResponse } from "next/server";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseClient.config";
+import db from "@/lib/db";
+import { ResultSetHeader } from "mysql2";
+import { BrandSchema } from "@/lib/validation/brandSchema";
 
-export const collectoinName = "brands";
-export const dataCollection = collection(db, collectoinName);
-
-export const dynamic = 'force-static'
+export const tableName = "brands";
 
 export async function GET() {
   try {
-    const querySnapshot = await getDocs(dataCollection);
+    const [rows] = await db.query(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
+    );
 
-    const data: Brand[] = [];
-
-    querySnapshot.forEach((doc) => {
-      if (doc?.id) {
-        const { name, slug, createdAt, updatedAt } = doc.data();
-        data.push({ id: doc.id, name, slug, createdAt, updatedAt });
-      }
-    });
+    const data = rows as Brand[];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -35,12 +21,36 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const data = await request.json();
-
   try {
-    const docRef = await addDoc(dataCollection, data);
-    if (docRef?.id) {
-      return NextResponse.json({ message: "Brand Added" }, { status: 200 });
+    const { uuid, name, slug } = await request.json();
+
+    // Ensure Server Validation
+    BrandSchema.parseAsync({ name, slug, uuid });
+
+    const [slugCheck] = await db.execute(
+      `SELECT * FROM ${tableName} WHERE slug = ?`,
+      [slug]
+    );
+
+    const existedItems = slugCheck as Brand[];
+
+    if (existedItems.length > 0) {
+      return NextResponse.json(
+        { error: `${slug} slug is already used!` },
+        { status: 400 }
+      );
+    }
+
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `INSERT INTO ${tableName} (uuid, name, slug) VALUES (?, ?, ?)`,
+      [uuid, name, slug]
+    );
+
+    if (result.insertId) {
+      return NextResponse.json(
+        { message: "Brand added", result },
+        { status: 200 }
+      );
     }
 
     return new Error("Something Wrong");
@@ -51,20 +61,34 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name, slug } = await request.json();
-
   try {
-    const docRef = doc(db, collectoinName, id);
+    const { uuid, name, slug } = await request.json();
 
-    if (docRef?.id) {
-      const date = new Date().toISOString();
-      await updateDoc(docRef, {
-        name,
-        slug,
-        updatedAt: date,
-      });
+    // Ensure Server Validation
+    BrandSchema.parseAsync({ name, slug, uuid });
+
+    const [slugCheck] = await db.execute(
+      `SELECT * FROM ${tableName} WHERE slug = ? AND uuid != ?`,
+      [slug, uuid]
+    );
+
+    const existedItems = slugCheck as Brand[];
+
+    if (existedItems.length > 0) {
       return NextResponse.json(
-        { message: "Brand Updated" },
+        { error: `${slug} slug is already used!` },
+        { status: 400 }
+      );
+    }
+
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `UPDATE ${tableName} SET name = ? , slug = ? WHERE uuid = ?`,
+      [name, slug, uuid]
+    );
+
+    if (result.affectedRows) {
+      return NextResponse.json(
+        { message: "Brand updated", result },
         { status: 200 }
       );
     }
@@ -77,19 +101,20 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-
   try {
-    const docRef = doc(db, collectoinName, id);
+    const { uuid } = await request.json();
 
-    if (docRef?.id) {
-      await deleteDoc(docRef);
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
+      [uuid]
+    );
+
+    if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Brand Deleted" },
+        { message: "Brand Deleted", result },
         { status: 200 }
       );
     }
-
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
