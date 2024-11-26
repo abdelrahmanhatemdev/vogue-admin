@@ -131,7 +131,7 @@ function Sizes({ data }: { data: Size[] }) {
                     ),
                     children: (
                       <DeleteSize
-                        itemId={item.id}
+                        itemId={item.uuid}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

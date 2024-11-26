@@ -15,24 +15,12 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
+import { ColorSchema } from "@/lib/validation/colorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
-
-export const ColorSchema = z.object({
-  name: z
-    .string()
-    .min(1, {
-      message: "Name is required",
-    })
-    .max(9, {
-      message: "Name should not have more than 9 charachters.",
-    }),
-  hex: z.string().min(1, {
-    message: "Hex code is required",
-  }),
-});
+import { v4 as uuidv4 } from "uuid";
 
 function AddColor({
   setModalOpen,
@@ -46,7 +34,7 @@ function AddColor({
   const form = useForm<z.infer<typeof ColorSchema>>({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
-      name: "",
+      uuid: uuidv4(),
       hex: "",
     },
     mode: "onChange",

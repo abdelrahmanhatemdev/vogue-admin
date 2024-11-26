@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const { uuid, name, slug } = await request.json();
 
     // Ensure Server Validation
-    CategorySchema.parseAsync({ name, slug });
+    CategorySchema.parseAsync({ name, slug, uuid });
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE slug = ?`,

@@ -12,6 +12,7 @@ interface Category {
   name: string;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   isPending?: boolean;
 }
 
@@ -22,6 +23,7 @@ interface Brand {
   slug: string;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   isPending?: boolean;
 }
 
@@ -31,8 +33,8 @@ interface Size {
   name: string;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   isPending?: boolean;
-  guide: SizeGuide;
 }
 
 interface Color {
@@ -42,6 +44,7 @@ interface Color {
   hex: string;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   isPending?: boolean;
 }
 
@@ -56,6 +59,7 @@ interface Product {
   descriptionDetails: string;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   subproducts?: Subproduct[] | number | {sku:string; id: string;}[];
   isPending?: !isPending;
   reviews?: Review[];
@@ -77,6 +81,7 @@ interface Subproduct {
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
+  delatedAt?: string;
   isPending?: !boolean;
   images?: ProductImage[];
 }

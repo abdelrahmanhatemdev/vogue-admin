@@ -16,7 +16,7 @@ function DeleteSize({
     action: Size[] | ((pendingState: Size[]) => Size[])
   ) => void;
 }) {
-  const data = { id: itemId };
+  const data = { uuid: itemId };
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +25,7 @@ function DeleteSize({
     startTransition(() => {
       addOptimisticData((prev: Size[]) => [
         ...prev.map((item) => {
-          if (item.id === data.id) {
+          if (item.uuid === data.uuid) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

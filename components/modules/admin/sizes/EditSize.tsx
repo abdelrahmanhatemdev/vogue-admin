@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import { SizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SizeSchema } from "./AddSize";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
@@ -34,6 +34,7 @@ function EditSize({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
       name: item.name,
+      uuid: item.uuid,
     },
   });
 
@@ -51,7 +52,7 @@ function EditSize({
 
     startTransition(async () => {
       addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
+        ...prev.filter((item) => item.uuid !== data.uuid),
         data,
       ]);
     });

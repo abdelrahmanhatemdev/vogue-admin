@@ -1,31 +1,17 @@
 import { NextResponse } from "next/server";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseClient.config";
+import db from "@/lib/db";
+import { ResultSetHeader } from "mysql2";
+import { SizeSchema } from "@/lib/validation/sizeSchema";
 
-export const collectoinName = "sizes";
-export const dataCollection = collection(db, collectoinName);
-
-export const dynamic = 'force-static'
+export const tableName = "sizes";
 
 export async function GET() {
   try {
-    const querySnapshot = await getDocs(dataCollection);
+    const [rows] = await db.query(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
+    );
 
-    const data: Size[] = [];
-
-    querySnapshot.forEach((doc) => {
-      if (doc?.id) {
-        const { name, createdAt, updatedAt } = doc.data();
-        data.push({ id: doc.id, name, createdAt, updatedAt });
-      }
-    });
+    const data = rows as Size[];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -35,12 +21,22 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const data = await request.json();
-
   try {
-    const docRef = await addDoc(dataCollection, data);
-    if (docRef?.id) {
-      return NextResponse.json({ message: "Size Added" }, { status: 200 });
+    const { uuid, name } = await request.json();
+
+    // Ensure Server Validation
+    SizeSchema.parseAsync({ name, uuid });
+
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `INSERT INTO ${tableName} (uuid, name) VALUES (?, ?)`,
+      [uuid, name]
+    );
+
+    if (result.insertId) {
+      return NextResponse.json(
+        { message: "Size added", result },
+        { status: 200 }
+      );
     }
 
     return new Error("Something Wrong");
@@ -51,19 +47,20 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name } = await request.json();
-
   try {
-    const docRef = doc(db, collectoinName, id);
+    const { uuid, name } = await request.json();
 
-    if (docRef?.id) {
-      const date = new Date().toISOString();
-      await updateDoc(docRef, {
-        name,
-        updatedAt: date,
-      });
+    // Ensure Server Validation
+    SizeSchema.parseAsync({ name, uuid });
+    
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `UPDATE ${tableName} SET name = ? WHERE uuid = ?`,
+      [name, uuid]
+    );
+
+    if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Size Updated" },
+        { message: "Size updated", result },
         { status: 200 }
       );
     }
@@ -76,19 +73,20 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-
   try {
-    const docRef = doc(db, collectoinName, id);
+    const { uuid } = await request.json();
 
-    if (docRef?.id) {
-      await deleteDoc(docRef);
+    const [result]: [ResultSetHeader, any] = await db.execute(
+      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
+      [uuid]
+    );
+
+    if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Size Deleted" },
+        { message: "Size Deleted", result },
         { status: 200 }
       );
     }
-
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";

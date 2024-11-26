@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import { ColorSchema } from "@/lib/validation/colorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ColorSchema } from "./AddColor";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
@@ -35,6 +35,7 @@ function EditColor({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
       name: item.name,
+      uuid: item.uuid,
       hex: item.hex,
     },
   });

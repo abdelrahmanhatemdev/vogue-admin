@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod"
+import { SizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dispatch,
@@ -23,17 +24,7 @@ import {
 } from "react";
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
-
-export const SizeSchema = z.object({
-  name: z
-    .string()
-    .min(1, {
-      message: "Name is required",
-    })
-    .max(20, {
-      message: "Name should not have more than 20 charachters.",
-    }),
-});
+import { v4 as uuidv4 } from "uuid";
 
 function AddSize({
   setModalOpen,
@@ -47,7 +38,7 @@ function AddSize({
   const form = useForm<z.infer<typeof SizeSchema>>({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
-      name: "",
+      uuid: uuidv4()
     },
     mode: "onChange",
   });
