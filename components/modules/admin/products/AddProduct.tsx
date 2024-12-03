@@ -124,7 +124,7 @@ function AddProduct({
               {categories ? (
                 <MultiSelect
                   options={categories.map((item) => ({
-                    value: item.id,
+                    value: item.uuid,
                     label:
                       item.name?.length > 5
                         ? item.name.slice(0, 5) + ".."
@@ -150,7 +150,7 @@ function AddProduct({
         />
         <FormField
           control={form.control}
-          name="brand"
+          name="brand_id"
           render={({ field }) => (
             <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>
@@ -161,7 +161,7 @@ function AddProduct({
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map((item) => (
-                      <SelectItem value={`${item.id}`} key={item.id}>
+                      <SelectItem value={`${item.uuid}`} key={item.id}>
                         {item.name}
                       </SelectItem>
                     ))}

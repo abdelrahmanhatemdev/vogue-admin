@@ -39,6 +39,9 @@ function Products({ data }: { data: Product[] }) {
     children: <></>,
   });
 
+  console.log("data", data);
+  
+
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
@@ -116,46 +119,31 @@ function Products({ data }: { data: Product[] }) {
         },
       },
       {
-        id: "brand",
-        accessorKey: "brand",
+        id: "brand_name",
+        accessorKey: "brand_name",
         header: "Brand",
         cell: ({ row }) => {
-          const item: Product = row.original;
-          const brand = brands
-            ? brands.find(({ id }) => id === item.brand)
-            : undefined;
-
-          return (
+          const item = row.original as Product & {brand_name: string; brand_slug:string};
+          return item.brand_slug
+          ? (
             <Link
-              href={`/admin/brands/${item.brand}`}
-              className={
-                "hover:bg-main-200 p-2 rounded-lg" +
-                (item.isPending ? " opacity-50" : "")
-              }
-              title="Go to brand page"
-            >
-              {brand ? brand.name : (item.brand as string)}
-            </Link>
-          );
+            href={`/admin/brands/${item.brand_slug}`}
+            className={
+              "hover:bg-main-200 p-2 rounded-lg" +
+              (item.isPending ? " opacity-50" : "")
+            }
+            title="Go to brand page"
+          >
+            {item.brand_name }
+          </Link>
+          )
+          : (
+            <></>
+          )
         },
         filterFn: (row, columnId, filterValue) => {
           const rowValue = row.getValue(columnId);
           return filterValue.length === 0 || filterValue.includes(rowValue);
-        },
-        sortingFn: (rowA, rowB) => {
-          const brandA = brands
-            .find((b) => b.id === rowA.original.brand)
-            ?.name?.toLowerCase();
-          const brandB = brands
-            ?.find((b) => b.id === rowB.original.brand)
-            ?.name?.toLowerCase();
-
-          if (brandA && brandB) {
-            if (brandA > brandB) return 1;
-            if (brandA < brandB) return -1;
-          }
-
-          return 0;
         },
       },
       {
@@ -163,18 +151,18 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "categories",
         header: "categories",
         cell: ({ row }) => {
+          // console.log("row: ", row.original);
+          // return row.original.id
+          
           const item: Product = row.original;
-          const itemCatsIds = item.categories as string[];
-          const itemCats: Category[] = [];
-
-          if (itemCatsIds.length > 0 && categories.length > 0) {
-            for (let i = 0; i < itemCatsIds.length; i++) {
-              const cat = categories.find(({ id }) => id === itemCatsIds[i]);
-              if (cat) {
-                itemCats.push(cat);
-              }
-            }
-          }
+          const itemCatsString = item.categories ? item.categories as string : "";
+          const itemCatsArray = itemCatsString.split(",");
+          const itemCats = itemCatsArray.map(cat => {
+            const catArray = cat.split(" - ")
+            const name = catArray[0]
+            const slug = catArray[1]
+            return {name, slug}
+          })
 
           return itemCats?.length > 0 ? (
             itemCats.map((cat) => (
@@ -185,7 +173,7 @@ function Products({ data }: { data: Product[] }) {
                   (item.isPending ? " opacity-50" : "")
                 }
                 title="Go to categories page"
-                key={cat.id}
+                key={cat.name + cat.slug}
               >
                 {cat.name.length > 8 ? `${cat.name.slice(0, 8)}...` : cat.name}
               </Link>
@@ -194,6 +182,7 @@ function Products({ data }: { data: Product[] }) {
             <></>
           );
         },
+
         filterFn: (row, columnId, filterValue) => {
           const rowValue: string[] = row.getValue(columnId);
           return (

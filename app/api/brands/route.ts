@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     BrandSchema.parseAsync({ uuid, name, slug });
 
     const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE slug = ?`,
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
       [slug]
     );
 
@@ -68,7 +68,7 @@ export async function PUT(request: Request) {
     BrandSchema.parseAsync({ uuid, name, slug });
 
     const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE slug = ? AND uuid != ?`,
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
       [slug, uuid]
     );
 

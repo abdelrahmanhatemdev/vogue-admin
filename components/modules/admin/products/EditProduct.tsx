@@ -52,7 +52,7 @@ function EditProduct({
       name: item.name,
       slug: item.slug,
       categories: item?.categories as string[],
-      brand: item?.brand as string,
+      brand_id: item?.brand_id as string,
       descriptionBrief: item.descriptionBrief,
       descriptionDetails: item.descriptionDetails,
     },
@@ -132,7 +132,7 @@ function EditProduct({
               {categories ? (
                 <MultiSelect
                   options={categories.map((item) => ({
-                    value: item.id,
+                    value: item.uuid,
                     label:
                       item.name?.length > 5
                         ? item.name.slice(0, 5) + ".."
@@ -159,7 +159,7 @@ function EditProduct({
         />
         <FormField
           control={form.control}
-          name="brand"
+          name="brand_id"
           render={({ field }) => (
             <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>
@@ -170,7 +170,7 @@ function EditProduct({
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map((item) => (
-                      <SelectItem value={`${item.id}`} key={item.id}>
+                      <SelectItem value={`${item.uuid}`} key={item.id}>
                         {item.name}
                       </SelectItem>
                     ))}

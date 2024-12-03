@@ -8,8 +8,23 @@ export const tableName = "products";
 export async function GET() {
   try {
     const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
+      `SELECT ${tableName}.* , 
+      brands.name as brand_name, brands.slug as brand_slug, 
+      GROUP_CONCAT(c.name," - ", c.slug) as categories
+      FROM ${tableName} 
+      JOIN brands
+      ON ${tableName}.brand_id = brands.uuid 
+      LEFT JOIN products_categories pc
+      ON ${tableName}.uuid = pc.product_id
+      LEFT JOIN categories c
+      ON c.uuid = pc.category_id
+      GROUP BY ${tableName}.uuid
+      `
     );
+
+    // WHERE deletedAt IS NULL ORDER BY updatedAt DESC
+
+    console.log("rows", rows);
 
     const data = rows as Product[];
 
@@ -26,57 +41,73 @@ export async function POST(request: Request) {
       uuid,
       name,
       slug,
-      brand,
+      brand_id,
       categories,
       descriptionBrief,
       descriptionDetails,
     } = await request.json();
 
     // Ensure Server Validation
-    ProductSchema.parseAsync({
+    // ProductSchema.parseAsync({
+    //   uuid,
+    //   name,
+    //   slug,
+    //   brand_id,
+    //   categories,
+    //   descriptionBrief,
+    //   descriptionDetails,
+    // });
+
+    // const [slugCheck] = await db.execute(
+    //   `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
+    //   [slug]
+    // );
+
+    // const existedItems = slugCheck as Product[];
+
+    // if (existedItems.length > 0) {
+    //   return NextResponse.json(
+    //     { error: `${slug} slug is already used!` },
+    //     { status: 400 }
+    //   );
+    // }
+
+    console.log({
       uuid,
       name,
       slug,
-      brand,
+      brand_id,
       categories,
       descriptionBrief,
       descriptionDetails,
     });
-
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE slug = ?`,
-      [slug]
-    );
-
-    const existedItems = slugCheck as Product[];
-
-    if (existedItems.length > 0) {
-      return NextResponse.json(
-        { error: `${slug} slug is already used!` },
-        { status: 400 }
-      );
-    }
 
     const [result]: [ResultSetHeader, any] = await db.execute(
       `INSERT INTO ${tableName} ( 
       uuid,
       name,
       slug,
-      brand,
-      categories,
+      brand_id,
       descriptionBrief,
-      descriptionDetails,
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [
-        uuid,
-        name,
-        slug,
-        brand,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
-      ]
+      descriptionDetails
+      ) VALUES (?, ?, ?, ?, ?, ?)`,
+      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
     );
+
+    if (categories.length > 0) {
+      const catArray = categories.map((c: string) => [uuid, c]);
+      console.log("catArray", catArray);
+      
+      await db.query(
+        `INSERT INTO products_categories ( 
+        product_id,
+        category_id
+        ) VALUES ?`,
+        [catArray]
+      );
+    }
+
+    
 
     if (result.insertId) {
       return NextResponse.json(
@@ -98,7 +129,7 @@ export async function PUT(request: Request) {
       uuid,
       name,
       slug,
-      brand,
+      brand_id,
       categories,
       descriptionBrief,
       descriptionDetails,
@@ -109,14 +140,14 @@ export async function PUT(request: Request) {
       uuid,
       name,
       slug,
-      brand,
+      brand_id,
       categories,
       descriptionBrief,
       descriptionDetails,
     });
 
     const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE slug = ? AND uuid != ?`,
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
       [slug, uuid]
     );
 
@@ -130,11 +161,11 @@ export async function PUT(request: Request) {
     }
 
     const [result]: [ResultSetHeader, any] = await db.execute(
-      `UPDATE ${tableName} SET name = ?, slug = ?, brand = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
+      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
       [
         name,
         slug,
-        brand,
+        brand_id,
         categories,
         descriptionBrief,
         descriptionDetails,
@@ -159,6 +190,8 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
+
+    console.log("uuid", uuid);
 
     const [result]: [ResultSetHeader, any] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,

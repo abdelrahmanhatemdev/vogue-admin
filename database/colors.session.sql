@@ -1,24 +1,21 @@
 CREATE TABLE colors(
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    uuid VARCHAR(225) NOT NULL UNIQUE,
-    name VARCHAR(225) NOT NULL, 
-    hex VARCHAR(225) NOT NULL, 
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    uuid CHAR(36) NOT NULL UNIQUE,
+    name VARCHAR(225) NOT NULL,
+    hex VARCHAR(225) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deletedAt TIMESTAMP DEFAULT NULL
-);
-
+    deletedAt TIMESTAMP NULL
+)
 --@block 
-SELECT * FROM colors
-
---@block 
+SELECT *
+FROM colors --@block 
 INSERT INTO colors(name)
-VALUES
-("Red"), 
-
+VALUES ("Red"),
 
 --@block 
-drop table colors
+    drop table colors 
 
---@block 
-TRUNCATE colors
+    
+    --@block 
+    TRUNCATE colors
