@@ -40,7 +40,6 @@ function Products({ data }: { data: Product[] }) {
   });
 
   console.log("data", data);
-  
 
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
@@ -123,23 +122,24 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "brand_name",
         header: "Brand",
         cell: ({ row }) => {
-          const item = row.original as Product & {brand_name: string; brand_slug:string};
-          return item.brand_slug
-          ? (
+          const item = row.original as Product & {
+            brand_name: string;
+            brand_slug: string;
+          };
+          return item.brand_slug ? (
             <Link
-            href={`/admin/brands/${item.brand_slug}`}
-            className={
-              "hover:bg-main-200 p-2 rounded-lg" +
-              (item.isPending ? " opacity-50" : "")
-            }
-            title="Go to brand page"
-          >
-            {item.brand_name }
-          </Link>
-          )
-          : (
+              href={`/admin/brands/${item.brand_slug}`}
+              className={
+                "hover:bg-main-200 p-2 rounded-lg" +
+                (item.isPending ? " opacity-50" : "")
+              }
+              title="Go to brand page"
+            >
+              {item.brand_name}
+            </Link>
+          ) : (
             <></>
-          )
+          );
         },
         filterFn: (row, columnId, filterValue) => {
           const rowValue = row.getValue(columnId);
@@ -153,16 +153,18 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           // console.log("row: ", row.original);
           // return row.original.id
-          
+
           const item: Product = row.original;
-          const itemCatsString = item.categories ? item.categories as string : "";
+          const itemCatsString = item.categories
+            ? (item.categories as string)
+            : "";
           const itemCatsArray = itemCatsString.split(",");
-          const itemCats = itemCatsArray.map(cat => {
-            const catArray = cat.split(" - ")
-            const name = catArray[0]
-            const slug = catArray[1]
-            return {name, slug}
-          })
+          const itemCats = itemCatsArray.map((cat) => {
+            const catArray = cat.split(" - ");
+            const name = catArray[0];
+            const slug = catArray[1];
+            return { name, slug };
+          });
 
           return itemCats?.length > 0 ? (
             itemCats.map((cat) => (
@@ -191,51 +193,60 @@ function Products({ data }: { data: Product[] }) {
           );
         },
         sortingFn: (rowA, rowB) => {
-          if (categories) {
-            const categoriesRowA = rowA.original.categories as string[];
-            const categoriesA = categoriesRowA
-              .map((id) =>
-                categories.find((c) => c.id === id)?.name?.toLowerCase()
-              )
-              .sort();
+          const rowACatsString = rowA.original.categories
+            ? (rowA.original.categories as string)
+            : "";
+          const rowACatsArray = rowACatsString.split(",");
+          const categoriesA = rowACatsArray
+            .map((cat) => {
+              const catArray = cat.split(" - ");
+              const name = catArray[0];
+              return name;
+            })
+            .sort();
 
-            const categoriesRowB = rowB.original.categories as string[];
-            const categoriesB = categoriesRowB
-              .map((id) =>
-                categories.find((c) => c.id === id)?.name?.toLowerCase()
-              )
-              .sort();
+          const rowBCatsString = rowB.original.categories
+            ? (rowB.original.categories as string)
+            : "";
+          const rowBCatsArray = rowBCatsString.split(",");
+          const categoriesB = rowBCatsArray
+            .map((cat) => {
+              const catArray = cat.split(" - ");
+              const name = catArray[0];
+              return name;
+            })
+            .sort();
 
-            if (!categoriesA.length && !categoriesB.length) return 0;
-            if (!categoriesA.length) return 1;
-            if (!categoriesB.length) return -1;
+          if (!categoriesA.length && !categoriesB.length) return 0;
+          if (!categoriesA.length) return 1;
+          if (!categoriesB.length) return -1;
 
-            if (
-              typeof categoriesA[0] !== "undefined" &&
-              typeof categoriesB[0] !== "undefined"
-            ) {
-              if (categoriesA[0] < categoriesB[0]) return -1;
-              if (categoriesA[0] > categoriesB[0]) return 1;
-            }
+          if (
+            typeof categoriesA[0] !== "undefined" &&
+            typeof categoriesB[0] !== "undefined"
+          ) {
+            if (categoriesA[0] < categoriesB[0]) return -1;
+            if (categoriesA[0] > categoriesB[0]) return 1;
           }
+
           return 0;
         },
       },
-      {
-        id: "subProducts",
-        accessorKey: "subProducts",
-        header: "Sub Products",
-        cell: ({ row }) => {
-          const item: Product = row.original;
+      // {
+      //   id: "subProducts",
+      //   accessorKey: "subProducts",
+      //   header: "Sub Products",
+      //   cell: ({ row }) => {
+      //     const item: Product = row.original;
 
-          const itemSubs = item?.subproducts as {sku:string; id: string;}[]
+      //     const itemSubs = item?.subproducts as {sku:string; id: string;}[]
 
-          const subProductsCount: number = itemSubs
-            ? itemSubs?.length
-            : 0;
-          return <>{subProductsCount}</>;
-        },
-      },
+      //     const subProductsCount: number = itemSubs
+      //       ? itemSubs?.length
+      //       : 0;
+      //     return <>{subProductsCount}</>;
+      //   },
+      // },
       {
         id: "actions",
         cell: ({ row }) => {
