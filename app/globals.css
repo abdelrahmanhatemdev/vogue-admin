@@ -126,3 +126,20 @@ body {
     --danger-200: 0 49% 56;
   }
 }
+
+.mySwiper .swiper-pagination-fraction, 
+.mySwiper .swiper-pagination-custom, 
+.mySwiper .swiper-horizontal > .swiper-pagination-bullets, 
+.mySwiper .swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: var(--swiper-pagination-bottom, 3rem);
+}
+
+.mySwiper .swiper-pagination-bullet {
+  width: 2rem;
+  border-radius: 4px;
+  height: 3px;
+}
+.mySwiper .swiper-pagination-bullet-active{
+  background: hsl(var(--main-50));
+  opacity: 80%;
+}
