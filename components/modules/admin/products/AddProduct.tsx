@@ -65,7 +65,9 @@ function AddProduct({
     };
     const optimisticObj: Product = {
       ...data,
+      categories: "",
       id: `optimisticID-${data.name}-${data.updatedAt}`,
+     
       isPending: !isPending,
     };
 
@@ -73,6 +75,9 @@ function AddProduct({
       addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addProduct(data);
+
+    console.log("res", res);
+    
     notify(res);
   }
 

@@ -60,6 +60,8 @@ export async function addProduct(data: Partial<Product>) {
   return api
     .post(apiURL, data)
     .then((res) => {
+      console.log("action res", res);
+      
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
         return { status: "success", message: res.data.message };

@@ -14,7 +14,7 @@ export async function GET() {
       FROM ${tableName} 
       JOIN brands
       ON ${tableName}.brand_id = brands.uuid 
-      LEFT JOIN products_categories pc
+      LEFT JOIN product_categories pc
       ON ${tableName}.uuid = pc.product_id
       LEFT JOIN categories c
       ON c.uuid = pc.category_id
@@ -22,9 +22,8 @@ export async function GET() {
       `
     );
 
-    // WHERE deletedAt IS NULL ORDER BY updatedAt DESC
-
-    console.log("rows", rows);
+    // console.log("rows", rows);
+    
 
     const data = rows as Product[];
 
@@ -36,91 +35,113 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  try {
-    const {
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
-    } = await request.json();
-
-    // Ensure Server Validation
-    // ProductSchema.parseAsync({
-    //   uuid,
-    //   name,
-    //   slug,
-    //   brand_id,
-    //   categories,
-    //   descriptionBrief,
-    //   descriptionDetails,
-    // });
-
-    // const [slugCheck] = await db.execute(
-    //   `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-    //   [slug]
-    // );
-
-    // const existedItems = slugCheck as Product[];
-
-    // if (existedItems.length > 0) {
-    //   return NextResponse.json(
-    //     { error: `${slug} slug is already used!` },
-    //     { status: 400 }
-    //   );
-    // }
-
-    console.log({
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
-    });
-
-    const [result]: [ResultSetHeader, any] = await db.execute(
-      `INSERT INTO ${tableName} ( 
-      uuid,
-      name,
-      slug,
-      brand_id,
-      descriptionBrief,
-      descriptionDetails
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
-      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
-    );
-
-    if (categories.length > 0) {
-      const catArray = categories.map((c: string) => [uuid, c]);
-      console.log("catArray", catArray);
-      
-      await db.query(
-        `INSERT INTO products_categories ( 
-        product_id,
-        category_id
-        ) VALUES ?`,
-        [catArray]
-      );
-    }
+  return NextResponse.json(
+    { message: "Product added" },
+    { status: 200 }
+  );
+  // try {
+  //   // const {
+  //   //   uuid,
+  //   //   name,
+  //   //   slug,
+  //   //   brand_id,
+  //   //   categories,
+  //   //   descriptionBrief,
+  //   //   descriptionDetails,
+  //   // } = await request.json();
 
     
 
-    if (result.insertId) {
-      return NextResponse.json(
-        { message: "Product added", result },
-        { status: 200 }
-      );
-    }
+  //   // Ensure Server Validation
+  //   // ProductSchema.parseAsync({
+  //   //   uuid,
+  //   //   name,
+  //   //   slug,
+  //   //   brand_id,
+  //   //   categories,
+  //   //   descriptionBrief,
+  //   //   descriptionDetails,
+  //   // });
 
-    return new Error("Something Wrong");
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  //   // const [slugCheck] = await db.execute(
+  //   //   `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
+  //   //   [slug]
+  //   // );
+
+  //   // const existedItems = slugCheck as Product[];
+
+  //   // if (existedItems.length > 0) {
+  //   //   return NextResponse.json(
+  //   //     { error: `${slug} slug is already used!` },
+  //   //     { status: 400 }
+  //   //   );
+  //   // }
+
+  //   // console.log({
+  //   //   uuid,
+  //   //   name,
+  //   //   slug,
+  //   //   brand_id,
+  //   //   categories,
+  //   //   descriptionBrief,
+  //   //   descriptionDetails,
+  //   // });
+
+   
+
+    
+
+  //   // const [result]: [ResultSetHeader, any] = await db.execute(
+  //   //   `INSERT INTO ${tableName} ( 
+  //   //   uuid,
+  //   //   name,
+  //   //   slug,
+  //   //   brand_id,
+  //   //   descriptionBrief,
+  //   //   descriptionDetails
+  //   //   ) VALUES (?, ?, ?, ?, ?, ?)`,
+  //   //   [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
+  //   // );
+
+    
+  //   // if (categories.length > 0) {
+  //   //   const catArray = categories.map((c: string) => [uuid, c]);
+
+  //   //    // Insert into products_categories using a single query
+  //   //    const placeholders = catArray.map(() => '(?, ?)').join(', ');
+  //   //    const flattenedValues = catArray.flat();
+ 
+  //   //    const [result] = await db.execute(
+  //   //      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+  //   //      flattenedValues
+  //   //    );
+
+       
+       
+  //   // }
+
+    
+
+    
+
+    
+      
+      
+
+
+  //     // return NextResponse.json(
+  //     //   { message: "Product added" },
+  //     //   { status: 200 }
+  //     // );
+    
+
+  //   // throw new Error("Something Wrong");
+  // } catch (error) {
+  //   console.log(error);
+    
+  //   const message = error instanceof Error ? error.message : "Something Wrong";
+  //   return NextResponse.json({ error: message }, { status: 500 });
+  // }
 }
 
 export async function PUT(request: Request) {
@@ -161,7 +182,7 @@ export async function PUT(request: Request) {
     }
 
     const [result]: [ResultSetHeader, any] = await db.execute(
-      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
+      `UPDATE ${tableName} SET name=?, slug=?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
       [
         name,
         slug,

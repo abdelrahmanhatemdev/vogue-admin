@@ -53,8 +53,8 @@ interface Product {
   uuid: string;
   name: string;
   slug: string;
-  brand_id: Brand;
-  categories: Category[] | string;
+  brand_id: Brand | string;
+  categories: Category[] | string | string[];
   descriptionBrief: string;
   descriptionDetails: string;
   createdAt: string;

@@ -1,18 +1,19 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { memo } from "react";
 
-function Logo({ className }: Readonly<{ className?: string }>) {
+function Logo({ className, invert }: Readonly<{ className?: string; invert?: boolean }>) {
   return (
-    <div className={cn("", className)}>
+    <Link className={cn("", className)} href="/">
       <Image
-        src="/assets/images/logo.webp"
+        src={`/assets/images/logo${invert && "-light"}.png`}
         alt="Vogue Logo"
         height={96}
         width={96}
         priority= {true}
       />
-    </div>
+    </Link>
   );
 }
 
