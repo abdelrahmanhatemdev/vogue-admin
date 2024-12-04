@@ -26,8 +26,12 @@ export default function layout({
         <div className="bg-main-200 hidden lg:block w-full relative">
           <AuthSwiper />
           <div className="flex items-center absolute inset-5 justify-between h-fit p-2">
-            <Logo className="z-10" invert={true}/>
-            <Link href={`/`} className="z-10 bg-main-600 text-main-50 text-xs rounded-full p-2 hover:bg-main-700 transition-colors shadow-sm">Back to Website</Link>
+            <Logo className="z-10" invert={true} />
+            <Link href={`/`} className="z-10 ">
+              <span className="bg-[hsla(0,0%,0%,10%)] text-main-50 text-xs rounded-full p-2 hover:bg-[hsla(0,0%,0%,30%)] transition-colors shadow-sm">
+                Back to Website
+              </span>
+            </Link>
           </div>
         </div>
         {children}
