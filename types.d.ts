@@ -32,7 +32,7 @@ interface Admin {
   uuid: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   provider: string;
   createdAt: string;
   updatedAt: string;

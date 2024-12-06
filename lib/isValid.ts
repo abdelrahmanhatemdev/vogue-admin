@@ -1,7 +1,8 @@
 import api from "./axiosClient";
 
 const apiURL = process.env.NEXT_PUBLIC_APP_API;
-const isValidSlug = async ({
+
+export const isValidSlug = async ({
   slug,
   table,
   uuid,
@@ -34,7 +35,7 @@ const isValidSlug = async ({
   }
 };
 
-const isValidSku = async ({
+export const isValidSku = async ({
   sku,
   table,
   id,
@@ -75,4 +76,37 @@ const isValidSku = async ({
   }
 };
 
-export { isValidSlug, isValidSku };
+export const isValidEmail = async ({
+  email,
+  table,
+  uuid,
+}: {
+  email: string;
+  table: string;
+  uuid?: string;
+}) => {
+  try {
+    const res = await api(`${apiURL}/${table}`);
+
+    if (res) {
+      const {
+        data: { data },
+      } = res;
+
+      const check = data.some((item: { uuid: string; email: string }) => {
+        if (item.uuid === uuid) {
+          return false;
+        }
+
+        return item.email === email;
+      });
+
+      return check;
+    }
+    return true;
+  } catch {
+    return true;
+  }
+};
+
+
