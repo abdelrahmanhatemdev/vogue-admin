@@ -14,12 +14,13 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
-import { AdminSchema } from "@/lib/validation/adminSchema";
+import { AdminAddSchema as AdminSchema } from "@/lib/validation/adminSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addAdmin } from "@/actions/Admin";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
+
 
 function AddAdmin({
   setModalOpen,

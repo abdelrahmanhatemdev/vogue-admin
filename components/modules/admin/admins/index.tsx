@@ -91,6 +91,15 @@ function Admins({ data }: { data: Admin[] }) {
         },
       },
       {
+        id: "email",
+        accessorKey: "email",
+        header: "email",
+        cell: ({ row }) => {
+          const item: Admin = row.original;
+          return <span>{item.email}</span>;
+        },
+      },
+      {
         id: "actions",
         cell: ({ row }) => {
           const item: Admin = row.original;

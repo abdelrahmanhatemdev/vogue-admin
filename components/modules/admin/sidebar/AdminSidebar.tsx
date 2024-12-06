@@ -6,6 +6,8 @@ import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { IoMdBusiness } from "react-icons/io";
+import { MdAdminPanelSettings } from "react-icons/md";
+
 
 import {
   Sidebar,
@@ -44,6 +46,11 @@ export const SidebarLinks = [
     title: "Dashboard",
     link: "/admin",
     icon: MdSpaceDashboard,
+  },
+  {
+    title: "Admins",
+    link: "/admin/admins",
+    icon: MdAdminPanelSettings,
   },
   {
     title: "Users",

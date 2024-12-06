@@ -7,7 +7,7 @@ function Logo({ className, invert }: Readonly<{ className?: string; invert?: boo
   return (
     <Link className={cn("", className)} href="/">
       <Image
-        src={`/assets/images/logo${invert && "-light"}.png`}
+        src={`/assets/images/logo${invert ? "-light" : ""}.png`}
         alt="Vogue Logo"
         height={96}
         width={96}
