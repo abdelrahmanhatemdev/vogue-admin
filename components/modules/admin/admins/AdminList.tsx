@@ -11,6 +11,7 @@ import {
   VisibilityState,
   useReactTable,
   ColumnFiltersState,
+  GlobalFilterColumn,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -80,7 +81,6 @@ function AdminList({
   setModalOpen,
   addOptimisticData,
 }: AdminListProps<Admin>) {
-  
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -93,8 +93,9 @@ function AdminList({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>(visibleColumns);
+    const [globalFilter, setGlobalFilter] = useState("");
 
   const selectedRows = Object.keys(rowSelection);
 
@@ -116,7 +117,7 @@ function AdminList({
       sorting,
       pagination,
       columnVisibility,
-      columnFilters,
+      globalFilter,
     },
     onRowSelectionChange: (value) => {
       setRowSelection(value);
@@ -130,7 +131,13 @@ function AdminList({
       maxSize: 500,
     },
     onColumnVisibilityChange: setColumnVisibility,
-    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: (row, columnId, filterValue) => {
+      const searchTerm = filterValue.toLowerCase();
+      const name = row.getValue("name")?.toString().toLowerCase()!;
+      const email = row.getValue("email")?.toString().toLowerCase()!;
+      return name.includes(searchTerm) || email.includes(searchTerm);
+    },
     getRowId: (row) => row.id,
   });
 
@@ -138,53 +145,53 @@ function AdminList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-    function deleteMultiple() {
-      setModalOpen(true);
-      setModal({
-        title: `Delete Admins`,
-        description: (
-          <p className="font-medium">
-            Are you sure to
-            {selectedRows.length === 1 ? (
-              " delete the admin "
-            ) : (
-              <strong> delete all admins </strong>
-            )}
-            permenantly ?
-          </p>
-        ),
-        children: (
-          <DialogFooter>
-            <Button
-              type="submit"
-              variant="destructive"
-              onClick={async () => {
-                setModalOpen(false);
-                setShowDeleteAll(false);
-                startTransition(() => {
-                  addOptimisticData((prev: Admin[]) => [
-                    ...prev.map((item) => {
-                      if (selectedRows.includes(item.id)) {
-                        const pendingItem = { ...item, isPending: !isPending };
-                        return pendingItem;
-                      }
-                      return item;
-                    }),
-                  ]);
-                });
-                for (const row of selectedRows) {
-                  const data = { uuid: row };
-                  const res: ActionResponse = await deleteAdmin(data);
-                  notify(res);
-                }
-              }}
-            >
-              Delete All
-            </Button>
-          </DialogFooter>
-        ),
-      });
-    }
+  function deleteMultiple() {
+    setModalOpen(true);
+    setModal({
+      title: `Delete Admins`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the admin "
+          ) : (
+            <strong> delete all admins </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              setShowDeleteAll(false);
+              startTransition(() => {
+                addOptimisticData((prev: Admin[]) => [
+                  ...prev.map((item) => {
+                    if (selectedRows.includes(item.id)) {
+                      const pendingItem = { ...item, isPending: !isPending };
+                      return pendingItem;
+                    }
+                    return item;
+                  }),
+                ]);
+              });
+              for (const row of selectedRows) {
+                const data = { uuid: row };
+                const res: ActionResponse = await deleteAdmin(data);
+                notify(res);
+              }
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -195,19 +202,15 @@ function AdminList({
               className="bg-background"
               type="text"
               placeholder="Filter admins..."
-              onChange={(e) =>
-                setColumnFilters([{ id: "name", value: e.target.value }])
-              }
+              onChange={(e) => {
+                setGlobalFilter(e.target.value);
+              }}
             />
           )}
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button
-              variant="destructive"
-              onClick={deleteMultiple}
-              size="sm"
-            >
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
               Delete Selected
             </Button>
           )}
