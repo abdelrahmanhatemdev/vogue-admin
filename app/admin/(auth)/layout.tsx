@@ -22,8 +22,8 @@ export default function layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <MainLayout>
-      <div className="flex h-full bg-red-500 *:w-[50%] w-full flex-wrap">
-        <div className="bg-main-200 hidden lg:block w-full relative">
+      <div className="flex h-full *:w-[50%] w-full flex-wrap">
+        <div className="hidden lg:block w-full h-full relative">
           <AuthSwiper />
           <div className="flex items-center absolute inset-5 justify-between h-fit p-2">
             <Logo className="z-10" invert={true} />

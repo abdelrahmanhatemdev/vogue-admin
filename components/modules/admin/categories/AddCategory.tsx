@@ -33,7 +33,7 @@ function AddCategory({
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
-      uuid: uuidv4()
+      uuid: uuidv4(),
     },
     mode: "onChange",
   });
@@ -41,14 +41,13 @@ function AddCategory({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
-    
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
       ...values,
       createdAt: date,
       updatedAt: date,
-    };    
+    };
     const optimisticObj: Category = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
