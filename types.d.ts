@@ -27,6 +27,19 @@ interface Brand {
   isPending?: boolean;
 }
 
+interface Admin {
+  id: string;
+  uuid: string;
+  name: string;
+  email: string;
+  passwrod: string;
+  provider: string;
+  createdAt: string;
+  updatedAt: string;
+  provider_id?: string;
+  delatedAt?: string;
+}
+
 interface Size {
   id: string;
   uuid: string;
