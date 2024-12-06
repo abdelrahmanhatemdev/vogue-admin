@@ -30,7 +30,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-32 justify-center">
+    <div className="w-full flex flex-col gap-6 p-12 xl:p-20 justify-center lg:max-w-[30rem] mx-auto">
       <div className="flex flex-col">
         <h1 className="text-[3rem] font-bold">Admin Login</h1>
         <p className="text-sm">Only authorized administrators may log in!</p>
