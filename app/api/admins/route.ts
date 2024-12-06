@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { ResultSetHeader } from "mysql2";
-import { adminschema } from "@/lib/validation/adminschema";
+import { AdminSchema } from "@/lib/validation/adminSchema";
+import bcrypt from "bcrypt"
 
 export const tableName = "admins";
 
@@ -22,14 +23,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name } = await request.json();
+    const { uuid, name, email, password } = await request.json();
 
     // Ensure Server Validation
-    adminschema.parseAsync({ name, uuid });
+    AdminSchema.parseAsync({ name, uuid, email, password});
+
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const [result]: [ResultSetHeader, any] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name) VALUES (?, ?)`,
-      [uuid, name]
+      `INSERT INTO ${tableName} (uuid, name, email, password) VALUES (?, ?, ?, ?)`,
+      [uuid, name, email, hashedPassword]
     );
 
     if (result.insertId) {
@@ -48,14 +51,16 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, name } = await request.json();
+    const { uuid, name, email, password } = await request.json();
 
     // Ensure Server Validation
-    adminschema.parseAsync({ name, uuid });
+    AdminSchema.parseAsync({ name, uuid, email, password });
+
+    const hashedPassword = await bcrypt.hash(password, 10)
     
     const [result]: [ResultSetHeader, any] = await db.execute(
-      `UPDATE ${tableName} SET name = ? WHERE uuid = ?`,
-      [name, uuid]
+      `UPDATE ${tableName} SET name = ?, email=?, password=? WHERE uuid = ?`,
+      [name, email, hashedPassword, uuid]
     );
 
     if (result.affectedRows) {
