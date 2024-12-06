@@ -32,12 +32,13 @@ interface Admin {
   uuid: string;
   name: string;
   email: string;
-  passwrod: string;
+  password: string;
   provider: string;
   createdAt: string;
   updatedAt: string;
   provider_id?: string;
   delatedAt?: string;
+  isPending?: boolean;
 }
 
 interface Size {
