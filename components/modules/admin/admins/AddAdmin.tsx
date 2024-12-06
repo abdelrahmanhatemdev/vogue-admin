@@ -35,6 +35,9 @@ function AddAdmin({
     resolver: zodResolver(AdminSchema),
     defaultValues: {
       uuid: uuidv4(),
+      name: "",
+      email: "",
+      password: ""
     },
     mode: "onChange",
   });

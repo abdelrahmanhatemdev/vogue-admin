@@ -36,6 +36,7 @@ function EditAdmin({
       name: item.name,
       email: item.email,
       uuid: item.uuid,
+      password: ""
     },
   });
 
