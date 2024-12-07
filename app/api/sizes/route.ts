@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
-import { ResultSetHeader } from "mysql2";
+import { FieldPacket, ResultSetHeader } from "mysql2";
 import { SizeSchema } from "@/lib/validation/sizeSchema";
 
 export const tableName = "sizes";
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     // Ensure Server Validation
     SizeSchema.parseAsync({ name, uuid });
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `INSERT INTO ${tableName} (uuid, name) VALUES (?, ?)`,
       [uuid, name]
     );
@@ -53,7 +53,7 @@ export async function PUT(request: Request) {
     // Ensure Server Validation
     SizeSchema.parseAsync({ name, uuid });
     
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET name = ? WHERE uuid = ?`,
       [name, uuid]
     );
@@ -76,7 +76,7 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
     );

@@ -1,6 +1,4 @@
 "use client";
-
-import { logoutUser } from "@/lib/authService";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

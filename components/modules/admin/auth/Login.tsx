@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { loginUser } from "@/lib/authService";
 import { AdminLoginSchema } from "@/lib/validation/adminAuth/adminLoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -49,9 +48,6 @@ const Login = () => {
     } catch (error) {
       console.log(error);
     }
-
-    // e.preventDefault();
-    // await loginUser({ email, password });
   }
 
   return (

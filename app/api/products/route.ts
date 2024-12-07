@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
-import { ResultSetHeader } from "mysql2";
+import { FieldPacket, ResultSetHeader } from "mysql2";
 import { ProductSchema } from "@/lib/validation/productSchema";
 
 export const tableName = "products";
@@ -34,7 +34,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST() {
   return NextResponse.json(
     { message: "Product added" },
     { status: 200 }
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
 
     
 
-  //   // const [result]: [ResultSetHeader, any] = await db.execute(
+  //   // const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
   //   //   `INSERT INTO ${tableName} ( 
   //   //   uuid,
   //   //   name,
@@ -181,7 +181,7 @@ export async function PUT(request: Request) {
       );
     }
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET name=?, slug=?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
       [
         name,
@@ -214,7 +214,7 @@ export async function DELETE(request: Request) {
 
     console.log("uuid", uuid);
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
     );

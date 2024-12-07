@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
-import { ResultSetHeader } from "mysql2";
+import { FieldPacket, ResultSetHeader } from "mysql2";
 import { ColorSchema } from "@/lib/validation/colorSchema";
 
 export const tableName = "colors";
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     // Ensure Server Validation
     ColorSchema.parseAsync({ uuid, name, hex });
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `INSERT INTO ${tableName} (uuid, name, hex) VALUES (?, ?, ?)`,
       [uuid, name, hex]
     );
@@ -53,7 +53,7 @@ export async function PUT(request: Request) {
     // Ensure Server Validation
     ColorSchema.parseAsync({ uuid, name, hex });
       
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET name = ?, hex = ? WHERE uuid = ?`,
       [name, hex, uuid]
     );
@@ -76,7 +76,7 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
     );

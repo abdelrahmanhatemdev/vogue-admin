@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
-import { ResultSetHeader } from "mysql2";
+import { FieldPacket, ResultSetHeader } from "mysql2";
 import { AdminAddSchema, AdminEditSchema } from "@/lib/validation/adminSchema";
 import bcrypt from "bcrypt";
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[] ] = await db.execute(
       `INSERT INTO ${tableName} (uuid, name, email, password) VALUES (?, ?, ?, ?)`,
       [uuid, name, email, hashedPassword]
     );
@@ -61,13 +61,13 @@ export async function PUT(request: Request) {
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const [passResult]: [ResultSetHeader, any] = await db.execute(
+      await db.execute(
         `UPDATE ${tableName} SET password=? WHERE uuid = ?`,
         [hashedPassword, uuid]
       );
     }
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET name = ?, email=? WHERE uuid = ?`,
       [name, email, uuid]
     );
@@ -90,7 +90,7 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
-    const [result]: [ResultSetHeader, any] = await db.execute(
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
     );

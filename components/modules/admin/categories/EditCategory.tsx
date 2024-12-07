@@ -18,7 +18,6 @@ import { CategorySchema } from "@/lib/validation/categorySchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import { isValidSlug } from "@/lib/isValid";
 
 function EditCategory({
   item,

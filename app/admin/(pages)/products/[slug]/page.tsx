@@ -2,7 +2,6 @@ import { getProductBySlug } from "@/actions/Product";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
-import { getSubproductById } from "@/actions/Subproduct";
 const Product = dynamic(
   () => import("@/components/modules/admin/products/Product"),
   { loading: Loading }

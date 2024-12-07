@@ -17,7 +17,6 @@ import {
 import { cn, notify } from "@/lib/utils";
 import { discountPrice, currencyPrice } from "@/lib/productService";
 import { editSubproduct } from "@/actions/Subproduct";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {

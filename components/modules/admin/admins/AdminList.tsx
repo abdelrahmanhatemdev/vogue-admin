@@ -10,8 +10,6 @@ import {
   SortingState,
   VisibilityState,
   useReactTable,
-  ColumnFiltersState,
-  GlobalFilterColumn,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -136,7 +134,7 @@ function AdminList({
       const searchTerm = filterValue.toLowerCase();
       const name = row.getValue("name")?.toString().toLowerCase()!;
       const email = row.getValue("email")?.toString().toLowerCase()!;
-      return name.includes(searchTerm) || email.includes(searchTerm);
+      return (name.includes(searchTerm) || email.includes(searchTerm)) || false;
     },
     getRowId: (row) => row.id,
   });
