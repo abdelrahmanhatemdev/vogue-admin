@@ -27,9 +27,9 @@ export default async function layout({
   const session = await getServerSession(authOptions);
 
   if (session && session?.user?.role === "admin") {
-
     redirect("/admin")
   }
+
   return (
     <MainLayout>
       <div className="flex h-full *:md:w-[50%] w-full flex-wrap">
