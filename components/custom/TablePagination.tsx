@@ -88,7 +88,7 @@ function TablePagination ({
   }
 
   return (
-    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-4 lg:gap-8">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 flex-wrap w-full lg:w-fit">
       <div className="flex gap-4 items-center">
         <div className="font-semibold text-sm text-neutral-700 min-w-fit">
           Rows Per Page
@@ -114,11 +114,11 @@ function TablePagination ({
           </SelectContent>
         </Select>
       </div>
-      <div className="font-semibold text-sm text-neutral-700 min-w-fit">
+      <div className="font-semibold text-sm text-neutral-700 w-fit">
         Page {currentPage} of {totalPages}
       </div>
 
-      <Pagination className="justify-end lg:w-auto">
+      <Pagination className="w-full lg:justify-end lg:w-auto text-center">
         <PaginationContent>
           <PaginationItem>
             <Button
