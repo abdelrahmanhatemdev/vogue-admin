@@ -29,6 +29,8 @@ function AuthSwiper() {
             alt="Auth Slider image 1"
             fill
             className="rounded-lg object-cover"
+            sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
+            priority={true}
           />
           <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">
@@ -60,6 +62,7 @@ function AuthSwiper() {
             alt="Auth Slider image 2"
             fill
             className="rounded-lg object-cover"
+            sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">
@@ -91,6 +94,7 @@ function AuthSwiper() {
             alt="Auth Slider image 3"
             fill
             className="rounded-lg object-cover"
+            sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">

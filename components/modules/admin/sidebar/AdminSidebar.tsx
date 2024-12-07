@@ -163,7 +163,6 @@ function AdminSidebar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>Setting</DropdownMenuItem>
-              <DropdownMenuItem>Orders</DropdownMenuItem>
               <Logout />
             </DropdownMenuContent>
           </DropdownMenu>
