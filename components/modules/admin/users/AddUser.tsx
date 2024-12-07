@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebaseClient.config";
+// import { auth } from "@/firebase/firebaseClient.config";
 
 export default function AddUser() {
   const [email, setEmail] = useState<string>("");
@@ -12,13 +12,13 @@ export default function AddUser() {
 
   function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-    .then(user => {
-        console.log("user", user);
-    })
-    .catch(err => {
-        console.log(err);
-    })
+    // createUserWithEmailAndPassword(auth, email, password)
+    // .then(user => {
+    //     console.log("user", user);
+    // })
+    // .catch(err => {
+    //     console.log(err);
+    // })
   }
   return (
     <form onSubmit={handleAdd}>

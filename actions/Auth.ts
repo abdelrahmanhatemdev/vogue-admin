@@ -7,7 +7,6 @@ const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/auth`;
 
 export async function login(data: {email: string, password: string;}) {
     
-    
   return api
     .post(`${apiURL}/login`, data)
     .then(async (res) => {

@@ -1,4 +1,4 @@
-import { auth } from "@/firebase/firebaseClient.config";
+
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { NextResponse } from "next/server";
 

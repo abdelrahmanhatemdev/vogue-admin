@@ -4,6 +4,11 @@ import * as motion from "framer-motion/client";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import { getServerSession } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { log } from "console";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
   loading: Loading,
@@ -36,6 +41,13 @@ export default async function layout({
 }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+
+  const session = await getServerSession(authOptions);
+
+  if (!session || session?.user?.role !== "admin") {
+
+    redirect("/admin/login")
+  }
 
   return (
     <MainLayout>

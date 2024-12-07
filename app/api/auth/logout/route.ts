@@ -1,9 +1,9 @@
-import { auth } from "@/firebase/firebaseClient.config";
 import { NextResponse } from "next/server";
+import { signOut } from "next-auth/react";
 
 export async function GET() {
   try {
-    await auth.signOut();
+    await signOut();
 
     return NextResponse.json(
       { message: "Sign out successfully" },

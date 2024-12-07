@@ -37,6 +37,7 @@ import { AiOutlineProduct } from "react-icons/ai";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useAuth from "@/hooks/useAuth";
+import { useSession } from "next-auth/react";
 const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
   loading: Loading,
 });
@@ -85,7 +86,11 @@ export const SidebarLinks = [
 ];
 
 function AdminSidebar() {
-  const { user } = useAuth();
+  const { data: session, status } = useSession();
+  const user = session?.user
+
+  // console.log("session", session);
+  
 
   // console.log("user", user);
 

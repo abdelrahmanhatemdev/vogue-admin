@@ -17,14 +17,39 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { signIn } from "next-auth/react";
+import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
     resolver: zodResolver(AdminLoginSchema),
+    defaultValues: {
+      uuid: uuidv4(),
+      email: "",
+      password: "",
+    },
     mode: "onChange",
   });
+  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof AdminLoginSchema>) {
+    const email = values.email;
+    const password = values.password;
+
+    try {
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      })
+
+      router.push("/admin")
+        
+    } catch (error) {
+      console.log(error);
+    }
+
     // e.preventDefault();
     // await loginUser({ email, password });
   }
@@ -74,6 +99,7 @@ const Login = () => {
           <Button
             className="w-full mt-4 p-6 bg-main-800 text-main-50 hover:bg-main-900"
             variant={"nostyle"}
+            type="submit"
           >
             Login
           </Button>

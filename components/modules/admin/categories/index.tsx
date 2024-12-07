@@ -31,8 +31,6 @@ const CategoryList = dynamic(
 );
 
 function Categories({ data }: { data: Category[] }) {
-
-  console.log("data", data);
   
   
   const [modalOpen, setModalOpen] = useState(false);

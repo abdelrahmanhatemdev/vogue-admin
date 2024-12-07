@@ -11,12 +11,12 @@ export const AdminLoginSchema = z.object({
       message: "Email should not have more than 50 charachters.",
     })
     .email("Invalid Email address"),
-    password: z
+  password: z
     .string()
     .min(1, {
-        message: "Password is required"
+      message: "Password is required",
     })
     .min(6, {
-        message: "Password must be at least 6 characters long"
-    })
+      message: "Password must be at least 6 characters long",
+    }),
 });
