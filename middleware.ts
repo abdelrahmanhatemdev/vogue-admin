@@ -7,15 +7,18 @@ import { authOptions } from "./lib/auth";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  //  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+  //  console.log("token", token);
    
-   if (pathname === '/admin/login' ) {
-     return NextResponse.next();
-   }
+   
+  //  if (pathname === '/admin/login' ) {
+  //    return NextResponse.next();
+  //  }
  
-   if (!token || token?.role !== 'admin') {
-     return NextResponse.redirect(new URL('/admin/login', req.url));
-   }
+  //  if (!token || token?.role !== 'admin') {
+  //    return NextResponse.redirect(new URL('/admin/login', req.url));
+  //  }
  
    return NextResponse.next();
 }

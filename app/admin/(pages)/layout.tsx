@@ -5,8 +5,6 @@ import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { getServerSession } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { log } from "console";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

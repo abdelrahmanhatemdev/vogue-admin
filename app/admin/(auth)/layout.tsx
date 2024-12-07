@@ -2,6 +2,9 @@ import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const Logo = dynamic(() => import("@/components/custom/Logo"), {
   loading: Loading,
@@ -17,9 +20,16 @@ const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
   loading: Loading,
 });
 
-export default function layout({
+export default async function layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+
+  const session = await getServerSession(authOptions);
+
+  if (session && session?.user?.role === "admin") {
+
+    redirect("/admin")
+  }
   return (
     <MainLayout>
       <div className="flex h-full *:md:w-[50%] w-full flex-wrap">
