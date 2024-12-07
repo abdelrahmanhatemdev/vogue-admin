@@ -1,51 +1,9 @@
-import type {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from "next";
-import type { NextAuthOptions } from "next-auth";
-import { getServerSession } from "next-auth";
+
+import type {NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { RowDataPacket } from "mysql2";
 import db from "@/lib/db";
 import bcrypt from "bcrypt";
-import { AdapterUser } from "next-auth/adapters";
-
-interface AdminData {
-  id: string;
-  name: string;
-  email: string;
-  updatedAt: string;
-  role: string;
-}
-
-interface JWT extends Record<string, unknown> {
-  id?: string;
-  name?: string;
-  email?: string;
-  updatedAt?: string;
-  role?: string;
-  image?: string;
-}
-
-interface Session {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    image?: string;
-    role: string; // Add the role property
-  };
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  updatedAt: string;
-  role: string; // Ensure the User model also has the role property
-  image?: string;
-}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -101,19 +59,17 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("JWT callback - user:", user);
-      console.log("JWT callback - token:", token);
 
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = user.role  as string;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
+        session.user.id = token.id  as string;
+        session.user.role = token.role  as string;
       }
       return session;
     },
