@@ -20,10 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers >
+    <Providers>
       <html lang="en">
         <body className={`${GeistSans.className} antialiased`}>
-          {children}
+          <div className="flex items-center justify-center min-h-screen">{children}</div>
           <Toaster />
         </body>
       </html>
