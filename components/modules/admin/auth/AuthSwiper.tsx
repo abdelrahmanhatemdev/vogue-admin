@@ -16,7 +16,7 @@ function AuthSwiper() {
     <Swiper
       pagination={{ dynamicBullets: true }}
       modules={[Pagination, Autoplay]}
-      className="h-[80svh] mySwiper"
+      className="h-[80svh] lg:h-full mySwiper"
       loop={true}
       autoplay={{
         delay: 5000,
@@ -39,7 +39,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Whatever you’re thinking,
             </motion.p>
@@ -48,7 +48,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Think bigger.
             </motion.p>
@@ -71,7 +71,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               The only way to do great work
             </motion.p>
@@ -80,7 +80,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Is to love what you do.
             </motion.p>
@@ -103,7 +103,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Every action is an opportunity
             </motion.p>
@@ -112,7 +112,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-[2rem] font-extralight"
+              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               To improve.
             </motion.p>
