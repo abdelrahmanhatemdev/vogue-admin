@@ -9,8 +9,5 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  { ignores: ["./components/ui"] },
-  {rules: {
-    "@typescript-eslint/no-explicit-any": "off"
-  }}
+  { ignores: ["./components/ui"] }
 ];

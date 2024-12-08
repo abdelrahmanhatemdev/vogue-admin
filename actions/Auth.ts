@@ -1,6 +1,5 @@
 "use server";
 import api from "@/lib/axiosClient";
-import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/auth`;
 
@@ -12,7 +11,7 @@ export async function login(data: {email: string, password: string;}) {
     .then(async (res) => {
         
       if (res?.statusText === "OK" && res?.data?.message) {
-        const userCredential =  res.data.userCredential
+        // const userCredential =  res.data.userCredential
 
         // const token = await userCredential.user.getIdToken()
         // console.log("user token", token);
@@ -24,8 +23,6 @@ export async function login(data: {email: string, password: string;}) {
       }
     })
     .catch((error) => {
-        console.log("error: ", error);
-        
       const message = error?.response?.data?.error || "Something Wrong";
       return { status: "error", message };
     });

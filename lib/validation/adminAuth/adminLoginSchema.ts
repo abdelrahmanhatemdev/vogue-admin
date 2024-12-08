@@ -1,7 +1,6 @@
 import z from "zod";
 
 export const AdminLoginSchema = z.object({
-  uuid: z.string().uuid(),
   email: z
     .string()
     .min(1, {
@@ -18,5 +17,5 @@ export const AdminLoginSchema = z.object({
     })
     .min(6, {
       message: "Password must be at least 6 characters long",
-    }),
+    })
 });
