@@ -1,7 +1,5 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-// import { auth } from "@/firebase/firebaseClient.config";
 
 export default function AddUser() {
   const [email, setEmail] = useState<string>("");

@@ -81,7 +81,6 @@
 // } from "@/components/ui/select";
 // import { currencies } from "@/constants/currencies";
 // import { addImage } from "@/actions/Image";
-// import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 // function AddSubproduct({
 //   setModalOpen,

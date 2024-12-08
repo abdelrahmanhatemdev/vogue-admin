@@ -1,8 +1,8 @@
 // import { NextResponse } from "next/server";
-// import { getDoc, doc } from "firebase/firestore";
+
 // import { collectoinName } from "@/app/api/subproducts/route";
 // import { getSubproducts } from "@/actions/Subproduct";
-// import { db } from "@/firebase/firebaseClient.config";
+
 
 // export const dynamic = "force-static";
 
