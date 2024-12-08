@@ -7,7 +7,6 @@ const Logout = () => {
   const handleLogOut = async () => {
     await signOut({ redirect: false})
     router.push("/admin/login")
-    
   };
 
   return <button onClick={handleLogOut}>logout</button>;

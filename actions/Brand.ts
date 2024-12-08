@@ -1,5 +1,4 @@
 "use server";
-import { getToken } from "@/lib/authService";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -7,14 +6,11 @@ const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  const token = await getToken()
+  
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
     });
     let data: Brand[] = [];
 

@@ -1,7 +1,8 @@
 type ActionResponse =
   | {
-      status: string;
-      message: string;
+      status?: string | number;
+      message?: string;
+      error?: string | null;
     }
   | undefined;
 

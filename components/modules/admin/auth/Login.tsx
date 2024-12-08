@@ -19,12 +19,11 @@ import { FaFacebook } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
-import { login } from "@/actions/Auth";
 import { notify } from "@/lib/utils";
 
 const Login = () => {
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
-    // resolver: zodResolver(AdminLoginSchema),
+    resolver: zodResolver(AdminLoginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -34,10 +33,17 @@ const Login = () => {
   const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof AdminLoginSchema>) {
-    const data = { ...values };
+    const {email, password} = values;
 
-    const res: ActionResponse = await login(data);
+     const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password
+    });
     notify(res);
+    if (!res?.error) {
+      router.push("/admin")
+    }
   }
 
   return (

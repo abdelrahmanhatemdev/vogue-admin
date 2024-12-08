@@ -40,11 +40,15 @@ export default async function layout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
+ 
   const session = await getServerSession(authOptions);
+
+  console.log("session", session);
+  
 
   if (!session || session?.user?.role !== "admin") {
 
-    redirect("/admin/login")
+    // redirect("/admin/login")
   }
 
   return (

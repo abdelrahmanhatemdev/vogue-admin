@@ -7,9 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function notify(res: ActionResponse) {
-  if (res?.status && res?.message) {
-    return res.status === "success"
-      ? toast.success(res.message)
-      : toast.error(res.message);
+  if (res?.status) {
+    if (res.status !== "200" && res.status !== "success") {
+      if (res.message) {
+        toast.error(res.message);
+      }
+      if (res.error) {
+        toast.error(res.error);
+      }
+    }
+    if (res?.message) {
+      toast.success(res.message);
+    }
   }
 }
