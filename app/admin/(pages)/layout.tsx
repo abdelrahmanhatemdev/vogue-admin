@@ -39,7 +39,6 @@ export default async function layout({
 }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
-
  
   const session = await getServerSession(authOptions);
   
