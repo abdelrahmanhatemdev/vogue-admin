@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
+import { useRefresh } from "@/hooks/useData";
 
 function EditBrand({
   item,
@@ -40,6 +41,7 @@ function EditBrand({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof BrandSchema>) {
     setModalOpen(false);
@@ -60,6 +62,9 @@ function EditBrand({
 
     const res: ActionResponse = await editBrand(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

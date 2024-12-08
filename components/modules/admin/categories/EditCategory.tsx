@@ -18,6 +18,7 @@ import { CategorySchema } from "@/lib/validation/categorySchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
+import { useRefresh } from "@/hooks/useData";
 
 function EditCategory({
   item,
@@ -40,6 +41,7 @@ function EditCategory({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setModalOpen(false);
@@ -60,6 +62,9 @@ function EditCategory({
 
     const res: ActionResponse = await editCategory(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

@@ -1,20 +1,29 @@
 import DataContext, { type DataContextType } from "@/context/DataContext";
 import { useContext } from "react";
 
-function useData<T extends keyof DataContextType>(tag: T): DataContextType[T] {
+function useData<T extends keyof Omit<DataContextType, "refresh">>(
+  tag: T
+): DataContextType[T] {
   const context = useContext(DataContext);
-  if (context) {
-    if (context[`${tag}`]) {
-      return {
-        data: context[`${tag}`].data,
-        loading: context[`${tag}`].loading,
-      } as DataContextType[T];
-    }
+
+  if (!context) {
+    throw new Error("useData must be used within a DataContext.Provider");
   }
-  return {
-    data: [],
-    loading: true,
-  };
+
+  if (!(tag in context)) {
+    throw new Error(`Invalid key "${tag}" provided to useData.`);
+  }
+
+  return context[tag];
+}
+
+export function useRefresh() {
+  const context = useContext(DataContext);
+  if (!context) {
+    throw new Error("useData must be used within a DataContext.Provider");
+  }
+
+  return context["refresh"];
 }
 
 export default useData;

@@ -20,6 +20,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
+import useData, { useRefresh } from "@/hooks/useData";
 
 function AddCategory({
   setModalOpen,
@@ -39,6 +40,7 @@ function AddCategory({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setModalOpen(false);
@@ -59,6 +61,9 @@ function AddCategory({
     });
     const res: ActionResponse = await addCategory(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

@@ -25,6 +25,7 @@ import {
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
+import { useRefresh } from "@/hooks/useData";
 
 function AddSize({
   setModalOpen,
@@ -44,6 +45,7 @@ function AddSize({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);
@@ -64,6 +66,9 @@ function AddSize({
     });
     const res: ActionResponse = await addSize(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

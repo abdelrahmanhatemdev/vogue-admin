@@ -97,7 +97,7 @@ const Login = () => {
           </Button>
         </form>
       </Form>
-      <div>
+      {/* <div>
         <div className="flex items-center gap-6 w-full">
           <div className="grow">
             <Separator className="bg-main-300" />
@@ -133,7 +133,7 @@ const Login = () => {
           />
           <span>Facebook</span>
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

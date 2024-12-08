@@ -21,6 +21,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
+import { useRefresh } from "@/hooks/useData";
 
 function AddColor({
   setModalOpen,
@@ -41,6 +42,7 @@ function AddColor({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);
@@ -62,6 +64,9 @@ function AddColor({
     });
     const res: ActionResponse = await addColor(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

@@ -4,6 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
+import { useRefresh } from "@/hooks/useData";
 
 function DeleteBrand({
   itemId,
@@ -19,6 +20,7 @@ function DeleteBrand({
   const data = { uuid: itemId };
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit() {
     setModalOpen(false);
@@ -36,6 +38,9 @@ function DeleteBrand({
 
     const res: ActionResponse = await deleteBrand(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

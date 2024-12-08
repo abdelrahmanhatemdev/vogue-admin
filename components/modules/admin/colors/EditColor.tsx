@@ -19,6 +19,7 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { Sketch } from "@uiw/react-color";
+import { useRefresh } from "@/hooks/useData";
 
 function EditColor({
   item,
@@ -41,6 +42,7 @@ function EditColor({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);
@@ -61,6 +63,9 @@ function EditColor({
 
     const res: ActionResponse = await editColor(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

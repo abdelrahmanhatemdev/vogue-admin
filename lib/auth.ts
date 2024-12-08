@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
             role: "admin",
           };
       },
-    }),
+    })
   ],
   session: {
     strategy: "jwt",

@@ -5,6 +5,7 @@ export interface DataContextType {
   colors: { data: Color[]; loading: boolean };
   brands: { data: Brand[]; loading: boolean };
   sizes: { data: Size[]; loading: boolean };
+  refresh : () => void
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);

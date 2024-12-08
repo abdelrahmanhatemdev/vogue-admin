@@ -4,6 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
+import { useRefresh } from "@/hooks/useData";
 
 function DeleteColor({
   itemId,
@@ -19,6 +20,7 @@ function DeleteColor({
   const data = { uuid: itemId };
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit() {
     setModalOpen(false);
@@ -36,6 +38,9 @@ function DeleteColor({
 
     const res: ActionResponse = await deleteColor(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (

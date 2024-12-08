@@ -16,7 +16,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [sizes, setSizes] = useState([]);
   const [sizesLoading, setSizesLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchData = async () => {
     getCategories().then((res) => {
       setCategories(res);
       setCategoriesLoading(false);
@@ -33,6 +33,14 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       setSizes(res);
       setSizesLoading(false);
     });
+  };
+
+  const refresh = async () => {
+    await fetchData()
+  }
+
+  useEffect(() => {
+    fetchData()
   }, []);
 
   return (
@@ -42,6 +50,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
         brands: { data: brands, loading: brandsLoading },
         colors: { data: colors, loading: colorsLoading },
         sizes: { data: sizes, loading: sizesLoading },
+        refresh 
       }}
     >
       {children}

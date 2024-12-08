@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
+import { useRefresh } from "@/hooks/useData";
 
 function EditSize({
   item,
@@ -39,6 +40,7 @@ function EditSize({
   });
 
   const [isPending, startTransition] = useTransition();
+  const refresh = useRefresh()
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);
@@ -59,6 +61,9 @@ function EditSize({
 
     const res: ActionResponse = await editSize(data);
     notify(res);
+    if (res?.status === "success") {
+      refresh()
+    }
   }
 
   return (
