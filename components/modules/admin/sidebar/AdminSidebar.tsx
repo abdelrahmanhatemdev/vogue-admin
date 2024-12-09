@@ -100,7 +100,7 @@ function AdminSidebar() {
       collapsible="icon"
       className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent"
     >
-      <SidebarHeader>
+      <SidebarHeader className="py-8 px-4">
         {state === "expanded" ? (
           <Logo className="hidden lg:block" />
         ) : (

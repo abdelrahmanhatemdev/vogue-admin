@@ -8,15 +8,15 @@ function Logo({
   invert,
   small,
 }: Readonly<{ className?: string; invert?: boolean; small?: boolean }>) {
-  const src = `/assets/${small ? `icons/favicon-180` : `images/logo`}`;
+  const src = `/assets/images/logo${small ? `-small` : ``}`;
 
   return (
     <Link className={cn("", className)} href="/admin">
       <Image
         src={`${src}${invert ? "-light" : ""}.png`}
         alt="Vogue Logo"
-        height={96}
-        width={96}
+        height={80}
+        width={80}
         priority={true}
       />
     </Link>
