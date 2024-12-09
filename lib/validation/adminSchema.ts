@@ -70,13 +70,11 @@ export const AdminEditSchema = z
       .email("Invalid Email address"),
     password: z
       .string()
-      .min(1, {
-        message: "Password is required",
-      })
+      
       .min(6, {
         message: "Password must be at least 6 characters long",
-      })
-      .optional(),
+      }).optional()
+      ,
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, email } = obj;

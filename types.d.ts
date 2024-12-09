@@ -14,7 +14,6 @@ interface Category {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  isPending?: boolean;
 }
 
 interface Brand {
@@ -25,7 +24,6 @@ interface Brand {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  isPending?: boolean;
 }
 
 interface Admin {
@@ -39,7 +37,6 @@ interface Admin {
   updatedAt: string;
   provider_id?: string;
   delatedAt?: string;
-  isPending?: boolean;
 }
 
 interface Size {
@@ -49,7 +46,6 @@ interface Size {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  isPending?: boolean;
 }
 
 interface Color {
@@ -60,7 +56,6 @@ interface Color {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  isPending?: boolean;
 }
 
 interface Product {
@@ -76,7 +71,6 @@ interface Product {
   updatedAt: string;
   delatedAt?: string;
   subproducts?: Subproduct[] | number | {sku:string; id: string;}[];
-  isPending?: !isPending;
   reviews?: Review[];
   // tags: Tag[];
 }
@@ -97,7 +91,6 @@ interface Subproduct {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  isPending?: !boolean;
   images?: ProductImage[];
 }
 

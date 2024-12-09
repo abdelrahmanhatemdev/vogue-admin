@@ -33,6 +33,8 @@ const SizeList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Size & {isPending?: boolean}
+
 function Sizes({ data }: { data: Size[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -45,7 +47,7 @@ function Sizes({ data }: { data: Size[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Size, b: Size) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];

@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import type { OptimisicDataType } from ".";
 
 import z from "zod"
 import { SizeSchema } from "@/lib/validation/sizeSchema";
@@ -55,7 +56,7 @@ function AddSize({
       createdAt: date,
       updatedAt: date,
     };
-    const optimisticObj: Size = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,

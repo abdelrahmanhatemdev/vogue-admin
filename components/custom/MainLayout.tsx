@@ -26,4 +26,4 @@ function MainLayout({
   return !isOnline ? <NoInternet/> : <AppLayout>{children}</AppLayout>
 }
 
-export default memo(MainLayout)
+export default MainLayout

@@ -10,4 +10,4 @@ const Providers = ({ children }: { children: ReactNode }) => {
     </SessionProvider>
   );
 };
-export default memo(Providers);
+export default Providers;

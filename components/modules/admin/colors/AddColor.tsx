@@ -22,6 +22,7 @@ import { addColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 import { useRefresh } from "@/hooks/useData";
+import type { OptimisicDataType } from ".";
 
 function AddColor({
   setModalOpen,
@@ -54,7 +55,7 @@ function AddColor({
       createdAt: date,
       updatedAt: date,
     };
-    const optimisticObj: Color = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.hex}-${data.updatedAt}`,
       isPending: !isPending,

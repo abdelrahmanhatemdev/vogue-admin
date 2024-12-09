@@ -33,6 +33,8 @@ const ColorList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Color & {isPending?: boolean}
+
 function Colors({ data }: { data: Color[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -45,7 +47,7 @@ function Colors({ data }: { data: Color[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Color, b: Color) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
@@ -95,7 +97,7 @@ function Colors({ data }: { data: Color[] }) {
         accessorKey: "hex",
         header: "Hex Code",
         cell: ({ row }) => {
-          const item: Color = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <div
               className={

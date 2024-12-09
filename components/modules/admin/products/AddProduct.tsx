@@ -31,7 +31,7 @@ import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuidv4 } from "uuid";
-
+import type { OptimisicDataType } from ".";
 function AddProduct({
   setModalOpen,
   addOptimisticData,
@@ -43,6 +43,7 @@ function AddProduct({
 }) {
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
+ 
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
@@ -68,7 +69,7 @@ function AddProduct({
       createdAt: date,
       updatedAt: date,
     };
-    const optimisticObj: Product = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       categories: "",
       id: `optimisticID-${data.name}-${data.updatedAt}`,

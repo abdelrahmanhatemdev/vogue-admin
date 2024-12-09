@@ -33,6 +33,8 @@ const AdminList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Admin & {isPending?: boolean}
+
 function Admins({ data }: { data: Admin[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -45,7 +47,7 @@ function Admins({ data }: { data: Admin[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Admin, b: Admin) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];

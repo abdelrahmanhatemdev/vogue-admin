@@ -34,6 +34,8 @@ const BrandList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Brand & {isPending?: boolean}
+
 function Brands({ data }: { data: Brand[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -46,7 +48,7 @@ function Brands({ data }: { data: Brand[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Brand, b: Brand) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
@@ -87,7 +89,7 @@ function Brands({ data }: { data: Brand[] }) {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
-          const item: Brand = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <Link
               href={`/admin/brands/${item.slug}`}
@@ -107,7 +109,7 @@ function Brands({ data }: { data: Brand[] }) {
         accessorKey: "slug",
         header: "Slug",
         cell: ({ row }) => {
-          const item: Brand = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <span
               className={

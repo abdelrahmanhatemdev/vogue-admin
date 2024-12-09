@@ -21,6 +21,7 @@ import { addBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 import { useRefresh } from "@/hooks/useData";
+import type { OptimisicDataType } from ".";
 
 function AddBrand({
   setModalOpen,
@@ -52,7 +53,7 @@ function AddBrand({
       createdAt: date,
       updatedAt: date,
     };
-    const optimisticObj: Brand = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,

@@ -20,7 +20,8 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import useData, { useRefresh } from "@/hooks/useData";
+import { useRefresh } from "@/hooks/useData";
+import type { OptimisicDataType } from ".";
 
 function AddCategory({
   setModalOpen,
@@ -52,7 +53,7 @@ function AddCategory({
       createdAt: date,
       updatedAt: date,
     };
-    const optimisticObj: Category = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,

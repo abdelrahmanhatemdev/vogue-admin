@@ -57,4 +57,4 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     </DataContext.Provider>
   );
 };
-export default memo(DataProvider);
+export default DataProvider;

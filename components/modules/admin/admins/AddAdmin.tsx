@@ -21,6 +21,7 @@ import { addAdmin } from "@/actions/Admin";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 
+type OptimisicDataType = Admin & {isPending?: boolean}
 
 function AddAdmin({
   setModalOpen,
@@ -53,7 +54,7 @@ function AddAdmin({
       updatedAt: date,
       provider: "local",
     };
-    const optimisticObj: Admin = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,

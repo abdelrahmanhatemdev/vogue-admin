@@ -31,6 +31,8 @@ const ProductList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Product & {isPending?: boolean}
+
 function Products({ data }: { data: Product[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -48,7 +50,7 @@ function Products({ data }: { data: Product[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Product, b: Product) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
@@ -89,7 +91,7 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
-          const item: Product = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <Link
               href={`/admin/products/${item.slug}`}
@@ -109,7 +111,7 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "slug",
         header: "Slug",
         cell: ({ row }) => {
-          const item: Product = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
               {item.slug ? "/" + item.slug : ""}
@@ -122,7 +124,7 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "brand_name",
         header: "Brand",
         cell: ({ row }) => {
-          const item = row.original as Product & {
+          const item = row.original as OptimisicDataType & {
             brand_name: string;
             brand_slug: string;
           };
@@ -154,7 +156,7 @@ function Products({ data }: { data: Product[] }) {
           // console.log("row: ", row.original);
           // return row.original.id
 
-          const item: Product = row.original;
+          const item: OptimisicDataType = row.original;
           const itemCatsString = item.categories
             ? (item.categories as string)
             : "";

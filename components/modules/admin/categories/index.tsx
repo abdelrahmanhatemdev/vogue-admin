@@ -30,6 +30,8 @@ const CategoryList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Category & {isPending?: boolean}
+
 function Categories({ data }: { data: Category[] }) {
   
   
@@ -44,13 +46,13 @@ function Categories({ data }: { data: Category[] }) {
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Category, b: Category) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
   }, [optimisicData]);
 
-  const columns: ColumnDef<Category>[] = useMemo(
+  const columns: ColumnDef<OptimisicDataType>[] = useMemo(
     () => [
       {
         id: "select",
@@ -85,7 +87,7 @@ function Categories({ data }: { data: Category[] }) {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
-          const item: Category = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <Link
               href={`/admin/categories/${item.slug}`}
@@ -105,7 +107,7 @@ function Categories({ data }: { data: Category[] }) {
         accessorKey: "slug",
         header: "Slug",
         cell: ({ row }) => {
-          const item: Category = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
               {item.slug ? "/" + item.slug : ""}
