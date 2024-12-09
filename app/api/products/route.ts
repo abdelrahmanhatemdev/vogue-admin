@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
 import { ProductSchema } from "@/lib/validation/productSchema";
+import { ZodError } from "zod";
 
 export const tableName = "products";
 
@@ -33,10 +34,8 @@ export async function GET() {
   }
 }
 
-export async function POST(request:Response) {
- 
+export async function POST(request: Response) {
   try {
-    
     const {
       uuid,
       name,
@@ -47,18 +46,16 @@ export async function POST(request:Response) {
       descriptionDetails,
     } = await request.json();
 
-    
-
     //Ensure Server Validation
-    // ProductSchema.parseAsync({
-    //   uuid,
-    //   name,
-    //   slug,
-    //   brand_id,
-    //   categories,
-    //   descriptionBrief,
-    //   descriptionDetails,
-    // });
+    await ProductSchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    });
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
@@ -72,6 +69,14 @@ export async function POST(request:Response) {
         { error: `${slug} slug is already used!` },
         { status: 400 }
       );
+    }
+
+    const nonEmptyCategories = categories.filter(
+      (cat: string) => cat.trim() !== ""
+    );
+
+    if (nonEmptyCategories.length === 0) {
+      throw new Error("Choose at least one category");
     }
 
     console.log({
@@ -97,24 +102,24 @@ export async function POST(request:Response) {
     );
 
     
-    if (categories.length > 0) {
-      const catArray = categories.map((c: string) => [uuid, c]);
 
-       // Insert into products_categories using a single query
-       const placeholders = catArray.map(() => '(?, ?)').join(', ');
-       const flattenedValues = catArray.flat();
- 
-       const [result] = await db.execute(
-         `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
-         flattenedValues
-       );
-    }
-      return NextResponse.json(
-        { message: "Product added" },
-        { status: 200 }
-      );
+    const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
+
+    // Insert into products_categories using a single query
+    const placeholders = catArray.map(() => "(?, ?)").join(", ");
+    const flattenedValues = catArray.flat();
+
+    await db.execute(
+      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+      flattenedValues
+    );
+
+    return NextResponse.json({ message: "Product added" }, { status: 200 });
 
   } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json({ error: error.errors[0].message }, { status: 500 });
+    }
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -122,9 +127,9 @@ export async function POST(request:Response) {
 
 export async function PUT(request: Request) {
   try {
-    return NextResponse.json({message: "Hi"})
+    return NextResponse.json({ message: "Hi" });
     // console.log("request.json()", request);
-    
+
     // const {
     //   uuid,
     //   name,
@@ -197,14 +202,11 @@ export async function DELETE(request: Request) {
     );
 
     if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Product Deleted"},
-        { status: 200 }
-      );
+      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
   } catch (error) {
     console.log("error", error);
-    
+
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }

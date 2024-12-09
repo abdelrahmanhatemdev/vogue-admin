@@ -5,7 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";

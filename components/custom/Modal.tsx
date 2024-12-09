@@ -32,9 +32,11 @@ function Modal({
   className?: string
 }) {
   return (
-    <Dialog open={modalOpen} onOpenChange={setModalOpen} modal={true}>
+    <Dialog open={modalOpen} 
+    // onOpenChange={setModalOpen}
+     modal={true}>
       <DialogContent
-        onPointerDownOutside={() => setModalOpen(false)}
+        // onPointerDownOutside={() => setModalOpen(false)}
         aria-describedby={undefined}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
         

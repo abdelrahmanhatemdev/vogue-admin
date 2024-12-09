@@ -46,7 +46,7 @@ function AddProduct({
  
 
   const form = useForm<z.infer<typeof ProductSchema>>({
-    resolver: zodResolver(ProductSchema),
+    // resolver: zodResolver(ProductSchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -62,7 +62,7 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    setModalOpen(false);
+    
     const date = new Date().toISOString();
     const data = {
       ...values,
@@ -81,10 +81,12 @@ function AddProduct({
       addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addProduct(data);
-
-    console.log("res", res);
+    
     
     notify(res);
+    if (res?.status === "200" || res?.status === "success") {
+      setModalOpen(false);
+    }
   }
 
   return (
