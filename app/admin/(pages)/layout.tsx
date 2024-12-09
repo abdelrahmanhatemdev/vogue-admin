@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
-import { ReactNode} from "react";
+import { ReactNode, useEffect, useState } from "react";
 import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import NoInternet from "@/components/custom/NoInternet";
 
 const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
   loading: Loading,

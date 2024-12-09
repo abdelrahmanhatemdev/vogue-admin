@@ -8,7 +8,6 @@ import { FaUsers } from "react-icons/fa";
 import { IoMdBusiness } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 
-
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +20,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -86,16 +86,26 @@ export const SidebarLinks = [
 
 function AdminSidebar() {
   const { data: session } = useSession();
-  const user = session?.user
+  const user = session?.user;
+
+  const {state} = useSidebar()
+
+  console.log("state",state);
+  
 
   const currentPath = usePathname();
+
   return (
     <Sidebar
       collapsible="icon"
       className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent"
     >
       <SidebarHeader>
-        <Logo className="hidden lg:block" />
+        {state === "expanded" ? (
+          <Logo className="hidden lg:block" />
+        ) : (
+          <Logo className="hidden lg:block w-5 h-5 mx-auto" small={true} />
+        )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -108,8 +118,7 @@ function AdminSidebar() {
                 const isActive =
                   link.link !== "/admin"
                     ? currentPath.startsWith(link.link)
-                    : false
-
+                    : false;
 
                 // console.log(
                 //   "link.link",
@@ -117,8 +126,8 @@ function AdminSidebar() {
                 //   "link.title",
                 //   link.title,
                 //   "isActive",
-                //   isActive, 
-                //   "link.link !== /admin", 
+                //   isActive,
+                //   "link.link !== /admin",
                 //   link.link !== "/admin"
                 // );
                 return (

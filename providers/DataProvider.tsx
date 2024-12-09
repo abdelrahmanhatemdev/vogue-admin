@@ -4,7 +4,7 @@ import { getCategories } from "@/actions/Category";
 import { getColors } from "@/actions/Color";
 import { getSizes } from "@/actions/Size";
 import DataContext from "@/context/DataContext";
-import { ReactNode, useEffect, useState } from "react";
+import { memo, ReactNode, useEffect, useState } from "react";
 
 const DataProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState([]);
@@ -57,4 +57,4 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     </DataContext.Provider>
   );
 };
-export default DataProvider;
+export default memo(DataProvider);

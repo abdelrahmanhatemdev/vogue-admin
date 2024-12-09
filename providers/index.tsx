@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import DataProvider from "./DataProvider";
 import { SessionProvider } from "next-auth/react";
 
@@ -10,4 +10,4 @@ const Providers = ({ children }: { children: ReactNode }) => {
     </SessionProvider>
   );
 };
-export default Providers;
+export default memo(Providers);
