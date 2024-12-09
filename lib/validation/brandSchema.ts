@@ -14,15 +14,16 @@ export const BrandSchema = z
       }),
     slug: z
       .string()
-      .min(1, {
-        message: "Slug is required",
+      .min(1, { message: "Slug cannot be empty" })
+      .min(3, { message: "Slug at least should have 3 charachters" }) // Minimum length
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+        message:
+          "Slug can only contain lowercase letters, numbers, and a hyphen between letters or numbers",
       })
-      .min(3, {
-        message: "Slug should have 3 charachters at least",
-      })
+      .max(20, { message: "Slug cannot exceed 20 characters" }),
   })
-  .superRefine( async (obj, ctx) => {
-    const {uuid, slug} = obj
+  .superRefine(async (obj, ctx) => {
+    const { uuid, slug } = obj;
     const exists = await isValidSlug({
       slug,
       uuid,
@@ -32,11 +33,9 @@ export const BrandSchema = z
     if (exists) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-         message: `${slug} slug is already used`, 
-         path: ["slug"], 
-         fatal: true
-      })
-      
+        message: `${slug} slug is already used`,
+        path: ["slug"],
+        fatal: true,
+      });
     }
-  }
-);
+  });

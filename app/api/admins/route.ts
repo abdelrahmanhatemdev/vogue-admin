@@ -31,8 +31,8 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [result]: [ResultSetHeader, FieldPacket[] ] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name, email, password) VALUES (?, ?, ?, ?)`,
-      [uuid, name, email, hashedPassword]
+      `INSERT INTO ${tableName} (uuid, name, email, password, provider) VALUES (?, ?, ?, ?, ?)`,
+      [uuid, name, email, hashedPassword, "local"]
     );
 
     if (result.insertId) {
