@@ -35,6 +35,8 @@ function AddCategory({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
       uuid: uuidv4(),
+      name: "",
+      slug: "",
     },
     mode: "onChange",
   });

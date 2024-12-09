@@ -36,6 +36,7 @@ function AddColor({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
       uuid: uuidv4(),
+      name: "",
       hex: "",
     },
     mode: "onChange",

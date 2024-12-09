@@ -35,6 +35,8 @@ function AddBrand({
     resolver: zodResolver(BrandSchema),
     defaultValues: {
       uuid: uuidv4(),
+      name: "",
+      slug: "",
     },
     mode: "onChange",
   });

@@ -13,7 +13,7 @@ const NoInternet = () => {
             alt="Not found page"
             fill
             className="rounded-lg object-cover filter brightness-[.1]"
-            // sizes="(max-width: 768px) 33vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 33vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div
             className="flex flex-col gap-4 items-center justify-center rounded-2xl min-w-fit lg:w-[50%] h-[50%] z-10 p-4"

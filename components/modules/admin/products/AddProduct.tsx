@@ -48,7 +48,12 @@ function AddProduct({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       uuid: uuidv4(),
+      name: "",
+      slug: "",
       categories: [],
+      brand_id: "",
+      descriptionBrief: "",
+      descriptionDetails: "",
     },
     mode: "onChange",
   });
