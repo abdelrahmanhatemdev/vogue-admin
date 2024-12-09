@@ -40,8 +40,6 @@ function Products({ data }: { data: Product[] }) {
     children: <></>,
   });
 
-  // console.log("data", data);
-
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 

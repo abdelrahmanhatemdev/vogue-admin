@@ -31,21 +31,21 @@ export const ProductSchema = z.object({
   descriptionDetails: z.string().min(1, {
     message: "Description Details is required",
   }),
-});
-// .superRefine(async (obj, ctx) => {
-//   const { uuid, slug } = obj;
-//   const exists = await isValidSlug({
-//     slug,
-//     uuid,
-//     table: "products",
-//   });
+})
+.superRefine(async (obj, ctx) => {
+  const { uuid, slug } = obj;
+  const exists = await isValidSlug({
+    slug,
+    uuid,
+    table: "products",
+  });
 
-//   if (exists) {
-//     ctx.addIssue({
-//       code: z.ZodIssueCode.custom,
-//       message: `${slug} slug is already used`,
-//       path: ["slug"],
-//       fatal: true,
-//     });
-//   }
-// });
+  if (exists) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${slug} slug is already used`,
+      path: ["slug"],
+      fatal: true,
+    });
+  }
+});

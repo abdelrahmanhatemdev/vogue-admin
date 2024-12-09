@@ -1,7 +1,6 @@
 "use client";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -16,7 +15,6 @@ export type ModalState = {
 };
 
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
-import { Button } from "../ui/button";
 
 function Modal({
   title,
@@ -36,13 +34,14 @@ function Modal({
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen} modal={true}>
       <DialogContent
-        onPointerDownOutside={(e) => { e.preventDefault()}}
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+        }}
         aria-describedby={undefined}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
       >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          
         </DialogHeader>
         <DialogDescription asChild>{description}</DialogDescription>
         {children}

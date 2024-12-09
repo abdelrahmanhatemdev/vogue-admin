@@ -43,10 +43,9 @@ function AddProduct({
 }) {
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
- 
 
   const form = useForm<z.infer<typeof ProductSchema>>({
-    // resolver: zodResolver(ProductSchema),
+    resolver: zodResolver(ProductSchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -62,7 +61,8 @@ function AddProduct({
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
-    
+    setModalOpen(false);
+
     const date = new Date().toISOString();
     const data = {
       ...values,
@@ -73,7 +73,7 @@ function AddProduct({
       ...data,
       categories: "",
       id: `optimisticID-${data.name}-${data.updatedAt}`,
-     
+
       isPending: !isPending,
     };
 
@@ -81,12 +81,8 @@ function AddProduct({
       addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addProduct(data);
-    
-    
+
     notify(res);
-    if (res?.status === "200" || res?.status === "success") {
-      setModalOpen(false);
-    }
   }
 
   return (
@@ -113,7 +109,7 @@ function AddProduct({
           control={form.control}
           name="slug"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="lg:w-[calc(50%-.5rem)]">
               <FormLabel>Slug</FormLabel>
               <div className="relative">
                 <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
