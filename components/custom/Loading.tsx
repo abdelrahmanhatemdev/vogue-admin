@@ -1,6 +1,7 @@
+import { memo } from "react";
 import Loader from "react-spinners/PuffLoader";
 
-export default function Loading() {
+function Loading() {
   // Dark Theme to update
   return (
     <div className="flex w-full h-full items-center justify-center">
@@ -14,3 +15,5 @@ export default function Loading() {
     </div>
   );
 }
+
+export default Loading

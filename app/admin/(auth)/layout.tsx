@@ -10,7 +10,7 @@ const Logo = dynamic(() => import("@/components/custom/Logo"), {
   loading: Loading,
 });
 const AuthSwiper = dynamic(
-  () => import("@/components/modules/admin/auth/AuthSwiper"),
+  () => import("@/components/custom/AuthSwiper"),
   {
     loading: Loading,
   }

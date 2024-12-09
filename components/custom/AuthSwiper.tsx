@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 function AuthSwiper() {
   const paragraphVariants = {
@@ -122,4 +123,4 @@ function AuthSwiper() {
     </Swiper>
   );
 }
-export default AuthSwiper;
+export default memo(AuthSwiper);
