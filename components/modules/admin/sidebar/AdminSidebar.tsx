@@ -90,7 +90,7 @@ function AdminSidebar() {
 
   const {state} = useSidebar()
 
-  console.log("state",state);
+
   
 
   const currentPath = usePathname();

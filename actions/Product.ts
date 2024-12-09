@@ -1,9 +1,9 @@
-
+"use server";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/products`;
-export const tag = "products";
+const tag: string = "Products";
 
 export const getProducts = async () => {
   try {
@@ -30,21 +30,7 @@ export const getProducts = async () => {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/slug/${slug}`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
-export async function getProductById(id: string) {
-  try {
-    const res = await fetch(`${apiURL}/id/${id}`, {
+    const res = await fetch(`${apiURL}/${slug}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
@@ -60,8 +46,6 @@ export async function addProduct(data: Partial<Product>) {
   return api
     .post(apiURL, data)
     .then((res) => {
-      console.log("action res", res);
-      
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
         return { status: "success", message: res.data.message };
@@ -111,3 +95,5 @@ export async function deleteProduct(data: { uuid: string }) {
       return { status: "error", message };
     });
 }
+
+

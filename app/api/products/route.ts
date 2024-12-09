@@ -8,7 +8,7 @@ export const tableName = "products";
 export async function GET() {
   try {
     const [rows] = await db.query(
-      `SELECT ${tableName}.* , 
+      `SELECT ${tableName}.*, 
       brands.name as brand_name, brands.slug as brand_slug, 
       GROUP_CONCAT(c.name," - ", c.slug) as categories
       FROM ${tableName} 
@@ -18,12 +18,11 @@ export async function GET() {
       ON ${tableName}.uuid = pc.product_id
       LEFT JOIN categories c
       ON c.uuid = pc.category_id
+      WHERE ${tableName}.deletedAt IS NULL 
       GROUP BY ${tableName}.uuid
+      ORDER BY updatedAt DESC
       `
     );
-
-    // console.log("rows", rows);
-    
 
     const data = rows as Product[];
 
@@ -34,118 +33,10 @@ export async function GET() {
   }
 }
 
-export async function POST() {
-  return NextResponse.json(
-    { message: "Product added" },
-    { status: 200 }
-  );
-  // try {
-  //   // const {
-  //   //   uuid,
-  //   //   name,
-  //   //   slug,
-  //   //   brand_id,
-  //   //   categories,
-  //   //   descriptionBrief,
-  //   //   descriptionDetails,
-  //   // } = await request.json();
-
-    
-
-  //   // Ensure Server Validation
-  //   // ProductSchema.parseAsync({
-  //   //   uuid,
-  //   //   name,
-  //   //   slug,
-  //   //   brand_id,
-  //   //   categories,
-  //   //   descriptionBrief,
-  //   //   descriptionDetails,
-  //   // });
-
-  //   // const [slugCheck] = await db.execute(
-  //   //   `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-  //   //   [slug]
-  //   // );
-
-  //   // const existedItems = slugCheck as Product[];
-
-  //   // if (existedItems.length > 0) {
-  //   //   return NextResponse.json(
-  //   //     { error: `${slug} slug is already used!` },
-  //   //     { status: 400 }
-  //   //   );
-  //   // }
-
-  //   // console.log({
-  //   //   uuid,
-  //   //   name,
-  //   //   slug,
-  //   //   brand_id,
-  //   //   categories,
-  //   //   descriptionBrief,
-  //   //   descriptionDetails,
-  //   // });
-
-   
-
-    
-
-  //   // const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-  //   //   `INSERT INTO ${tableName} ( 
-  //   //   uuid,
-  //   //   name,
-  //   //   slug,
-  //   //   brand_id,
-  //   //   descriptionBrief,
-  //   //   descriptionDetails
-  //   //   ) VALUES (?, ?, ?, ?, ?, ?)`,
-  //   //   [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
-  //   // );
-
-    
-  //   // if (categories.length > 0) {
-  //   //   const catArray = categories.map((c: string) => [uuid, c]);
-
-  //   //    // Insert into products_categories using a single query
-  //   //    const placeholders = catArray.map(() => '(?, ?)').join(', ');
-  //   //    const flattenedValues = catArray.flat();
+export async function POST(request:Response) {
  
-  //   //    const [result] = await db.execute(
-  //   //      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
-  //   //      flattenedValues
-  //   //    );
-
-       
-       
-  //   // }
-
-    
-
-    
-
-    
-      
-      
-
-
-  //     // return NextResponse.json(
-  //     //   { message: "Product added" },
-  //     //   { status: 200 }
-  //     // );
-    
-
-  //   // throw new Error("Something Wrong");
-  // } catch (error) {
-  //   console.log(error);
-    
-  //   const message = error instanceof Error ? error.message : "Something Wrong";
-  //   return NextResponse.json({ error: message }, { status: 500 });
-  // }
-}
-
-export async function PUT(request: Request) {
   try {
+    
     const {
       uuid,
       name,
@@ -156,20 +47,22 @@ export async function PUT(request: Request) {
       descriptionDetails,
     } = await request.json();
 
-    // Ensure Server Validation
-    ProductSchema.parseAsync({
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
-    });
+    
+
+    //Ensure Server Validation
+    // ProductSchema.parseAsync({
+    //   uuid,
+    //   name,
+    //   slug,
+    //   brand_id,
+    //   categories,
+    //   descriptionBrief,
+    //   descriptionDetails,
+    // });
 
     const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
-      [slug, uuid]
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
+      [slug]
     );
 
     const existedItems = slugCheck as Product[];
@@ -181,27 +74,113 @@ export async function PUT(request: Request) {
       );
     }
 
+    console.log({
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    });
+
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name=?, slug=?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
-      [
-        name,
-        slug,
-        brand_id,
-        categories,
-        descriptionBrief,
-        descriptionDetails,
-        uuid,
-      ]
+      `INSERT INTO ${tableName} ( 
+      uuid,
+      name,
+      slug,
+      brand_id,
+      descriptionBrief,
+      descriptionDetails
+      ) VALUES (?, ?, ?, ?, ?, ?)`,
+      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
     );
 
-    if (result.affectedRows) {
+    
+    if (categories.length > 0) {
+      const catArray = categories.map((c: string) => [uuid, c]);
+
+       // Insert into products_categories using a single query
+       const placeholders = catArray.map(() => '(?, ?)').join(', ');
+       const flattenedValues = catArray.flat();
+ 
+       const [result] = await db.execute(
+         `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+         flattenedValues
+       );
+    }
       return NextResponse.json(
-        { message: "Product updated", result },
+        { message: "Product added" },
         { status: 200 }
       );
-    }
 
-    return new Error("Something Wrong");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    return NextResponse.json({message: "Hi"})
+    // console.log("request.json()", request);
+    
+    // const {
+    //   uuid,
+    //   name,
+    //   slug,
+    //   brand_id,
+    //   categories,
+    //   descriptionBrief,
+    //   descriptionDetails,
+    // } = await request.json();
+
+    // // Ensure Server Validation
+    // ProductSchema.parseAsync({
+    //   uuid,
+    //   name,
+    //   slug,
+    //   brand_id,
+    //   categories,
+    //   descriptionBrief,
+    //   descriptionDetails,
+    // });
+
+    // const [slugCheck] = await db.execute(
+    //   `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
+    //   [slug, uuid]
+    // );
+
+    // const existedItems = slugCheck as Product[];
+
+    // if (existedItems.length > 0) {
+    //   return NextResponse.json(
+    //     { error: `${slug} slug is already used!` },
+    //     { status: 400 }
+    //   );
+    // }
+
+    // const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+    //   `UPDATE ${tableName} SET name=?, slug=?, brand_id = ?, categories=?, descriptionBrief=?, descriptionDetails=?  WHERE uuid = ?`,
+    //   [
+    //     name,
+    //     slug,
+    //     brand_id,
+    //     categories,
+    //     descriptionBrief,
+    //     descriptionDetails,
+    //     uuid,
+    //   ]
+    // );
+
+    // if (result.affectedRows) {
+    //   return NextResponse.json(
+    //     { message: "Product updated", result },
+    //     { status: 200 }
+    //   );
+    // }
+
+    // return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -212,8 +191,6 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
-    console.log("uuid", uuid);
-
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
@@ -221,12 +198,13 @@ export async function DELETE(request: Request) {
 
     if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Product Deleted", result },
+        { message: "Product Deleted"},
         { status: 200 }
       );
     }
-    return new Error("Something Wrong");
   } catch (error) {
+    console.log("error", error);
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
