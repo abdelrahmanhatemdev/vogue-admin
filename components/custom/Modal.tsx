@@ -1,6 +1,7 @@
 "use client";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -15,6 +16,7 @@ export type ModalState = {
 };
 
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
+import { Button } from "../ui/button";
 
 function Modal({
   title,
@@ -22,33 +24,31 @@ function Modal({
   children,
   modalOpen,
   setModalOpen,
-  className
+  className,
 }: {
   title: ModalState["title"];
   description: ModalState["description"];
   children?: ModalState["children"];
   modalOpen?: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  className?: string
+  className?: string;
 }) {
   return (
-    <Dialog open={modalOpen} 
-    // onOpenChange={setModalOpen}
-     modal={true}>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen} modal={true}>
       <DialogContent
-        // onPointerDownOutside={() => setModalOpen(false)}
+        onPointerDownOutside={(e) => { e.preventDefault()}}
         aria-describedby={undefined}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
-        
       >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          
         </DialogHeader>
         <DialogDescription asChild>{description}</DialogDescription>
         {children}
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 export default memo(Modal);
