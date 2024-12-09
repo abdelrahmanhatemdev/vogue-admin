@@ -53,6 +53,9 @@ function Products({ data }: { data: Product[] }) {
       : [];
   }, [optimisicData]);
 
+  console.log("sortedotimistic", optimisicData);
+  
+
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
       {

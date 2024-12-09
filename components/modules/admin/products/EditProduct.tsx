@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
+import type { OptimisicDataType } from ".";
 function EditProduct({
   item,
   setModalOpen,
@@ -44,13 +44,22 @@ function EditProduct({
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
+  const itemCatsString = item.categories as string;
+
+  const itemCatsArray = itemCatsString?.split(",");
+  const itemCatsIds = itemCatsArray.map((cat) => {
+    const catArray = cat.split(" - ");
+    const uuid = catArray[2];
+    return uuid;
+  });
+
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       uuid: item.uuid,
       name: item.name,
       slug: item.slug,
-      categories: item?.categories as string[],
+      categories: itemCatsIds,
       brand_id: item?.brand_id as string,
       descriptionBrief: item.descriptionBrief,
       descriptionDetails: item.descriptionDetails,
@@ -62,24 +71,45 @@ function EditProduct({
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
     setModalOpen(false);
+    const newCategories = values.categories.map((catId) => {
+      const { name, slug, uuid } = categories.filter(
+        (cat) => cat.uuid === catId
+      )[0];
+      return `${name} - ${slug} - ${uuid}`
+    }).join(",");
+    console.log("newCategories", newCategories);
+    console.log("values", values);
+    const {categories: arrayCategories, ...rest} = values
+
+    const updatedValues : Omit<z.infer<typeof ProductSchema>, "categories"> & { categories: string }
+    = {...rest, categories: newCategories}
+
     const date = new Date().toISOString();
-    const data = {
+    const optimisticData = {
+      id: item.id,
+      ...updatedValues,
+      createdAt: item.createdAt,
+      updatedAt: date,
+    };
+
+    const optimisticObj: OptimisicDataType = {
+      ...optimisticData,
+      id: `optimisticID-${optimisticData.name}`,
+      isPending: !isPending,
+    };
+
+    startTransition(() => {
+      addOptimisticData((prev: Product[]) => [...prev.filter((item) => item.id !== optimisticData.id), optimisticObj]);
+    });
+
+    const reqData = {
       id: item.id,
       ...values,
       createdAt: item.createdAt,
       updatedAt: date,
     };
-    const optimisticObj: Product = {
-      ...data,
-      id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: !isPending,
-    };
 
-    startTransition(() => {
-      addOptimisticData((prev: Product[]) => [...prev, optimisticObj]);
-    });
-
-    const res: ActionResponse = await editProduct(data);
+    const res: ActionResponse = await editProduct(reqData);
     notify(res);
   }
 
@@ -114,7 +144,7 @@ function EditProduct({
                   /
                 </span>
                 <FormControl>
-                  <Input {...field} className="ps-4"/>
+                  <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
               <FormDescription>Update Product slug</FormDescription>

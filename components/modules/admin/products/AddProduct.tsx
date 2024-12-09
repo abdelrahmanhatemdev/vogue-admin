@@ -32,6 +32,7 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuidv4 } from "uuid";
 import type { OptimisicDataType } from ".";
+
 function AddProduct({
   setModalOpen,
   addOptimisticData,
@@ -72,7 +73,7 @@ function AddProduct({
     const optimisticObj: OptimisicDataType = {
       ...data,
       categories: "",
-      id: `optimisticID-${data.name}-${data.updatedAt}`,
+      id: `optimisticID-${data.name}`,
 
       isPending: !isPending,
     };
