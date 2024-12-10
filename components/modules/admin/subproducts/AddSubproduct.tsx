@@ -58,11 +58,11 @@ function AddSubproduct({
       uuid: uuid4(),
       product_id: productId,
       sku: "",
-      price: 0,
+      price: undefined,
       currency: "USD",
-      discount: 0,
-      qty: 0,
-      sold: 0,
+      discount: undefined,
+      qty: undefined,
+      sold: undefined,
       featured: false,
       inStock: true,
       colors: [],
@@ -116,7 +116,7 @@ function AddSubproduct({
             <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="Example: ABC123-XYZ"/>
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
