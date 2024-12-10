@@ -166,7 +166,7 @@ function CategoryList({
               startTransition(() => {
                 addOptimisticData((prev: Category[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
+                    if (selectedRows.includes(item.uuid)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
@@ -175,7 +175,7 @@ function CategoryList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { id: row };
+                const data = { uuid: row };
                 const res: ActionResponse = await deleteCategory(data);
                 notify(res);
               }

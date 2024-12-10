@@ -87,7 +87,6 @@ function SubproductList({
   setModalOpen,
   addOptimisticData,
 }: SubproductListProps<Subproduct>) {
-
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -180,10 +179,11 @@ function SubproductList({
                   }),
                 ]);
               });
-
-              const data = { uuid: selectedRows };
-              const res: ActionResponse = await deleteSubproduct(data);
-              notify(res);
+              for (const row of selectedRows) {
+                const data = { uuid: row };
+                const res: ActionResponse = await deleteSubproduct(data);
+                notify(res);
+              }
             }}
           >
             Delete All
@@ -218,7 +218,6 @@ function SubproductList({
               }
             />
           )}
-       
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
