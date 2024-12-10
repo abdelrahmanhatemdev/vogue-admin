@@ -6,8 +6,7 @@ const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
 export const SubproductSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
-  product_Id: z.string().uuid({ message: "Invalid UUID format." }),
-  productId: z.string().uuid({ message: "Invalid UUID format." }),
+  product_id: z.string().uuid({ message: "Invalid UUID format." }),
   sku: z
     .string()
     .min(1, {
@@ -19,10 +18,11 @@ export const SubproductSchema = z.object({
   currency: z.enum(validCurrencies, { message: "Invalid currency" }),
   price: z.coerce
     .number({ message: "Price is required" })
+    .positive("Price must be positive")
     .min(1, {
       message: "Price is required",
     })
-    .positive("Price must be positive"),
+    ,
   discount: z.coerce
     .number()
     .positive("Discount must be positive")

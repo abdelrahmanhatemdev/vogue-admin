@@ -46,6 +46,8 @@ const SubproductList = dynamic(
   { loading: Loading }
 );
 
+export type OptimisicDataType = Subproduct & {isPending?: boolean}
+
 function Product({
   product,
   subproducts,
@@ -68,7 +70,7 @@ function Product({
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
-      ? optimisicData.sort((a: Subproduct, b: Subproduct) =>
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
@@ -109,7 +111,7 @@ function Product({
         accessorKey: "sku",
         header: "SKU",
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
           return (
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
@@ -205,7 +207,7 @@ function Product({
         accessorKey: "price",
         header: () => <span title="Price before discount">Price</span>,
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
           const { price, currency } = item;
 
           return (
@@ -220,7 +222,7 @@ function Product({
         accessorKey: "discount",
         header: () => <span title="Discount Percentage">Disc.</span>,
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -234,7 +236,7 @@ function Product({
         accessorKey: "price",
         header: () => <span title="Net Price">N</span>,
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
           const { price, discount, currency } = item;
 
           return (
@@ -265,7 +267,7 @@ function Product({
         accessorKey: "qty",
         header: () => <span title="Quantity">Qty</span>,
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -279,7 +281,7 @@ function Product({
         accessorKey: "sold",
         header: () => <span title="Total sold items">Sold</span>,
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -293,7 +295,7 @@ function Product({
         accessorKey: "featured",
         header: "featured",
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -302,7 +304,7 @@ function Product({
                 onCheckedChange={async () => {
                   const { featured, ...rest } = item;
 
-                  const optimisticObj: Subproduct = {
+                  const optimisticObj: OptimisicDataType = {
                     ...rest,
                     featured: !featured,
                     isPending: !isPending,
@@ -336,7 +338,7 @@ function Product({
         accessorKey: "inStock",
         header: "inStock",
         cell: ({ row }) => {
-          const item: Subproduct = row.original;
+          const item: OptimisicDataType = row.original;
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
@@ -345,7 +347,7 @@ function Product({
                 onCheckedChange={async () => {
                   const { inStock, ...rest } = item;
 
-                  const optimisticObj: Subproduct = {
+                  const optimisticObj: OptimisicDataType = {
                     ...rest,
                     inStock: !inStock,
                     isPending: !isPending,

@@ -3,7 +3,7 @@ import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/products`;
-const tag: string = "Products";
+const tag: string = "products";
 
 export const getProducts = async () => {
   try {
@@ -34,7 +34,7 @@ export async function getProductBySlug(slug: string) {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-
+    
     const { data } = await res.json();
     return data;
   } catch (error) {

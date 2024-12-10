@@ -1,10 +1,11 @@
 "use server";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
-import { tag as productTag } from "./Product";
+
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
+const productTag = "products"
 
 export const getSubproducts = async () => {
   try {

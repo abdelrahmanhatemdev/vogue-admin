@@ -6,189 +6,218 @@ import { ZodError } from "zod";
 
 export const tableName = "subproducts";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const [rows] = await db.query(
-      `SELECT ${tableName}.*, 
-      brands.name as brand_name, brands.slug as brand_slug, 
-      GROUP_CONCAT(c.name," - ", c.slug, " - ", c.uuid) as categories
-      FROM ${tableName} 
-      JOIN brands
-      ON ${tableName}.brand_id = brands.uuid 
-      LEFT JOIN product_categories pc
-      ON ${tableName}.uuid = pc.product_id
-      LEFT JOIN categories c
-      ON c.uuid = pc.category_id
-      WHERE ${tableName}.deletedAt IS NULL 
-      GROUP BY ${tableName}.uuid
-      ORDER BY updatedAt DESC
-      `
-    );
+    const req = await request;
+    console.log("requestData", req);
 
-    const data = rows as Product[];
+    
+// 
+    // const [rows] = await db.execute(
+    //     `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
+    //     [product_id]
+    //   );
 
-    return NextResponse.json({ data }, { status: 200 });
+    // const data = rows ;
+
+    return NextResponse.json({ data : "Hi"}, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-export async function POST(request: Response) {
+export async function POST(request: Request) {
   try {
     const {
       uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
+      product_id,
+      sku,
+      currency,
+      price,
+      discount,
+      qty,
+      sold,
+      featured,
+      inStock,
+      colors,
+      sizes,
+    //   images,
     } = await request.json();
 
-    //Ensure Server Validation
     await SubproductSchema.parseAsync({
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
+        uuid,
+        product_id,
+        sku,
+        currency,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
+        colors,
+        sizes,
+        // images,
     });
 
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-      [slug]
+    const [skuCheck] = await db.execute(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND sku = ?`,
+      [sku]
     );
 
-    const existedItems = slugCheck as Product[];
+    const existedItems = skuCheck as Product[];
 
     if (existedItems.length > 0) {
       return NextResponse.json(
-        { error: `${slug} slug is already used!` },
+        { error: `${sku} sku is already used!` },
         { status: 400 }
       );
     }
 
-    const nonEmptyCategories = categories.filter(
-      (cat: string) => cat.trim() !== ""
-    );
+    const nonEmptyColors = colors.filter((cat: string) => cat.trim() !== "");
 
-    if (nonEmptyCategories.length === 0) {
-      throw new Error("Choose at least one category");
+    if (nonEmptyColors.length === 0) {
+      throw new Error("Choose at least one color");
+    }
+    const nonEmptySizes = sizes.filter((cat: string) => cat.trim() !== "");
+
+    if (nonEmptySizes.length === 0) {
+      throw new Error("Choose at least one size");
     }
 
+    // const nonEmptyImages = images.filter((cat: string) => cat.trim() !== "");
+
+    // if (nonEmptyImages.length === 0) {
+    //   throw new Error("Choose at least one image");
+    // }
+
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} ( 
-      uuid,
-      name,
-      slug,
-      brand_id,
-      descriptionBrief,
-      descriptionDetails
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
-      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
+      `INSERT INTO ${tableName} (
+        uuid,
+        product_id,
+        sku,
+        currency,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        uuid,
+        product_id,
+        sku,
+        currency,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
+      ]
     );
 
-    const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
-    const placeholders = catArray.map(() => "(?, ?)").join(", ");
-    const flattenedValues = catArray.flat();
+    const colorsArray = nonEmptyColors.map((c: string) => [uuid, c]);
+    const colorsPlaceholders = colorsArray.map(() => "(?, ?)").join(", ");
+    const colorsFlattenedValues = colorsArray.flat();
 
     await db.execute(
-      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
-      flattenedValues
+      `INSERT INTO subproduct_colors (subproduct_id, color_id) VALUES ${colorsPlaceholders}`,
+      colorsFlattenedValues
+    );
+
+    const sizesArray = nonEmptySizes.map((c: string) => [uuid, c]);
+    const sizesPlaceholders = sizesArray.map(() => "(?, ?)").join(", ");
+    const sizesFlattenedValues = sizesArray.flat();
+
+    await db.execute(
+      `INSERT INTO subproduct_sizes (subproduct_id, size_id) VALUES ${sizesPlaceholders}`,
+      sizesFlattenedValues
     );
 
     return NextResponse.json({ message: "Product added" }, { status: 200 });
   } catch (error) {
+    console.log(error);
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: error.errors[0].message },
         { status: 500 }
       );
     }
+   
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
 export async function PUT(request: Request) {
-  try {
-    const {
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
-    } = await request.json();
-
-    // // Ensure Server Validation
-    await SubproductSchema.parseAsync({
-      uuid,
-      name,
-      slug,
-      brand_id,
-      categories,
-      descriptionBrief,
-      descriptionDetails,
-    });
-
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
-      [slug, uuid]
-    );
-
-    const existedItems = slugCheck as Product[];
-
-    if (existedItems.length > 0) {
-      return NextResponse.json(
-        { error: `${slug} slug is already used!` },
-        { status: 400 }
-      );
-    }
-
-    const nonEmptyCategories = categories.filter(
-      (cat: string) => cat.trim() !== ""
-    );
-
-    if (nonEmptyCategories.length === 0) {
-      throw new Error("Choose at least one category");
-    }
-
-    await db.execute(`DELETE FROM product_categories WHERE product_id = ?`, [
-      uuid,
-    ]);
-
-    const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
-    const placeholders = catArray.map(() => "(?, ?)").join(", ");
-    const flattenedValues = catArray.flat();
-
-    await db.execute(
-      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
-      flattenedValues
-    );
-
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, descriptionBrief = ?, descriptionDetails = ?  WHERE uuid = ?`,
-      [name, slug, brand_id, descriptionBrief, descriptionDetails, uuid]
-    );
-
-    if (result.affectedRows) {
-      return NextResponse.json({ message: "Product updated" }, { status: 200 });
-    }
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 500 }
-      );
-    }
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  //   try {
+  //     const {
+  //       uuid,
+  //       name,
+  //       slug,
+  //       brand_id,
+  //       categories,
+  //       descriptionBrief,
+  //       descriptionDetails,
+  //     } = await request.json();
+  //     // // Ensure Server Validation
+  //     await SubproductSchema.parseAsync({
+  //       uuid,
+  //       name,
+  //       slug,
+  //       brand_id,
+  //       categories,
+  //       descriptionBrief,
+  //       descriptionDetails,
+  //     });
+  //     const [slugCheck] = await db.execute(
+  //       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
+  //       [slug, uuid]
+  //     );
+  //     const existedItems = slugCheck as Product[];
+  //     if (existedItems.length > 0) {
+  //       return NextResponse.json(
+  //         { error: `${slug} slug is already used!` },
+  //         { status: 400 }
+  //       );
+  //     }
+  //     const nonEmptyCategories = categories.filter(
+  //       (cat: string) => cat.trim() !== ""
+  //     );
+  //     if (nonEmptyCategories.length === 0) {
+  //       throw new Error("Choose at least one category");
+  //     }
+  //     await db.execute(`DELETE FROM product_categories WHERE product_id = ?`, [
+  //       uuid,
+  //     ]);
+  //     const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
+  //     const placeholders = catArray.map(() => "(?, ?)").join(", ");
+  //     const flattenedValues = catArray.flat();
+  //     await db.execute(
+  //       `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+  //       flattenedValues
+  //     );
+  //     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+  //       `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, descriptionBrief = ?, descriptionDetails = ?  WHERE uuid = ?`,
+  //       [name, slug, brand_id, descriptionBrief, descriptionDetails, uuid]
+  //     );
+  //     if (result.affectedRows) {
+  //       return NextResponse.json({ message: "Product updated" }, { status: 200 });
+  //     }
+  //   } catch (error) {
+  //     if (error instanceof ZodError) {
+  //       return NextResponse.json(
+  //         { error: error.errors[0].message },
+  //         { status: 500 }
+  //       );
+  //     }
+  //     const message = error instanceof Error ? error.message : "Something Wrong";
+  //     return NextResponse.json({ error: message }, { status: 500 });
+  //   }
 }
 
 export async function DELETE(request: Request) {

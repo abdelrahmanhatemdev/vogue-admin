@@ -77,6 +77,7 @@ interface Product {
 interface Subproduct {
   id: string;
   uuid: string;
+  product_id: string;
   sku: string;
   currency: string;
   price: number;

@@ -19,9 +19,17 @@ export async function GET(
       [slug]
     );
 
-    const items = rows as Product[];
+    const products = rows as Product[];
+    const product = products[0] ?  products[0] : null;
 
-    const data = items[0];
+    const [subproductsRows] = await db.query(
+      `SELECT * FROM subproducts WHERE deletedAt IS NULL AND product_id = ?`,
+      [product?.uuid]
+    );
+
+    const subproducts = subproductsRows as Subproduct[];
+
+    const data = { product, subproducts };
 
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
