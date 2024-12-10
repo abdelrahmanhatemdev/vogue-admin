@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubproductSchema } from "./AddSubproduct";
+import { SubproductSchema } from "@/lib/validation/subproductSchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
@@ -52,6 +52,7 @@ function EditSubproduct({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
       sku: item.sku,
+      product_id: productId,
       colors: item.colors as string[],
       sizes: item.sizes as string[],
       price: item.price,

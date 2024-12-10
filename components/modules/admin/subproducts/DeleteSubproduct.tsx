@@ -8,17 +8,15 @@ import { notify } from "@/lib/utils";
 function DeleteSubproduct({
   itemId,
   setModalOpen,
-  addOptimisticData,
-  productId
+  addOptimisticData
 }: {
   itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
-  productId: string;
 }) {
-  const data = { id: itemId, productId };
+  const data = { uuid: itemId };
 
   const [isPending, startTransition] = useTransition();
 

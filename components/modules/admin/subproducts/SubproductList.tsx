@@ -139,7 +139,7 @@ function SubproductList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.uuid,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -181,7 +181,7 @@ function SubproductList({
                 ]);
               });
 
-              const data = { id: selectedRows, productId };
+              const data = { uuid: selectedRows };
               const res: ActionResponse = await deleteSubproduct(data);
               notify(res);
             }}

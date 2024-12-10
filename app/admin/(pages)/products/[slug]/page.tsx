@@ -13,8 +13,6 @@ export default async function ProductPage(props: {
   const params = await props.params;
 
   const { slug } = params;
-  
-
   const {product:productObj, subproducts} = await getProductBySlug(slug);
 
   const product = {

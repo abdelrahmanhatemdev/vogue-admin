@@ -224,6 +224,8 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
+    console.log("uuid", uuid);
+    
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]

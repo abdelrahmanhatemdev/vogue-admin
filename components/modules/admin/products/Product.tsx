@@ -419,10 +419,9 @@ function Product({
                     ),
                     children: (
                       <DeleteSubproduct
-                        itemId={item.id}
+                        itemId={item.uuid}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
-                        productId={product.id as string}
                       />
                     ),
                   });
