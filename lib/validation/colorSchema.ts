@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const ColorSchema = z.object({
-  uuid: z.string().uuid(),
+  uuid: z.string().uuid({ message: "Invalid UUID format." }),
   name: z
     .string()
     .min(1, {

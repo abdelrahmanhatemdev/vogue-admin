@@ -3,7 +3,7 @@ import { isValidEmail } from "../isValid";
 
 export const AdminAddSchema = z
   .object({
-    uuid: z.string().uuid(),
+    uuid: z.string().uuid({ message: "Invalid UUID format." }),
     name: z
       .string()
       .min(1, {

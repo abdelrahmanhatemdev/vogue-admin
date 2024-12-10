@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProducts } from "@/actions/Product";
 import db from "@/lib/db";
-import { tableName } from "../../route";
+import { tableName } from "../route";
 
 export const dynamic = "force-static";
 
@@ -15,12 +15,13 @@ export async function GET(
 
   try {
     const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`, [slug]
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`,
+      [slug]
     );
 
     const items = rows as Product[];
 
-    const data = items[0]
+    const data = items[0];
 
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
@@ -35,6 +36,5 @@ export async function GET(
 
 export async function generateStaticParams() {
   const list: Product[] = await getProducts();
-
   return list.map(({ slug }: { slug: string }) => ({ slug }));
 }

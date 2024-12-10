@@ -1,190 +1,212 @@
-// import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import db from "@/lib/db";
+import { FieldPacket, ResultSetHeader } from "mysql2";
+import { SubproductSchema } from "@/lib/validation/subproductSchema";
+import { ZodError } from "zod";
 
+export const tableName = "subproducts";
 
+export async function GET() {
+  try {
+    const [rows] = await db.query(
+      `SELECT ${tableName}.*, 
+      brands.name as brand_name, brands.slug as brand_slug, 
+      GROUP_CONCAT(c.name," - ", c.slug, " - ", c.uuid) as categories
+      FROM ${tableName} 
+      JOIN brands
+      ON ${tableName}.brand_id = brands.uuid 
+      LEFT JOIN product_categories pc
+      ON ${tableName}.uuid = pc.product_id
+      LEFT JOIN categories c
+      ON c.uuid = pc.category_id
+      WHERE ${tableName}.deletedAt IS NULL 
+      GROUP BY ${tableName}.uuid
+      ORDER BY updatedAt DESC
+      `
+    );
 
+    const data = rows as Product[];
 
-// export const dynamic = "force-static";
+    return NextResponse.json({ data }, { status: 200 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
 
-// export async function GET() {
-//   try {
-//     const querySnapshot = await getDocs(dataCollection);
+export async function POST(request: Response) {
+  try {
+    const {
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    } = await request.json();
 
-//     const data: Subproduct[] = [];
+    //Ensure Server Validation
+    await SubproductSchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    });
 
-//     querySnapshot.forEach((doc) => {
-//       if (doc?.id) {
-//         const {
-//           sku,
-//           colors,
-//           sizes,
-//           price,
-//           discount,
-//           qty,
-//           sold,
-//           featured,
-//           inStock,
-//           createdAt,
-//           updatedAt,
-//           currency
-//         } = doc.data();
+    const [slugCheck] = await db.execute(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
+      [slug]
+    );
 
-//         data.push({
-//           id: doc.id,
-//           sku,
-//           colors,
-//           sizes,
-//           price,
-//           discount,
-//           qty,
-//           sold,
-//           featured,
-//           inStock,
-//           createdAt,
-//           updatedAt,
-//           currency
-//         });
-//       }
-//     });
+    const existedItems = slugCheck as Product[];
 
-//     return NextResponse.json({ data }, { status: 200 });
-//   } catch (error) {
-//     const message = error instanceof Error ? error.message : "Something Wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
+    if (existedItems.length > 0) {
+      return NextResponse.json(
+        { error: `${slug} slug is already used!` },
+        { status: 400 }
+      );
+    }
 
-// export async function POST(request: Request) {
-//   const data = await request.json();
+    const nonEmptyCategories = categories.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
-//   console.log("data", data);
-  
+    if (nonEmptyCategories.length === 0) {
+      throw new Error("Choose at least one category");
+    }
 
-//   // try {
-//   //   if (data?.productId) {
-//   //     const { productId, ...rest } = data;
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      `INSERT INTO ${tableName} ( 
+      uuid,
+      name,
+      slug,
+      brand_id,
+      descriptionBrief,
+      descriptionDetails
+      ) VALUES (?, ?, ?, ?, ?, ?)`,
+      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
+    );
 
-//   //     const productRef = doc(db, collectoinName, productId);
-//   //     const prductDocSnap = await getDoc(productRef);
+    const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
+    const placeholders = catArray.map(() => "(?, ?)").join(", ");
+    const flattenedValues = catArray.flat();
 
-//   //     if (prductDocSnap.exists()) {
-//   //       await updateDoc(productRef, {
-//   //         subproducts: [...prductDocSnap.data()?.subproducts, { ...rest }],
-//   //       });
+    await db.execute(
+      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+      flattenedValues
+    );
 
-//   //       return NextResponse.json(
-//   //         { message: "Subproduct Added" },
-//   //         { status: 200 }
-//   //       );
-//   //     }
-//   //   }
+    return NextResponse.json({ message: "Product added" }, { status: 200 });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 500 }
+      );
+    }
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
 
-//   //   throw new Error("Something Wrong");
-//   // } catch (error) {
-//   //   const message = error instanceof Error ? error.message : "Something Wrong";
-//   //   return NextResponse.json({ error: message }, { status: 500 });
-//   // }
-// }
+export async function PUT(request: Request) {
+  try {
+    const {
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    } = await request.json();
 
-// export async function PUT(request: Request) {
-//   const data = await request.json();
+    // // Ensure Server Validation
+    await SubproductSchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      brand_id,
+      categories,
+      descriptionBrief,
+      descriptionDetails,
+    });
 
-//   try {
-//     if (data?.productId) {
-//       const { productId, subproduct, ...rest } = data;
+    const [slugCheck] = await db.execute(
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
+      [slug, uuid]
+    );
 
-//       const productRef = doc(db, collectoinName, productId);
-//       const prductDocSnap = await getDoc(productRef);
+    const existedItems = slugCheck as Product[];
 
-//       if (prductDocSnap.exists()) {
-//         const oldSubproducts = prductDocSnap.data()?.subproducts;
+    if (existedItems.length > 0) {
+      return NextResponse.json(
+        { error: `${slug} slug is already used!` },
+        { status: 400 }
+      );
+    }
 
-//         if (subproduct) {
-          
-//           if (subproduct.id) {
-//             const targetSubproduct = oldSubproducts?.find((sub:Subproduct) => sub.id === subproduct.id)
-//             const date = new Date().toISOString()
-            
-//             targetSubproduct[subproduct?.property]= subproduct?.value
-//             targetSubproduct.updatedAt= date
-            
-//             await updateDoc(productRef, {
-//               subproducts: [
-//                 ...oldSubproducts.filter((sub: Subproduct) => sub.id !== subproduct.id),
-//                 {...targetSubproduct}
-//               ],
-//             });
-//           }
-          
-          
-          
-//         }else {
-//           const newSubproducts = [
-//             ...oldSubproducts.filter((sub: Subproduct) => sub.id !== rest.id),
-//             { ...rest },
-//           ];
-  
-//           await updateDoc(productRef, {
-//             subproducts: newSubproducts,
-//           });
-//         }
-       
+    const nonEmptyCategories = categories.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
-//         return NextResponse.json(
-//           { message: "Subproduct Updated" },
-//           { status: 200 }
-//         );
-//       }
-//     }
+    if (nonEmptyCategories.length === 0) {
+      throw new Error("Choose at least one category");
+    }
 
-//     throw new Error("Something Wrong");
-//   } catch (error) {
-//     const message = error instanceof Error ? error.message : "Something Wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
+    await db.execute(`DELETE FROM product_categories WHERE product_id = ?`, [
+      uuid,
+    ]);
 
-// export async function DELETE(request: Request) {
-//   const data = await request.json();
+    const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
+    const placeholders = catArray.map(() => "(?, ?)").join(", ");
+    const flattenedValues = catArray.flat();
 
-//   try {
-//     if (data?.productId) {
-//       const { productId, id } = data;
+    await db.execute(
+      `INSERT INTO product_categories (product_id, category_id) VALUES ${placeholders}`,
+      flattenedValues
+    );
 
-//       const productRef = doc(db, collectoinName, productId);
-//       const prductDocSnap = await getDoc(productRef);
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, descriptionBrief = ?, descriptionDetails = ?  WHERE uuid = ?`,
+      [name, slug, brand_id, descriptionBrief, descriptionDetails, uuid]
+    );
 
-//       if (prductDocSnap.exists()) {
-//         const oldSubproducts = prductDocSnap.data()?.subproducts;
+    if (result.affectedRows) {
+      return NextResponse.json({ message: "Product updated" }, { status: 200 });
+    }
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 500 }
+      );
+    }
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
 
-//         const newSubproducts =
-//           typeof id === "string"
-//             ? [...oldSubproducts.filter((sub: Subproduct) => sub.id !== id)]
-//             : id?.length > 0
-//             ? [
-//                 ...oldSubproducts.filter(
-//                   (sub: Subproduct) => !id.includes(sub.id)
-//                 ),
-//               ]
-//             : [];
+export async function DELETE(request: Request) {
+  try {
+    const { uuid } = await request.json();
 
-//         await updateDoc(productRef, {
-//           subproducts: newSubproducts,
-//         });
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
+      [uuid]
+    );
 
-//         return NextResponse.json(
-//           {
-//             message:
-//               (typeof id === "string" ? "Subproduct" : "Subproducts") +
-//               " Deleted",
-//           },
-//           { status: 200 }
-//         );
-//       }
-//     }
+    if (result.affectedRows) {
+      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
+    }
+  } catch (error) {
+    console.log("error", error);
 
-//     throw new Error("Something Wrong");
-//   } catch (error) {
-//     const message = error instanceof Error ? error.message : "Something Wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}

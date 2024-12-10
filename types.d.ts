@@ -72,26 +72,25 @@ interface Product {
   delatedAt?: string;
   subproducts?: Subproduct[] | number | {sku:string; id: string;}[];
   reviews?: Review[];
-  // tags: Tag[];
 }
 
 interface Subproduct {
   id: string;
   uuid: string;
   sku: string;
-  colors: Color[] | string[];
-  sizes: Size[] | string[];
-  price: number;
   currency: string;
+  price: number;
   discount: number;
   qty: number;
   sold: number;
   featured: boolean;
   inStock: boolean;
+  colors: Color[] | string[];
+  sizes: Size[] | string[];
+  images?: ProductImage[];
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  images?: ProductImage[];
 }
 
 interface Paragraph {

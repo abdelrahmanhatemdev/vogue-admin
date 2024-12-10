@@ -180,7 +180,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: "Product updated" }, { status: 200 });
     }
   } catch (error) {
-    if (error instanceof ZodError) {
+     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: error.errors[0].message },
         { status: 500 }

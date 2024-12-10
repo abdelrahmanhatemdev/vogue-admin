@@ -15,8 +15,10 @@ export default async function ProductPage(props: {
   const { slug } = params;
 
   const productRes: Product = await getProductBySlug(slug);
+  
 
-  const subproducts = productRes?.subproducts as Subproduct[];
+  // const subproducts = productRes?.subproducts as Subproduct[];
+  const subproducts : Subproduct[] = [];
   const product = {
     id: productRes?.id,
     name: productRes?.name,
