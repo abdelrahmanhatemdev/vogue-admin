@@ -62,6 +62,9 @@ function Product({
     children: <></>,
   });
 
+  console.log("subProducts", subproducts);
+  
+
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 

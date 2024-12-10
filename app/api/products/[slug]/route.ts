@@ -22,11 +22,32 @@ export async function GET(
     const products = rows as Product[];
     const product = products[0] ?  products[0] : null;
 
-    const [subproductsRows] = await db.query(
-      `SELECT * FROM subproducts WHERE deletedAt IS NULL AND product_id = ?`,
+    const [subproductsRows] = await db.execute(
+      ` SELECT 
+          sp.*, 
+          GROUP_CONCAT(c.color_id) AS colors,
+          GROUP_CONCAT(s.size_id) AS sizes
+        FROM 
+          subproducts sp
+        LEFT JOIN 
+          subproduct_colors c
+        ON 
+          sp.uuid = c.subproduct_id 
+        LEFT JOIN 
+          subproduct_sizes s
+        ON
+          sp.uuid = s.subproduct_id 
+        WHERE 
+          sp.deletedAt IS NULL 
+        AND 
+          sp.product_id = ?
+        GROUP BY 
+          sp.uuid
+        ORDER BY 
+          sp.updatedAt DESC`,
       [product?.uuid]
     );
-
+    
     const subproducts = subproductsRows as Subproduct[];
 
     const data = { product, subproducts };
@@ -37,6 +58,8 @@ export async function GET(
 
     throw new Error("No Data Found!");
   } catch (error) {
+    console.log("error", error);
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }

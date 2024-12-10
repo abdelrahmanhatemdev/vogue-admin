@@ -136,7 +136,7 @@ function AdminList({
       const email = row.getValue("email")?.toString().toLowerCase()!;
       return (name.includes(searchTerm) || email.includes(searchTerm)) || false;
     },
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.uuid,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -169,7 +169,7 @@ function AdminList({
               startTransition(() => {
                 addOptimisticData((prev: Admin[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
+                    if (selectedRows.includes(item.uuid)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
