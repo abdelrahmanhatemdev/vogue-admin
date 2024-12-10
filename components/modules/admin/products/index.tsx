@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
+import { arrayFromString } from "@/lib/format";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -52,8 +53,6 @@ function Products({ data }: { data: Product[] }) {
         )
       : [];
   }, [optimisicData]);
-
-  console.log("sortedotimistic", optimisicData);
   
 
   const columns: ColumnDef<Product>[] = useMemo(
@@ -153,16 +152,16 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "categories",
         header: "categories",
         cell: ({ row }) => {
-          // console.log("row: ", row.original);
-          // return row.original.id
 
           const item: OptimisicDataType = row.original;
           const itemCatsString = item.categories
             ? (item.categories as string)
             : "";
-          const itemCatsArray = itemCatsString.split(",");
+
+          const itemCatsArray = arrayFromString(itemCatsString);
+          
           const itemCats = itemCatsArray.map((cat) => {
-            const catArray = cat.split(" - ");
+            const catArray = cat.split(" - ")
             const name = catArray[0];
             const slug = catArray[1];
             return { name, slug };

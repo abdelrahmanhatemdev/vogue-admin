@@ -86,8 +86,8 @@ interface Subproduct {
   sold: number;
   featured: boolean;
   inStock: boolean;
-  colors: Color[] | string[];
-  sizes: Size[] | string[];
+  colors: Color[] | string[] | string;
+  sizes: Size[] | string[] | string;
   images?: ProductImage[];
   createdAt: string;
   updatedAt: string;

@@ -2,7 +2,7 @@ import { getProductBySlug } from "@/actions/Product";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 const Product = dynamic(
   () => import("@/components/modules/admin/products/Product"),
   { loading: Loading }
@@ -17,7 +17,7 @@ export default async function ProductPage(props: {
   const data = await getProductBySlug(slug);
 
   if (!data?.product) {
-    return <Product subproducts={[]} product={{}} />;
+    notFound()
   }
   const { product: productObj, subproducts } = data;
   const product = {

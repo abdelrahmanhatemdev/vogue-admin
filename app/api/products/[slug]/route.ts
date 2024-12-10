@@ -52,6 +52,8 @@ export async function GET(
 
     const data = { product, subproducts };
 
+    
+
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
     }

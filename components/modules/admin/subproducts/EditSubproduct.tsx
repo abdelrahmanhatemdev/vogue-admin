@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { OptimisicDataType } from "../products/Product";
 import { currencies } from "@/constants/currencies";
+import { arrayFromString } from "@/lib/format";
 
 function EditSubproduct({
   item,
@@ -49,9 +50,13 @@ function EditSubproduct({
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 
+  const itemColors: string[] = Array.from(new Set(arrayFromString(item.colors as string)));
+  const itemSizes: string[] = Array.from(new Set(arrayFromString(item.sizes as string)));
+
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
+      uuid: item.uuid,
       sku: item.sku,
       product_id: productId,
       price: item.price,
@@ -59,10 +64,10 @@ function EditSubproduct({
       discount: item.discount,
       qty: item.qty,
       sold: item.sold,
-      featured: item.featured,
-      inStock: item.inStock,
-      colors: item.colors as string[],
-      sizes: item.sizes as string[],
+      featured: item.featured ? true : false,
+      inStock: item.inStock ? true : false,
+      colors: itemColors,
+      sizes: itemSizes,
     },
     mode: "onChange",
   });
@@ -119,7 +124,7 @@ function EditSubproduct({
           control={form.control}
           name="colors"
           render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full">
               <FormLabel>Colors</FormLabel>
               {colors ? (
                 <MultiSelect
@@ -154,7 +159,7 @@ function EditSubproduct({
           control={form.control}
           name="sizes"
           render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full">
               <FormLabel>Sizes</FormLabel>
               {sizes ? (
                 <MultiSelect
