@@ -171,7 +171,7 @@ function SubproductList({
               startTransition(() => {
                 addOptimisticData((prev: Subproduct[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
+                    if (selectedRows.includes(item.uuid)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }

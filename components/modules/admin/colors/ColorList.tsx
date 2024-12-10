@@ -131,7 +131,7 @@ function ColorList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.uuid,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -164,7 +164,7 @@ function ColorList({
                 startTransition(() => {
                   addOptimisticData((prev: Color[]) => [
                     ...prev.map((item) => {
-                      if (selectedRows.includes(item.id)) {
+                      if (selectedRows.includes(item.uuid)) {
                         const pendingItem = { ...item, isPending: !isPending };
                         return pendingItem;
                       }
@@ -173,7 +173,7 @@ function ColorList({
                   ]);
                 });
                 for (const row of selectedRows) {
-                  const data = { id: row };
+                  const data = { uuid: row };
                   const res: ActionResponse = await deleteColor(data);
                   notify(res);
                 }

@@ -133,7 +133,7 @@ function CategoryList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.uuid,
   });
 
   const currentPage = pagination.pageIndex + 1;

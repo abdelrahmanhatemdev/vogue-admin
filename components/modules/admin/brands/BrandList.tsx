@@ -131,7 +131,7 @@ function BrandList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.uuid,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -163,7 +163,7 @@ function BrandList({
               startTransition(() => {
                 addOptimisticData((prev: Brand[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
+                    if (selectedRows.includes(item.uuid)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
@@ -172,7 +172,7 @@ function BrandList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { id: row };
+                const data = { uuid: row };
                 const res: ActionResponse = await deleteBrand(data);
                 notify(res);
               }

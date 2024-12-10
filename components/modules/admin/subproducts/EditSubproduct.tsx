@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { OptimisicDataType } from "../products/Product";
 import { currencies } from "@/constants/currencies";
 
 function EditSubproduct({
@@ -53,8 +54,6 @@ function EditSubproduct({
     defaultValues: {
       sku: item.sku,
       product_id: productId,
-      colors: item.colors as string[],
-      sizes: item.sizes as string[],
       price: item.price,
       currency: item.currency,
       discount: item.discount,
@@ -62,6 +61,8 @@ function EditSubproduct({
       sold: item.sold,
       featured: item.featured,
       inStock: item.inStock,
+      colors: item.colors as string[],
+      sizes: item.sizes as string[],
     },
     mode: "onChange",
   });
@@ -78,13 +79,13 @@ function EditSubproduct({
       createdAt: item.createdAt,
       updatedAt: date,
     };
-    const optimisticObj: Subproduct = {
+    const optimisticObj: OptimisicDataType = {
       ...data,
       isPending: !isPending,
     };
 
     startTransition(() => {
-      addOptimisticData((prev: Subproduct[]) => [
+      addOptimisticData((prev: OptimisicDataType[]) => [
         ...prev.filter((sub) => sub.id !== data.id),
         optimisticObj,
       ]);
@@ -107,27 +108,7 @@ function EditSubproduct({
             <FormItem className="w-full">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  onChange={async (e) => {
-                    field.onChange(e.target.value);
-
-                    const checkSku: boolean = await isValidSku({
-                      sku: e.target.value,
-                      collection: "products",
-                      id: item.id,
-                    });
-
-                    if (!checkSku) {
-                      form.setError("sku", {
-                        message: "Sku is already used!",
-                      });
-                      return;
-                    } else {
-                      form.clearErrors("sku");
-                    }
-                  }}
-                />
+                <Input {...field} />
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
@@ -143,7 +124,7 @@ function EditSubproduct({
               {colors ? (
                 <MultiSelect
                   options={colors.map((item) => ({
-                    value: item.id,
+                    value: item.uuid,
                     color: item.hex,
                     label:
                       item.name?.length > 5
@@ -178,7 +159,7 @@ function EditSubproduct({
               {sizes ? (
                 <MultiSelect
                   options={sizes.map((item) => ({
-                    value: item.id,
+                    value: item.uuid,
                     label:
                       item.name?.length > 5
                         ? item.name.slice(0, 5) + ".."
@@ -219,10 +200,7 @@ function EditSubproduct({
                 name="currency"
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="bg-main-200 rounded-s-none">
                         <SelectValue
                           placeholder="Select Currency"
