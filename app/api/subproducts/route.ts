@@ -6,21 +6,18 @@ import { ZodError } from "zod";
 
 export const tableName = "subproducts";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const req = await request;
-    console.log("requestData", req);
 
     
-// 
-    // const [rows] = await db.execute(
-    //     `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-    //     [product_id]
-    //   );
 
-    // const data = rows ;
+    const [rows] = await db.query(
+        `SELECT * FROM ${tableName} WHERE deletedAt IS NULL`
+      );
 
-    return NextResponse.json({ data : "Hi"}, { status: 200 });
+    const data = rows as Subproduct[];
+
+    return NextResponse.json({ data}, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

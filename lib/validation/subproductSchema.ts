@@ -1,6 +1,6 @@
 import z from "zod";
 import { currencies } from "@/constants/currencies";
-import { isValidSlug } from "../isValid";
+import { isValidSku, isValidSlug } from "../isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
@@ -57,4 +57,21 @@ export const SubproductSchema = z.object({
   //   .refine(files => files && files.length > 0 , {
   //     message: "At least one photo is required"
   //   })
+})
+.superRefine(async (obj, ctx) => {
+  const { uuid, sku } = obj;
+  const exists = await isValidSku({
+    sku,
+    uuid,
+    table: "subproducts",
+  });
+
+  if (exists) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${sku} Sku is already used`,
+      path: ["sku"],
+      fatal: true,
+    });
+  }
 });

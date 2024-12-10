@@ -38,37 +38,30 @@ export const isValidSlug = async ({
 export const isValidSku = async ({
   sku,
   table,
-  id,
+  uuid,
 }: {
   sku: string;
   table: string;
-  id?: string;
+  uuid?: string;
 }) => {
   try {
     const res = await api(`${apiURL}/${table}`);
 
     if (res) {
       const {
-        data: { data: products },
+        data: { data: suproducts },
       } = res;
 
-      const suproducts = products?.map(
-        (product: { subproducts: { id: string; sku: string }[] }) => {
-          return product.subproducts;
-        }
-      );
-      const subsFlatArray = suproducts.flat().filter((sub: string) => sub);
-
-      const check = subsFlatArray?.some((sub: { id: string; sku: string }) => {
+      const check = suproducts?.some((sub: { id: string; sku: string; uuid: string; }) => {
         
-        if (sub.id === id) {
+        if (sub.uuid === uuid) {
           return false;
         }
 
         return sub.sku === sku;
       });
 
-      return !check;
+      return check;
     }
     return true;
   } catch {
