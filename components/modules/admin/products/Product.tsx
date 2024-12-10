@@ -5,7 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
@@ -46,7 +45,7 @@ const SubproductList = dynamic(
   { loading: Loading }
 );
 
-export type OptimisicDataType = Subproduct & {isPending?: boolean}
+export type OptimisicDataType = Subproduct & { isPending?: boolean };
 
 function Product({
   product,
@@ -63,7 +62,6 @@ function Product({
   });
 
   console.log("subProducts", subproducts);
-  
 
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
@@ -122,7 +120,7 @@ function Product({
                 "hover:bg-main-300 p-2 rounded-lg bg-main-200 transition-colors" +
                 (item.isPending ? " opacity-50" : "")
               }
-              title="Go to Product page"
+              title="Go to Subproduct page"
             >
               {item.sku}
             </Link>
@@ -321,12 +319,9 @@ function Product({
                   });
 
                   const res: ActionResponse = await editSubproduct({
-                    productId: product.id,
-                    subproduct: {
-                      id: item.id,
-                      property: "featured",
-                      value: !item.featured,
-                    },
+                    uuid: item.uuid,
+                    property: "featured",
+                    value: !item.featured,
                   });
 
                   notify(res);
@@ -364,12 +359,9 @@ function Product({
                   });
 
                   const res: ActionResponse = await editSubproduct({
-                    productId: product.id,
-                    subproduct: {
-                      id: item.id,
-                      property: "inStock",
-                      value: !item.inStock,
-                    },
+                    uuid: item.uuid,
+                    property: "inStock",
+                    value: !item.inStock,
                   });
 
                   notify(res);
@@ -378,7 +370,7 @@ function Product({
             </span>
           );
         },
-        filterFn: "equals"
+        filterFn: "equals",
       },
       {
         id: "actions",
@@ -469,7 +461,6 @@ function Product({
         description={modal.description}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
-        
       >
         <>{modal.children}</>
       </Modal>

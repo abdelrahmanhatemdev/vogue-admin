@@ -172,7 +172,7 @@ function AddSubproduct({
           control={form.control}
           name="colors"
           render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full">
               <FormLabel>Colors</FormLabel>
               {colors ? (
                 <MultiSelect
@@ -206,7 +206,7 @@ function AddSubproduct({
           control={form.control}
           name="sizes"
           render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full ">
               <FormLabel>Sizes</FormLabel>
               {sizes ? (
                 <MultiSelect

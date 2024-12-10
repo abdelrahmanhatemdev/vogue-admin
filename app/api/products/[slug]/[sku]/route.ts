@@ -1,26 +1,19 @@
 import { NextResponse } from "next/server";
-import { getProducts } from "@/actions/Product";
+import { getSubproducts } from "@/actions/Subproduct";
 import db from "@/lib/db";
-import { tableName } from "../route";
+import { tableName } from "@/app/api/subproducts/route";
 
 export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ slug: string }> }
+  props: { params: Promise<{ sku: string }> }
 ) {
   const params = await props.params;
 
-  const { slug } = params;
+  const { sku } = params;
 
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`,
-      [slug]
-    );
-
-    const products = rows as Product[];
-    const product = products[0] ?  products[0] : null;
 
     const [subproductsRows] = await db.execute(
       ` SELECT 
@@ -28,7 +21,7 @@ export async function GET(
           GROUP_CONCAT(c.color_id) AS colors,
           GROUP_CONCAT(s.size_id) AS sizes
         FROM 
-          subproducts sp
+          ${tableName} sp
         LEFT JOIN 
           subproduct_colors c
         ON 
@@ -40,19 +33,21 @@ export async function GET(
         WHERE 
           sp.deletedAt IS NULL 
         AND 
-          sp.product_id = ?
+          sp.sku = ?
         GROUP BY 
           sp.uuid
         ORDER BY 
-          sp.updatedAt DESC`,
-      [product?.uuid]
+          sp.updatedAt DESC
+        LIMIT 
+          1  
+          `,
+      [sku]
     );
     
     const subproducts = subproductsRows as Subproduct[];
+    const subproduct = subproducts[0]
 
-    const data = { product, subproducts };
-
-    
+    const data = { subproduct };
 
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
@@ -68,6 +63,6 @@ export async function GET(
 }
 
 export async function generateStaticParams() {
-  const list: Product[] = await getProducts();
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  const list: Subproduct[] = await getSubproducts();
+  return list.map(({ sku }: { sku: string }) => ({ sku }));
 }

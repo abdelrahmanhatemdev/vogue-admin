@@ -52,14 +52,15 @@ export const isValidSku = async ({
         data: { data: suproducts },
       } = res;
 
-      const check = suproducts?.some((sub: { id: string; sku: string; uuid: string; }) => {
-        
-        if (sub.uuid === uuid) {
-          return false;
-        }
+      const check = suproducts?.some(
+        (sub: { id: string; sku: string; uuid: string }) => {
+          if (sub.uuid === uuid) {
+            return false;
+          }
 
-        return sub.sku === sku;
-      });
+          return sub.sku === sku;
+        }
+      );
 
       return check;
     }
@@ -101,5 +102,3 @@ export const isValidEmail = async ({
     return true;
   }
 };
-
-

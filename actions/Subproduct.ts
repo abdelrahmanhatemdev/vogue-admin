@@ -2,10 +2,9 @@
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
-
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
-const productTag = "products"
+const productTag = "products";
 
 export const getSubproducts = async () => {
   try {
@@ -80,12 +79,9 @@ export async function addSubproduct(data: Partial<Subproduct>) {
 export async function editSubproduct(
   data: Partial<
     Subproduct & {
-      productId: string;
-      subproduct?: {
-        id: string;
-        property: string;
-        value: string | boolean | number | string[] | Color[] | Size[];
-      };
+      uuid: string;
+      property: string;
+      value: string | boolean | number | string[];
     }
   >
 ) {
@@ -107,7 +103,7 @@ export async function editSubproduct(
     });
 }
 
-export async function deleteSubproduct(data: { uuid: string}) {
+export async function deleteSubproduct(data: { uuid: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
