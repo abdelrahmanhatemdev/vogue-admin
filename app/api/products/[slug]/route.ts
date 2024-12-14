@@ -13,6 +13,9 @@ export async function GET(
 
   const { slug } = params;
 
+  console.log("slug", params);
+
+
   try {
     const [rows] = await db.query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`,
@@ -51,17 +54,13 @@ export async function GET(
     const subproducts = subproductsRows as Subproduct[];
 
     const data = { product, subproducts };
-
     
-
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
     }
 
     throw new Error("No Data Found!");
   } catch (error) {
-    console.log("error", error);
-    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }

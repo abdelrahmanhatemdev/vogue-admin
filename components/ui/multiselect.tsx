@@ -226,12 +226,11 @@ export const MultiSelect = React.forwardRef<
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
                         {option?.color ? (
-                          <div className={"rounded-lg flex gap-1 items-center"}>
+                          <div className={"rounded-lg flex gap-1 items-center"} title={`${option.label}`}>
                             <div
                               className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
                               style={{ backgroundColor: option.color }}
                             ></div>
-                            <span>{option.label}</span>
                           </div>
                         ) : (
                           <span>{option?.label}</span>
@@ -239,7 +238,6 @@ export const MultiSelect = React.forwardRef<
                         <Button
                           onClick={(event) => {
                             event.stopPropagation();
-                            console.log("kicked");
                             toggleOption(value);
                           }}
                           variant={"nostyle"}

@@ -8,7 +8,7 @@ export const tableName = "admins";
 
 export async function GET() {
   try {
-    const [rows] = await db.query(
+    const [rows] = await (await db).query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
     );
 

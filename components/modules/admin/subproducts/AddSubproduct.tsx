@@ -22,8 +22,7 @@ import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
-import { isValidSku } from "@/lib/isValid";
-import { v4 as uuid4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import {
   Select,
   SelectContent,
@@ -55,7 +54,7 @@ function AddSubproduct({
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
-      uuid: uuid4(),
+      uuid: uuidv4(),
       product_id: productId,
       sku: "",
       price: undefined,
@@ -67,7 +66,7 @@ function AddSubproduct({
       inStock: true,
       colors: [],
       sizes: [],
-      //   images: []
+      // images: []
     },
     mode: "onChange",
   });
@@ -140,28 +139,7 @@ function AddSubproduct({
                 <Input
                   multiple
                   type="file"
-                  onChange={async (e) => {
-                    const files = e.target?.files
-                      ? Array.from(e.target?.files)
-                      : [];
-
-                    form.setValue("files", files);
-
-                    console.log("files", files);
-
-                    try {
-                      const uploadPromises = files.map(async (file) => {
-                        const fileRef = ref(
-                          storage,
-                          `subproducts/${file.name}-${Date.now()}`
-                        );
-                        await uploadBytes(fileRef, file);
-                        const downloadURL = await getDownloadURL(fileRef);
-
-                        console.log("downloadURL", downloadURL);
-                      });
-                    } catch (error) {}
-                  }}
+                  onChange={(e) => field.onChange(e.target.files)}
                   className="hidden"
                 />
               </FormControl>

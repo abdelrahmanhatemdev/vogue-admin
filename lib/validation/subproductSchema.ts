@@ -4,74 +4,81 @@ import { isValidSku, isValidSlug } from "../isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
-export const SubproductSchema = z.object({
-  uuid: z.string().uuid({ message: "Invalid UUID format." }),
-  product_id: z.string().uuid({ message: "Invalid UUID format." }),
-  sku: z
-    .string()
-    .min(1, {
-      message: "Sku is required",
-    })
-    .max(24, {
-      message: "Sku should not have more than 24 charachters.",
+export const SubproductSchema = z
+  .object({
+    uuid: z.string().uuid({ message: "Invalid UUID format." }),
+    product_id: z.string().uuid({ message: "Invalid UUID format." }),
+    sku: z
+      .string()
+      .min(1, {
+        message: "Sku is required",
+      })
+      .max(24, {
+        message: "Sku should not have more than 24 charachters.",
+      }),
+    currency: z.enum(validCurrencies, { message: "Invalid currency" }),
+    price: z.coerce
+      .number({ message: "Price is required" })
+      .positive("Price must be positive")
+      .min(1, {
+        message: "Price is required",
+      }),
+    discount: z.coerce
+      .number()
+      .positive("Discount must be positive")
+      .min(1, {
+        message: "Discount is required",
+      })
+      .max(100, {
+        message: "Discount cannot be more than 100%",
+      }),
+    qty: z.coerce
+      .number()
+      .int({ message: "Quantity must be an integer." })
+      .min(0, { message: "Quantity cannot be negative." }),
+    sold: z.coerce
+      .number()
+      .int({ message: "Sold quantity must be an integer." })
+      .min(0, { message: "Sold quantity cannot be negative." }),
+    featured: z.boolean({ message: "Featured field is required." }),
+    inStock: z.boolean({ message: "InStock field is required." }),
+    colors: z.array(z.string()).nonempty({
+      message: "Choose at least one color",
     }),
-  currency: z.enum(validCurrencies, { message: "Invalid currency" }),
-  price: z.coerce
-    .number({ message: "Price is required" })
-    .positive("Price must be positive")
-    .min(1, {
-      message: "Price is required",
-    })
-    ,
-  discount: z.coerce
-    .number()
-    .positive("Discount must be positive")
-    .min(1, {
-      message: "Discount is required",
-    })
-    .max(100, {
-      message: "Discount cannot be more than 100%",
+    sizes: z.array(z.string()).nonempty({
+      message: "Choose at least one size",
     }),
-  qty: z.coerce
-    .number()
-    .int({ message: "Quantity must be an integer." })
-    .min(0, { message: "Quantity cannot be negative." }),
-  sold: z.coerce
-    .number()
-    .int({ message: "Sold quantity must be an integer." })
-    .min(0, { message: "Sold quantity cannot be negative." }),
-  featured: z.boolean({ message: "Featured field is required." }),
-  inStock: z.boolean({ message: "InStock field is required." }),
-  colors: z.array(z.string()).nonempty({
-    message: "Choose at least one color",
-  }),
-  sizes: z.array(z.string()).nonempty({
-    message: "Choose at least one size",
-  }),
-  // images: z.array(z.string()).optional(), // Optional field, no custom error message needed
-  // images: z
-  // .any()
-  //   .custom<FileList>(files => files instanceof FileList, {
-  //     message: "Must be a valid file input"
-  //   })
-  //   .refine(files => files && files.length > 0 , {
-  //     message: "At least one photo is required"
-  //   })
-})
-.superRefine(async (obj, ctx) => {
-  const { uuid, sku } = obj;
-  const exists = await isValidSku({
-    sku,
-    uuid,
-    table: "subproducts",
-  });
-
-  if (exists) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `${sku} Sku is already used`,
-      path: ["sku"],
-      fatal: true,
+    // images: z
+    //   .instanceof(FileList, { message: "At least one image is required" })
+    //   .refine((files) => files.length > 0, {
+    //     message: "At least one image is required",
+    //   })
+    //   .refine((files) =>
+    //     Array.from(files).every(
+    //       (file) =>
+    //         ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+    //       "Invalid image type. Only JPEG, PNG, and WEBP are allowed."
+    //     )
+    //   )
+    //   .refine(
+    //     (files) => Array.from(files).every((file) => file.size < 300 * 1024 ),
+    //     { message: "Image maximum size is 300kb" }
+    //   ),
+  })
+  .superRefine(async (obj, ctx) => {
+    const { uuid, sku } = obj;
+    const exists = await isValidSku({
+      sku,
+      uuid,
+      table: "subproducts",
     });
-  }
-});
+
+    if (exists) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `${sku} Sku is already used`,
+        path: ["sku"],
+        fatal: true,
+      });
+    }
+  });

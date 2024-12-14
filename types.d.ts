@@ -88,7 +88,7 @@ interface Subproduct {
   inStock: boolean;
   colors: Color[] | string[] | string;
   sizes: Size[] | string[] | string;
-  images?: ProductImage[];
+  images?: ProductImage[] | string[] | string;
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
@@ -101,8 +101,13 @@ interface Paragraph {
 
 interface ProductImage {
   id: string;
+  uuid: string;
   src: string;
   alt: string;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+  delatedAt?: string;
 }
 
 interface Tag {
