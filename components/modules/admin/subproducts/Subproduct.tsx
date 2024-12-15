@@ -7,6 +7,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
+import { discountPrice } from "@/lib/productService";
+import { Switch } from "@/components/ui/switch";
+import { editSubproduct } from "@/actions/Subproduct";
+import { notify } from "@/lib/utils";
+import { arrayFromString } from "@/lib/format";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -44,34 +49,183 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
     children: <></>,
   });
 
-  // const { data: categories } = useData("categories");
-  // const { data: brands } = useData("brands");
-  // const { data: colors } = useData("colors");
-  // const { data: sizes } = useData("sizes");
+  const {
+    uuid,
+    sku,
+    currency,
+    price,
+    discount,
+    qty,
+    sold,
+    featured,
+    inStock,
+    colors: item_colors,
+    sizes: item_sizes,
+    product_name: productName,
+    product_slug: productSlug,
+  } = subproduct;
 
-  // const [optimisicData, addOptimisticData] = useOptimistic(subproduct);
+  const { data: colors } = useData("colors");
+  const { data: sizes } = useData("sizes");
 
-  // const sortedOptimisicData = useMemo(() => {
-  //   return optimisicData?.length
-  //     ? optimisicData.sort((a: SubProduct, b: SubProduct) =>
-  //         b.updatedAt.localeCompare(a.updatedAt)
-  //       )
-  //     : [];
-  // }, [optimisicData]);
+  const itemColors: string[] = Array.from(
+    new Set(arrayFromString(item_colors as string))
+  );
+  const itemSizes: string[] = Array.from(
+    new Set(arrayFromString(item_sizes as string))
+  );
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={`${subproduct.sku}`} between={[{link:`/admin/products/${subproduct.product_slug}`, title:`${subproduct.product_name}`}]}/>
+      <AdminBreadcrumb
+        page={`${sku}`}
+        between={[
+          {
+            link: `/admin/products/${productSlug}`,
+            title: `${productName}`,
+          },
+        ]}
+      />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
-            title={`${subproduct.sku}`}
+            title={`${sku}`}
             description="Here's details of your subproduct!"
           />
         </div>
       </div>
-      <p>sku: {subproduct.sku}</p>
-      <p>product: {subproduct.product_name}</p>
+      <div className="flex flex-col gap-4 ">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 *:bg-background *:p-2 *:rounded-md">
+          <div className="flex flex-col">
+            <div className="flex justify-between">
+              <span className="text-main-700">Price</span>
+              <strong>{price}</strong>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-main-700">Currency</span>
+
+              <strong>{currency}</strong>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex justify-between">
+              <span className="text-main-700">Discount</span>
+              <strong>{discount}%</strong>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-main-700">Net Price</span>
+
+              <strong>
+                {discountPrice({ price, discount })} {currency}
+              </strong>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex justify-between">
+              <span className="text-main-700">Quantity</span>
+              <strong>{qty}</strong>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-main-700">Sold</span>
+
+              <strong>{sold}</strong>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex justify-between">
+              <span className="text-main-700">Featured</span>
+              <strong>
+                <Switch
+                  checked={featured}
+                  onCheckedChange={async () => {
+                    const { featured, ...rest } = subproduct;
+
+                    const res: ActionResponse = await editSubproduct({
+                      uuid: uuid,
+                      property: "featured",
+                      value: !featured,
+                    });
+
+                    notify(res);
+                  }}
+                />
+              </strong>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-main-700">In Stock</span>
+              <strong>
+                <Switch
+                  checked={inStock}
+                  onCheckedChange={async () => {
+                    const { inStock, ...rest } = subproduct;
+
+                    const res: ActionResponse = await editSubproduct({
+                      uuid,
+                      property: "inStock",
+                      value: !inStock,
+                    });
+
+                    notify(res);
+                  }}
+                />
+              </strong>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
+            <div className="flex justify-between items-center">
+              <span className="text-main-700">Colors</span>
+
+              <span className="flex gap-2">
+                {colors.length > 0 ? (
+                  itemColors.map((color: string) => {
+                    const itemColor = colors.find((c) => c.uuid === color);
+
+                    return (
+                      <div className="flex gap-2 p-1 bg-main-100 rounded-md items-center border border-main-200">
+                        <span
+                          className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
+                          style={{
+                            backgroundColor: itemColor?.hex,
+                          }}
+                        ></span>
+                        <span className="text-sm text-main-800">
+                          {itemColor?.name}
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-main-700">Sizes</span>
+
+              <span className="flex gap-2">
+                {sizes.length > 0 ? (
+                  itemSizes.map((size: string) => {
+                    const itemSize = sizes.find((s) => s.uuid === size);
+
+                    return (
+                      <div className="flex gap-2 p-1 bg-main-100 rounded-md items-center border border-main-200">
+                        <span className="text-sm text-main-800">
+                          {itemSize?.name}
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex">Images</div>
+      </div>
       <Modal
         title={modal.title}
         description={modal.description}

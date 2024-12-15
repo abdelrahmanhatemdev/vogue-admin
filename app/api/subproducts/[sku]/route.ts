@@ -17,16 +17,26 @@ export async function GET(
     const [rows] = await db.query(
       `SELECT sp.*, 
       p.name AS product_name, 
-      p.slug AS product_slug
+      p.slug AS product_slug,
+      GROUP_CONCAT(c.color_id) AS colors,
+      GROUP_CONCAT(s.size_id) AS sizes
       FROM
       subproducts sp 
       JOIN 
       products p
       ON 
       sp.product_id = p.uuid
+      LEFT JOIN 
+        subproduct_colors c
+      ON 
+        sp.uuid = c.subproduct_id 
+      LEFT JOIN 
+        subproduct_sizes s
+      ON
+        sp.uuid = s.subproduct_id 
       WHERE 
       sp.deletedAt IS NULL 
-      AND sku = ? LIMIT 1`,
+      AND sp.sku = ? LIMIT 1`,
       [sku]
     );
 
