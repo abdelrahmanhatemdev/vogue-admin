@@ -18,20 +18,25 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(() => import("@/components/modules/admin/products/EditProduct"), {
-  loading: Loading,
-});
-const DeleteProduct = dynamic(() => import("@/components/modules/admin/products/DeleteProduct"), {
-  loading: Loading,
-});
+const EditProduct = dynamic(
+  () => import("@/components/modules/admin/products/EditProduct"),
+  {
+    loading: Loading,
+  }
+);
+const DeleteProduct = dynamic(
+  () => import("@/components/modules/admin/products/DeleteProduct"),
+  {
+    loading: Loading,
+  }
+);
 
-function Product({
-  product,
-  subProduct,
-}: {
-  product: Product;
-  subProduct: Subproduct;
-}) {
+type SubproductPageType = Subproduct & {
+  product_slug: string;
+  product_name: string;
+};
+
+function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -39,12 +44,12 @@ function Product({
     children: <></>,
   });
 
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
-  const { data: colors } = useData("colors");
-  const { data: sizes } = useData("sizes");
+  // const { data: categories } = useData("categories");
+  // const { data: brands } = useData("brands");
+  // const { data: colors } = useData("colors");
+  // const { data: sizes } = useData("sizes");
 
-  const [optimisicData, addOptimisticData] = useOptimistic(subProduct);
+  // const [optimisicData, addOptimisticData] = useOptimistic(subproduct);
 
   // const sortedOptimisicData = useMemo(() => {
   //   return optimisicData?.length
@@ -54,19 +59,19 @@ function Product({
   //     : [];
   // }, [optimisicData]);
 
- 
-
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page="Products" />
+      <AdminBreadcrumb page={`${subproduct.sku}`} between={[{link:`/admin/products/${subproduct.product_slug}`, title:`${subproduct.product_name}`}]}/>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
-            title="Products"
-            description="Here's a list of your Products!"
+            title={`${subproduct.sku}`}
+            description="Here's details of your subproduct!"
           />
         </div>
       </div>
+      <p>sku: {subproduct.sku}</p>
+      <p>product: {subproduct.product_name}</p>
       <Modal
         title={modal.title}
         description={modal.description}
@@ -79,4 +84,4 @@ function Product({
   );
 }
 
-export default memo(Product);
+export default memo(Subproduct);

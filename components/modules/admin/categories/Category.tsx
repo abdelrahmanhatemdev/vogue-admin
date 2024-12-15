@@ -10,14 +10,7 @@ import { memo } from "react";
 function Category({ data }: { data: Category }) {
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={`${data.name}`}>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/admin/categories">Categories</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-      </AdminBreadcrumb>
+      <AdminBreadcrumb page={`${data.name}`} between={[{link:"/admin/categories", title:"Categories"}]}/>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div>ID : {data.id}</div>
         <div>Name : {data.name}</div>

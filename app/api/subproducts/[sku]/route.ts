@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProducts } from "@/actions/Product";
 import db from "@/lib/db";
-import { tableName } from "../../route";
 import { getSubproducts } from "@/actions/Subproduct";
 
 export const dynamic = "force-static";
@@ -18,7 +17,7 @@ export async function GET(
     const [rows] = await db.query(
       `SELECT sp.*, 
       p.name AS product_name, 
-      p.uuid AS product_id 
+      p.slug AS product_slug
       FROM
       subproducts sp 
       JOIN 

@@ -16,9 +16,14 @@ export default async function SubproductPage(props: {
   const { sku } = params;
   const data = await getSubproductBySku(sku);
 
-  if (!data?.Subproduct) {
-    notFound()
+  console.log("data", data);
+  
+
+  if (!data?.subproduct) {
+    notFound();
   }
 
-  // return <Subproduct Subproduct={Subproduct} />;
+  const { subproduct } = data;
+
+  return <Subproduct subproduct={subproduct} />;
 }

@@ -11,34 +11,49 @@ import Link from "next/link";
 import { SidebarTrigger } from "../ui/sidebar";
 
 interface AdminBreadcrumbProps {
-  children?: ReactNode;
   page: string;
+  between?: {
+    link: string;
+    title: string;
+  }[];
 }
 
-function AdminBreadcrumb({ children, page }: AdminBreadcrumbProps) {
+function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
   return (
-      <Breadcrumb className="bg-background p-4 rounded-lg">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <SidebarTrigger />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>|</BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/admin">Dashboard</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          {children && children}
-          <BreadcrumbItem>
-            <BreadcrumbPage>{page}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <Breadcrumb className="bg-background p-4 rounded-lg">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <SidebarTrigger />
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator>|</BreadcrumbSeparator>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/admin">Dashboard</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        {between?.length > 0 ? (
+          between.map((item) => (
+            <>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={`${item.link}`}>{item.title}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+            </>
+          ))
+        ) : (
+          <></>
+        )}
+        <BreadcrumbItem>
+          <BreadcrumbPage>{page}</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }
 
 export default memo(AdminBreadcrumb);
-

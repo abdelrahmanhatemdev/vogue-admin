@@ -31,21 +31,7 @@ export const getSubproducts = async () => {
 
 export async function getSubproductBySku(sku: string) {
   try {
-    const res = await fetch(`${apiURL}/sku/${sku}`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
-export async function getSubproductById(id: string) {
-  try {
-    const res = await fetch(`${apiURL}/id/${id}`, {
+    const res = await fetch(`${apiURL}/${sku}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });

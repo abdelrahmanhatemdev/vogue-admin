@@ -25,6 +25,7 @@ export default async function NotFound() {
             fill
             className="rounded-lg object-cover filter brightness-[.5]"
             sizes="(max-width: 768px) 33vw, (max-width: 1200px) 50vw, 33vw"
+            priority={true}
           />
           <div className="flex items-center absolute inset-5 justify-between h-fit p-2">
             <Logo className="z-10" invert={true} />

@@ -430,14 +430,7 @@ function Product({
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={product.slug as string}>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/admin/products">Products</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-      </AdminBreadcrumb>
+      <AdminBreadcrumb page={product.slug as string}  between={[{link:"/admin/products", title:"Products"}]}/>
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
