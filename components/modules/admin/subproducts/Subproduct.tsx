@@ -12,6 +12,10 @@ import { Switch } from "@/components/ui/switch";
 import { editSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
 import { arrayFromString } from "@/lib/format";
+import { TbEdit } from "react-icons/tb";
+import { Trash2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -23,22 +27,24 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(
-  () => import("@/components/modules/admin/products/EditProduct"),
+const EditSubproduct = dynamic(
+  () => import("@/components/modules/admin/subproducts/EditSubproduct"),
   {
     loading: Loading,
   }
 );
-const DeleteProduct = dynamic(
-  () => import("@/components/modules/admin/products/DeleteProduct"),
+const DeleteSubproduct = dynamic(
+  () => import("@/components/modules/admin/subproducts/DeleteSubproduct"),
   {
     loading: Loading,
   }
 );
 
+
 type SubproductPageType = Subproduct & {
   product_slug: string;
   product_name: string;
+  product_id: string;
 };
 
 function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
@@ -62,8 +68,11 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
     colors: item_colors,
     sizes: item_sizes,
     product_name: productName,
-    product_slug: productSlug,
+    product_slug,
+    product_id
   } = subproduct;
+
+  const [productSlug, setProductSlug] = useState(product_slug);
 
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
@@ -74,6 +83,8 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
   const itemSizes: string[] = Array.from(
     new Set(arrayFromString(item_sizes as string))
   );
+
+  const router = useRouter()
 
   return (
     <div className="flex flex-col gap-4">
@@ -93,6 +104,51 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
             description="Here's details of your subproduct!"
           />
         </div>
+        <div className="flex items-center gap-2 justify-end">
+              <TbEdit
+                size={20}
+                className="cursor-pointer"
+                onClick={() => {
+                  setModalOpen(true);
+                  setModal({
+                    title: `Edit Sub Product`,
+                    description:
+                      "Update Sub Product here. Click Update when you'are done.",
+                    children: (
+                      <EditSubproduct
+                        item={subproduct}
+                        setModalOpen={setModalOpen}
+                        productId={product_id}
+                      />
+                    ),
+                  });
+                }}
+              />
+              <Trash2Icon
+                size={20}
+                color="#dc2626"
+                className="cursor-pointer"
+                onClick={() => {
+                  setModalOpen(true);
+                  setModal({
+                    title: `Delete Sub Product`,
+                    description: (
+                      <p className="font-medium">
+                        Are you sure To delete the Sub Product permenantly ?
+                      </p>
+                    ),
+                    children: (
+                      <DeleteSubproduct
+                        itemId={uuid}
+                        setModalOpen={setModalOpen}
+                        redirect={true}
+                        productSlug={productSlug}
+                      />
+                    ),
+                  });
+                }}
+              />
+            </div>
       </div>
       <div className="flex flex-col gap-4 ">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 *:bg-background *:p-2 *:rounded-md">

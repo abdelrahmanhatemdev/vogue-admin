@@ -42,7 +42,7 @@ function EditSubproduct({
 }: {
   item: Subproduct;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
+  addOptimisticData?: (
     action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
   productId: string;
@@ -84,7 +84,9 @@ function EditSubproduct({
       createdAt: item.createdAt,
       updatedAt: date,
     };
-    const optimisticObj: OptimisicDataType = {
+    
+   if (addOptimisticData) {
+      const optimisticObj: OptimisicDataType = {
       ...data,
       isPending: !isPending,
     };
@@ -95,6 +97,8 @@ function EditSubproduct({
         optimisticObj,
       ]);
     });
+   }
+  
 
     const res: ActionResponse = await editSubproduct(data);
     notify(res);
