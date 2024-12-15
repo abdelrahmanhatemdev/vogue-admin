@@ -36,14 +36,14 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
         <BreadcrumbSeparator />
         {between?.length > 0 ? (
           between.map((item) => (
-            <>
+            <span key={item.link} className="inline-flex items-center gap-1.5">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href={`${item.link}`}>{item.title}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-            </>
+            </span>
           ))
         ) : (
           <></>

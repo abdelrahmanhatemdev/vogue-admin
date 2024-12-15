@@ -70,7 +70,7 @@ interface Product {
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
-  subproducts?: Subproduct[] | number | {sku:string; id: string;}[];
+  subproducts?: Subproduct[] | number | { sku: string; id: string }[];
   reviews?: Review[];
 }
 
@@ -79,23 +79,16 @@ interface Subproduct {
   uuid: string;
   product_id: string;
   sku: string;
-
   currency: string;
   price: number;
-
   discount: number;
-
   qty: number;
   sold: number;
-
   featured: boolean;
   inStock: boolean;
-
   colors: Color[] | string[] | string;
   sizes: Size[] | string[] | string;
-
   images?: ProductImage[] | string[] | string;
-  
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;
