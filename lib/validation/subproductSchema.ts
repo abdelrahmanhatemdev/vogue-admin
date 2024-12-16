@@ -48,22 +48,6 @@ export const SubproductSchema = z
     sizes: z.array(z.string()).nonempty({
       message: "Choose at least one size",
     }),
-    // images: z
-    //   .instanceof(FileList, { message: "At least one image is required" })
-    //   .refine((files) => files.length > 0, {
-    //     message: "At least one image is required",
-    //   })
-    //   .refine((files) =>
-    //     Array.from(files).every(
-    //       (file) =>
-    //         ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-    //       "Invalid image type. Only JPEG, PNG, and WEBP are allowed."
-    //     )
-    //   )
-    //   .refine(
-    //     (files) => Array.from(files).every((file) => file.size < 300 * 1024 ),
-    //     { message: "Image maximum size is 300kb" }
-    //   ),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, sku } = obj;
