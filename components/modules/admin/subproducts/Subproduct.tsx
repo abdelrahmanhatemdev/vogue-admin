@@ -13,7 +13,7 @@ import { editSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
 import { arrayFromString } from "@/lib/format";
 import { TbEdit } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
+import { Trash2Icon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,13 +56,6 @@ const SubproductPhotos = dynamic(
   }
 );
 
-export type PreviewType = {
-  type: "image/jpeg" | "image/png" | "image/webp";
-  size: number;
-  name: string;
-  src: string;
-};
-
 type SubproductPageType = Subproduct & {
   product_slug: string;
   product_name: string;
@@ -76,7 +69,7 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
     description: "",
     children: <></>,
   });
-  const [previews, setPreviews] = useState<PreviewType[]>([]);
+  
 
   const {
     uuid,
@@ -109,49 +102,7 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
 
   const router = useRouter();
 
-  const previewsContent = previews.map((preview, index) => {
-    if (["image/jpeg", "image/png", "image/webp"].includes(preview.type)) {
-      return (
-        <div className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden">
-          <Image
-            key={index}
-            src={preview.src}
-            alt={`Preview ${index + 1}`}
-            className="w-full lg:w-auto lg:h-32 rounded-md"
-            height={100}
-            width={200}
-          />
-          <div className="absolute inset-0 z-10 bg-black bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full">
-            {preview.size < 300 * 1024 ? (
-              <span className="text-green-700 text-center">
-                Size:{Math.ceil(preview.size / 1024)}kb
-              </span>
-            ) : (
-              <div>
-                <p className="text-destructive text-center">
-                  Size:{Math.ceil(preview.size / 1024)}kb
-                </p>
-                <p className="text-destructive text-center">
-                  Maximum size is 300kb
-                </p>
-              </div>
-            )}
-            <p className="text-white text-center p-2">{preview.name}</p>
-          </div>
-        </div>
-      );
-    }
-    return (
-      <div className="w-full lg:h-32 lg:w-64 relative">
-        <div className="absolute inset-0 z-10 bg-black flex flex-col items-center justify-center text-sm w-full h-full rounded">
-          <p className="text-destructive text-center text-sm">
-            Only JPEG, PNG, and WEBP are allowed
-          </p>
-        </div>
-        <p className="text-white text-center p-2">{preview.name}</p>
-      </div>
-    );
-  });
+  
 
   return (
     <div className="flex flex-col gap-4">
@@ -362,14 +313,7 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row bg-background p-4 gap-4">
-          <div className="lg:min-w-52">
-            <SubproductPhotos setPreviews={setPreviews} />
-          </div>
-          <div className="flex flex-wrap items-center justify-start gap-4 mx-auto">
-            {previewsContent}
-          </div>
-        </div>
+        <SubproductPhotos subproductId={uuid}/>
         <div></div>
       </div>
       <Modal
