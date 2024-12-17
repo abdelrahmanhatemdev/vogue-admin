@@ -2,7 +2,7 @@
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/product_images`;
+const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/images`;
 const tag: string = "productImages";
 
 export const getProductImages = async () => {
@@ -28,14 +28,16 @@ export const getProductImages = async () => {
   }
 }
 
-export async function getProductImageById(id: string) {
+export async function getSubproductImages(id: string) {
   try {
-    const res = await fetch(`${apiURL}/${id}`, {
+    
+    const res = await fetch(`${apiURL}/productImages/${id}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
 
     const { data } = await res.json();
+   
     return data;
   } catch (error) {
     return console.log(error);

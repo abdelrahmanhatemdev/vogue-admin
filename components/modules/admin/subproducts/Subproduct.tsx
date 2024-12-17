@@ -49,8 +49,8 @@ const DeleteSubproduct = dynamic(
     loading: Loading,
   }
 );
-const SubproductPhotos = dynamic(
-  () => import("@/components/modules/admin/subproducts/SubproductPhotos"),
+const AddSubproductPhotos = dynamic(
+  () => import("@/components/modules/admin/subproducts/AddSubproductPhotos"),
   {
     loading: Loading,
   }
@@ -62,14 +62,19 @@ type SubproductPageType = Subproduct & {
   product_id: string;
 };
 
-function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
+function Subproduct({
+  subproduct,
+  images,
+}: {
+  subproduct: SubproductPageType;
+  images: ProductImage[];
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
     description: "",
     children: <></>,
   });
-  
 
   const {
     uuid,
@@ -88,6 +93,9 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
     product_id,
   } = subproduct;
 
+  // console.log("images", images);
+  
+
   const [productSlug, setProductSlug] = useState(product_slug);
 
   const { data: colors } = useData("colors");
@@ -101,8 +109,6 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
   );
 
   const router = useRouter();
-
-  
 
   return (
     <div className="flex flex-col gap-4">
@@ -313,7 +319,27 @@ function Subproduct({ subproduct }: { subproduct: SubproductPageType }) {
             </div>
           </div>
         </div>
-        <SubproductPhotos subproductId={uuid}/>
+        <div> {images.length > 0 ? (
+            images.map((image) => {
+              const { id, src } = image;
+              return (
+                <div>
+                  <Image
+                    key={id}
+                    src={`/api/images/src${src}`}
+                    alt={`Subproduct photo ${sku}-${id} `}
+                    className="w-full lg:w-auto lg:h-32 rounded-md"
+                    height={100}
+                    width={200}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <></>
+          )}
+        </div>
+        <AddSubproductPhotos subproductId={uuid} />
         <div></div>
       </div>
       <Modal

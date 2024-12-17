@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
 import { notFound, redirect } from "next/navigation";
+import { getSubproductImages } from "@/actions/Image";
 const Subproduct = dynamic(
   () => import("@/components/modules/admin/subproducts/Subproduct"),
   { loading: Loading }
@@ -22,5 +23,9 @@ export default async function SubproductPage(props: {
 
   const { subproduct } = data;
 
-  return <Subproduct subproduct={subproduct} />;
+  const imagesRes = await getSubproductImages(subproduct?.uuid);
+
+  let images: ProductImage[] = imagesRes?.images ? imagesRes.images : [];
+
+  return <Subproduct subproduct={subproduct} images={images} />;
 }

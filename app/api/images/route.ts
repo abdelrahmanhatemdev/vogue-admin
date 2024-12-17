@@ -7,8 +7,12 @@ import { promises as fs } from "fs";
 import { ZodError } from "zod";
 import { Readable } from "stream";
 import { ReadableStream } from "stream/web";
+import { revalidateTag } from "next/cache";
 
-export const tableName = "products_images";
+export const tableName = "product_images";
+const tag = "productImages"
+const productsTag = "products";
+const subproductsTag = "subproducts"
 
 export const config = {
   api: {
@@ -82,10 +86,18 @@ export async function POST(req: Request) {
 
         // Save the file
         const filePath = path.join(uploadDir, filename);
-        console.log("file path", filePath);
         
         await fs.writeFile(filePath, fileBuffer);
-        files.push(`/uploads/images/${productId}/${filename}`);
+        const [result]: [ResultSetHeader, FieldPacket[] ] = await db.execute(
+          `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
+          [productId, `/uploads/images/${productId}/${filename}`, 0]
+        );
+        if (result.insertId) {
+          revalidateTag(tag)
+          revalidateTag(productsTag)
+          revalidateTag(subproductsTag)
+          files.push(`/uploads/images/${productId}/${filename}`);
+        }
       }
     }
 
@@ -98,6 +110,7 @@ export async function POST(req: Request) {
     }
 
     if (files.length > 0) {
+      
       return NextResponse.json({
         success: true,
         message: "Files uploaded successfully",

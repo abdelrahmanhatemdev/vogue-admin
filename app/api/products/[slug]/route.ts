@@ -13,9 +13,6 @@ export async function GET(
 
   const { slug } = params;
 
-  console.log("slug", params);
-
-
   try {
     const [rows] = await db.query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`,
@@ -23,7 +20,7 @@ export async function GET(
     );
 
     const products = rows as Product[];
-    const product = products[0] ?  products[0] : null;
+    const product = products[0] ? products[0] : null;
 
     const [subproductsRows] = await db.execute(
       ` SELECT 
@@ -50,11 +47,11 @@ export async function GET(
           sp.updatedAt DESC`,
       [product?.uuid]
     );
-    
+
     const subproducts = subproductsRows as Subproduct[];
 
     const data = { product, subproducts };
-    
+
     if (data) {
       return NextResponse.json({ data }, { status: 200 });
     }

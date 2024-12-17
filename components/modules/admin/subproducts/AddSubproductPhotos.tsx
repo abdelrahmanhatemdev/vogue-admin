@@ -25,7 +25,7 @@ export type PreviewType = {
   src: string;
 };
 
-function SubproductPhotos({subproductId}: {subproductId:string}) {
+function AddSubproductPhotos({subproductId}: {subproductId:string}) {
   const [images, setImages] = useState<PreviewType[]>([]);
 
   const form = useForm<z.infer<typeof SubproductPhotosSchema>>({
@@ -130,8 +130,6 @@ function SubproductPhotos({subproductId}: {subproductId:string}) {
     setImages(updatedImages); // Update state
     form.setValue("images", dataTransfer.files); // Update form field
   };
-
-  console.log("form images", form.getValues("images"));
 
   const imagesContent = images.map((preview, index) => {
     const remove = (
@@ -264,4 +262,4 @@ function SubproductPhotos({subproductId}: {subproductId:string}) {
     </div>
   );
 }
-export default memo(SubproductPhotos);
+export default memo(AddSubproductPhotos);
