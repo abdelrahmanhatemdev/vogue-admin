@@ -5,6 +5,8 @@ import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema"
 import path from "path";
 import { promises as fs } from "fs";
 import { ZodError } from "zod";
+import { Readable } from "stream";
+import { ReadableStream } from "stream/web";
 
 export const tableName = "products_images";
 
@@ -13,21 +15,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-export async function GET() {
-  try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
-    );
-
-    const data = rows as ProductImage[];
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
 
 export async function POST(req: Request) {
   try {
@@ -47,10 +34,14 @@ export async function POST(req: Request) {
       );
     }
 
+    const readable = Readable.fromWeb(req.body as ReadableStream);
+
     const chunks: Uint8Array[] = [];
-    for await (const chunk of req.body) {
+    for await (const chunk of readable) {
       chunks.push(chunk);
     }
+
+
     const data = Buffer.concat(chunks).toString("binary");
 
     const parts = data.split(`--${boundary}`);
@@ -126,32 +117,6 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
-
-export async function PUT(request: Request) {
-  try {
-    const { uuid, name } = await request.json();
-
-    // Ensure Server Validation
-    SubproductPhotosSchema.parseAsync({ name, uuid });
-
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ? WHERE uuid = ?`,
-      [name, uuid]
-    );
-
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Image updated", result },
-        { status: 200 }
-      );
-    }
-
-    return new Error("Something Wrong");
-  } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
