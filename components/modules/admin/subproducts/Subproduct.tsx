@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ReactSortable } from "react-sortablejs";
 import { deleteProductImage, editProductImage } from "@/actions/Image";
+import { DialogFooter } from "@/components/ui/dialog";
 
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -78,6 +79,7 @@ function Subproduct({
     children: <></>,
   });
   const [imageList, setImageList] = useState<ProductImage[]>(images);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const {
     uuid,
@@ -95,6 +97,8 @@ function Subproduct({
     product_slug,
     product_id,
   } = subproduct;
+
+  console.log("selectedImages", selectedImages);
 
   const [productSlug, setProductSlug] = useState(product_slug);
 
@@ -119,6 +123,54 @@ function Subproduct({
     const res = await deleteProductImage({ id });
     notify(res);
   }
+
+  function deleteMultipleImages() {
+      setModalOpen(true);
+      setModal({
+        title: `Delete images`,
+        description: (
+          <p className="font-medium">
+            Are you sure to
+            {selectedImages.length === 1 ? (
+              " delete the image "
+            ) : (
+              <strong> delete all images </strong>
+            )}
+            permenantly ?
+          </p>
+        ),
+        children: (
+          <DialogFooter>
+            <Button
+              type="submit"
+              variant="destructive"
+              onClick={async () => {
+                setModalOpen(false);
+                // setShowDeleteAll(false);
+                // startTransition(() => {
+                //   addOptimisticData((prev: Category[]) => [
+                //     ...prev.map((item) => {
+                //       if (selectedImages.includes(item.uuid)) {
+                //         const pendingItem = { ...item, isPending: !isPending };
+                //         return pendingItem;
+                //       }
+                //       return item;
+                //     }),
+                //   ]);
+                // });
+                for (const selected of selectedImages) {
+                  const data = { id: selected };
+                  const res: ActionResponse = await deleteProductImage(data);
+                  notify(res);
+                }
+              }}
+            >
+              Delete All
+            </Button>
+          </DialogFooter>
+        ),
+      });
+    }
 
   return (
     <div className="flex flex-col gap-4">
@@ -337,6 +389,19 @@ function Subproduct({
               description="Here's list of your subproduct photos!"
             />
             <div className="flex items-center gap-2 justify-end">
+            {
+                selectedImages.length > 0 
+                ? (<Button
+                  variant={"destructive"}
+                  size={"sm"}
+                  className="flex items-center gap-2 group"
+                  onClick={deleteMultipleImages}
+                >
+                  <span>Delete Selected</span>
+                  <Trash2Icon size={20} className="cursor-pointer" />
+                </Button>)
+                : (<></>)
+              }
               <Button
                 size={"sm"}
                 className="flex items-center gap-2 group"
@@ -359,33 +424,8 @@ function Subproduct({
                 <span>Edit</span>
                 <TbEdit size={20} className="cursor-pointer" />
               </Button>
-              <Button
-                variant={"destructive"}
-                size={"sm"}
-                className="flex items-center gap-2 group"
-                onClick={() => {
-                  setModalOpen(true);
-                  setModal({
-                    title: `Delete Sub Product`,
-                    description: (
-                      <p className="font-medium">
-                        Are you sure To delete the Sub Product permenantly ?
-                      </p>
-                    ),
-                    children: (
-                      <DeleteSubproduct
-                        itemId={uuid}
-                        setModalOpen={setModalOpen}
-                        redirect={true}
-                        productSlug={productSlug}
-                      />
-                    ),
-                  });
-                }}
-              >
-                <span>Delete</span>
-                <Trash2Icon size={20} className="cursor-pointer" />
-              </Button>
+              
+              
             </div>
           </div>
           {imageList.length > 0 ? (
@@ -416,11 +456,22 @@ function Subproduct({
                       height={100}
                       width={200}
                     />
-                    <div className="absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
+                    <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                       <X
                         className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
                         size={15}
                         onClick={() => handleRemove(id)}
+                      />
+                      <Checkbox
+                        className="absolute inset-2 cursor-pointer border-main-100"
+                        onCheckedChange={(value) =>
+                          setSelectedImages((prev) =>
+                            value
+                              ? [...prev, id]
+                              : [...prev.filter((selected) => selected !== id)]
+                          )
+                        }
+                        checked={selectedImages.includes(id)}
                       />
                     </div>
                   </div>
@@ -432,7 +483,6 @@ function Subproduct({
           )}
         </div>
         <AddSubproductPhotos subproductId={uuid} />
-        <div></div>
       </div>
       <Modal
         title={modal.title}

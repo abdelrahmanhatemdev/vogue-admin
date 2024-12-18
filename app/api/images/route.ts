@@ -92,8 +92,8 @@ export async function POST(req: Request) {
           `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
           [productId, `/uploads/images/${productId}/${filename}`, 0]
         );
+        
         if (result.insertId) {
-          revalidateTag(tag);
           files.push(`/uploads/images/${productId}/${filename}`);
         }
       }
@@ -108,6 +108,7 @@ export async function POST(req: Request) {
     }
 
     if (files.length > 0) {
+      revalidateTag(tag)
       return NextResponse.json({
         success: true,
         message: "Files uploaded successfully",

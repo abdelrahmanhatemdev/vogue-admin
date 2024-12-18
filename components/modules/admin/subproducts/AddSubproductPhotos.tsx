@@ -214,10 +214,16 @@ function AddSubproductPhotos({ subproductId }: { subproductId: string }) {
                   </FormItem>
                 )}
               />
-              <Separator />
-              <div className="w-full flex justify-end">
-                <Button type="submit">Add photos</Button>
-              </div>
+              {images.length > 0 ? (
+                <>
+                  <Separator />
+                  <div className="w-full flex justify-end">
+                    <Button type="submit">Add photos</Button>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </form>
           </Form>
         </div>
