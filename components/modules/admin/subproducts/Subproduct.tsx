@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,7 +10,7 @@ import useData from "@/hooks/useData";
 import { discountPrice } from "@/lib/productService";
 import { Switch } from "@/components/ui/switch";
 import { editSubproduct } from "@/actions/Subproduct";
-import { notify } from "@/lib/utils";
+import { cn, notify } from "@/lib/utils";
 import { arrayFromString } from "@/lib/format";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon, X } from "lucide-react";
@@ -65,6 +65,8 @@ type SubproductPageType = Subproduct & {
   product_id: string;
 };
 
+export type OptimisicImagesType = ProductImage & {isPending?: boolean}
+
 function Subproduct({
   subproduct,
   images,
@@ -78,8 +80,12 @@ function Subproduct({
     description: "",
     children: <></>,
   });
-  const [imageList, setImageList] = useState<ProductImage[]>(images);
+  const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+  const [isPending, startTransition] = useTransition()
+
+  const [optimisticImages, addOptimisticImages] = useOptimistic<OptimisicImagesType[]>(images)
 
   const {
     uuid,
@@ -97,8 +103,6 @@ function Subproduct({
     product_slug,
     product_id,
   } = subproduct;
-
-  console.log("selectedImages", selectedImages);
 
   const [productSlug, setProductSlug] = useState(product_slug);
 
@@ -120,6 +124,17 @@ function Subproduct({
   }
 
   async function handleRemove(id: string) {
+    setModalOpen(false);
+    startTransition(() => {
+      addOptimisticImages((prev: ProductImage[]) => [
+        ...prev.map((item) => {
+          if (item.id === id) {
+            return { ...item, isPending: !isPending };
+          }
+          return item;
+        }),
+      ]);
+    });
     const res = await deleteProductImage({ id });
     notify(res);
   }
@@ -146,23 +161,23 @@ function Subproduct({
               variant="destructive"
               onClick={async () => {
                 setModalOpen(false);
-                // setShowDeleteAll(false);
-                // startTransition(() => {
-                //   addOptimisticData((prev: Category[]) => [
-                //     ...prev.map((item) => {
-                //       if (selectedImages.includes(item.uuid)) {
-                //         const pendingItem = { ...item, isPending: !isPending };
-                //         return pendingItem;
-                //       }
-                //       return item;
-                //     }),
-                //   ]);
-                // });
+                startTransition(() => {
+                  addOptimisticImages((prev: OptimisicImagesType[]) => [
+                    ...prev.map((item) => {
+                      if (selectedImages.includes(item.id)) {
+                        const pendingItem = { ...item, isPending: !isPending };
+                        return pendingItem;
+                      }
+                      return item;
+                    }),
+                  ]);
+                });
                 for (const selected of selectedImages) {
                   const data = { id: selected };
                   const res: ActionResponse = await deleteProductImage(data);
                   notify(res);
                 }
+                setSelectedImages([])
               }}
             >
               Delete All
@@ -444,15 +459,15 @@ function Subproduct({
                 handleSort(updatedList.map((image) => image.id));
               }}
             >
-              {imageList.map((image) => {
-                const { id, src } = image;
+              {optimisticImages.map((image) => {
+                const { id, src, isPending } = image;
                 return (
                   <div className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden">
                     <Image
                       key={id}
                       src={`/api/images/src${src}`}
                       alt={`Subproduct photo ${sku}-${id} `}
-                      className="w-full lg:w-auto lg:h-32 rounded-md"
+                      className={cn("w-full lg:w-auto lg:h-32 rounded-md", isPending ? "opacity-50" : "")}
                       height={100}
                       width={200}
                     />
