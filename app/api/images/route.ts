@@ -11,8 +11,6 @@ import { revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
 const tag = "productImages";
-const productsTag = "products";
-const subproductsTag = "subproducts";
 
 export const config = {
   api: {
@@ -96,8 +94,6 @@ export async function POST(req: Request) {
         );
         if (result.insertId) {
           revalidateTag(tag);
-          revalidateTag(productsTag);
-          revalidateTag(subproductsTag);
           files.push(`/uploads/images/${productId}/${filename}`);
         }
       }
@@ -164,11 +160,11 @@ export async function PUT(req: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { uuid } = await request.json();
+    const { id } = await request.json();
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
-      [uuid]
+      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE id = ?`,
+      [id]
     );
 
     if (result.affectedRows) {

@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ReactSortable } from "react-sortablejs";
-import { editProductImage } from "@/actions/Image";
+import { deleteProductImage, editProductImage } from "@/actions/Image";
 
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -111,9 +111,13 @@ function Subproduct({
   const router = useRouter();
 
   async function handleSort(list: string[]) {
+    const res = await editProductImage(list);
+    notify(res);
+  }
 
-    const res = await editProductImage(list)
-    notify(res)
+  async function handleRemove(id: string) {
+    const res = await deleteProductImage({ id });
+    notify(res);
   }
 
   return (
@@ -394,9 +398,9 @@ function Subproduct({
               onEnd={({ oldIndex, newIndex }) => {
                 if (oldIndex === newIndex) return;
                 const updatedList = [...imageList];
-                const [movedItem] = updatedList.splice(oldIndex, 1); 
+                const [movedItem] = updatedList.splice(oldIndex, 1);
                 updatedList.splice(newIndex, 0, movedItem);
-                setImageList(updatedList); 
+                setImageList(updatedList);
                 handleSort(updatedList.map((image) => image.id));
               }}
             >
@@ -416,7 +420,7 @@ function Subproduct({
                       <X
                         className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
                         size={15}
-                        onClick={() => {}}
+                        onClick={() => handleRemove(id)}
                       />
                     </div>
                   </div>

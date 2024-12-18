@@ -61,7 +61,7 @@ export async function editProductImage(data: string[]) {
     });
 }
 
-export async function deleteProductImage(data: { uuid: string }) {
+export async function deleteProductImage(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
