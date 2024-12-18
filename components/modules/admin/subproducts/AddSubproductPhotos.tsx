@@ -25,7 +25,7 @@ export type PreviewType = {
   src: string;
 };
 
-function AddSubproductPhotos({subproductId}: {subproductId:string}) {
+function AddSubproductPhotos({ subproductId }: { subproductId: string }) {
   const [images, setImages] = useState<PreviewType[]>([]);
 
   const form = useForm<z.infer<typeof SubproductPhotosSchema>>({
@@ -51,33 +51,26 @@ function AddSubproductPhotos({subproductId}: {subproductId:string}) {
   });
 
   async function handleSubmit(values: z.infer<typeof SubproductPhotosSchema>) {
-    
     if (values?.images) {
-      const {images, productId} = values
+      const { images, productId } = values;
 
-      const imagesArr = Array.from(images)
+      const imagesArr = Array.from(images);
 
-      const formData = new FormData()
-      formData.append("productId", productId)
-      
-      imagesArr.forEach(image => formData.append("files", image))
+      const formData = new FormData();
+      formData.append("productId", productId);
+
+      imagesArr.forEach((image) => formData.append("files", image));
 
       try {
-
         const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
-          method: "POST", 
-          body: formData
-        })
-        
-        console.log("res", res);
-        
+          method: "POST",
+          body: formData,
+        });
 
+        console.log("res", res);
       } catch (error) {
         console.log(error);
-        
       }
-
-
     }
     // console.log(values);
     // console.log("form errors", form.formState.errors);
@@ -208,31 +201,6 @@ function AddSubproductPhotos({subproductId}: {subproductId:string}) {
                       <div className="flex flex-col items-center gap-1 justify-center">
                         <div>Choose Photos</div>
                         <FormMessage className="text-center p-2" />
-                        {/* <div>
-                      {form.formState.errors.images?.length &&
-                      form.formState.errors.images?.length > 0 ? (
-                        <div className="w-full text-center p-2 text-sm">
-                          {Array.isArray(form.formState.errors.images) &&
-                            form.formState.errors.images.map((error, index) => {
-                              if (index === 0) {
-                                return (
-                                  <div key={index}>
-                                    {error?.size?.message && (
-                                      <p>{error.size.message}</p>
-                                    )}
-                                    {error?.type?.message && (
-                                      <p>{error.type.message}</p>
-                                    )}
-                                  </div>
-                                );
-                              }
-                              return <></>;
-                            })}
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                    </div> */}
                       </div>
                     </FormLabel>
                     <FormControl>
@@ -248,9 +216,7 @@ function AddSubproductPhotos({subproductId}: {subproductId:string}) {
               />
               <Separator />
               <div className="w-full flex justify-end">
-                <Button type="submit">
-                  Add photos
-                </Button>
+                <Button type="submit">Add photos</Button>
               </div>
             </form>
           </Form>

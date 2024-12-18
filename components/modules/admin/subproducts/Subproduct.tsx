@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { ReactSortable } from "react-sortablejs";
 
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -75,6 +76,7 @@ function Subproduct({
     description: "",
     children: <></>,
   });
+  const [imageList, setImageList] = useState(images);
 
   const {
     uuid,
@@ -93,9 +95,6 @@ function Subproduct({
     product_id,
   } = subproduct;
 
-  // console.log("images", images);
-  
-
   const [productSlug, setProductSlug] = useState(product_slug);
 
   const { data: colors } = useData("colors");
@@ -107,6 +106,8 @@ function Subproduct({
   const itemSizes: string[] = Array.from(
     new Set(arrayFromString(item_sizes as string))
   );
+
+  console.log("list", imageList);
 
   const router = useRouter();
 
@@ -319,22 +320,96 @@ function Subproduct({
             </div>
           </div>
         </div>
-        <div> {images.length > 0 ? (
-            images.map((image) => {
-              const { id, src } = image;
-              return (
-                <div>
-                  <Image
-                    key={id}
-                    src={`/api/images/src${src}`}
-                    alt={`Subproduct photo ${sku}-${id} `}
-                    className="w-full lg:w-auto lg:h-32 rounded-md"
-                    height={100}
-                    width={200}
-                  />
-                </div>
-              );
-            })
+
+        <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+          <div className="flex justify-between items-center">
+            <Heading
+              title={`Photos`}
+              description="Here's list of your subproduct photos!"
+            />
+            <div className="flex items-center gap-2 justify-end">
+              <Button
+                size={"sm"}
+                className="flex items-center gap-2 group"
+                onClick={() => {
+                  setModalOpen(true);
+                  setModal({
+                    title: `Edit Sub Product`,
+                    description:
+                      "Update Sub Product here. Click Update when you'are done.",
+                    children: (
+                      <EditSubproduct
+                        item={subproduct}
+                        setModalOpen={setModalOpen}
+                        productId={product_id}
+                      />
+                    ),
+                  });
+                }}
+              >
+                <span>Edit</span>
+                <TbEdit size={20} className="cursor-pointer" />
+              </Button>
+              <Button
+                variant={"destructive"}
+                size={"sm"}
+                className="flex items-center gap-2 group"
+                onClick={() => {
+                  setModalOpen(true);
+                  setModal({
+                    title: `Delete Sub Product`,
+                    description: (
+                      <p className="font-medium">
+                        Are you sure To delete the Sub Product permenantly ?
+                      </p>
+                    ),
+                    children: (
+                      <DeleteSubproduct
+                        itemId={uuid}
+                        setModalOpen={setModalOpen}
+                        redirect={true}
+                        productSlug={productSlug}
+                      />
+                    ),
+                  });
+                }}
+              >
+                <span>Delete</span>
+                <Trash2Icon size={20} className="cursor-pointer" />
+              </Button>
+            </div>
+          </div>
+          {images.length > 0 ? (
+            <ReactSortable
+              list={imageList}
+              setList={setImageList}
+              animation="200"
+              easing="ease-out"
+              className="flex flex-wrap items-center justify-start gap-4"
+            >
+              {imageList.map((image) => {
+                const { id, src } = image;
+                return (
+                  <div className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden">
+                    <Image
+                      key={id}
+                      src={`/api/images/src${src}`}
+                      alt={`Subproduct photo ${sku}-${id} `}
+                      className="w-full lg:w-auto lg:h-32 rounded-md"
+                      height={100}
+                      width={200}
+                    />
+                    <div className="absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full">
+                      <X
+                        className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
+                        size={15}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </ReactSortable>
           ) : (
             <></>
           )}
