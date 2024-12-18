@@ -10,9 +10,9 @@ import { ReadableStream } from "stream/web";
 import { revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
-const tag = "productImages"
+const tag = "productImages";
 const productsTag = "products";
-const subproductsTag = "subproducts"
+const subproductsTag = "subproducts";
 
 export const config = {
   api: {
@@ -45,7 +45,6 @@ export async function POST(req: Request) {
       chunks.push(chunk);
     }
 
-
     const data = Buffer.concat(chunks).toString("binary");
 
     const parts = data.split(`--${boundary}`);
@@ -58,7 +57,7 @@ export async function POST(req: Request) {
         const valueEnd = part.lastIndexOf("\r\n");
         productId = part.substring(valueStart, valueEnd).trim();
       } else if (
-        part.includes('Content-Disposition: form-data;') &&
+        part.includes("Content-Disposition: form-data;") &&
         part.includes("filename=")
       ) {
         // Extract file data
@@ -81,21 +80,24 @@ export async function POST(req: Request) {
         }
 
         // Ensure directory exists
-        const uploadDir = path.join(process.cwd(), `uploads/images/${productId}`);
+        const uploadDir = path.join(
+          process.cwd(),
+          `uploads/images/${productId}`
+        );
         await fs.mkdir(uploadDir, { recursive: true });
 
         // Save the file
         const filePath = path.join(uploadDir, filename);
-        
+
         await fs.writeFile(filePath, fileBuffer);
-        const [result]: [ResultSetHeader, FieldPacket[] ] = await db.execute(
+        const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
           `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
           [productId, `/uploads/images/${productId}/${filename}`, 0]
         );
         if (result.insertId) {
-          revalidateTag(tag)
-          revalidateTag(productsTag)
-          revalidateTag(subproductsTag)
+          revalidateTag(tag);
+          revalidateTag(productsTag);
+          revalidateTag(subproductsTag);
           files.push(`/uploads/images/${productId}/${filename}`);
         }
       }
@@ -110,7 +112,6 @@ export async function POST(req: Request) {
     }
 
     if (files.length > 0) {
-      
       return NextResponse.json({
         success: true,
         message: "Files uploaded successfully",
@@ -123,6 +124,32 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 500 }
+      );
+    }
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const orderArray = await req.json();
+
+    const updatedOrder = orderArray.map((order: number, index: number) => {
+      db.execute(`UPDATE ${tableName} SET sort_order=? WHERE id = ?`, [
+        index,
+        order,
+      ]);
+    });
+
+    await Promise.all(updatedOrder)
+
+    return NextResponse.json({ message: "Images are sorted" }, { status: 200 });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(

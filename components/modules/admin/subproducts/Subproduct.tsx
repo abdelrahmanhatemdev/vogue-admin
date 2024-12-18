@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ReactSortable } from "react-sortablejs";
+import { editProductImage } from "@/actions/Image";
 
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -76,7 +77,7 @@ function Subproduct({
     description: "",
     children: <></>,
   });
-  const [imageList, setImageList] = useState(images);
+  const [imageList, setImageList] = useState<ProductImage[]>(images);
 
   const {
     uuid,
@@ -107,9 +108,13 @@ function Subproduct({
     new Set(arrayFromString(item_sizes as string))
   );
 
-  console.log("list", imageList);
-
   const router = useRouter();
+
+  async function handleSort(list: string[]) {
+
+    const res = await editProductImage(list)
+    notify(res)
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -379,13 +384,21 @@ function Subproduct({
               </Button>
             </div>
           </div>
-          {images.length > 0 ? (
+          {imageList.length > 0 ? (
             <ReactSortable
               list={imageList}
               setList={setImageList}
               animation="200"
               easing="ease-out"
               className="flex flex-wrap items-center justify-start gap-4"
+              onEnd={({ oldIndex, newIndex }) => {
+                if (oldIndex === newIndex) return;
+                const updatedList = [...imageList];
+                const [movedItem] = updatedList.splice(oldIndex, 1); 
+                updatedList.splice(newIndex, 0, movedItem);
+                setImageList(updatedList); 
+                handleSort(updatedList.map((image) => image.id));
+              }}
             >
               {imageList.map((image) => {
                 const { id, src } = image;
@@ -399,7 +412,7 @@ function Subproduct({
                       height={100}
                       width={200}
                     />
-                    <div className="absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full">
+                    <div className="absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                       <X
                         className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
                         size={15}
