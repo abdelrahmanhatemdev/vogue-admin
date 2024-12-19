@@ -20,6 +20,7 @@ import { signIn } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { notify } from "@/lib/utils";
+import { memo } from "react";
 
 const Login = () => {
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
@@ -137,4 +138,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default memo(Login);

@@ -13,4 +13,4 @@ function Footer() {
   );
 }
 
-export default  memo(Footer)
+export default memo(Footer);

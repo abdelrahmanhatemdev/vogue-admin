@@ -1,4 +1,5 @@
 "use client"
+import { memo } from "react"
 
 const Home = () => {
   
@@ -6,4 +7,4 @@ const Home = () => {
     <div>Home</div>
   )
 }
-export default Home
+export default memo(Home)

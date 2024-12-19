@@ -1,6 +1,7 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { memo } from "react";
 
 const Logout = () => {
   const router = useRouter()
@@ -11,4 +12,4 @@ const Logout = () => {
 
   return <button onClick={handleLogOut}>logout</button>;
 };
-export default Logout;
+export default memo(Logout);
