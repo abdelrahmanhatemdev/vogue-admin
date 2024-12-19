@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCategories } from "@/actions/Category";
 import db from "@/lib/db";
-import { tableName } from "../route";
+import { tableName } from "@/app/api/categories/route";
 
 export const dynamic = "force-static";
 

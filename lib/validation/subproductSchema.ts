@@ -1,6 +1,6 @@
 import z from "zod";
 import { currencies } from "@/constants/currencies";
-import { isValidSku, isValidSlug } from "../isValid";
+import { isValidSku, isValidSlug } from "@/lib/isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 

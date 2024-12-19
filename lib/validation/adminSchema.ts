@@ -1,5 +1,5 @@
 import z from "zod";
-import { isValidEmail } from "../isValid";
+import { isValidEmail } from "@/lib/isValid";
 
 export const AdminAddSchema = z
   .object({

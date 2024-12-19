@@ -1,10 +1,10 @@
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-} from "../ui/pagination";
+} from "@/components/ui/pagination";
 
 import {
   TfiAngleDoubleLeft,
@@ -19,7 +19,7 @@ import {
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 function TablePagination ({
   canPrevious,

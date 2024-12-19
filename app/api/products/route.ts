@@ -3,7 +3,7 @@ import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
 import { ProductSchema } from "@/lib/validation/productSchema";
 import { ZodError } from "zod";
-import { tableName as subproductsTable } from "../subproducts/route";
+import { tableName as subproductsTable } from "@/app/api/subproducts/route";
 
 export const tableName = "products";
 

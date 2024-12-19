@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OptimisicDataType } from "../products/Product";
+import { OptimisicDataType } from "@/components/modules/admin/products/Product";
 import { currencies } from "@/constants/currencies";
 import { arrayFromString } from "@/lib/format";
 

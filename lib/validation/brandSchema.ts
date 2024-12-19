@@ -1,5 +1,5 @@
 import z from "zod";
-import { isValidSlug } from "../isValid";
+import { isValidSlug } from "@/lib/isValid";
 
 export const BrandSchema = z
   .object({

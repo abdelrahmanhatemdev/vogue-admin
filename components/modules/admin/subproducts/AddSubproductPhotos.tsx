@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
-import { OptimisicDataType } from "../products/Product";
+import { OptimisicDataType } from "@/components/modules/admin/products/Product";
 import { currencies } from "@/constants/currencies";
 import Image from "next/image";
 import { X } from "lucide-react";
