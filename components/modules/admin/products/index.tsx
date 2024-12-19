@@ -132,7 +132,7 @@ function Products({ data }: { data: Product[] }) {
             brand_name: string;
             brand_slug: string;
           };
-          
+
           return item.brand_slug ? (
             <Link
               href={`/admin/brands/${item.brand_slug}`}
@@ -162,9 +162,6 @@ function Products({ data }: { data: Product[] }) {
           const itemCatsString = item.categories
             ? (item.categories as string)
             : "";
-
-            console.log("categories", item.categories);
-            
 
           const itemCatsArray = arrayFromString(itemCatsString);
 
@@ -196,9 +193,21 @@ function Products({ data }: { data: Product[] }) {
 
         filterFn: (row, columnId, filterValue) => {
           const rowValue: string = row.getValue(columnId);
-          const uuid = rowValue ? arrayFromString(rowValue)[2] : "";
 
-          return filterValue.length === 0 || filterValue.includes(uuid);
+          const itemCatsString = rowValue ? (rowValue as string) : "";
+
+          const itemCatsArray = arrayFromString(itemCatsString);
+
+          const itemCatsIds = itemCatsArray.map((cat) => {
+            const catArray = cat.split(" - ");
+            const uuid = catArray[2];
+            return uuid;
+          });
+
+          return (
+            filterValue.length === 0 ||
+            itemCatsIds.some((id) => filterValue.includes(id))
+          );
         },
         sortingFn: (rowA, rowB) => {
           const rowACatsString = rowA.original.categories

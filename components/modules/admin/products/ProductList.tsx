@@ -158,8 +158,7 @@ function ProductList({
     getRowId: (row) => row.uuid,
   });
 
-  // console.log("columnFilters", columnFilters);
-  // console.log("SelectedBrands", selectedBrands);
+  console.log("columnFilters", columnFilters);
   
 
   const currentPage = pagination.pageIndex + 1;
@@ -364,7 +363,6 @@ function ProductList({
                         key={uuid}
                         onClick={() =>
                           setSelectedCategories((prev) => {
-                            const categoryArrString = `${uuid} - ${uuid}`
                             const updatedFilter = prev.includes(uuid)
                               ? prev.filter((c) => c !== uuid)
                               : [...prev, uuid];
