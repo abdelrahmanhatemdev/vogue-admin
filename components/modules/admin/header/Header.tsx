@@ -1,11 +1,15 @@
 "use client";
-import ContentContainer from "@/components/custom/ContentContainer";
 import IconsGroup from "./IconsGroup";
 import Logo from "@/components/custom/Logo";
 import { CiMenuBurger } from "react-icons/ci";
 import { memo } from "react";
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-
+import { useSidebar } from "@/components/ui/sidebar";
+import dynamic from "next/dynamic";
+import Loading from "@/components/custom/Loading";
+const ContentContainer = dynamic(
+  () => import("@/components/custom/ContentContainer"),
+  { loading: Loading }
+);
 function Header() {
   const { toggleSidebar } = useSidebar();
   return (

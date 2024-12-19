@@ -9,15 +9,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { AdminLoginSchema } from "@/lib/validation/adminAuth/adminLoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
 import { signIn } from "next-auth/react";
-import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { notify } from "@/lib/utils";
 import { memo } from "react";

@@ -37,17 +37,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import NoResults from "@/components/custom/NoResults";
-import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+
+import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+
 import { DialogFooter } from "@/components/ui/dialog";
 import { notify } from "@/lib/utils";
 import { deleteAdmin } from "@/actions/Admin";
 
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Admin>>(
   () => import("@/components/custom/ToggleColumnView"),
   { loading: Loading }
@@ -56,6 +61,7 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
+
 const AddAdmin = dynamic(() => import("./AddAdmin"), { loading: Loading });
 
 interface AdminListProps<TData> {
@@ -93,7 +99,7 @@ function AdminList({
   });
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>(visibleColumns);
-    const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const selectedRows = Object.keys(rowSelection);
 
@@ -134,7 +140,7 @@ function AdminList({
       const searchTerm = filterValue.toLowerCase();
       const name = row.getValue("name")?.toString().toLowerCase()!;
       const email = row.getValue("email")?.toString().toLowerCase()!;
-      return (name.includes(searchTerm) || email.includes(searchTerm)) || false;
+      return name.includes(searchTerm) || email.includes(searchTerm) || false;
     },
     getRowId: (row) => row.uuid,
   });

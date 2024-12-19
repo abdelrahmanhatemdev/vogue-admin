@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,28 +14,13 @@ import {
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useState, useTransition } from "react";
-import { addSubproduct } from "@/actions/Subproduct";
 import { cn, notify } from "@/lib/utils";
-import useData from "@/hooks/useData";
-import { MultiSelect } from "@/components/ui/multiselect";
-import Link from "next/link";
-import { Switch } from "@/components/ui/switch";
 import { v4 as uuidv4 } from "uuid";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { SubproductSchema } from "@/lib/validation/subproductSchema";
-import { OptimisicDataType } from "@/components/modules/admin/products/Product";
-import { currencies } from "@/constants/currencies";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import { Separator } from "@/components/ui/separator";
-import { OptimisicImagesType } from "./Subproduct";
+import type{ OptimisicImagesType } from "@/components/modules/admin/subproducts/Subproduct";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";

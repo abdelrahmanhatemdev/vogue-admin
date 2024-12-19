@@ -1,18 +1,17 @@
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-
-import {
   TfiAngleDoubleLeft,
   TfiAngleDoubleRight,
   TfiAngleLeft,
   TfiAngleRight,
 } from "react-icons/tfi";
 import { PaginationState } from "@tanstack/react-table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@/components/ui/pagination";
 import {
   Select,
   SelectItem,

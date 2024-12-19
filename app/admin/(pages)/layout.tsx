@@ -6,7 +6,10 @@ import Loading from "@/components/custom/Loading";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import NoInternet from "@/components/custom/NoInternet";
+
+const NoInternet = dynamic(() => import("@/components/custom/NoInternet"), {
+  loading: Loading,
+});
 
 const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
   loading: Loading,

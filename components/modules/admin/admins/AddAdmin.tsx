@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import z from "zod";
+import { AdminAddSchema as AdminSchema } from "@/lib/validation/adminSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { addAdmin } from "@/actions/Admin";
+import { notify } from "@/lib/utils";
+import { v4 as uuidv4 } from "uuid";
 import {
   Form,
   FormControl,
@@ -12,14 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import z from "zod";
-import { AdminAddSchema as AdminSchema } from "@/lib/validation/adminSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { addAdmin } from "@/actions/Admin";
-import { notify } from "@/lib/utils";
-import { v4 as uuidv4 } from "uuid";
 
 type OptimisicDataType = Admin & {isPending?: boolean}
 

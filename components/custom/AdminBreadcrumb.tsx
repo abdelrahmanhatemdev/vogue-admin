@@ -1,3 +1,5 @@
+import { memo } from "react";
+import Link from "next/link";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,8 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { memo } from "react";
-import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface AdminBreadcrumbProps {

@@ -1,11 +1,8 @@
 "use client";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Dispatch, memo, SetStateAction } from "react";
 import Image from "next/image";
 
-import { OptimisicImagesType } from "./Subproduct";
+import type { OptimisicImagesType } from "@/components/modules/admin/subproducts/Subproduct";
 
 function PhotoViewer({
   image,

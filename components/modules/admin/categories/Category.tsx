@@ -1,11 +1,12 @@
-import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
-import {
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Link from "next/link";
+
+import Loading from "@/components/custom/Loading";
+import dynamic from "next/dynamic";
 import { memo } from "react";
+
+const AdminBreadcrumb = dynamic(
+  () => import("@/components/custom/AdminBreadcrumb"),
+  { loading: Loading }
+);
 
 function Category({ data }: { data: Category }) {
   return (

@@ -1,3 +1,4 @@
+import { Dispatch, memo, SetStateAction } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,7 @@ import { Button } from "@/components/ui/button";
 
 import { CiSliderHorizontal } from "react-icons/ci";
 import { IoCheckmark } from "react-icons/io5";
-import { Dispatch, memo, SetStateAction } from "react";
+
 import { Column, VisibilityState } from "@tanstack/react-table";
 
 export interface ToggleColumnViewProps<Type> {

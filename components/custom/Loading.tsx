@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Loader from "react-spinners/PuffLoader";
 
 function Loading() {

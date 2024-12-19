@@ -22,7 +22,6 @@ import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
-import { isValidSku } from "@/lib/isValid";
 import {
   Select,
   SelectContent,
@@ -30,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OptimisicDataType } from "@/components/modules/admin/products/Product";
+import type { OptimisicDataType } from "@/components/modules/admin/products/Product";
 import { currencies } from "@/constants/currencies";
 import { arrayFromString } from "@/lib/format";
 

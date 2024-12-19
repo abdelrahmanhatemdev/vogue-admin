@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
-import { OptimisicDataType } from "@/components/modules/admin/products/Product";
+import type { OptimisicDataType } from "@/components/modules/admin/products/Product";
 import { currencies } from "@/constants/currencies";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];

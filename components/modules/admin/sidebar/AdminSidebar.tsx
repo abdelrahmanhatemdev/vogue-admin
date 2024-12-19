@@ -1,6 +1,5 @@
 "use client";
 import { usePathname } from "next/navigation";
-import Logo from "@/components/custom/Logo";
 import Link from "next/link";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -39,6 +38,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
+  loading: Loading,
+});
+const Logo = dynamic(() => import("@/components/custom/Logo"), {
   loading: Loading,
 });
 import { CgSize } from "react-icons/cg";

@@ -1,5 +1,5 @@
 "use client";
-import { memo, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import NoInternet from "./NoInternet";
 import AppLayout from "./AppLayout";
 

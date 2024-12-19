@@ -1,12 +1,6 @@
 "use client";
-import { memo, ReactNode, useEffect, useState } from "react";
+import { memo, ReactNode } from "react";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading";
-const Header = dynamic(
-  () => import("@/components/modules/admin/header/Header"),
-  { loading: Loading }
-);
 
 function AppLayout({
   children,

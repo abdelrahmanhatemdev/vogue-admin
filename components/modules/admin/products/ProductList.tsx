@@ -43,8 +43,11 @@ import { TiArrowUnsorted } from "react-icons/ti";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import NoResults from "@/components/custom/NoResults";
-import { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
+const NoResults = dynamic(
+  () => import("@/components/custom/NoResults"),
+  { loading: Loading }
+);
+import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";

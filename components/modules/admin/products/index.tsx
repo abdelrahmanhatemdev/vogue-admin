@@ -20,10 +20,10 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(() => import("./EditProduct"), {
+const EditProduct = dynamic(() => import("@/components/modules/admin/products/EditProduct"), {
   loading: Loading,
 });
-const DeleteProduct = dynamic(() => import("./DeleteProduct"), {
+const DeleteProduct = dynamic(() => import("@/components/modules/admin/products/DeleteProduct"), {
   loading: Loading,
 });
 const ProductList = dynamic(
