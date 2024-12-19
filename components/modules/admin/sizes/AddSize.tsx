@@ -26,7 +26,8 @@ import {
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { useRefresh } from "@/hooks/useData";
+import useData, { useRefresh } from "@/hooks/useData";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function AddSize({
   setModalOpen,
@@ -40,10 +41,14 @@ function AddSize({
   const form = useForm<z.infer<typeof SizeSchema>>({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
-      uuid: uuidv4()
+      uuid: uuidv4(), 
+      symbol: undefined, 
+      sort_order: 0
     },
     mode: "onChange",
   });
+
+  const {data: sizes} = useData("sizes")
 
   const [isPending, startTransition] = useTransition();
   const refresh = useRefresh()
@@ -85,6 +90,55 @@ function AddSize({
                 <Input {...field} />
               </FormControl>
               <FormDescription>New Size Name</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="symbol"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Symbol</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormDescription>New Size Symbol</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sort_order"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Order</FormLabel>
+              <FormControl>
+                <Select value={`${field.value}`} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-main-200 rounded-md">
+                    <SelectValue
+                      placeholder="Select Currency"
+                      className="truncate"
+                    >
+                      {field.value}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: sizes.length > 0 ? sizes.length + 1 : 1  }, (_, i) => i).map((option) => (
+                      <SelectItem
+                        value={`${option}`}
+                        title={`${option}`}
+                        className="cursor-pointer"
+                        key={`${option}`}
+                      >
+                        {`${option}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormDescription>New Size Order</FormDescription>
               <FormMessage />
             </FormItem>
           )}

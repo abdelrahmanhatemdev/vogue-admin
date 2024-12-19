@@ -43,6 +43,8 @@ interface Size {
   id: string;
   uuid: string;
   name: string;
+  symbol: string;
+  sort_order: number;
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;

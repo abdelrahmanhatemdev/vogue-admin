@@ -18,7 +18,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
+import useData, { useRefresh } from "@/hooks/useData";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function EditSize({
   item,
@@ -34,13 +41,17 @@ function EditSize({
   const form = useForm<z.infer<typeof SizeSchema>>({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
-      name: item.name,
       uuid: item.uuid,
+      name: item.name,
+      symbol: item.symbol,
+      sort_order: item.sort_order,
     },
   });
 
+  const { data: sizes } = useData("sizes");
+
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useRefresh();
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);
@@ -49,7 +60,7 @@ function EditSize({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending ,
+      isPending: !isPending,
     };
 
     startTransition(async () => {
@@ -62,13 +73,16 @@ function EditSize({
     const res: ActionResponse = await editSize(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-0"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -83,6 +97,58 @@ function EditSize({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="symbol"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Symbol</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormDescription>New Size Symbol</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sort_order"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Order</FormLabel>
+              <FormControl>
+                <Select value={`${field.value}`} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-main-200 rounded-md">
+                    <SelectValue
+                      placeholder="Select Currency"
+                      className="truncate"
+                    >
+                      {field.value}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from(
+                      { length: sizes.length > 0 ? sizes.length : 1 },
+                      (_, i) => i
+                    ).map((option) => (
+                      <SelectItem
+                        value={`${option}`}
+                        title={`${option}`}
+                        className="cursor-pointer"
+                        key={`${option}`}
+                      >
+                        {`${option}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormDescription>New Size Order</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <DialogFooter>
           <Button type="submit">Update</Button>
         </DialogFooter>
@@ -91,4 +157,4 @@ function EditSize({
   );
 }
 
-export default memo(EditSize)
+export default memo(EditSize);

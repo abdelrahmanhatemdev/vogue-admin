@@ -8,7 +8,7 @@ export const tableName = "sizes";
 export async function GET() {
   try {
     const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY sort_order DESC`
     );
 
     const data = rows as Size[];
@@ -22,14 +22,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name } = await request.json();
+    const { uuid, name, symbol, sort_order } = await request.json();
 
     // Ensure Server Validation
-    SizeSchema.parseAsync({ name, uuid });
+    SizeSchema.parseAsync({ name, uuid, symbol, sort_order });
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name) VALUES (?, ?)`,
-      [uuid, name]
+      `INSERT INTO ${tableName} (uuid, name, symbol, sort_order) VALUES (?, ?, ?, ?)`,
+      [uuid, name, symbol, sort_order]
     );
 
     if (result.insertId) {
@@ -48,14 +48,14 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, name } = await request.json();
+    const { uuid, name, symbol, sort_order } = await request.json();
 
     // Ensure Server Validation
-    SizeSchema.parseAsync({ name, uuid });
-    
+    SizeSchema.parseAsync({ name, uuid, symbol, sort_order });
+
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ? WHERE uuid = ?`,
-      [name, uuid]
+      `UPDATE ${tableName} SET name = ?, symbol = ?, sort_order = ? WHERE uuid = ?`,
+      [name, , symbol, sort_order, uuid]
     );
 
     if (result.affectedRows) {

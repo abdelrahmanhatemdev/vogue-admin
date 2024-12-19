@@ -48,10 +48,13 @@ function Sizes({ data }: { data: Size[] }) {
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
       ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
-          b.updatedAt.localeCompare(a.updatedAt)
+          b.sort_order < a.sort_order ? -1 : 1
         )
       : [];
   }, [optimisicData]);
+
+  console.log(optimisicData);
+  
 
   const columns: ColumnDef<Size>[] = useMemo(
     () => [
@@ -90,6 +93,24 @@ function Sizes({ data }: { data: Size[] }) {
         cell: ({ row }) => {
           const item: Size = row.original;
           return <span>{item.name}</span>;
+        },
+      },
+      {
+        id: "symbol",
+        accessorKey: "symbol",
+        header: "Symbol",
+        cell: ({ row }) => {
+          const item: Size = row.original;
+          return <span>{item.symbol}</span>;
+        },
+      },
+      {
+        id: "sort_order",
+        accessorKey: "sort_order",
+        header: "Order",
+        cell: ({ row }) => {
+          const item: Size = row.original;
+          return <span>{item.sort_order}</span>;
         },
       },
       {
