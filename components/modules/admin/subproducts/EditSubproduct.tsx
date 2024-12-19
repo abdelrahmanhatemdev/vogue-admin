@@ -246,10 +246,31 @@ function EditSubproduct({
           control={form.control}
           name="discount"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>discount</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Select value={`${field.value}`} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-main-200 rounded-md">
+                    <SelectValue
+                      placeholder="Select Currency"
+                      className="truncate"
+                    >
+                      {field.value}%
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 101 }, (_, i) => i).map((option) => (
+                      <SelectItem
+                        value={`${option}`}
+                        title={`${option}`}
+                        className="cursor-pointer"
+                        key={`${option}`}
+                      >
+                        {`${option}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormDescription>New subproduct discount</FormDescription>
               <FormMessage />

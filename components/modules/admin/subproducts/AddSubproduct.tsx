@@ -58,7 +58,7 @@ function AddSubproduct({
       sku: "",
       price: undefined,
       currency: "USD",
-      discount: undefined,
+      discount: 0,
       qty: undefined,
       sold: undefined,
       featured: false,
@@ -106,40 +106,16 @@ function AddSubproduct({
           control={form.control}
           name="sku"
           render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+            <FormItem className="w-full">
               <FormLabel>SKU</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Example: ABC123-XYZ"/>
+                <Input {...field} placeholder="Example: ABC123-XYZ" />
               </FormControl>
               <FormDescription>New Subproduct SKU</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="images"
-          render={({ field }) => (
-            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
-              <FormLabel className="border border-dashed border-main-200 bg-main-100 flex justify-center rounded-lg items-center h-full cursor-pointer">
-                <div className="flex flex-col items-center gap-1 justify-center">
-                  <div>Choose Photos</div>
-                  <div>
-                    <FormMessage />
-                  </div>
-                </div>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  multiple
-                  type="file"
-                  onChange={(e) => field.onChange(e.target.files)}
-                  className="hidden"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        /> */}
         <FormField
           control={form.control}
           name="colors"
@@ -262,10 +238,31 @@ function AddSubproduct({
           control={form.control}
           name="discount"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>discount</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Select value={`${field.value}`} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-main-200 rounded-md">
+                    <SelectValue
+                      placeholder="Select Currency"
+                      className="truncate"
+                    >
+                      {field.value}%
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 101 }, (_, i) => i).map((option) => (
+                      <SelectItem
+                        value={`${option}`}
+                        title={`${option}`}
+                        className="cursor-pointer"
+                        key={`${option}`}
+                      >
+                        {`${option}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormDescription>New subproduct discount</FormDescription>
               <FormMessage />

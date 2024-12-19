@@ -25,10 +25,7 @@ export const SubproductSchema = z
       }),
     discount: z.coerce
       .number()
-      .positive("Discount must be positive")
-      .min(1, {
-        message: "Discount is required",
-      })
+      .nonnegative("Discount must be zero or positive")
       .max(100, {
         message: "Discount cannot be more than 100%",
       }),
