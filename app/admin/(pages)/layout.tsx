@@ -57,14 +57,15 @@ export default async function layout({
           <AdminSidebar />
         </motion.div>
 
-        <main className="grow lg:h-[90.25vh] lg:mt-[2.375vh] lg:overflow-y-scroll scrollbar-hide">
+        <main className="grow w-full md:h-[90.25vh] md:mt-[2.375vh]">
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <Header />
-            <ContentContainer>{children}</ContentContainer>
+            <ContentContainer
+            className=""
+            >{children}</ContentContainer>
             <Footer />
           </motion.div>
         </main>

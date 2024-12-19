@@ -102,11 +102,11 @@ function AdminSidebar() {
       collapsible="icon"
       className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent"
     >
-      <SidebarHeader className="py-8 px-4">
+      <SidebarHeader className="hidden md:block py-8 px-4">
         {state === "expanded" ? (
-          <Logo className="hidden lg:block" />
+          <Logo/>
         ) : (
-          <Logo className="hidden lg:block w-5 h-5 mx-auto" small={true} />
+          <Logo className="w-5 h-5 mx-auto" small={true} />
         )}
       </SidebarHeader>
       <SidebarContent>

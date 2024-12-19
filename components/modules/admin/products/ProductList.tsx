@@ -213,11 +213,11 @@ function ProductList({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-[80%_20%] items-start">
+      <div className="grid lg:grid-cols-[70%_30%] md:grid-cols-[100%] items-start gap-4">
         <div className="flex gap-2 items-center flex-wrap">
           {isData && (
             <Input
-              className="bg-background min-w-24 w-44"
+              className="bg-background min-w-24 sm:w-44 w-full"
               type="text"
               placeholder="Filter Products..."
               onChange={(e) =>

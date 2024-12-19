@@ -8,7 +8,7 @@ function ContentContainer({
   children: ReactNode;
   className?: string;
 }>) {
-  return <div className={cn("w-[95%] lg:w-[90%] mx-auto", className)}>{children}</div>;
+  return <div className={cn("w-[95%] md:w-[90%] mx-auto", className)}>{children}</div>;
 }
 
 export default memo(ContentContainer)
