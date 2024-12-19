@@ -357,16 +357,17 @@ function ProductList({
                 </PopoverTrigger>
                 <PopoverContent className="w-40 p-2">
                   <div className="flex flex-col gap-2 ">
-                    {categories.map((item) => (
+                    {categories.map(({name, uuid, slug}) => (
                       <Button
                         className="w-full flex gap-2 justify-start items-center cursor-pointer"
                         variant={"ghost"}
-                        key={item.id}
+                        key={uuid}
                         onClick={() =>
                           setSelectedCategories((prev) => {
-                            const updatedFilter = prev.includes(item.id)
-                              ? prev.filter((c) => c !== item.id)
-                              : [...prev, item.id];
+                            const categoryArrString = `${uuid} - ${uuid}`
+                            const updatedFilter = prev.includes(uuid)
+                              ? prev.filter((c) => c !== uuid)
+                              : [...prev, uuid];
 
                             setColumnFilters((prevFilters) => {
                               const newFilters = prevFilters.filter(
@@ -387,9 +388,9 @@ function ProductList({
                       >
                         <div>
                           <Checkbox
-                            checked={selectedCategories.includes(item.id)}
+                            checked={selectedCategories.includes(uuid)}
                           />
-                          <span>{item.name}</span>
+                          <span>{name}</span>
                         </div>
                       </Button>
                     ))}
@@ -408,7 +409,7 @@ function ProductList({
 
                     setColumnFilters((prevFilters) => {
                       const newFilters = prevFilters.filter(
-                        (filter) => filter.id !== "brand"
+                        (filter) => filter.id !== "brand_name"
                       );
                       return [...newFilters];
                     });

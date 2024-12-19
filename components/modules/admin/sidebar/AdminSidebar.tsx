@@ -112,7 +112,7 @@ function AdminSidebar() {
           <Logo className="w-5 h-5 mx-auto" small={true} />
         )}
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="scrollbar-hide">
         <SidebarGroup>
           <SidebarGroupLabel className="text-foreground">
             Vogue Admin

@@ -163,6 +163,9 @@ function Products({ data }: { data: Product[] }) {
             ? (item.categories as string)
             : "";
 
+            console.log("categories", item.categories);
+            
+
           const itemCatsArray = arrayFromString(itemCatsString);
 
           const itemCats = itemCatsArray.map((cat) => {
