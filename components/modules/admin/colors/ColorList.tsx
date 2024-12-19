@@ -362,7 +362,9 @@ function ColorList({
           </Table>
           <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
             <div className="text-neutral-600">
-              {selectedRows.length} of {totalRows} row(s) selected.
+              {selectedRows.length > 0
+                ? `${selectedRows.length} of ${totalRows} row(s) selected.`
+                : `${totalRows} total rows`}
             </div>
             <TablePagination
               canPrevious={table.getCanPreviousPage()}
