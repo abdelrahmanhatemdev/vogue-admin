@@ -77,8 +77,6 @@ function EditProduct({
       )[0];
       return `${name} - ${slug} - ${uuid}`
     }).join(",");
-    console.log("newCategories", newCategories);
-    console.log("values", values);
     const {categories: arrayCategories, ...rest} = values
 
     const updatedValues : Omit<z.infer<typeof ProductSchema>, "categories"> & { categories: string }

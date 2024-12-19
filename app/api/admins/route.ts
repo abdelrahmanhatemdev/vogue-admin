@@ -56,8 +56,6 @@ export async function PUT(request: Request) {
     // Ensure Server Validation
     AdminEditSchema.parseAsync({ name, uuid, email, password });
 
-    console.log("password", password);
-
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
 

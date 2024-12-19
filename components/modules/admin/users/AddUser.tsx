@@ -10,13 +10,6 @@ export default function AddUser() {
 
   function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // createUserWithEmailAndPassword(auth, email, password)
-    // .then(user => {
-    //     console.log("user", user);
-    // })
-    // .catch(err => {
-    //     console.log(err);
-    // })
   }
   return (
     <form onSubmit={handleAdd}>

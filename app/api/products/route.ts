@@ -210,7 +210,6 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
   } catch (error) {
-    console.log("error", error);
 
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

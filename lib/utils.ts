@@ -13,12 +13,8 @@ export function notify(res: ActionResponse) {
         toast.success(res.message);
       }
     } else {
-      if (res.message) {
-        toast.error(res.message);
-      }
-      if (res.error) {
-        toast.error(res.error);
-      }
+      const error = res?.message || res?.error 
+        toast.error(`${error}`, {duration: 8000});
     }
   }
 }

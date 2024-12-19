@@ -123,7 +123,6 @@ function AddSubproductPhotos({
           method: "POST",
           body: formData,
         });
-        console.log("res", res);
         notify(res);
       } catch (error) {
         console.log(error);

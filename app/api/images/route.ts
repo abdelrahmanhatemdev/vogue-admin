@@ -99,8 +99,6 @@ export async function POST(req: Request) {
     }
 
     if (files.length > 0) {
-      console.log("files", files);
-
       revalidateTag(tag);
       return NextResponse.json({ message: "Files uploaded" }, { status: 200 });
     }

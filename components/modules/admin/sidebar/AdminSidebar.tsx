@@ -46,7 +46,6 @@ import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 
-
 export const SidebarLinks = [
   {
     title: "Dashboard",
@@ -158,7 +157,10 @@ function AdminSidebar() {
       <SidebarFooter>
         {user ? (
           <DropdownMenu>
-            <DropdownMenuTrigger className="focus:ring-0">
+            <DropdownMenuTrigger
+              className="focus:ring-0 focus:bg-transparent data-[state=open]:bg-transparent
+            "
+            >
               <Link
                 href="/admin/account"
                 aria-label={`Sidebar Account Dropdown`}
