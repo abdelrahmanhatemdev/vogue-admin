@@ -6,9 +6,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { memo, ReactNode } from "react";
+import { memo } from "react";
 import Link from "next/link";
-import { SidebarTrigger } from "../ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface AdminBreadcrumbProps {
   page: string;
@@ -22,12 +22,12 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
   return (
     <Breadcrumb className="bg-background p-4 rounded-lg">
       <BreadcrumbList>
-        <BreadcrumbItem>
+        <BreadcrumbItem className="hidden md:block">
           <BreadcrumbLink asChild>
             <SidebarTrigger />
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator>|</BreadcrumbSeparator>
+        <BreadcrumbSeparator className="hidden md:block">|</BreadcrumbSeparator>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/admin">Dashboard</Link>

@@ -49,6 +49,7 @@ export default async function layout({
   return (
     <MainLayout>
       <SidebarProvider defaultOpen={defaultOpen}>
+        <Header />
         <motion.div
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -57,15 +58,13 @@ export default async function layout({
           <AdminSidebar />
         </motion.div>
 
-        <main className="grow w-full md:h-[90.25vh] md:mt-[2.375vh]">
+        <main className="grow w-[50%] md:h-[90.25vh] md:mt-[2.375vh]">
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <ContentContainer
-            className=""
-            >{children}</ContentContainer>
+            <ContentContainer>{children}</ContentContainer>
             <Footer />
           </motion.div>
         </main>

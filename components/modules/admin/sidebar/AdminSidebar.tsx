@@ -45,6 +45,7 @@ import { CgSize } from "react-icons/cg";
 import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
+import { cn } from "@/lib/utils";
 
 export const SidebarLinks = [
   {
@@ -104,7 +105,7 @@ function AdminSidebar() {
     >
       <SidebarHeader className="hidden md:block py-8 px-4">
         {state === "expanded" ? (
-          <Logo/>
+          <Logo />
         ) : (
           <Logo className="w-5 h-5 mx-auto" small={true} />
         )}
@@ -166,17 +167,26 @@ function AdminSidebar() {
                 aria-label={`Sidebar Account Dropdown`}
                 className="w-full flex gap-2"
               >
-                <div className="bg-main-700 flex items-center justify-center w-10 h-10 rounded-md p-2">
+                <div
+                  className={cn(
+                    "bg-main-700 flex items-center justify-center rounded-md p-2 transition-all",
+                    state === "expanded" ? "w-10 h-10" : "w-8 h-8"
+                  )}
+                >
                   <User className="text-main-50" size={25} />
                 </div>
-                <div className="flex flex-col items-start">
-                  <div className="text-sm font-bold">
-                    {user.name?.slice(0, 25)}
+                {state === "expanded" ? (
+                  <div className="flex flex-col items-start">
+                    <div className="text-sm font-bold truncate">
+                      {user.name}
+                    </div>
+                    <div className="text-sm text-main-700 capitalize truncate">
+                      {user.email}
+                    </div>
                   </div>
-                  <div className="text-sm text-main-700 capitalize">
-                    {user.email?.slice(0, 25)}
-                  </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">

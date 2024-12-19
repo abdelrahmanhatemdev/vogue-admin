@@ -213,11 +213,11 @@ function ProductList({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid lg:grid-cols-[70%_30%] md:grid-cols-[100%] items-start gap-4">
+      <div className="grid lg:grid-cols-[70%_30%] md:grid-cols-[100%] gap-4 items-start">
         <div className="flex gap-2 items-center flex-wrap">
           {isData && (
             <Input
-              className="bg-background min-w-24 sm:w-44 w-full"
+              className="bg-background sm:min-w-24 sm:w-44 w-full"
               type="text"
               placeholder="Filter Products..."
               onChange={(e) =>
@@ -332,12 +332,12 @@ function ProductList({
                             {selectedCategories.length} Selected
                           </span>
                         ) : (
-                          selectedCategories.map((id) => (
+                          selectedCategories.map((uuid) => (
                             <span
-                              key={id}
+                              key={uuid}
                               className="bg-main-200 p-1 rounded-md text-xs"
                             >
-                              {categories.find((c) => c.id === id)?.name}
+                              {categories.find((c) => c.uuid === uuid)?.name}
                             </span>
                           ))
                         )}

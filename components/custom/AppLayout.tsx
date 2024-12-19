@@ -26,7 +26,6 @@ function AppLayout({
         overflow-y-auto scrollbar-hide pt-16 md:pt-0
         
         ">
-           <Header />
            {children}
         </div>
       </motion.div>

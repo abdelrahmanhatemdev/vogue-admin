@@ -208,7 +208,7 @@ function Subproduct({
         ]}
       />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
-        <div className="flex flex-col gap-4 lg:flex-row justify-between items-center">
+        <div className="flex flex-col gap-4 sm:flex-row justify-between sm:items-center">
           <Heading
             title={`${sku}`}
             description="Here's details of your subproduct!"
@@ -267,7 +267,7 @@ function Subproduct({
         </div>
       </div>
       <div className="flex flex-col gap-4 ">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 *:bg-background *:p-2 *:rounded-md">
+        <div className="grid grid-cols-1 lg:grid-cols-4 xs:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
           <div className="flex flex-col">
             <div className="flex justify-between">
               <span className="text-main-700">Price</span>

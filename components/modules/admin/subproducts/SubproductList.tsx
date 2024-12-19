@@ -195,7 +195,7 @@ function SubproductList({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-[80%_20%] items-start">
+      <div className="grid lg:grid-cols-[70%_30%] md:grid-cols-[100%] gap-4 items-start">
         <div className="flex gap-2 items-center flex-wrap">
           {isData && (
             <Input
