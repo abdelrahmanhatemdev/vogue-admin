@@ -52,10 +52,7 @@ function Sizes({ data }: { data: Size[] }) {
         )
       : [];
   }, [optimisicData]);
-
-  console.log(optimisicData);
   
-
   const columns: ColumnDef<Size>[] = useMemo(
     () => [
       {

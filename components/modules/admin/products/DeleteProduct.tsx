@@ -34,9 +34,7 @@ function DeleteProduct({
       ]);
     });
 
-    const res: ActionResponse = await deleteProduct(data);
-    console.log("res", res);
-    
+    const res: ActionResponse = await deleteProduct(data);    
     notify(res);
   }
 

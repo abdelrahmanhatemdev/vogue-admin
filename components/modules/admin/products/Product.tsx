@@ -125,82 +125,6 @@ function Product({
           );
         },
       },
-      // {
-      //   id: "color",
-      //   accessorKey: "color",
-      //   header: "color",
-      //   cell: ({ row }) => {
-      //     const item: Subproduct = row.original;
-      //     return (
-      //       <div
-      //         className={
-      //           "rounded-lg flex gap-1 items-center" +
-      //           (item.isPending ? " opacity-50" : "")
-      //         }
-      //       >
-      //         {item.colors.map((color) => {
-      //           console.log("color", color);
-      //           const itemColor = colors.find(
-      //             (c) => c.id === (color as string)
-      //           );
-
-      //           return (
-      //             <div
-      //               className={`h-4 w-4 rounded-sm block ring-ring ring-1`}
-      //               title={`${itemColor?.name}`}
-      //               style={{
-      //                 backgroundColor: itemColor?.hex,
-      //               }}
-      //             ></div>
-      //           );
-      //         })}
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   id: "sizes",
-      //   accessorKey: "sizes",
-      //   header: "Sizes",
-      //   cell: ({ row }) => {
-      //     const item: Subproduct = row.original;
-      //     const itemSizes = item.sizes as string[];
-
-      //     return (
-      //       <div
-      //         className={
-      //           "rounded-lg flex gap-1 items-center" +
-      //           (item.isPending ? " opacity-50" : "")
-      //         }
-      //       >
-      //         {sizes &&
-      //           itemSizes?.length > 0 &&
-      //           itemSizes.map((is) => {
-      //             return <span>{sizes.find((s) => s.id === is)?.name}</span>;
-      //           })}
-      //       </div>
-      //     );
-      //   },
-      //   filterFn: (row, columnId, filterValue) => {
-      //     const rowValue = row.getValue(columnId);
-      //     return filterValue.length === 0 || filterValue.includes(rowValue);
-      //   },
-      //   // sortingFn: (rowA, rowB) => {
-      //   //   const brandA = brands
-      //   //     .find((b) => b.id === rowA.original.brand)
-      //   //     ?.name?.toLowerCase();
-      //   //   const brandB = brands
-      //   //     ?.find((b) => b.id === rowB.original.brand)
-      //   //     ?.name?.toLowerCase();
-
-      //   //   if (brandA && brandB) {
-      //   //     if (brandA > brandB) return 1;
-      //   //     if (brandA < brandB) return -1;
-      //   //   }
-
-      //   //   return 0;
-      //   // },
-      // },
       {
         id: "price",
         accessorKey: "price",
@@ -430,7 +354,10 @@ function Product({
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb page={product.slug as string}  between={[{link:"/admin/products", title:"Products"}]}/>
+      <AdminBreadcrumb
+        page={product.slug as string}
+        between={[{ link: "/admin/products", title: "Products" }]}
+      />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
