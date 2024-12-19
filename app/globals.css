@@ -15,15 +15,10 @@ body {
 @layer base {
   * {
     @apply border-border;
-    scrollbar-color: transparent transparent;
   }
 
   body {
     @apply bg-background text-foreground;
-  }
-
-  ::-webkit-scrollbar {
-    @apply hidden;
   }
 
   :root {

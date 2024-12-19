@@ -49,6 +49,7 @@
     "sortablejs": "^1.15.6",
     "swiper": "^11.1.15",
     "tailwind-merge": "^2.5.4",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.3",
     "zod": "^3.23.8"

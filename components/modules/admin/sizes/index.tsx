@@ -170,6 +170,8 @@ function Sizes({ data }: { data: Size[] }) {
         description={modal.description}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        className={modal.className}
+        onPointerDownOutsideClose={modal.onPointerDownOutsideClose}
       >
         <>{modal.children}</>
       </Modal>

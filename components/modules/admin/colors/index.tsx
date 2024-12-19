@@ -193,6 +193,8 @@ function Colors({ data }: { data: Color[] }) {
         description={modal.description}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        className={modal.className}
+        onPointerDownOutsideClose={modal.onPointerDownOutsideClose}
       >
         <>{modal.children}</>
       </Modal>

@@ -92,35 +92,23 @@ export async function POST(req: Request) {
           `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
           [productId, `/uploads/images/${productId}/${filename}`, 0]
         );
-        
+
         if (result.insertId) {
           files.push(`/uploads/images/${productId}/${filename}`);
         }
       }
     }
 
-    // Validate and respond
-    if (!productId) {
-      return NextResponse.json(
-        { success: false, message: "Missing product ID" },
-        { status: 400 }
-      );
-    }
-
     if (files.length > 0) {
-      revalidateTag(tag)
-      return NextResponse.json({
-        success: true,
-        message: "Files uploaded successfully",
-        productId,
-        files,
-      });
-    } else {
-      return NextResponse.json(
-        { success: false, message: "No files uploaded" },
-        { status: 400 }
-      );
+      console.log("files", files);
+
+      revalidateTag(tag);
+      return NextResponse.json({ message: "Files uploaded" }, { status: 200 });
     }
+    return NextResponse.json(
+      { success: false, message: "No files uploaded" },
+      { status: 400 }
+    );
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
@@ -144,7 +132,7 @@ export async function PUT(req: Request) {
       ]);
     });
 
-    await Promise.all(updatedOrder)
+    await Promise.all(updatedOrder);
 
     return NextResponse.json({ message: "Images are sorted" }, { status: 200 });
   } catch (error) {

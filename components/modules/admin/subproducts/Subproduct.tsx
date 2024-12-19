@@ -58,6 +58,10 @@ const AddSubproductPhotos = dynamic(
     loading: Loading,
   }
 );
+const PhotoSlider = dynamic(
+  () => import("@/components/modules/admin/subproducts/PhotoSlider"),
+  { loading: Loading }
+);
 
 type SubproductPageType = Subproduct & {
   product_slug: string;
@@ -65,7 +69,7 @@ type SubproductPageType = Subproduct & {
   product_id: string;
 };
 
-export type OptimisicImagesType = ProductImage & {isPending?: boolean}
+export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
   subproduct,
@@ -83,9 +87,10 @@ function Subproduct({
   const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
 
-  const [optimisticImages, addOptimisticImages] = useOptimistic<OptimisicImagesType[]>(images)
+  const [optimisticImages, addOptimisticImages] =
+    useOptimistic<OptimisicImagesType[]>(images);
 
   const {
     uuid,
@@ -140,58 +145,62 @@ function Subproduct({
   }
 
   function deleteMultipleImages() {
-      setModalOpen(true);
-      setModal({
-        title: `Delete images`,
-        description: (
-          <p className="font-medium">
-            Are you sure to
-            {selectedImages.length === 1 ? (
-              " delete the image "
-            ) : (
-              <strong> delete all images </strong>
-            )}
-            permenantly ?
-          </p>
-        ),
-        children: (
-          <DialogFooter>
-            <Button
-              type="submit"
-              variant="destructive"
-              onClick={async () => {
-                setModalOpen(false);
-                startTransition(() => {
-                  addOptimisticImages((prev: OptimisicImagesType[]) => [
-                    ...prev.map((item) => {
-                      if (selectedImages.includes(item.id)) {
-                        const pendingItem = { ...item, isPending: !isPending };
-                        return pendingItem;
-                      }
-                      return item;
-                    }),
-                  ]);
-                });
-                for (const selected of selectedImages) {
-                  const data = { id: selected };
-                  const res: ActionResponse = await deleteProductImage(data);
-                  notify(res);
-                }
-                setSelectedImages([])
-              }}
-            >
-              Delete All
-            </Button>
-          </DialogFooter>
-        ),
-      });
-    }
+    setModalOpen(true);
+    setModal({
+      title: `Delete images`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedImages.length === 1 ? (
+            " delete the image "
+          ) : (
+            <strong> delete all images </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              startTransition(() => {
+                addOptimisticImages((prev: OptimisicImagesType[]) => [
+                  ...prev.map((item) => {
+                    if (selectedImages.includes(item.id)) {
+                      const pendingItem = { ...item, isPending: !isPending };
+                      return pendingItem;
+                    }
+                    return item;
+                  }),
+                ]);
+              });
+              for (const selected of selectedImages) {
+                const data = { id: selected };
+                const res: ActionResponse = await deleteProductImage(data);
+                notify(res);
+              }
+              setSelectedImages([]);
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb
         page={`${sku}`}
         between={[
+          {
+            link: `/admin/products`,
+            title: `Products`,
+          },
           {
             link: `/admin/products/${productSlug}`,
             title: `${productName}`,
@@ -404,9 +413,8 @@ function Subproduct({
               description="Here's list of your subproduct photos!"
             />
             <div className="flex items-center gap-2 justify-end">
-            {
-                selectedImages.length > 0 
-                ? (<Button
+              {selectedImages.length > 0 ? (
+                <Button
                   variant={"destructive"}
                   size={"sm"}
                   className="flex items-center gap-2 group"
@@ -414,33 +422,30 @@ function Subproduct({
                 >
                   <span>Delete Selected</span>
                   <Trash2Icon size={20} className="cursor-pointer" />
-                </Button>)
-                : (<></>)
-              }
+                </Button>
+              ) : (
+                <></>
+              )}
               <Button
-                size={"sm"}
-                className="flex items-center gap-2 group"
+                size="sm"
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
-                    title: `Edit Sub Product`,
+                    title: "Add photos",
                     description:
-                      "Update Sub Product here. Click Update when you'are done.",
+                      "Add new photos here. Click Add when you'are done.",
                     children: (
-                      <EditSubproduct
-                        item={subproduct}
+                      <AddSubproductPhotos
                         setModalOpen={setModalOpen}
-                        productId={product_id}
+                        addOptimisticData={addOptimisticImages}
+                        subproductId={uuid}
                       />
                     ),
                   });
                 }}
               >
-                <span>Edit</span>
-                <TbEdit size={20} className="cursor-pointer" />
+                Add New
               </Button>
-              
-              
             </div>
           </div>
           {imageList.length > 0 ? (
@@ -462,12 +467,31 @@ function Subproduct({
               {optimisticImages.map((image) => {
                 const { id, src, isPending } = image;
                 return (
-                  <div className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden">
+                  <div
+                    className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden"
+                    key={src}
+                    onClick={() => {
+                      setModalOpen(true);
+                      setModal({
+                        children: (
+                          <PhotoSlider
+                            setModalOpen={setModalOpen}
+                            images={optimisticImages}
+                          />
+                        ),
+                        className: "lg:min-w-[80vw] bg-transparent border-none",
+                        onPointerDownOutsideClose: true,
+                      });
+                    }}
+                  >
                     <Image
                       key={id}
-                      src={`/api/images/src${src}`}
+                      src={isPending ? src : `/api/images/src${src}`}
                       alt={`Subproduct photo ${sku}-${id} `}
-                      className={cn("w-full lg:w-auto lg:h-32 rounded-md", isPending ? "opacity-50" : "")}
+                      className={cn(
+                        "w-full lg:w-auto lg:h-32 rounded-md",
+                        isPending ? "opacity-50" : ""
+                      )}
                       height={100}
                       width={200}
                     />
@@ -497,13 +521,14 @@ function Subproduct({
             <></>
           )}
         </div>
-        <AddSubproductPhotos subproductId={uuid} />
       </div>
       <Modal
         title={modal.title}
         description={modal.description}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        className={modal.className}
+        onPointerDownOutsideClose={modal.onPointerDownOutsideClose}
       >
         <>{modal.children}</>
       </Modal>

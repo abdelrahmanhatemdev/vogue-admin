@@ -30,7 +30,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addImage } from "@/actions/Image";
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
 import { OptimisicDataType } from "../products/Product";
 import { currencies } from "@/constants/currencies";
@@ -71,7 +70,6 @@ function AddSubproduct({
     mode: "onChange",
   });
 
-
   const [isPending, startTransition] = useTransition();
 
   async function onSubmit(values: z.infer<typeof SubproductSchema>) {
@@ -89,10 +87,6 @@ function AddSubproduct({
       ...data,
       isPending: !isPending,
     };
-
-    // if (data.images.length > 0) {
-
-    // }
 
     startTransition(() => {
       addOptimisticData((prev: Subproduct[]) => [...prev, optimisticObj]);
