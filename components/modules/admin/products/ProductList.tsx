@@ -158,6 +158,10 @@ function ProductList({
     getRowId: (row) => row.uuid,
   });
 
+  // console.log("columnFilters", columnFilters);
+  // console.log("SelectedBrands", selectedBrands);
+  
+
   const currentPage = pagination.pageIndex + 1;
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
@@ -259,12 +263,12 @@ function ProductList({
                             {selectedBrands.length} Selected
                           </span>
                         ) : (
-                          selectedBrands.map((id) => (
+                          selectedBrands.map((name) => (
                             <span
-                              key={id}
+                              key={name}
                               className="bg-main-200 p-1 rounded-md text-xs"
                             >
-                              {brands.find((b) => b.id === id)?.name}
+                              {brands.find((b) => b.name === name)?.name}
                             </span>
                           ))
                         )}
@@ -281,18 +285,21 @@ function ProductList({
                         key={item.id}
                         onClick={() =>
                           setSelectedBrands((prev) => {
-                            const updatedFilter = prev.includes(item.id)
-                              ? prev.filter((b) => b !== item.id)
-                              : [...prev, item.id];
+                            const updatedFilter = prev.includes(item.name)
+                              ? prev.filter((b) => b !== item.name)
+                              : [...prev, item.name];
+
+                              console.log("updatedFilter", updatedFilter);
+                              
 
                             setColumnFilters((prevFilters) => {
                               const newFilters = prevFilters.filter(
-                                (filter) => filter.id !== "brand"
+                                (filter) => filter.id !== "brand_name"
                               );
                               return [
                                 ...newFilters,
                                 {
-                                  id: "brand",
+                                  id: "brand_name",
                                   value: updatedFilter,
                                 },
                               ];
@@ -304,7 +311,7 @@ function ProductList({
                       >
                         <div>
                           <Checkbox
-                            checked={selectedBrands.includes(item.id)}
+                            checked={selectedBrands.includes(item.name)}
                           />
                           <span>{item.name}</span>
                         </div>

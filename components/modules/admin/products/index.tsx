@@ -20,18 +20,24 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditProduct = dynamic(() => import("@/components/modules/admin/products/EditProduct"), {
-  loading: Loading,
-});
-const DeleteProduct = dynamic(() => import("@/components/modules/admin/products/DeleteProduct"), {
-  loading: Loading,
-});
+const EditProduct = dynamic(
+  () => import("@/components/modules/admin/products/EditProduct"),
+  {
+    loading: Loading,
+  }
+);
+const DeleteProduct = dynamic(
+  () => import("@/components/modules/admin/products/DeleteProduct"),
+  {
+    loading: Loading,
+  }
+);
 const ProductList = dynamic(
   () => import("@/components/modules/admin/products/ProductList"),
   { loading: Loading }
 );
 
-export type OptimisicDataType = Product & {isPending?: boolean}
+export type OptimisicDataType = Product & { isPending?: boolean };
 
 function Products({ data }: { data: Product[] }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -53,7 +59,6 @@ function Products({ data }: { data: Product[] }) {
         )
       : [];
   }, [optimisicData]);
-  
 
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
@@ -127,6 +132,7 @@ function Products({ data }: { data: Product[] }) {
             brand_name: string;
             brand_slug: string;
           };
+          
           return item.brand_slug ? (
             <Link
               href={`/admin/brands/${item.brand_slug}`}
@@ -152,16 +158,15 @@ function Products({ data }: { data: Product[] }) {
         accessorKey: "categories",
         header: "categories",
         cell: ({ row }) => {
-
           const item: OptimisicDataType = row.original;
           const itemCatsString = item.categories
             ? (item.categories as string)
             : "";
 
           const itemCatsArray = arrayFromString(itemCatsString);
-          
+
           const itemCats = itemCatsArray.map((cat) => {
-            const catArray = cat.split(" - ")
+            const catArray = cat.split(" - ");
             const name = catArray[0];
             const slug = catArray[1];
             return { name, slug };
@@ -187,11 +192,10 @@ function Products({ data }: { data: Product[] }) {
         },
 
         filterFn: (row, columnId, filterValue) => {
-          const rowValue: string[] = row.getValue(columnId);
-          return (
-            filterValue.length === 0 ||
-            rowValue.some((item) => filterValue.includes(item))
-          );
+          const rowValue: string = row.getValue(columnId);
+          const uuid = rowValue ? arrayFromString(rowValue)[2] : "";
+
+          return filterValue.length === 0 || filterValue.includes(uuid);
         },
         sortingFn: (rowA, rowB) => {
           const rowACatsString = rowA.original.categories
@@ -284,7 +288,8 @@ function Products({ data }: { data: Product[] }) {
                     title: `Delete Product`,
                     description: (
                       <p className="font-medium">
-                        Are you sure To delete the <strong>product</strong> and <strong>its subproducts</strong>  permenantly?
+                        Are you sure To delete the <strong>product</strong> and{" "}
+                        <strong>its subproducts</strong> permenantly?
                       </p>
                     ),
                     children: (
