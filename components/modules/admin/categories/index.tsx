@@ -182,7 +182,6 @@ function Categories({ data }: { data: Category[] }) {
             description="Here's a list of your categories!"
           />
         </div>
-
         <CategoryList
           data={sortedOptimisicData}
           columns={columns}

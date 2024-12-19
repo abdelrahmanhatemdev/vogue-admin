@@ -58,8 +58,8 @@ const AddSubproductPhotos = dynamic(
     loading: Loading,
   }
 );
-const PhotoSlider = dynamic(
-  () => import("@/components/modules/admin/subproducts/PhotoSlider"),
+const PhotoViewer = dynamic(
+  () => import("@/components/modules/admin/subproducts/PhotoViewer"),
   { loading: Loading }
 );
 
@@ -208,12 +208,12 @@ function Subproduct({
         ]}
       />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 lg:flex-row justify-between items-center">
           <Heading
             title={`${sku}`}
             description="Here's details of your subproduct!"
           />
-          <div className="flex items-center gap-2 justify-end">
+          <div className="flex items-center gap-2 justify-start lg:justify-end">
             <Button
               size={"sm"}
               className="flex items-center gap-2 group"
@@ -474,17 +474,18 @@ function Subproduct({
                       setModalOpen(true);
                       setModal({
                         children: (
-                          <PhotoSlider
+                          <PhotoViewer
                             setModalOpen={setModalOpen}
-                            images={optimisticImages}
+                            image={image}
                           />
                         ),
-                        className: "lg:min-w-[80vw] bg-transparent border-none",
+                        className: "bg-transparent border-none lg:py-14  bg-[hsl(0,0%,0%,0.5)]",
                         onPointerDownOutsideClose: true,
                       });
                     }}
                   >
-                    <Image
+
+                    {src && <Image
                       key={id}
                       src={isPending ? src : `/api/images/src${src}`}
                       alt={`Subproduct photo ${sku}-${id} `}
@@ -494,15 +495,18 @@ function Subproduct({
                       )}
                       height={100}
                       width={200}
-                    />
+                    />}
                     <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                       <X
                         className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
                         size={15}
-                        onClick={() => handleRemove(id)}
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleRemove(id)}}
                       />
                       <Checkbox
                         className="absolute inset-2 cursor-pointer border-main-100"
+                        onClick={e => e.stopPropagation()}
                         onCheckedChange={(value) =>
                           setSelectedImages((prev) =>
                             value
