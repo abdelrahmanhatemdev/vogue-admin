@@ -284,7 +284,7 @@ function Products({ data }: { data: Product[] }) {
                     title: `Delete Product`,
                     description: (
                       <p className="font-medium">
-                        Are you sure To delete the Product permenantly ?
+                        Are you sure To delete the <strong>product</strong> and <strong>its subproducts</strong>  permenantly?
                       </p>
                     ),
                     children: (
