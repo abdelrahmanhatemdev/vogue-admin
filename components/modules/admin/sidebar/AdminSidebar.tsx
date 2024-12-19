@@ -211,7 +211,6 @@ function AdminSidebar() {
           <Link href={`/admin/login`}>Login</Link>
         )}
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   );
 }
