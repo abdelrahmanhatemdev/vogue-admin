@@ -7,6 +7,7 @@ import { MdSpaceDashboard } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { IoMdBusiness } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { CiLogout } from "react-icons/ci";
 
 import {
   Sidebar,
@@ -22,24 +23,29 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { User } from "lucide-react";
 import { memo } from "react";
-import { CgSize } from "react-icons/cg";
-import { IoIosColorPalette } from "react-icons/io";
-import { AiOutlineProduct } from "react-icons/ai";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { useSession } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
   loading: Loading,
 });
+import { CgSize } from "react-icons/cg";
+import { IoIosColorPalette } from "react-icons/io";
+import { AiOutlineProduct } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
+
 
 export const SidebarLinks = [
   {
@@ -88,7 +94,7 @@ function AdminSidebar() {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const {state} = useSidebar()
+  const { state } = useSidebar();
 
   const currentPath = usePathname();
 
@@ -152,18 +158,41 @@ function AdminSidebar() {
       <SidebarFooter>
         {user ? (
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="focus:ring-0">
               <Link
                 href="/admin/account"
                 aria-label={`Sidebar Account Dropdown`}
-                className="w-6 h-6"
+                className="w-full flex gap-2"
               >
-                <User size={30} />
+                <div className="bg-main-700 flex items-center justify-center w-10 h-10 rounded-md p-2">
+                  <User className="text-main-50" size={25} />
+                </div>
+                <div className="flex flex-col items-start">
+                  <div className="text-sm font-bold">
+                    {user.name?.slice(0, 25)}
+                  </div>
+                  <div className="text-sm text-main-700 capitalize">
+                    {user.email?.slice(0, 25)}
+                  </div>
+                </div>
               </Link>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>Setting</DropdownMenuItem>
-              <Logout />
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="flex gap-2 cursor-pointer">
+                  <IoSettingsOutline />
+                  <span>Setting</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="flex gap-2 cursor-pointer">
+                  <CiLogout />
+                  <Logout />
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (

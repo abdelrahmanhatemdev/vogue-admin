@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
-import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import path from "path";
 import { promises as fs } from "fs";
 import { ZodError } from "zod";

@@ -36,7 +36,6 @@ export async function POST(request: Request) {
       inStock,
       colors,
       sizes,
-      //   images,
     } = await request.json();
 
     await SubproductSchema.parseAsync({
@@ -52,7 +51,6 @@ export async function POST(request: Request) {
       inStock,
       colors,
       sizes,
-      // images,
     });
 
     const [skuCheck] = await db.execute(
@@ -79,12 +77,6 @@ export async function POST(request: Request) {
     if (nonEmptySizes.length === 0) {
       throw new Error("Choose at least one size");
     }
-
-    // const nonEmptyImages = images.filter((cat: string) => cat.trim() !== "");
-
-    // if (nonEmptyImages.length === 0) {
-    //   throw new Error("Choose at least one image");
-    // }
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `INSERT INTO ${tableName} (
@@ -133,7 +125,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: "Product added" }, { status: 200 });
   } catch (error) {
-    console.log(error);
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: error.errors[0].message },
@@ -178,8 +169,6 @@ export async function PUT(request: Request) {
       inStock,
       colors,
       sizes,
-
-      //   images,
     } = reqData;
 
     await SubproductSchema.parseAsync({
@@ -222,12 +211,6 @@ export async function PUT(request: Request) {
     if (nonEmptySizes.length === 0) {
       throw new Error("Choose at least one size");
     }
-
-    // const nonEmptyImages = images.filter((cat: string) => cat.trim() !== "");
-
-    // if (nonEmptyImages.length === 0) {
-    //   throw new Error("Choose at least one image");
-    // }
 
     await db.execute(`DELETE FROM subproduct_colors WHERE subproduct_id = ?`, [
       uuid,
@@ -286,8 +269,6 @@ export async function DELETE(request: Request) {
   try {
     const { uuid } = await request.json();
 
-    console.log("uuid", uuid);
-
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
       [uuid]
@@ -297,8 +278,6 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
   } catch (error) {
-    console.log("error", error);
-
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
