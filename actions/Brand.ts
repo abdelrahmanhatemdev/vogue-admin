@@ -15,10 +15,6 @@ export const getBrands = async () => {
       const { data } = await res.json();
 
       if (data) {
-        data.forEach((item: Brand) => {
-          revalidateTag(`${tag}:${item?.uuid}`);
-        });
-
         return data.sort((a: Brand, b: Brand) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
@@ -50,7 +46,6 @@ export async function addBrand(data: Partial<Brand>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -68,7 +63,7 @@ export async function editBrand(data: Partial<Brand>) {
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(tag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -87,7 +82,6 @@ export async function deleteBrand(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

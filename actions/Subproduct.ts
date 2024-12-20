@@ -17,10 +17,6 @@ export const getSubproducts = async () => {
       const { data } = await res.json();
 
       if (data) {
-        data.forEach((item: Subproduct) => {
-          revalidateTag(`${tag}:${item?.uuid}`);
-        });
-
         return data.sort((a: Subproduct, b: Subproduct) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
@@ -52,8 +48,7 @@ export async function addSubproduct(data: Partial<Subproduct>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
-        revalidateTag(`${productTag}:${data?.uuid}`);
+        revalidateTag(productTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -79,8 +74,8 @@ export async function editSubproduct(
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(`${tag}:${data?.uuid}`);
-        revalidateTag(`${productTag}:${data?.uuid}`);
+        revalidateTag(tag);
+        revalidateTag(productTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -99,8 +94,7 @@ export async function deleteSubproduct(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
-        revalidateTag(`${productTag}:${data?.uuid}`);
+        revalidateTag(`${productTag}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

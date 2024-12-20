@@ -15,10 +15,6 @@ export const getProducts = async () => {
       const { data } = await res.json();
 
       if (data) {
-        data.forEach((item: Product) => {
-          revalidateTag(`${tag}:${item?.uuid}`);
-        });
-
         return data.sort((a: Product, b: Product) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
@@ -50,7 +46,6 @@ export async function addProduct(data: Partial<Product>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -68,7 +63,7 @@ export async function editProduct(data: Partial<Product>) {
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(tag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -87,7 +82,6 @@ export async function deleteProduct(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

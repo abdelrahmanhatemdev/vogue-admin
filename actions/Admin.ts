@@ -51,7 +51,6 @@ export async function addAdmin(data: Partial<Admin>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -69,7 +68,7 @@ export async function editAdmin(data: Partial<Admin>) {
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(tag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -88,7 +87,6 @@ export async function deleteAdmin(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
