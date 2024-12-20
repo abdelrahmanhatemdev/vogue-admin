@@ -52,7 +52,8 @@ export async function addSubproduct(data: Partial<Subproduct>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(productTag);
+        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(`${productTag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -78,8 +79,8 @@ export async function editSubproduct(
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        revalidateTag(productTag);
+        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(`${productTag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -98,7 +99,8 @@ export async function deleteSubproduct(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
-        revalidateTag(productTag);
+        revalidateTag(`${tag}:${data?.uuid}`);
+        revalidateTag(`${productTag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

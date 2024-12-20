@@ -122,10 +122,10 @@ export async function PUT(req: Request) {
   try {
     const orderArray = await req.json();
 
-    const updatedOrder = orderArray.map((order: number, index: number) => {
+    const updatedOrder = orderArray.map((orderID: number, index: number) => {
       db.execute(`UPDATE ${tableName} SET sort_order=? WHERE id = ?`, [
         index,
-        order,
+        orderID,
       ]);
     });
 

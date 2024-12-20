@@ -17,9 +17,9 @@ export const getProductImages = async () => {
 
       if (data) {
         data.forEach((item: ProductImage) => {
-          revalidateTag(`${tag}:${item?.uuid}`);
+          revalidateTag(`${tag}:${item?.id}`);
         });
-        
+
         return data.sort((a: ProductImage, b: ProductImage) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
@@ -50,7 +50,9 @@ export async function editProductImage(data: string[]) {
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
+        data.forEach((imageId: string) => {
+          revalidateTag(`${tag}:${imageId}`);
+        });
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -69,6 +71,7 @@ export async function deleteProductImage(data: { id: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(`${tag}:${data?.id}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
