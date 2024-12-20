@@ -11,6 +11,7 @@ const Subproduct = dynamic(
 );
 
 const title = "Subproducts"
+
 export async function generateMetadata({
   params,
 }: {

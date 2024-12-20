@@ -7,14 +7,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function notify(res: ActionResponse) {
+
+
   if (res?.status) {
     if (res.status === "200" || res.status === "success") {
       if (res?.message) {
         toast.success(res.message);
       }
     } else {
-      const error = res?.message || res?.error 
-        toast.error(`${error}`, {duration: 8000});
+      const error = res?.message || res?.error;
+      if (error) {
+        toast.error(`${error}`, { duration: 8000 });
+      }
     }
   }
 }
