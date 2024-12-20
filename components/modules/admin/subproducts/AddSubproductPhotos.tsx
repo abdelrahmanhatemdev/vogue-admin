@@ -133,11 +133,10 @@ function AddSubproductPhotos({
         });
 
         dataTransfer.items.add(file);
-
-        // Sync state and form once all files are processed
+        
         if (newImages.length === files.length) {
-          setImages((prev) => [...prev, ...newImages]); // Update state
-          form.setValue("images", dataTransfer.files); // Update form field
+          setImages((prev) => [...prev, ...newImages]);
+          form.setValue("images", dataTransfer.files); 
         }
       };
       reader.readAsDataURL(file);
@@ -155,7 +154,6 @@ function AddSubproductPhotos({
         dataTransfer.items.add(file);
       }
     });
-
     setImages(updatedImages);
     form.setValue("images", dataTransfer.files);
   };

@@ -80,7 +80,7 @@ function Subproduct({
   const [isPending, startTransition] = useTransition();
 
   const [optimisticImages, addOptimisticImages] =
-    useOptimistic<OptimisicImagesType[]>(images);
+    useOptimistic<OptimisicImagesType[]>(imageList);
 
   const {
     uuid,
@@ -113,7 +113,13 @@ function Subproduct({
 
   const router = useRouter();
 
-  async function handleSort(list: string[]) {
+  async function handleSort(updatedList: OptimisicImagesType[]) {
+    setImageList(updatedList);
+    startTransition(() => {
+      addOptimisticImages(imageList);
+    });
+
+    const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);
     notify(res);
   }
@@ -122,12 +128,7 @@ function Subproduct({
     setModalOpen(false);
     startTransition(() => {
       addOptimisticImages((prev: ProductImage[]) => [
-        ...prev.map((item) => {
-          if (item.id === id) {
-            return { ...item, isPending: !isPending };
-          }
-          return item;
-        }),
+        ...prev.filter((item) => item.id !== id),
       ]);
     });
     const res = await deleteProductImage({ id });
@@ -450,8 +451,7 @@ function Subproduct({
                 const updatedList = [...imageList];
                 const [movedItem] = updatedList.splice(oldIndex, 1);
                 updatedList.splice(newIndex, 0, movedItem);
-                setImageList(updatedList);
-                handleSort(updatedList.map((image) => image.id));
+                handleSort(updatedList);
               }}
             >
               {optimisticImages.map((image) => {
@@ -469,34 +469,37 @@ function Subproduct({
                             image={image}
                           />
                         ),
-                        className: "bg-transparent border-none lg:py-14  bg-[hsl(0,0%,0%,0.5)]",
+                        className:
+                          "bg-transparent border-none lg:py-14  bg-[hsl(0,0%,0%,0.5)]",
                         onPointerDownOutsideClose: true,
                       });
                     }}
                   >
-
-                    {src && <Image
-                      key={id}
-                      src={isPending ? src : `/api/images/src${src}`}
-                      alt={`Subproduct photo ${sku}-${id} `}
-                      className={cn(
-                        "w-full lg:w-auto lg:h-32 rounded-md",
-                        isPending ? "opacity-50" : ""
-                      )}
-                      height={100}
-                      width={200}
-                    />}
+                    {src && (
+                      <Image
+                        key={id}
+                        src={isPending ? src : `/api/images/src${src}`}
+                        alt={`Subproduct photo ${sku}-${id} `}
+                        className={cn(
+                          "w-full lg:w-auto lg:h-32 rounded-md",
+                          isPending ? "opacity-50" : ""
+                        )}
+                        height={100}
+                        width={200}
+                      />
+                    )}
                     <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                       <X
                         className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
                         size={15}
-                        onClick={e => {
-                          e.stopPropagation()
-                          handleRemove(id)}}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemove(id);
+                        }}
                       />
                       <Checkbox
                         className="absolute inset-2 cursor-pointer border-main-100"
-                        onClick={e => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                         onCheckedChange={(value) =>
                           setSelectedImages((prev) =>
                             value

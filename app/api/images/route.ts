@@ -9,7 +9,9 @@ import { ReadableStream } from "stream/web";
 import { revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
+
 const tag = "productImages";
+const subproductTag= "subproducts"
 
 export const config = {
   api: {
@@ -100,6 +102,7 @@ export async function POST(req: Request) {
 
     if (files.length > 0) {
       revalidateTag(tag);
+      revalidateTag(subproductTag);
       return NextResponse.json({
         message: `Photo${files.length > 1 ? "s" : ""} uploaded`,
         status: "200",
@@ -134,7 +137,7 @@ export async function PUT(req: Request) {
 
     await Promise.all(updatedOrder);
 
-    return NextResponse.json({ message: "Images are sorted" }, { status: 200 });
+    return NextResponse.json({ message: "Photos are sorted" }, { status: 200 });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
@@ -158,7 +161,7 @@ export async function DELETE(request: Request) {
 
     if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Image Deleted", result },
+        { message: "Photo Deleted", result },
         { status: 200 }
       );
     }
