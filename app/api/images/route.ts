@@ -100,12 +100,15 @@ export async function POST(req: Request) {
 
     if (files.length > 0) {
       revalidateTag(tag);
-      return NextResponse.json({ message: "Files uploaded" }, { status: 200 });
+      return NextResponse.json({
+        message: `Photo${files.length > 1 ? "s" : ""} uploaded`,
+        status: "200",
+      });
     }
-    return NextResponse.json(
-      { success: false, message: "No files uploaded" },
-      { status: 400 }
-    );
+    return NextResponse.json({
+      message: `No photos uploaded`,
+      status: "400",
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(

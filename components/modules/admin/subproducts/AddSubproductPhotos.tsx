@@ -106,7 +106,8 @@ function AddSubproductPhotos({
           method: "POST",
           body: formData,
         });
-        notify(res);
+        const resObj = await res.json()
+        notify(resObj);
       } catch (error) {
         console.log(error);
       }
