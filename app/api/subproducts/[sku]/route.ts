@@ -41,11 +41,9 @@ export async function GET(
     );
 
     const subproducts = rows as Product[];
-    const subproduct = subproducts[0] ?  subproducts[0] : null;
-
-    const data = { subproduct };
+    const data = subproducts[0] ?  subproducts[0] : null;
     
-    if (subproduct) {
+    if (data) {
       return NextResponse.json({ data }, { status: 200 });
     }
 

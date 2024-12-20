@@ -60,11 +60,11 @@ export const SidebarLinks = [
     link: "/admin/admins",
     icon: MdAdminPanelSettings,
   },
-  {
-    title: "Users",
-    link: "/admin/users",
-    icon: FaUsers,
-  },
+  // {
+  //   title: "Users",
+  //   link: "/admin/users",
+  //   icon: FaUsers,
+  // },
   {
     title: "Categories",
     link: "/admin/categories",
