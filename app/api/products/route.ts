@@ -11,15 +11,19 @@ export async function GET() {
   try {
     const [rows] = await db.query(
       `SELECT ${tableName}.*, 
-      brands.name as brand_name, brands.slug as brand_slug, 
-      GROUP_CONCAT(c.name," - ", c.slug, " - ", c.uuid) as categories
+      brands.name AS brand_name, brands.slug AS brand_slug, 
+      GROUP_CONCAT(c.name," - ", c.slug, " - ", c.uuid) AS categories,
+      COUNT(sp.uuid) AS subproduct_count
       FROM ${tableName} 
-      JOIN brands
+      LEFT JOIN brands
       ON ${tableName}.brand_id = brands.uuid 
       LEFT JOIN product_categories pc
       ON ${tableName}.uuid = pc.product_id
       LEFT JOIN categories c
       ON c.uuid = pc.category_id
+      LEFT JOIN subproducts sp
+      ON sp.product_id = ${tableName}.uuid
+      AND sp.deletedAt IS NULL
       WHERE ${tableName}.deletedAt IS NULL 
       GROUP BY ${tableName}.uuid
       ORDER BY updatedAt DESC

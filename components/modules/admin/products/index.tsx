@@ -60,6 +60,9 @@ function Products({ data }: { data: Product[] }) {
       : [];
   }, [optimisicData]);
 
+  console.log("data", data);
+  
+
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
       {
@@ -249,21 +252,20 @@ function Products({ data }: { data: Product[] }) {
           return 0;
         },
       },
-      // {
-      //   id: "subProducts",
-      //   accessorKey: "subProducts",
-      //   header: "Sub Products",
-      //   cell: ({ row }) => {
-      //     const item: Product = row.original;
+      {
+        id: "subproduct_count",
+        accessorKey: "subproduct_count",
+        header: "Sub Products",
+        cell: ({ row }) => {
+          const item: Product & { subproduct_count?: string } = row.original;
 
-      //     const itemSubs = item?.subproducts as {sku:string; id: string;}[]
+          const subproductsCount: number = item?.subproduct_count
+            ? Number(item.subproduct_count)
+            : 0;
 
-      //     const subProductsCount: number = itemSubs
-      //       ? itemSubs?.length
-      //       : 0;
-      //     return <>{subProductsCount}</>;
-      //   },
-      // },
+          return <>{subproductsCount}</>;
+        },
+      },
       {
         id: "actions",
         cell: ({ row }) => {
