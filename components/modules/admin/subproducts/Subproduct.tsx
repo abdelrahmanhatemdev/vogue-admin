@@ -114,10 +114,10 @@ function Subproduct({
   const router = useRouter();
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
-    setImageList(updatedList);
-    startTransition(() => {
-      addOptimisticImages(imageList);
-    });
+    // startTransition(() => {
+    //   addOptimisticImages(imageList);
+    // });
+    // setImageList(updatedList);
 
     const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);

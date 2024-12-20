@@ -12,7 +12,6 @@ import Link from "next/link";
 import { memo } from "react";
 import { CiLogout } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useSidebar } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
@@ -20,13 +19,12 @@ import Loading from "@/components/custom/Loading";
 const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
   loading: Loading,
 });
+
 function IconsGroup() {
   const { data: session } = useSession();
   const user = session?.user;
-  const { state } = useSidebar();
-  return !user ? (
-    <></>
-  ) : (
+
+  return user && user?.role === "admin" ? (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -60,6 +58,8 @@ function IconsGroup() {
         </DropdownMenuContent>
       </DropdownMenu>
     </>
+  ) : (
+    <></>
   );
 }
 

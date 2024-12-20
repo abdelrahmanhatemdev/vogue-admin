@@ -121,20 +121,10 @@ function AdminSidebar() {
             <SidebarMenu>
               {SidebarLinks.map((link) => {
                 const isActive =
-                  link.link !== "/admin"
-                    ? currentPath.startsWith(link.link)
-                    : false;
+                  link.link === "/admin"
+                    ? currentPath === "/admin"
+                    : currentPath.startsWith(link.link);
 
-                // console.log(
-                //   "link.link",
-                //   link.link,
-                //   "link.title",
-                //   link.title,
-                //   "isActive",
-                //   isActive,
-                //   "link.link !== /admin",
-                //   link.link !== "/admin"
-                // );
                 return (
                   <SidebarMenuItem key={link.title}>
                     <SidebarMenuButton asChild isActive={isActive}>
