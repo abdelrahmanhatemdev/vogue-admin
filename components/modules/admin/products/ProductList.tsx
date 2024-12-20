@@ -157,10 +157,7 @@ function ProductList({
     onColumnFiltersChange: setColumnFilters,
     getRowId: (row) => row.uuid,
   });
-
-  console.log("columnFilters", columnFilters);
   
-
   const currentPage = pagination.pageIndex + 1;
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
@@ -262,9 +259,9 @@ function ProductList({
                             {selectedBrands.length} Selected
                           </span>
                         ) : (
-                          selectedBrands.map((name) => (
+                          selectedBrands.map((name, index) => (
                             <span
-                              key={name}
+                              key={index}
                               className="bg-main-200 p-1 rounded-md text-xs"
                             >
                               {brands.find((b) => b.name === name)?.name}
@@ -287,9 +284,6 @@ function ProductList({
                             const updatedFilter = prev.includes(item.name)
                               ? prev.filter((b) => b !== item.name)
                               : [...prev, item.name];
-
-                              console.log("updatedFilter", updatedFilter);
-                              
 
                             setColumnFilters((prevFilters) => {
                               const newFilters = prevFilters.filter(

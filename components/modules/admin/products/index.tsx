@@ -59,8 +59,6 @@ function Products({ data }: { data: Product[] }) {
         )
       : [];
   }, [optimisicData]);
-
-  console.log("data", data);
   
 
   const columns: ColumnDef<Product>[] = useMemo(
