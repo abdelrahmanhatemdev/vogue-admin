@@ -11,33 +11,35 @@ export const getProductImages = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: ProductImage[] = [];
 
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: ProductImage, b: ProductImage) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
-
-      return sortedData;
+      if (data) {
+        data.forEach((item: ProductImage) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
+        
+        return data.sort((a: ProductImage, b: ProductImage) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getSubproductImages(id: string) {
   try {
-    
     const res = await fetch(`${apiURL}/productImages/${id}`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
 
     const { data } = await res.json();
-   
+
     return data;
   } catch (error) {
     return console.log(error);

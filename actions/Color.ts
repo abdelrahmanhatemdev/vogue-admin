@@ -11,22 +11,24 @@ export const getColors = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Color[] = [];
-
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Color, b: Color) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Color) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Color, b: Color) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getColorById(id: string) {
   try {

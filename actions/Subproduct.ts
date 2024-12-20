@@ -12,18 +12,21 @@ export const getSubproducts = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Subproduct[] = [];
 
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Subproduct, b: Subproduct) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Subproduct) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Subproduct, b: Subproduct) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }

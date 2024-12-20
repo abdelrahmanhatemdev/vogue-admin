@@ -6,28 +6,29 @@ const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Brand[] = [];
-
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Brand, b: Brand) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Brand) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Brand, b: Brand) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getBrandBySlug(slug: string) {
   try {

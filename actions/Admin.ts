@@ -11,27 +11,30 @@ export const getAdmins = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Admin[] = [];
 
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Admin, b: Admin) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Admin) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Admin, b: Admin) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
-export async function getAdminById(id: string) {
+export async function getAdminById(uuid: string) {
   try {
-    const res = await fetch(`${apiURL}/${id}`, {
-      next: { tags: [tag] },
+    const res = await fetch(`${apiURL}/${uuid}`, {
+      next: { tags: [`${tag}:${uuid}`] },
       cache: "force-cache",
     });
 
@@ -48,6 +51,7 @@ export async function addAdmin(data: Partial<Admin>) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -65,7 +69,7 @@ export async function editAdmin(data: Partial<Admin>) {
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
+        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -84,6 +88,7 @@ export async function deleteAdmin(data: { uuid: string }) {
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(`${tag}:${data?.uuid}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

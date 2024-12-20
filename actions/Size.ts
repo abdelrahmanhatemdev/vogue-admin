@@ -11,22 +11,25 @@ export const getSizes = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Size[] = [];
 
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Size, b: Size) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Size) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Size, b: Size) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getSizeById(id: string) {
   try {

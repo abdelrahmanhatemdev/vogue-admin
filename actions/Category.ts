@@ -11,22 +11,24 @@ export const getCategories = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Category[] = [];
-
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Category, b: Category) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Category) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Category, b: Category) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getCategoryBySlug(slug: string) {
   try {
@@ -95,5 +97,3 @@ export async function deleteCategory(data: { uuid: string }) {
       return { status: "error", message };
     });
 }
-
-

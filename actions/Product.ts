@@ -11,22 +11,24 @@ export const getProducts = async () => {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    let data: Product[] = [];
-
-    if (res) {
+    if (res?.ok) {
       const { data } = await res.json();
 
-      const sortedData = data?.sort((a: Product, b: Product) =>
-        b.updatedAt.localeCompare(a.updatedAt)
-      );
+      if (data) {
+        data.forEach((item: Product) => {
+          revalidateTag(`${tag}:${item?.uuid}`);
+        });
 
-      return sortedData;
+        return data.sort((a: Product, b: Product) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
     }
-    return data;
+    return [];
   } catch (error) {
     return console.log(error);
   }
-}
+};
 
 export async function getProductBySlug(slug: string) {
   try {
@@ -34,7 +36,7 @@ export async function getProductBySlug(slug: string) {
       next: { tags: [tag] },
       cache: "force-cache",
     });
-    
+
     const { data } = await res.json();
     return data;
   } catch (error) {
@@ -95,5 +97,3 @@ export async function deleteProduct(data: { uuid: string }) {
       return { status: "error", message };
     });
 }
-
-
