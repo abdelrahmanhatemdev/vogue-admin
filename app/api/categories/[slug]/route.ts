@@ -11,7 +11,7 @@ export async function GET(
 ) {
   const params = await props.params;
 
-  const { slug } = params;
+  const { slug } = await params;
 
   try {
     const [rows] = await db.query(

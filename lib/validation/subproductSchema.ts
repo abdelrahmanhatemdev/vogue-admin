@@ -1,6 +1,6 @@
 import z from "zod";
 import { currencies } from "@/constants/currencies";
-import { isValidSku, isValidSlug } from "@/lib/isValid";
+import { isValidSku, isValidSlug } from "../isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
@@ -17,26 +17,36 @@ export const SubproductSchema = z
         message: "Sku should not have more than 24 charachters.",
       }),
     currency: z.enum(validCurrencies, { message: "Invalid currency" }),
-    price: z.coerce
-      .number({ message: "Price is required" })
-      .positive("Price must be positive")
-      .min(1, {
-        message: "Price is required",
-      }),
+    price: z
+      .string({ message: "Price is required" })
+      .refine((val) => val !== "", { message: "Price is required" })
+      .transform((val) => parseFloat(val))
+      .refine((val) => !isNaN(val), { message: "Price must be a valid number" })
+      .refine((val) => val >= 0, { message: "Price must be 0 or positive" }),
     discount: z.coerce
       .number()
       .nonnegative("Discount must be zero or positive")
       .max(100, {
         message: "Discount cannot be more than 100%",
       }),
-    qty: z.coerce
-      .number()
-      .int({ message: "Quantity must be an integer." })
-      .min(0, { message: "Quantity cannot be negative." }),
+    qty: z
+      .string({ message: "Quantity is required" })
+      .refine((val) => val !== "", { message: "Quantity is required" })
+      .transform((val) => parseFloat(val))
+      .refine((val) => !isNaN(val), {
+        message: "Quantity must be a valid number",
+      })
+      .refine((val) => val >= 0, { message: "Quantity must be 0 or positive" }),
     sold: z.coerce
-      .number()
-      .int({ message: "Sold quantity must be an integer." })
-      .min(0, { message: "Sold quantity cannot be negative." }),
+      .string({ message: "Sold quantity is required" })
+      .refine((val) => val !== "", { message: "Sold quantity is required" })
+      .transform((val) => parseFloat(val))
+      .refine((val) => !isNaN(val), {
+        message: "Sold quantity must be a valid number",
+      })
+      .refine((val) => val >= 0, {
+        message: "Sold quantity must be 0 or positive",
+      }),
     featured: z.boolean({ message: "Featured field is required." }),
     inStock: z.boolean({ message: "InStock field is required." }),
     colors: z.array(z.string()).nonempty({

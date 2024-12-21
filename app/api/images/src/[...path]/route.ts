@@ -3,7 +3,7 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { path: string[] } }) {
-  const { path: pathSegments } = params;
+  const { path: pathSegments } = await params;
 
   // Construct the file path
   const filePath = path.join(process.cwd(), ...pathSegments);

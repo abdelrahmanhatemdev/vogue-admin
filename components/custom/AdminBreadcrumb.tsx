@@ -1,3 +1,4 @@
+
 import { memo } from "react";
 import Link from "next/link";
 import {
@@ -9,8 +10,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Button } from "../ui/button";
-import useTheme from "@/hooks/useTheme";
+import dynamic from "next/dynamic";
+import Loading from "@/components/custom/Loading";
+
+const ToggleTheme = dynamic(() => import("@/components/custom/ToggleTheme"), {
+  loading: Loading,
+  ssr: false,
+});
 
 interface AdminBreadcrumbProps {
   page: string;
@@ -21,10 +27,9 @@ interface AdminBreadcrumbProps {
 }
 
 function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
-  const {theme, toggleTheme} = useTheme()
   return (
     <div className="flex flex-col md:flex-row justify-between items-center w-full bg-background p-4 rounded-lg">
-      <Breadcrumb className="">
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
             <BreadcrumbLink asChild>
@@ -62,9 +67,7 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <Button onClick={toggleTheme}>
-        {theme}
-      </Button>
+      <ToggleTheme />
     </div>
   );
 }

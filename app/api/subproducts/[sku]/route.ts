@@ -12,7 +12,7 @@ export async function GET(
   try {
     const params = await props.params;
 
-  const {sku } = params;
+  const {sku } = await params;
 
     const [rows] = await db.query(
       `SELECT sp.*, 

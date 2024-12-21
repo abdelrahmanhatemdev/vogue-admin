@@ -18,6 +18,6 @@ if (!global._mysqlPool) {
     queueLimit: 0,
   });
 }
-pool = glovvbal._mysqlPool as Pool;
+pool = global._mysqlPool as Pool;
 
 export default pool;

@@ -42,7 +42,7 @@ function AddSize({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
       uuid: uuidv4(), 
-      symbol: undefined, 
+      symbol: "", 
       sort_order: 0
     },
     mode: "onChange",

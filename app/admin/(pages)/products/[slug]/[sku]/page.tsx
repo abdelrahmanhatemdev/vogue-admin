@@ -17,7 +17,7 @@ export async function generateMetadata({
 }: {
   params: { sku: string };
 }): Promise<Metadata> {
-  const { sku } = params;
+  const { sku } = await params;
 
   if (sku) {
     const data = await getSubproductBySku(sku);
@@ -38,7 +38,7 @@ export default async function SubproductPage(props: {
 }) {
   const params = await props.params;
 
-  const { sku } = params;
+  const { sku } = await params;
   const data = await getSubproductBySku(sku);
 
   if (!data?.uuid) {

@@ -56,11 +56,11 @@ function AddSubproduct({
       uuid: uuidv4(),
       product_id: productId,
       sku: "",
-      price: undefined,
+      price: 0,
       currency: "USD",
       discount: 0,
-      qty: undefined,
-      sold: undefined,
+      qty: 0,
+      sold: 0,
       featured: false,
       inStock: true,
       colors: [],
@@ -192,7 +192,7 @@ function AddSubproduct({
                 control={form.control}
                 name="price"
                 render={({ field }) => (
-                  <Input {...field} className="min-w-[60%] rounded-e-none" />
+                  <Input {...field} className="min-w-[60%] rounded-e-none" value={field.value ? field.value : ""}/>
                 )}
               />
               <FormField
@@ -276,7 +276,7 @@ function AddSubproduct({
             <FormItem>
               <FormLabel>Qty</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ? field.value : ""}/>
               </FormControl>
               <FormDescription>New subproduct qty</FormDescription>
               <FormMessage />
@@ -290,7 +290,7 @@ function AddSubproduct({
             <FormItem>
               <FormLabel>Sold</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ? field.value : ""}/>
               </FormControl>
               <FormDescription>New subproduct sold</FormDescription>
               <FormMessage />

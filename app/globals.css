@@ -38,8 +38,8 @@ body {
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
     --ring: 0 0% 80%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -123,9 +123,9 @@ body {
   }
 }
 
-.mySwiper .swiper-pagination-fraction, 
-.mySwiper .swiper-pagination-custom, 
-.mySwiper .swiper-horizontal > .swiper-pagination-bullets, 
+.mySwiper .swiper-pagination-fraction,
+.mySwiper .swiper-pagination-custom,
+.mySwiper .swiper-horizontal > .swiper-pagination-bullets,
 .mySwiper .swiper-pagination-bullets.swiper-pagination-horizontal {
   bottom: var(--swiper-pagination-bottom, 3rem);
 }
@@ -135,7 +135,7 @@ body {
   border-radius: 4px;
   height: 3px;
 }
-.mySwiper .swiper-pagination-bullet-active{
+.mySwiper .swiper-pagination-bullet-active {
   background: hsl(var(--main-50));
   opacity: 80%;
 }

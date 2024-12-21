@@ -174,7 +174,7 @@ function Products({ data }: { data: Product[] }) {
           });
 
           return itemCats?.length > 0 ? (
-            itemCats.map((cat) => (
+            itemCats.map((cat, index) => (
               <Link
                 href={`/admin/categories/${cat.slug}`}
                 className={
@@ -182,7 +182,7 @@ function Products({ data }: { data: Product[] }) {
                   (item.isPending ? " opacity-50" : "")
                 }
                 title="Go to categories page"
-                key={cat.name + cat.slug}
+                key={index}
               >
                 {cat.name.length > 8 ? `${cat.name.slice(0, 8)}...` : cat.name}
               </Link>

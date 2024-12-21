@@ -1,4 +1,5 @@
-import { createContext, Dispatch, SetStateAction } from "react";
+"use client"
+import { createContext } from "react";
 
 interface ThemeContextType {
   theme: string;
