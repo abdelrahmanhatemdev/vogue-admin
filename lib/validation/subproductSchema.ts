@@ -18,35 +18,23 @@ export const SubproductSchema = z
       }),
     currency: z.enum(validCurrencies, { message: "Invalid currency" }),
     price: z
-      .string({ message: "Price is required" })
-      .refine((val) => val !== "", { message: "Price is required" })
-      .transform((val) => parseFloat(val))
-      .refine((val) => !isNaN(val), { message: "Price must be a valid number" })
-      .refine((val) => val >= 0, { message: "Price must be 0 or positive" }),
+    .coerce
+      .number({ message: "Price is required" })
+      .nonnegative("Price must be 0 or positive"),
     discount: z.coerce
       .number()
       .nonnegative("Discount must be zero or positive")
       .max(100, {
         message: "Discount cannot be more than 100%",
       }),
-    qty: z
-      .string({ message: "Quantity is required" })
-      .refine((val) => val !== "", { message: "Quantity is required" })
-      .transform((val) => parseFloat(val))
-      .refine((val) => !isNaN(val), {
-        message: "Quantity must be a valid number",
-      })
-      .refine((val) => val >= 0, { message: "Quantity must be 0 or positive" }),
+    qty: z.coerce
+      .number({ message: "Quantity is required" })
+      .int({ message: "Quantity must be an integer." })
+      .min(0, { message: "Sold quantity cannot be negative." }),
     sold: z.coerce
-      .string({ message: "Sold quantity is required" })
-      .refine((val) => val !== "", { message: "Sold quantity is required" })
-      .transform((val) => parseFloat(val))
-      .refine((val) => !isNaN(val), {
-        message: "Sold quantity must be a valid number",
-      })
-      .refine((val) => val >= 0, {
-        message: "Sold quantity must be 0 or positive",
-      }),
+      .number({ message: "Quantity is required" })
+      .int({ message: "Sold quantity must be an integer." })
+      .min(0, { message: "Sold quantity cannot be negative." }),
     featured: z.boolean({ message: "Featured field is required." }),
     inStock: z.boolean({ message: "InStock field is required." }),
     colors: z.array(z.string()).nonempty({

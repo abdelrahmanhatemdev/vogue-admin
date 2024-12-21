@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         { status: 200 }
       );
     }
-
+    
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";

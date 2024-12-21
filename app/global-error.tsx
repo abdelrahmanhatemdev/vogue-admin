@@ -1,19 +1,34 @@
-'use client';
+"use client";
+
+import ErrorPage from "@/components/custom/ErrorPage";
+import { useEffect } from "react";
 
 export default function GlobalError({
-    error,
-    reset,
+  error,
+  reset,
 }: {
-    error: Error;
-    reset: () => void;
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
-    return (
-        <html>
-            <body>
-                <h1>Global Error</h1>
-                <p>{error.message || 'An unexpected error occurred.'}</p>
-                <button onClick={() => reset()}>Retry</button>
-            </body>
-        </html>
-    );
+  useEffect(() => {
+    console.error(error);
+  }, [error])
+
+
+  return (
+    <ErrorPage>
+      <h1 className="text-[1.5rem] lg:text-4xl text-danger-200 font-bold text-center">
+        Something went wrong!
+      </h1>
+      <p className="text-main-100 text-center capitalize">
+        {error.message || "An unexpected error occurred."}
+      </p>
+      <button
+        className="text-main-100 hover:bg-slate-100 hover:text-main-900 p-2 rounded-md text-sm transition-colors text-center "
+        onClick={() => reset()}
+      >
+        <strong>Try</strong> again
+      </button>
+    </ErrorPage>
+  );
 }
