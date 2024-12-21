@@ -19,6 +19,7 @@ function AppLayout({
         rounded-lg bg-main-100 mx-auto 
         overflow-y-auto scrollbar-hide pt-16 md:pt-0
         
+        
         ">
            {children}
         </div>

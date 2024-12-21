@@ -8,14 +8,18 @@ export const tableName = "admins";
 
 export async function GET() {
   try {
-    const [rows] = await (await db).query(
+    const [rows] = await db.query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
     );
 
     const data = rows as Admin[];
 
+    console.log("data", data);
+    
+
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }

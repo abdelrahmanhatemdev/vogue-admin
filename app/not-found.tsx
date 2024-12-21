@@ -23,7 +23,7 @@ export default async function NotFound() {
             src={`/assets/images/404/404.png`}
             alt="Not found page"
             fill
-            className="rounded-lg object-cover filter brightness-[.5]"
+            className="rounded-lg object-cover filter brightness-[.2]"
             sizes="(max-width: 768px) 33vw, (max-width: 1200px) 50vw, 33vw"
             priority={true}
           />
@@ -36,9 +36,8 @@ export default async function NotFound() {
             </Link>
           </div>
 
-          <div
-            className="flex flex-col gap-4 items-center justify-center rounded-2xl min-w-fit lg:w-[50%] h-[50%] z-10 p-4"
-            style={{ background: "hsl(0 0% 2% /40%)" }}
+          <div className="flex flex-col gap-4 items-center justify-center rounded-2xl min-w-fit lg:w-[50%] h-[50%] z-10 p-4"
+            style={{ background: "hsl(0 0% 2% /60%)" }}
           >
             <h1 className="text-[1.5rem] lg:text-4xl text-main-100 font-bold text-center">
               404 Page
@@ -48,7 +47,7 @@ export default async function NotFound() {
             </p>
             <Link
               href={`/admin`}
-              className="text-main-100 hover:bg-slate-100 hover:bg-opacity-40 hover:text-main-900 p-2 rounded-md text-sm transition-colors text-center "
+              className="text-main-100 hover:bg-slate-100 hover:text-main-900 p-2 rounded-md text-sm transition-colors text-center "
             >
               Take me back to <strong>Webiste</strong>
             </Link>

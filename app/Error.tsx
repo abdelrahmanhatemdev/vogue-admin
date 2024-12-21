@@ -1,33 +1,30 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-
-export default function GlobalError({
+'use client' // Error boundaries must be Client Components
+ 
+import { useEffect } from 'react'
+ 
+export default function Error({
   error,
   reset,
 }: {
-  error: Error;
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
   useEffect(() => {
-  }, [error]);
-
+    // Log the error to an error reporting service
+    console.error(error)
+  }, [error])
+ 
   return (
-    <html>
-      <head>
-        <title>Something Went Wrong</title>
-      </head>
-      <body>
-        <div style={{ padding: "2rem", textAlign: "center" }}>
-          <h1>Something went wrong</h1>
-          <p>{error.message}</p>
-          <main className="flex flex-col items-center justify-center h-full">
-            <h1 className="text-2xl">Something went wrong!</h1>
-            <Button onClick={() => reset()}>Try Again</Button>
-            
-          </main>
-        </div>
-      </body>
-    </html>
-  );
+    <div>
+      <h2>Something went wrong!</h2>
+      <button
+        onClick={
+          // Attempt to recover by trying to re-render the segment
+          () => reset()
+        }
+      >
+        Try again
+      </button>
+    </div>
+  )
 }

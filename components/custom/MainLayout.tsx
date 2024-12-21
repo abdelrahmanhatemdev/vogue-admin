@@ -3,27 +3,29 @@ import { ReactNode, useEffect, useState } from "react";
 import NoInternet from "./NoInternet";
 import AppLayout from "./AppLayout";
 
-function MainLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
-  const [isOnline, setIsOnline] = useState(true)
+function MainLayout({ children }: Readonly<{ children: ReactNode }>) {
+  const [isOnline, setIsOnline] = useState(true);
 
-  useEffect(()=> {
-    setIsOnline(navigator.onLine)
+  useEffect(() => {
+    setIsOnline(navigator.onLine);
 
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener("online", handleOnline)
-    window.addEventListener("offline", handleOffline)
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline)
-      window.removeEventListener("offline", handleOffline)
-    }
-  })
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  });
 
-  return !isOnline ? <NoInternet/> : <AppLayout>{children}</AppLayout>
+  return !isOnline ? (
+    <NoInternet />
+  ) : (
+      <AppLayout>{children}</AppLayout>
+  );
 }
 
-export default MainLayout
+export default MainLayout;
