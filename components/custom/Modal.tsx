@@ -43,7 +43,6 @@ function Modal({
             e.preventDefault();
           }
         }}
-        aria-describedby={undefined}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
       >
         {title ? (
