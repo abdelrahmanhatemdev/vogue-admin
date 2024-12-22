@@ -201,7 +201,7 @@ function AddSubproduct({
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="bg-main-200 rounded-s-none">
+                      <SelectTrigger className="bg-main-200 rounded-s-none border-s-0">
                         <SelectValue
                           placeholder="Select Currency"
                           className="truncate"

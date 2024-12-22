@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <ErrorPage>
-      <h1 className="text-[1.5rem] lg:text-4xl text-danger-200 font-bold text-center">
+      <h1 className="text-[1.5rem] lg:text-4xl text-red-600 font-bold text-center">
         Something went wrong!
       </h1>
       <p className="text-main-100 text-center capitalize">

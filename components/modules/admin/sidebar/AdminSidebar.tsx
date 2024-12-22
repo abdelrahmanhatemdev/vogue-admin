@@ -103,7 +103,12 @@ function AdminSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="absolute h-[90.25vh] top-[2.375vh] start-[1rem] rounded-lg border-transparent"
+      className="
+      absolute 
+      h-[calc(100%-5vh)] top-[2.5vh]
+      start-[1rem] 
+      rounded-lg 
+      border-transparent"
     >
       <SidebarHeader className="hidden md:block py-8 px-4">
         {state === "expanded" ? (
@@ -112,7 +117,7 @@ function AdminSidebar() {
           <Logo className="w-5 h-5 mx-auto" small={true} />
         )}
       </SidebarHeader>
-      <SidebarContent className="scrollbar-hide">
+      <SidebarContent className="scrollbar-hide overflow-hidden">
         <SidebarGroup>
           <SidebarGroupLabel className="text-foreground">
             Vogue Admin

@@ -16,10 +16,6 @@ export const getAdmins = async () => {
       const { data } = await res.json();
 
       if (data) {
-        data.forEach((item: Admin) => {
-          revalidateTag(`${tag}:${item?.uuid}`);
-        });
-
         return data.sort((a: Admin, b: Admin) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );

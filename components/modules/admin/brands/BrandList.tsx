@@ -240,7 +240,7 @@ function BrandList({
 
       {isData ? (
         <>
-          <Table className="border rounded-xl">
+          <Table>
             <TableHeader>
               {table.getHeaderGroups().map((hgroup) => (
                 <TableRow key={hgroup.id}>

@@ -17,10 +17,7 @@ function AppLayout({
         start-[2.5vw] xs:start-[5vw] xl:start-[15vw] 
         fixed h-[95vh] top-[2.5vh]
         rounded-lg bg-main-100 mx-auto 
-        overflow-y-auto scrollbar-hide pt-16 md:pt-0
-        
-        
-        ">
+        overflow-y-auto scrollbar-hide pt-16 md:pt-0">
            {children}
         </div>
       </motion.div>

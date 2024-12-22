@@ -51,7 +51,9 @@ export default async function layout({
 
   return (
     <MainLayout>
-      <SidebarProvider defaultOpen={defaultOpen}>
+      <SidebarProvider defaultOpen={defaultOpen} className="
+      md:h-full md:min-h-full
+      overflow-auto scrollbar-hide">
         <Header />
         <motion.div
           initial={{ y: -100, opacity: 0 }}
