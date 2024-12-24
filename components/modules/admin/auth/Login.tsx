@@ -86,7 +86,7 @@ const Login = () => {
           />
 
           <Button
-            className="w-full mt-4 p-6 bg-neutral-800 text-neutral-50 hover:bg-neutral-900"
+            className="w-full mt-4 p-6 bg-neutral-800 text-neutral-50 dark:text-neutral-800 hover:bg-neutral-900"
             variant={"nostyle"}
             type="submit"
           >

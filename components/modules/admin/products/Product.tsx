@@ -115,7 +115,7 @@ function Product({
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
               className={
-                "hover:bg-neutral-300 p-2 rounded-lg bg-neutral-200 transition-colors" +
+                "hover:bg-neutral-300 p-2 rounded-lg bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-800 transition-colors" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to Subproduct page"
@@ -221,7 +221,7 @@ function Product({
           const item: OptimisicDataType = row.original;
 
           return (
-            <span className={`${item.isPending ? " opacity-50" : ""}`}>
+            <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
               <Switch
                 checked={item.featured}
                 onCheckedChange={async () => {

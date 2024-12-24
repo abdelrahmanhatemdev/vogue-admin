@@ -100,7 +100,9 @@ function AddColor({
                 <FormLabel>Hex Code</FormLabel>
                 <FormControl>
                   <Sketch
+                  
                     className="min-w-full"
+                    
                     onChange={(e: { hex: string }) => {
                       form.setValue("hex", e.hex);
                       form.clearErrors("hex");

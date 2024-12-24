@@ -6,7 +6,7 @@ import { promises as fs } from "fs";
 import { ZodError } from "zod";
 import { Readable } from "stream";
 import { ReadableStream } from "stream/web";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
 

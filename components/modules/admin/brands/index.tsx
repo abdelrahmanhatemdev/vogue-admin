@@ -94,7 +94,7 @@ function Brands({ data }: { data: Brand[] }) {
             <Link
               href={`/admin/brands/${item.slug}`}
               className={
-                "hover:bg-neutral-200 p-2 rounded-lg" +
+                "hover:bg-neutral-200 dark:hover:bg-neutral-500 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to brand page"

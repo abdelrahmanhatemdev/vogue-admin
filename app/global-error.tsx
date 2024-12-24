@@ -24,7 +24,7 @@ export default function GlobalError({
         {error.message || "An unexpected error occurred."}
       </p>
       <button
-        className="text-neutral-100 hover:bg-slate-100 hover:text-neutral-900 p-2 rounded-md text-sm transition-colors text-center "
+        className="text-neutral-100 hover:bg-slate-100 hover:text-neutral-900 dark:text-neutral-50 p-2 rounded-md text-sm transition-colors text-center "
         onClick={() => reset()}
       >
         <strong>Try</strong> again

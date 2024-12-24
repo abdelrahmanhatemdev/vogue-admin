@@ -233,7 +233,7 @@ function AddSubproductPhotos({
                   name="images"
                   render={() => (
                     <FormItem className="w-full h-full">
-                      <FormLabel className="border border-dashed border-neutral-300 bg-neutral-100 hover:bg-neutral-200 flex justify-center rounded-lg items-center cursor-pointer w-full h-full">
+                      <FormLabel className="border border-dashed border-neutral-300 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 flex justify-center rounded-lg items-center cursor-pointer w-full h-full">
                         <div className="flex flex-col items-center gap-1 justify-center p-4">
                           <div>Choose Photos</div>
                         </div>

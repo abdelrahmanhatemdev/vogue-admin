@@ -55,18 +55,26 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --paraghraph: 
+    --paraghraph: ;
   }
- 
 }
 
 .dark {
   --foreground: 0 0% 100%;
   --background: 0 0% 20%;
-  --muted: 210 40% 96.1%;
-    --muted-foreground: 0 0% 45%;
-
-
+  --card: 0 0% 30%;
+  --card-foreground: 0 0% 90%;
+  --muted: 0 0% 40%;
+  --muted-foreground: 0 0% 75%;
+  --primary: 0 0% 10%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 0 0% 25%;
+  --accent-foreground: 0 0% 80%;
+  --popover: 0 0% 20%;
+  --popover-foreground: 0 0% 80%;
+  --border: 0 0% 30%;
+  --input: 0 0% 40%;
+  --ring: 0 0% 20%;
 
   --sidebar-background: 0 0% 20%;
   --sidebar-foreground: 240 4.8% 95.9%;
@@ -77,8 +85,6 @@ body {
   --sidebar-border: 240 3.7% 15.9%;
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
-
-
 
 .mySwiper .swiper-pagination-fraction,
 .mySwiper .swiper-pagination-custom,

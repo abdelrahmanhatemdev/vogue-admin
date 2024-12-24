@@ -262,8 +262,8 @@ function CategoryList({
                         {header.column.getCanSort() ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <div className="flex gap-2 items-center hover:bg-neutral-200 hover:*:text-neutral-900 rounded-lg p-2">
-                                <span className="text-neutral-800">
+                              <div className="flex gap-2 items-center hover:bg-neutral-200 dark:hover:bg-neutral-500 hover:*:text-neutral-900 dark:text-neutral-50 rounded-lg p-2">
+                                <span className="text-neutral-800 dark:text-neutral-300">
                                   {" "}
                                   {header.isPlaceholder
                                     ? null
@@ -272,9 +272,7 @@ function CategoryList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted
-                                  style={{ fill: "var(--neutral-800)" }}
-                                />
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
@@ -319,7 +317,7 @@ function CategoryList({
                           </DropdownMenu>
                         ) : (
                           <div>
-                            <span className="text-neutral-800">
+                            <span className="text-neutral-800 dark:text-neutral-300">
                               {" "}
                               {header.isPlaceholder
                                 ? null

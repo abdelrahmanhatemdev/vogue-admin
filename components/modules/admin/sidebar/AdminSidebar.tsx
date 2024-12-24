@@ -170,7 +170,7 @@ function AdminSidebar() {
                     state === "expanded" ? "w-10 h-10" : "w-8 h-8"
                   )}
                 >
-                  <User className="text-neutral-50" size={25} />
+                  <User className="text-neutral-50 dark:text-neutral-800" size={25} />
                 </div>
                 {state === "expanded" ? (
                   <div className="flex flex-col items-start">

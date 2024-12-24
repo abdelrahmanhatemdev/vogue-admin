@@ -209,7 +209,7 @@ function EditSubproduct({
                 render={({ field }) => (
                   <FormItem className="w-[40%] text-xs">
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="bg-neutral-200 rounded-s-none border-s-0">
+                      <SelectTrigger className="bg-neutral-200 dark:bg-neutral-700 rounded-s-none border-s-0">
                         <SelectValue
                           placeholder="Select Currency"
                           className="truncate"
@@ -249,7 +249,7 @@ function EditSubproduct({
               <FormLabel>discount</FormLabel>
               <FormControl>
                 <Select value={`${field.value}`} onValueChange={field.onChange}>
-                  <SelectTrigger className="bg-neutral-200 rounded-md">
+                  <SelectTrigger className="bg-neutral-200 dark:bg-neutral-800 rounded-md">
                     <SelectValue
                       placeholder="Select Currency"
                       className="truncate"

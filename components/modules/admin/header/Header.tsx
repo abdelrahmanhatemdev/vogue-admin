@@ -17,7 +17,7 @@ function Header() {
       className="
     p-4 
     md:hidden
-    fixed inset-0 bg-neutral-100  z-10
+    fixed inset-0 bg-neutral-100 dark:bg-neutral-900  z-50
     h-16 top-[2.5vh]
     w-[95vw] xs:w-[90vw]
     start-[2.5vw] xs:start-[5vw] rounded-lg"

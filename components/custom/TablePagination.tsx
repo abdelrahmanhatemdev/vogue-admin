@@ -64,9 +64,9 @@ function TablePagination ({
           <PaginationItem key={index}>
             <Button
               className={
-                "h-6 w-6 border-neutral-400 p-3 hover:bg-neutral-200" +
+                "h-6 w-6 border-neutral-400 p-3 hover:bg-neutral-200 dark:hover:bg-neutral-500" +
                 (isActive
-                  ? " bg-neutral-800 text-neutral-50 hover:bg-neutral-900 hover:text-neutral-200"
+                  ? " bg-neutral-800 dark:bg-neutral-300 text-neutral-200 dark:text-neutral-800 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-200 dark:hover:text-neutral-800 "
                   : "")
               }
               variant="outline"

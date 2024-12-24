@@ -346,7 +346,7 @@ function Subproduct({
                     const itemColor = colors.find((c) => c.uuid === color);
                     return itemColor ? (
                       <div
-                        className="flex gap-2 p-1 bg-neutral-100 rounded-md items-center border border-neutral-200"
+                        className="flex gap-2 p-1 bg-neutral-100 dark:bg-neutral-900 rounded-md items-center border border-neutral-200 dark:border-neutral-700"
                         key={itemColor.uuid}
                       >
                         <span
@@ -355,7 +355,7 @@ function Subproduct({
                             backgroundColor: itemColor?.hex,
                           }}
                         ></span>
-                        <span className="text-sm text-neutral-800">
+                        <span className="text-sm text-neutral-800 dark:text-neutral-300">
                           {itemColor?.name}
                         </span>
                       </div>
@@ -378,10 +378,10 @@ function Subproduct({
 
                     return itemSize ? (
                       <div
-                        className="flex gap-2 p-1 bg-neutral-100 rounded-md items-center border border-neutral-200"
+                        className="flex gap-2 p-1 bg-neutral-100 dark:bg-neutral-900 rounded-md items-center border border-neutral-200 dark:border-neutral-700"
                         key={itemSize.uuid}
                       >
-                        <span className="text-sm text-neutral-800">
+                        <span className="text-sm text-neutral-800 dark:text-neutral-300" key={itemSize.uuid}>
                           {itemSize?.name}
                         </span>
                       </div>
@@ -454,12 +454,12 @@ function Subproduct({
                 handleSort(updatedList);
               }}
             >
-              {optimisticImages.map((image) => {
+              {optimisticImages.map((image, index) => {
                 const { id, src, isPending } = image;
                 return (
                   <div
                     className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden"
-                    key={src}
+                    key={index}
                     onClick={() => {
                       setModalOpen(true);
                       setModal({
