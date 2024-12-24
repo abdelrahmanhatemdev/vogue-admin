@@ -261,22 +261,22 @@ function Subproduct({
         <div className="grid grid-cols-1 lg:grid-cols-4 xs:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-main-700">Price</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Price</span>
               <strong>{price}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-main-700">Currency</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Currency</span>
 
               <strong>{currency}</strong>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-main-700">Discount</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Discount</span>
               <strong>{discount}%</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-main-700">Net Price</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Net Price</span>
 
               <strong>
                 {discountPrice({ price, discount })} {currency}
@@ -285,18 +285,18 @@ function Subproduct({
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-main-700">Quantity</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Quantity</span>
               <strong>{qty}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-main-700">Sold</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Sold</span>
 
               <strong>{sold}</strong>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-main-700">Featured</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Featured</span>
               <strong>
                 <Switch
                   checked={featured}
@@ -315,7 +315,7 @@ function Subproduct({
               </strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-main-700">In Stock</span>
+              <span className="text-neutral-700 dark:text-neutral-300">In Stock</span>
               <strong>
                 <Switch
                   checked={inStock}
@@ -338,7 +338,7 @@ function Subproduct({
         <div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
             <div className="flex justify-between items-center">
-              <span className="text-main-700">Colors</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Colors</span>
 
               <span className="flex gap-2">
                 {colors.length > 0 ? (
@@ -346,7 +346,7 @@ function Subproduct({
                     const itemColor = colors.find((c) => c.uuid === color);
                     return itemColor ? (
                       <div
-                        className="flex gap-2 p-1 bg-main-100 rounded-md items-center border border-main-200"
+                        className="flex gap-2 p-1 bg-neutral-100 rounded-md items-center border border-neutral-200"
                         key={itemColor.uuid}
                       >
                         <span
@@ -355,7 +355,7 @@ function Subproduct({
                             backgroundColor: itemColor?.hex,
                           }}
                         ></span>
-                        <span className="text-sm text-main-800">
+                        <span className="text-sm text-neutral-800">
                           {itemColor?.name}
                         </span>
                       </div>
@@ -369,7 +369,7 @@ function Subproduct({
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-main-700">Sizes</span>
+              <span className="text-neutral-700 dark:text-neutral-300">Sizes</span>
 
               <span className="flex gap-2">
                 {sizes.length > 0 ? (
@@ -378,10 +378,10 @@ function Subproduct({
 
                     return itemSize ? (
                       <div
-                        className="flex gap-2 p-1 bg-main-100 rounded-md items-center border border-main-200"
+                        className="flex gap-2 p-1 bg-neutral-100 rounded-md items-center border border-neutral-200"
                         key={itemSize.uuid}
                       >
-                        <span className="text-sm text-main-800">
+                        <span className="text-sm text-neutral-800">
                           {itemSize?.name}
                         </span>
                       </div>
@@ -498,7 +498,7 @@ function Subproduct({
                         }}
                       />
                       <Checkbox
-                        className="absolute inset-2 cursor-pointer border-main-100"
+                        className="absolute inset-2 cursor-pointer border-neutral-100"
                         onClick={(e) => e.stopPropagation()}
                         onCheckedChange={(value) =>
                           setSelectedImages((prev) =>

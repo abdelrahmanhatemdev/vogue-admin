@@ -22,10 +22,10 @@ const NoInternet = () => {
             <div className="border-red-700 flex items-center justify-center rounded-full border-4 p-2">
               <TbExclamationMark color="red" size={50} />
             </div>
-            <h1 className="text-[1.5rem] lg:text-4xl text-main-100 font-bold text-center">
+            <h1 className="text-[1.5rem] lg:text-4xl text-neutral-100 font-bold text-center">
               No Connection Found!
             </h1>
-            <p className="text-main-100  text-center ">
+            <p className="text-neutral-100  text-center ">
               Ceck Your internet connection !
             </p>
           </div>

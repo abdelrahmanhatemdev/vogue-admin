@@ -115,7 +115,7 @@ function Product({
             <Link
               href={`/admin/products/${product.slug}/${item.sku}`}
               className={
-                "hover:bg-main-300 p-2 rounded-lg bg-main-200 transition-colors" +
+                "hover:bg-neutral-300 p-2 rounded-lg bg-neutral-200 transition-colors" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to Subproduct page"

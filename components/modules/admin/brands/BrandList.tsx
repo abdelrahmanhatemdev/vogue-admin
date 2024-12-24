@@ -255,8 +255,8 @@ function BrandList({
                         {header.column.getCanSort() ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2 -ms-2">
-                                <span className="text-main-800">
+                              <div className="flex gap-2 items-center hover:bg-neutral-200 hover:*:text-neutral-900 rounded-lg p-2 -ms-2">
+                                <span className="text-neutral-800">
                                   {" "}
                                   {header.isPlaceholder
                                     ? null
@@ -266,7 +266,7 @@ function BrandList({
                                       )}
                                 </span>
                                 <TiArrowUnsorted
-                                  style={{ fill: "var(--main-800)" }}
+                                  style={{ fill: "var(--neutral-800)" }}
                                 />
                               </div>
                             </DropdownMenuTrigger>
@@ -312,7 +312,7 @@ function BrandList({
                           </DropdownMenu>
                         ) : (
                           <div>
-                            <span className="text-main-800">
+                            <span className="text-neutral-800">
                               {" "}
                               {header.isPlaceholder
                                 ? null
@@ -359,7 +359,7 @@ function BrandList({
             </TableBody>
           </Table>
           <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
-            <div className="text-neutral-600">
+            <div className="text-neutral-600 dark:text-neutral-300">
               {selectedRows.length > 0
                 ? `${selectedRows.length} of ${totalRows} row(s) selected.`
                 : `${totalRows} total rows`}

@@ -113,7 +113,7 @@ function AddProduct({
             <FormItem className="lg:w-[calc(50%-.5rem)]">
               <FormLabel>Slug</FormLabel>
               <div className="relative">
-                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-main-700">
+                <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-neutral-700 dark:text-neutral-300">
                   /
                 </span>
                 <FormControl>

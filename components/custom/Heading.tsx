@@ -15,7 +15,7 @@ function Heading({
         <h1 className="capitalize text-2xl font-semibold text-neutral-900">
           {title}
         </h1>
-        <p className="text-sm text-neutral-600">{description}</p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-300">{description}</p>
         {children}
       </div>
   );

@@ -108,7 +108,7 @@ function AdminSidebar() {
       h-[calc(100%-5vh)] top-[2.5vh]
       start-[1rem] 
       rounded-lg 
-      border-transparent"
+      border-transparent overflow-hidden"
     >
       <SidebarHeader className="hidden md:block py-8 px-4">
         {state === "expanded" ? (
@@ -166,18 +166,18 @@ function AdminSidebar() {
               >
                 <div
                   className={cn(
-                    "bg-main-700 flex items-center justify-center rounded-md p-2 transition-all",
+                    "bg-neutral-700 dark:bg-neutral-300 flex items-center justify-center rounded-md p-2 transition-all",
                     state === "expanded" ? "w-10 h-10" : "w-8 h-8"
                   )}
                 >
-                  <User className="text-main-50" size={25} />
+                  <User className="text-neutral-50" size={25} />
                 </div>
                 {state === "expanded" ? (
                   <div className="flex flex-col items-start">
                     <div className="text-sm font-bold truncate">
                       {user.name}
                     </div>
-                    <div className="text-sm text-main-700 capitalize truncate">
+                    <div className="text-sm text-neutral-700 dark:text-neutral-300 capitalize truncate">
                       {user.email}
                     </div>
                   </div>

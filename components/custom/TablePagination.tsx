@@ -64,9 +64,9 @@ function TablePagination ({
           <PaginationItem key={index}>
             <Button
               className={
-                "h-6 w-6 border-main-400 p-3 hover:bg-main-200" +
+                "h-6 w-6 border-neutral-400 p-3 hover:bg-neutral-200" +
                 (isActive
-                  ? " bg-main-800 text-main-50 hover:bg-main-900 hover:text-main-200"
+                  ? " bg-neutral-800 text-neutral-50 hover:bg-neutral-900 hover:text-neutral-200"
                   : "")
               }
               variant="outline"
@@ -89,7 +89,7 @@ function TablePagination ({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 flex-wrap w-full lg:w-fit">
       <div className="flex gap-4 items-center">
-        <div className="font-semibold text-sm text-neutral-700 min-w-fit">
+        <div className="font-semibold text-sm text-neutral-700 dark:text-neutral-300 min-w-fit">
           Rows Per Page
         </div>
         <Select
@@ -113,7 +113,7 @@ function TablePagination ({
           </SelectContent>
         </Select>
       </div>
-      <div className="font-semibold text-sm text-neutral-700 w-fit">
+      <div className="font-semibold text-sm text-neutral-700 dark:text-neutral-300 w-fit">
         Page {currentPage} of {totalPages}
       </div>
 

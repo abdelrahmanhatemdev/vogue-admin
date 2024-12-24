@@ -33,14 +33,14 @@ function AuthSwiper() {
             sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
             priority={true}
           />
-          <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
+          <div className="w-full h-full absolute bg-neutral-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">
             <motion.p
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Whatever you’re thinking,
             </motion.p>
@@ -49,7 +49,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Think bigger.
             </motion.p>
@@ -65,14 +65,14 @@ function AuthSwiper() {
             className="rounded-lg object-cover"
             sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
+          <div className="w-full h-full absolute bg-neutral-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">
             <motion.p
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               The only way to do great work
             </motion.p>
@@ -81,7 +81,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Is to love what you do.
             </motion.p>
@@ -97,14 +97,14 @@ function AuthSwiper() {
             className="rounded-lg object-cover"
             sizes="(max-width: 768px) 0vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="w-full h-full absolute bg-main-800 z-[1] rounded-lg opacity-30"></div>
+          <div className="w-full h-full absolute bg-neutral-800 z-[1] rounded-lg opacity-30"></div>
           <div className="absolute bottom-[20%] start-0 w-full flex flex-col gap-2 items-center">
             <motion.p
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               Every action is an opportunity
             </motion.p>
@@ -113,7 +113,7 @@ function AuthSwiper() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
-              className="z-10 text-main-50 lg:text-2xl 2xl:text-3xl font-extralight"
+              className="z-10 text-neutral-50 lg:text-2xl 2xl:text-3xl font-extralight"
             >
               To improve.
             </motion.p>

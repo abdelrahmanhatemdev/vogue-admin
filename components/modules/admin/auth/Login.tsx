@@ -86,7 +86,7 @@ const Login = () => {
           />
 
           <Button
-            className="w-full mt-4 p-6 bg-main-800 text-main-50 hover:bg-main-900"
+            className="w-full mt-4 p-6 bg-neutral-800 text-neutral-50 hover:bg-neutral-900"
             variant={"nostyle"}
             type="submit"
           >
@@ -97,19 +97,19 @@ const Login = () => {
       {/* <div>
         <div className="flex items-center gap-6 w-full">
           <div className="grow">
-            <Separator className="bg-main-300" />
+            <Separator className="bg-neutral-300" />
           </div>
           <div>Or login with</div>
 
           <div className="grow">
-            <Separator className="bg-main-300" />
+            <Separator className="bg-neutral-300" />
           </div>
         </div>
       </div>
       <div className="flex gap-4 items-center">
         <Button
           variant={"outline"}
-          className="grow bg-transparent flex gap-2 items-center shadow-sm hover:shadow-none py-5 hover:bg-main-50"
+          className="grow bg-transparent flex gap-2 items-center shadow-sm hover:shadow-none py-5 hover:bg-neutral-50"
         >
           <FcGoogle
             style={{ width: "1.5rem", height: "1.5rem", display: "block" }}
@@ -118,7 +118,7 @@ const Login = () => {
         </Button>
         <Button
           variant={"outline"}
-          className="grow bg-transparent flex gap-2 items-center shadow-sm hover:shadow-none py-5 hover:bg-main-50"
+          className="grow bg-transparent flex gap-2 items-center shadow-sm hover:shadow-none py-5 hover:bg-neutral-50"
         >
           <FaFacebook
             style={{

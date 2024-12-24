@@ -245,7 +245,7 @@ function ProductList({
                 <PopoverTrigger asChild>
                   <Button
                     variant={"ghost"}
-                    className="border-dashed border-main-300 border-2"
+                    className="border-dashed border-neutral-300 border-2"
                   >
                     <div className="flex items-center justify-center gap-1 font-bold">
                       <PiPlusCircle size={30} />
@@ -255,14 +255,14 @@ function ProductList({
                       <>
                         <Separator orientation="vertical" />
                         {selectedBrands.length > 2 ? (
-                          <span className="bg-main-200 p-1 rounded-md text-xs">
+                          <span className="bg-neutral-200 p-1 rounded-md text-xs">
                             {selectedBrands.length} Selected
                           </span>
                         ) : (
                           selectedBrands.map((name, index) => (
                             <span
                               key={index}
-                              className="bg-main-200 p-1 rounded-md text-xs"
+                              className="bg-neutral-200 p-1 rounded-md text-xs"
                             >
                               {brands.find((b) => b.name === name)?.name}
                             </span>
@@ -321,7 +321,7 @@ function ProductList({
                 <PopoverTrigger asChild>
                   <Button
                     variant={"ghost"}
-                    className="border-dashed border-main-300 border-2"
+                    className="border-dashed border-neutral-300 border-2"
                   >
                     <div className="flex items-center justify-center gap-1 font-bold">
                       <PiPlusCircle size={30} />
@@ -331,14 +331,14 @@ function ProductList({
                       <>
                         <Separator orientation="vertical" />
                         {selectedCategories.length > 2 ? (
-                          <span className="bg-main-200 p-1 rounded-md text-xs">
+                          <span className="bg-neutral-200 p-1 rounded-md text-xs">
                             {selectedCategories.length} Selected
                           </span>
                         ) : (
                           selectedCategories.map((uuid) => (
                             <span
                               key={uuid}
-                              className="bg-main-200 p-1 rounded-md text-xs"
+                              className="bg-neutral-200 p-1 rounded-md text-xs"
                             >
                               {categories.find((c) => c.uuid === uuid)?.name}
                             </span>
@@ -482,8 +482,8 @@ function ProductList({
                         {header.column.getCanSort() ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <div className="flex gap-2 items-center hover:bg-main-200 hover:*:text-main-900 rounded-lg p-2">
-                                <span className="text-main-800">
+                              <div className="flex gap-2 items-center hover:bg-neutral-200 hover:*:text-neutral-900 rounded-lg p-2">
+                                <span className="text-neutral-800">
                                   {" "}
                                   {header.isPlaceholder
                                     ? null
@@ -493,7 +493,7 @@ function ProductList({
                                       )}
                                 </span>
                                 <TiArrowUnsorted
-                                  style={{ fill: "var(--main-800)" }}
+                                  style={{ fill: "var(--neutral-800)" }}
                                 />
                               </div>
                             </DropdownMenuTrigger>
@@ -539,7 +539,7 @@ function ProductList({
                           </DropdownMenu>
                         ) : (
                           <div>
-                            <span className="text-main-800">
+                            <span className="text-neutral-800">
                               {" "}
                               {header.isPlaceholder
                                 ? null
@@ -586,7 +586,7 @@ function ProductList({
             </TableBody>
           </Table>
           <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
-            <div className="text-neutral-600">
+            <div className="text-neutral-600 dark:text-neutral-300">
               {selectedRows.length > 0
                 ? `${selectedRows.length} of ${totalRows} row(s) selected.`
                 : `${totalRows} total rows`}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import dynamic from "next/dynamic";
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={`${GeistSans.className} antialiased`}>
+        <body className={`${GeistSans.className} antialiased bg-background text-foreground`}>
           <div className="flex items-center justify-center min-h-screen">
             {children}
           </div>

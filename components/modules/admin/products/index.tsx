@@ -101,7 +101,7 @@ function Products({ data }: { data: Product[] }) {
             <Link
               href={`/admin/products/${item.slug}`}
               className={
-                "hover:bg-main-200 p-2 rounded-lg" +
+                "hover:bg-neutral-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to Product page"
@@ -138,7 +138,7 @@ function Products({ data }: { data: Product[] }) {
             <Link
               href={`/admin/brands/${item.brand_slug}`}
               className={
-                "hover:bg-main-200 p-2 rounded-lg" +
+                "hover:bg-neutral-200 p-2 rounded-lg" +
                 (item.isPending ? " opacity-50" : "")
               }
               title="Go to brand page"
@@ -178,7 +178,7 @@ function Products({ data }: { data: Product[] }) {
               <Link
                 href={`/admin/categories/${cat.slug}`}
                 className={
-                  "hover:bg-main-200 p-2 rounded-lg text-xs" +
+                  "hover:bg-neutral-200 p-2 rounded-lg text-xs" +
                   (item.isPending ? " opacity-50" : "")
                 }
                 title="Go to categories page"
