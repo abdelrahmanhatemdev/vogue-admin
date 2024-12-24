@@ -7,9 +7,9 @@ const ContentContainer = dynamic(
 );
 function Footer() {
   return (
-    <footer className="flex items-center w-full h-10 my-6">
+    <footer className="flex items-center w-full">
       <ContentContainer>
-        <p className="bg-background p-4 rounded-lg">
+        <p className="bg-background p-4 rounded-lg my-4">
           <span>2042</span> &#64; Vogue
         </p>
       </ContentContainer>
