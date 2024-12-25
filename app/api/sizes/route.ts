@@ -55,7 +55,7 @@ export async function PUT(request: Request) {
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET name = ?, symbol = ?, sort_order = ? WHERE uuid = ?`,
-      [name, , symbol, sort_order, uuid]
+      [name, symbol, sort_order, uuid]
     );
 
     if (result.affectedRows) {

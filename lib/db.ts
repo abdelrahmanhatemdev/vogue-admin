@@ -4,8 +4,6 @@ declare global {
   var _mysqlPool: Pool | undefined;
 }
 
-let pool: Pool;
-
 if (!global._mysqlPool) {
   global._mysqlPool = mysql.createPool({
     host: process.env.DATABASE_HOST,
@@ -18,6 +16,6 @@ if (!global._mysqlPool) {
     queueLimit: 0,
   });
 }
-pool = global._mysqlPool as Pool;
+const pool:Pool = global._mysqlPool as Pool || undefined;
 
 export default pool;

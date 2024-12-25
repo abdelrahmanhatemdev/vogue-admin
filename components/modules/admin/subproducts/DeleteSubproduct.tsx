@@ -25,24 +25,23 @@ function DeleteSubproduct({
 
   const [isPending, startTransition] = useTransition();
 
-    const router = useRouter();
- 
+  const router = useRouter();
 
   async function onSubmit() {
     setModalOpen(false);
-    addOptimisticData
-      ? startTransition(() => {
-          addOptimisticData((prev: Subproduct[]) => [
-            ...prev.map((item) => {
-              if (item.id === itemId) {
-                const pendingItem = { ...item, isPending: !isPending };
-                return pendingItem;
-              }
-              return item;
-            }),
-          ]);
-        })
-      : null;
+    if (addOptimisticData) {
+      startTransition(() => {
+        addOptimisticData((prev: Subproduct[]) => [
+          ...prev.map((item) => {
+            if (item.id === itemId) {
+              const pendingItem = { ...item, isPending: !isPending };
+              return pendingItem;
+            }
+            return item;
+          }),
+        ]);
+      });
+    }
 
     const res: ActionResponse = await deleteSubproduct(data);
     notify(res);

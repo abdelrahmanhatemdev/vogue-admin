@@ -8,11 +8,6 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
-import {
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { cn, notify } from "@/lib/utils";
 import { discountPrice, currencyPrice } from "@/lib/productService";
 import { editSubproduct } from "@/actions/Subproduct";

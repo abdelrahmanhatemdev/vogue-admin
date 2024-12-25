@@ -11,7 +11,7 @@ function Logo({
   invert = false,
 }: Readonly<{ className?: string; invert?: boolean; small?: boolean }>) {
   const { theme } = useTheme();
-  let isDark = (theme === "dark" ? true : false) || false
+  const isDark = (theme === "dark" ? true : false) || false
   const currentInvert = invert ? !isDark : isDark
   const src = `/assets/images/logo${small ? `-small` : ``}${currentInvert ? "-light" : ""}`;
 

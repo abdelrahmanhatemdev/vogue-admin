@@ -51,7 +51,7 @@ function AddSubproductPhotos({
       productId: subproductId,
       images: {
         length: 0,
-        item: (index: number) => null,
+        item: () => null,
         [Symbol.iterator](): ArrayIterator<File> {
           const files: File[] = [];
           for (let i = 0; i < this.length; i++) {

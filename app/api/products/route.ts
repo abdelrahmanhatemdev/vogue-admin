@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       throw new Error("Choose at least one category");
     }
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+    await db.execute(
       `INSERT INTO ${tableName} ( 
       uuid,
       name,
@@ -205,7 +205,7 @@ export async function DELETE(request: Request) {
       [uuid]
     );
 
-    const [subProductResult]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+    await db.execute(
       `UPDATE ${subproductsTable} SET deletedAt = CURRENT_TIMESTAMP WHERE product_id = ?`,
       [uuid]
     );

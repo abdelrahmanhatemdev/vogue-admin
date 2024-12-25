@@ -72,12 +72,18 @@ function EditProduct({
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
     setModalOpen(false);
     const newCategories = values.categories.map((catId) => {
-      const { name, slug, uuid } = categories.filter(
+
+      const newCat = categories.find(
         (cat) => cat.uuid === catId
-      )[0];
-      return `${name} - ${slug} - ${uuid}`
+      );
+      if (newCat) {
+        const { name, slug, uuid } = newCat
+        return `${name} - ${slug} - ${uuid}`
+      }
+      return;
+      
     }).join(",");
-    const {categories: arrayCategories, ...rest} = values
+    const { ...rest} = values
 
     const updatedValues : Omit<z.infer<typeof ProductSchema>, "categories"> & { categories: string }
     = {...rest, categories: newCategories}

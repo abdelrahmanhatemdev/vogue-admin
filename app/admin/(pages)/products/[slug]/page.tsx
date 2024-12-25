@@ -2,7 +2,7 @@ import { getProductBySlug } from "@/actions/Product";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { title } from "@/app/admin/(pages)/products/page";
 const Product = dynamic(

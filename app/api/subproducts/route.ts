@@ -78,7 +78,7 @@ export async function POST(request: Request) {
       throw new Error("Choose at least one size");
     }
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+    await db.execute(
       `INSERT INTO ${tableName} (
         uuid,
         product_id,
@@ -248,7 +248,7 @@ export async function PUT(request: Request) {
         inStock = ?
         WHERE 
         uuid = ?`,
-      [sku, currency, price, discount, qty, sold, featured, inStock, , uuid]
+      [sku, currency, price, discount, qty, sold, featured, inStock, uuid]
     );
     if (result.affectedRows) {
       return NextResponse.json({ message: "Product updated" }, { status: 200 });

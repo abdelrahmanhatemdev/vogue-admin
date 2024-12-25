@@ -12,14 +12,12 @@ import { cn, notify } from "@/lib/utils";
 import { arrayFromString } from "@/lib/format";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ReactSortable } from "react-sortablejs";
 import { deleteProductImage, editProductImage } from "@/actions/Image";
 import { DialogFooter } from "@/components/ui/dialog";
 
-const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -99,7 +97,7 @@ function Subproduct({
     product_id,
   } = subproduct;
 
-  const [productSlug, setProductSlug] = useState(product_slug);
+  const [productSlug] = useState(product_slug);
 
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
@@ -110,8 +108,6 @@ function Subproduct({
   const itemSizes: string[] = Array.from(
     new Set(arrayFromString(item_sizes as string))
   );
-
-  const router = useRouter();
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     // startTransition(() => {
@@ -301,7 +297,7 @@ function Subproduct({
                 <Switch
                   checked={featured}
                   onCheckedChange={async () => {
-                    const { featured, ...rest } = subproduct;
+                    const { featured} = subproduct;
 
                     const res: ActionResponse = await editSubproduct({
                       uuid: uuid,
@@ -320,7 +316,7 @@ function Subproduct({
                 <Switch
                   checked={inStock}
                   onCheckedChange={async () => {
-                    const { inStock, ...rest } = subproduct;
+                    const { inStock} = subproduct;
 
                     const res: ActionResponse = await editSubproduct({
                       uuid,

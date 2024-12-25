@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";

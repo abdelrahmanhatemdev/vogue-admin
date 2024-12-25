@@ -15,7 +15,6 @@ import Loading from "@/components/custom/Loading";
 
 const ToggleTheme = dynamic(() => import("@/components/custom/ToggleTheme"), {
   loading: Loading,
-  ssr: false,
 });
 
 interface AdminBreadcrumbProps {

@@ -98,7 +98,7 @@ function EditColor({
                 <FormControl>
                   <Sketch
                     color={item.hex}
-                    className="min-w-full"
+                    className="min-w-full dark:!bg-neutral-900"
                     onChange={(e: { hex: string }) => {
                       form.setValue("hex", e.hex);
                       form.clearErrors("hex");

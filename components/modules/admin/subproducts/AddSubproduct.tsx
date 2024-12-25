@@ -34,8 +34,6 @@ import { SubproductSchema } from "@/lib/validation/subproductSchema";
 import type { OptimisicDataType } from "@/components/modules/admin/products/Product";
 import { currencies } from "@/constants/currencies";
 
-const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
-
 function AddSubproduct({
   setModalOpen,
   addOptimisticData,
@@ -65,7 +63,6 @@ function AddSubproduct({
       inStock: true,
       colors: [],
       sizes: [],
-      // images: []
     },
     mode: "onChange",
   });

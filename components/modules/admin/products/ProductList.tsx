@@ -350,7 +350,7 @@ function ProductList({
                 </PopoverTrigger>
                 <PopoverContent className="w-40 p-2">
                   <div className="flex flex-col gap-2 ">
-                    {categories.map(({name, uuid, slug}) => (
+                    {categories.map(({name, uuid}) => (
                       <Button
                         className="w-full flex gap-2 justify-start items-center cursor-pointer"
                         variant={"ghost"}

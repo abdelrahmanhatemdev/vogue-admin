@@ -3,7 +3,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdSpaceDashboard } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
 import { IoMdBusiness } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
@@ -19,7 +18,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { User } from "lucide-react";
