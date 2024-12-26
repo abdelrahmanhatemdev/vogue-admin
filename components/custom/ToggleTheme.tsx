@@ -13,7 +13,7 @@ function ToggleTheme() {
     setMounted(true);
   }, [mounted]);
 
-  if (!mounted) return;
+  if (!mounted) return null;
 
   return (
     <div className="relative w-14 h-7" title="Theme">
@@ -32,6 +32,8 @@ function ToggleTheme() {
         checked={theme === "dark" ? true : false}
         onCheckedChange={toggleTheme}
         className="w-14 h-7 bg-sky-600"
+        id="theme-switch"
+        aria-label="Theme Switch"
       />
     </div>
   );

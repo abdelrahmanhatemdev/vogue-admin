@@ -155,13 +155,7 @@ function Subproduct({
               setModalOpen(false);
               startTransition(() => {
                 addOptimisticImages((prev: OptimisicImagesType[]) => [
-                  ...prev.map((item) => {
-                    if (selectedImages.includes(item.id)) {
-                      const pendingItem = { ...item, isPending: !isPending };
-                      return pendingItem;
-                    }
-                    return item;
-                  }),
+                  ...prev.filter((item) => !selectedImages.includes(item.id))
                 ]);
               });
               for (const selected of selectedImages) {

@@ -29,8 +29,8 @@ function Logo({
       {theme ? (<Image
         src={`${src}.png`}
         alt="Vogue Logo"
-        height={80}
-        width={80}
+        height={small ? 20 : 36}
+        width={small ? 20 : 96}
         priority={true}
       />): (<></>)}
       
