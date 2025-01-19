@@ -15,10 +15,11 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import Logout from "@/components/modules/admin/auth/Logout";
 
-const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
-  loading: Loading,
-});
+// const Logout = dynamic(() => import("@/components/modules/admin/auth/Logout"), {
+//   loading: Loading,
+// });
 
 function IconsGroup() {
   const { data: session } = useSession();
