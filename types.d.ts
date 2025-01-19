@@ -11,6 +11,9 @@ interface Category {
   uuid: string;
   slug: string;
   name: string;
+  parent: string;
+  additional: boolean;
+  label: string;
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;

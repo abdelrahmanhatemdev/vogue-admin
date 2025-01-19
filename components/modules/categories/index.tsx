@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useData from "@/hooks/useData";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -30,17 +31,17 @@ const CategoryList = dynamic(
   { loading: Loading }
 );
 
-export type OptimisicDataType = Category & {isPending?: boolean}
+export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories({ data }: { data: Category[] }) {
-  
-  
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
     description: "",
     children: <></>,
   });
+
+  const { data: labels } = useData("labels");
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
@@ -115,6 +116,81 @@ function Categories({ data }: { data: Category[] }) {
           );
         },
       },
+      {
+        id: "parent",
+        accessorKey: "parent",
+        header: "Parent",
+        cell: ({ row }) => {
+          const item: OptimisicDataType = row.original;
+          return (
+            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
+              {
+                sortedOptimisicData.find((cat) => cat.uuid === item.parent)
+                  ?.name
+              }
+            </span>
+          );
+        },
+      },
+      {
+        id: "label",
+        accessorKey: "label",
+        header: "label",
+        cell: ({ row }) => {
+          const item: OptimisicDataType = row.original;
+          const label = labels.find((label) => label.uuid === item.label);
+          return (
+            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
+              <span
+                className="p-1 rounded-lg"
+                style={{ background: label?.hex }}
+              >
+                {label?.title}
+              </span>
+            </span>
+          );
+        },
+      },
+      // {
+      //   id: "featured",
+      //   accessorKey: "featured",
+      //   header: "featured",
+      //   cell: ({ row }) => {
+      //     const item: OptimisicDataType = row.original;
+
+      //     return (
+      //       <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
+      //         <Switch
+      //           checked={item.featured}
+      //           onCheckedChange={async () => {
+      //             const { featured, ...rest } = item;
+
+      //             const optimisticObj: OptimisicDataType = {
+      //               ...rest,
+      //               featured: !featured,
+      //               isPending: !isPending,
+      //             };
+
+      //             startTransition(() => {
+      //               addOptimisticData((prev: Subproduct[]) => [
+      //                 ...prev.filter((sub) => sub.id !== item.id),
+      //                 optimisticObj,
+      //               ]);
+      //             });
+
+      //             const res: ActionResponse = await editSubproduct({
+      //               uuid: item.uuid,
+      //               property: "featured",
+      //               value: !item.featured,
+      //             });
+
+      //             notify(res);
+      //           }}
+      //         />
+      //       </span>
+      //     );
+      //   },
+      // },
       {
         id: "actions",
         cell: ({ row }) => {

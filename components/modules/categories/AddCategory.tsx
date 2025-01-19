@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 
 import z from "zod";
 import { CategorySchema } from "@/lib/validation/categorySchema";
@@ -20,8 +21,16 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { useRefresh } from "@/hooks/useData";
+import useData, { useRefresh } from "@/hooks/useData";
 import type { OptimisicDataType } from ".";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
 
 function AddCategory({
   setModalOpen,
@@ -38,12 +47,20 @@ function AddCategory({
       uuid: uuidv4(),
       name: "",
       slug: "",
+      label: "",
+      parent: "",
+      additional: false,
     },
     mode: "onChange",
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useRefresh();
+
+  const { data: categories } = useData("categories");
+  const { data: labels } = useData("labels");
+
+  const parentCats = categories.filter((cat) => !cat.parent);
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
     setModalOpen(false);
@@ -65,7 +82,7 @@ function AddCategory({
     const res: ActionResponse = await addCategory(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -73,7 +90,7 @@ function AddCategory({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-0"
+        className="flex flex-col lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 gap-4"
       >
         <FormField
           control={form.control}
@@ -109,7 +126,94 @@ function AddCategory({
             </FormItem>
           )}
         />
-        <DialogFooter>
+        <FormField
+          control={form.control}
+          name="label"
+          render={({ field }) => (
+            <FormItem className="w-full lg:w-[calc(50%-.4rem)]">
+              <FormLabel>Label</FormLabel>
+              {labels ? (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose Label" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {labels.map((item) => (
+                      <SelectItem value={`${item.uuid}`} key={item.uuid}>
+                        <span
+                          style={{ background: item.hex }}
+                          className="p-1 rounded-lg"
+                        >
+                          {item.title}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Link href={`/labels`} className="block text-sm">
+                  Add some labels to select from{" "}
+                  <Button variant={"outline"} size={"sm"}>
+                    Back To labels
+                  </Button>
+                </Link>
+              )}
+              <FormDescription>New Category Label</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {parentCats.length > 0 && (
+          <FormField
+            control={form.control}
+            name="parent"
+            render={({ field }) => (
+              <FormItem className="w-full lg:w-[calc(50%-.4rem)]">
+                <FormLabel>Parent</FormLabel>
+
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose Parent" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories
+                      .filter((cat) => !cat.parent)
+                      .map((item) => (
+                        <SelectItem value={`${item.uuid}`} key={item.uuid}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>New Category Parent</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
+          name="additional"
+          render={({ field }) => (
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+              <div className="flex justify-between items-center">
+                <FormLabel>Is Additional?</FormLabel>
+                <FormControl>
+                  <Switch
+                    {...field}
+                    value={`${field.value}`}
+                    onCheckedChange={field.onChange}
+                    checked={field.value}
+                  />
+                </FormControl>
+              </div>
+              <FormDescription>Is New Category Additional?</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <DialogFooter className="w-full">
           <Button type="submit">Add</Button>
         </DialogFooter>
       </form>

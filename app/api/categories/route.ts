@@ -22,10 +22,10 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name, slug } = await request.json();
-
+    const { uuid, name, slug, additional, parent, label  } = await request.json();
+    
     // Ensure Server Validation
-    CategorySchema.parseAsync({ uuid, name, slug });
+    CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label});
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
@@ -42,8 +42,8 @@ export async function POST(request: Request) {
     }
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name, slug) VALUES (?, ?, ?)`,
-      [uuid, name, slug]
+      `INSERT INTO ${tableName} (uuid, name, slug, additional, parent, label ) VALUES (?, ?, ?, ?, ?, ?)`,
+      [uuid, name, slug, additional, parent, label ]
     );
 
     if (result.insertId) {
@@ -62,10 +62,10 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, name, slug } = await request.json();
+    const { uuid, name, slug, additional, parent, label } = await request.json();
 
     // Ensure Server Validation
-    CategorySchema.parseAsync({ uuid, name, slug });
+    CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label });
 
     const [slugCheck] = await db.execute(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
@@ -82,8 +82,8 @@ export async function PUT(request: Request) {
     }
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ? , slug = ? WHERE uuid = ?`,
-      [name, slug, uuid]
+      `UPDATE ${tableName} SET name = ? ,slug = ?, additional = ?, parent = ?, label = ? WHERE uuid = ?`,
+      [name, slug, additional, parent, label , uuid]
     );
 
     if (result.affectedRows) {

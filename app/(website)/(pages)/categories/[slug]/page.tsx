@@ -2,7 +2,7 @@ import { getCategoryBySlug } from "@/actions/Category";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { title } from "@/app/(pages)/categories/page";
+import { title } from "@/app/(website)/(pages)/categories/page";
 
 import Loading from "@/components/custom/Loading";
 

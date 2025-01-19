@@ -21,6 +21,9 @@ export const CategorySchema = z
           "Slug can only contain lowercase letters, numbers, and a hyphen between letters or numbers",
       })
       .max(20, { message: "Slug cannot exceed 20 characters" }),
+    parent: z.string().optional(),
+    label: z.string().optional(),
+    additional: z.boolean({ message: "Additional field is required." }).optional(),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, slug } = obj;

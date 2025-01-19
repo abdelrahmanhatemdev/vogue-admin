@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { title } from "@/app/(pages)/brands/page";
+import { title } from "@/app/(website)/(pages)/brands/page";
 
 const Brand = dynamic(
   () => import("@/components/modules/brands/Brand"),

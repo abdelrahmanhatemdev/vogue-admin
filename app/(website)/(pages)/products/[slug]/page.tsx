@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { title } from "@/app/(pages)/products/page";
+import { title } from "@/app/(website)/(pages)/products/page";
 const Product = dynamic(
   () => import("@/components/modules/products/Product"),
   { loading: Loading }

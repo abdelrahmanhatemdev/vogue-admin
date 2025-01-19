@@ -6,6 +6,7 @@ export interface DataContextType {
   colors: { data: Color[]; loading: boolean };
   brands: { data: Brand[]; loading: boolean };
   sizes: { data: Size[]; loading: boolean };
+  labels: { data: Label[]; loading: boolean };
   refresh : () => void
 }
 
