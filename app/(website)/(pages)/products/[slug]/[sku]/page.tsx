@@ -1,0 +1,55 @@
+import { getSubproductBySku } from "@/actions/Subproduct";
+import dynamic from "next/dynamic";
+
+import Loading from "@/components/custom/Loading";
+import { notFound } from "next/navigation";
+// import { getSubproductImages } from "@/actions/Image";
+import { Metadata } from "next";
+const Subproduct = dynamic(
+  () => import("@/components/modules/subproducts/Subproduct"),
+  { loading: Loading }
+);
+
+const title = "Subproducts";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { sku: string };
+}): Promise<Metadata> {
+  const { sku } = await params;
+
+  if (sku) {
+    const data = await getSubproductBySku(sku);
+
+    if (data?.sku) {
+      return {
+        title: `${title} - ${data.sku}`,
+      };
+    }
+  }
+  return {
+    title: "Not Found",
+  };
+}
+
+export default async function SubproductPage(props: {
+  params: Promise<{ sku: string }>;
+}) {
+  const params = await props.params;
+
+  const { sku } = await params;
+  const data = await getSubproductBySku(sku);
+
+  if (!data?.uuid) {
+    notFound();
+  }
+  
+  const imagesRes = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${data.uuid}`);
+
+  const resJson = await imagesRes.json();
+
+  const images: ProductImage[] = resJson?.images ? resJson.images : [];
+
+  return <Subproduct subproduct={data} images={images} />;
+}

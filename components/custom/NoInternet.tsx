@@ -9,7 +9,7 @@ const NoInternet = () => {
       <div className="flex h-[90svh] lg:h-full w-full flex-wrap">
         <div className="w-full h-full relative flex items-center justify-center">
           <Image
-            src={`/assets/media/noInternet/noInternet.png`}
+            src={`/assets/images/noInternet/noInternet.png`}
             alt="Not found page"
             fill
             className="rounded-lg object-cover filter brightness-[.1]"
