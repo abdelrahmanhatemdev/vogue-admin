@@ -36,9 +36,9 @@ export default async function layout({
         <div className="hidden md:block w-full h-full relative">
           <AuthSwiper />
           <div className="flex items-center absolute inset-5 justify-between h-fit p-2">
-            <Logo className="z-10" invert={true} />
+            <Logo className="z-10"/>
             <Link href={`/`} className="z-10 ">
-              <span className="bg-[hsla(0,0%,0%,10%)] text-neutral-50 dark:text-neutral-800 text-xs rounded-full p-2 hover:bg-[hsla(0,0%,0%,30%)] transition-colors shadow-sm">
+              <span className="bg-[hsla(0,0%,0%,10%)] text-neutral-50 text-xs rounded-full p-2 hover:bg-[hsla(0,0%,0%,30%)] transition-colors shadow-sm">
                 Back to Website
               </span>
             </Link>

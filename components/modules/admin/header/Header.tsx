@@ -25,7 +25,6 @@ function Header() {
       <ContentContainer>
         <div className="flex justify-between lg:justify-end items-center">
           <CiMenuBurger onClick={toggleSidebar} className="lg:hidden" />
-
           <Logo className="lg:hidden" />
           <IconsGroup />
         </div>
