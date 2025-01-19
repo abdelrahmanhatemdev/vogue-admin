@@ -58,7 +58,13 @@ export async function addCategory(data: Partial<Category>) {
     });
 }
 
-export async function editCategory(data: Partial<Category>) {
+export async function editCategory(data: Partial<
+  Category & {
+    uuid: string;
+    property: string;
+    value: string | boolean | number | string[];
+  }
+>) {
   return api
     .put(apiURL, data)
     .then((res) => {

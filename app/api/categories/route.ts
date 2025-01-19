@@ -61,8 +61,26 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const reqData = await request.json();
+  if (reqData?.property) {
+    const { property, uuid, value } = reqData;
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      `UPDATE ${tableName} SET 
+      ${property} = ?
+      WHERE 
+      uuid = ?`,
+      [value, uuid]
+    );
+
+    if (result.affectedRows) {
+      return NextResponse.json({ message: "Product updated" }, { status: 200 });
+    }
+    return NextResponse.json({ message: "Something wrong" }, { status: 500 });
+  }
+
   try {
-    const { uuid, name, slug, additional, parent, label } = await request.json();
+    const { uuid, name, slug, additional, parent, label } = reqData;
+   
 
     // Ensure Server Validation
     CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label });

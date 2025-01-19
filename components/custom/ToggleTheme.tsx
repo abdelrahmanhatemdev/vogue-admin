@@ -16,10 +16,10 @@ function ToggleTheme() {
   if (!mounted) return null;
 
   return (
-    <div className="relative w-14 h-7" title="Theme">
+    <div className="p-1 dark:hover:bg-neutral-700 hover:bg-neutral-200 rounded-full w-8 h-8 transition-colors" title="Theme">
       <Button
         onClick={toggleTheme}
-        className=" rounded-full"
+        className="w-full h-full flex justify-center items-center p-0"
         variant={"nostyle"}
         aria-label="Theme Switch"
         title="Switch Theme"

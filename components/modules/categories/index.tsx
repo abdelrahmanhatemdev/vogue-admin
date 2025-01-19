@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,6 +9,9 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
+import { cn, notify } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
+import { editCategory } from "@/actions/Category";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -44,6 +47,7 @@ function Categories({ data }: { data: Category[] }) {
   const { data: labels } = useData("labels");
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
+  const [isPending, startTransition] = useTransition();
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
@@ -140,9 +144,9 @@ function Categories({ data }: { data: Category[] }) {
           const item: OptimisicDataType = row.original;
           const label = labels.find((label) => label.uuid === item.label);
           return (
-            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
+            <span className={"p-1" + (item.isPending ? " opacity-50" : "")}>
               <span
-                className="p-1 rounded-lg"
+                className="p-1 rounded-md text-xs"
                 style={{ background: label?.hex }}
               >
                 {label?.title}
@@ -151,46 +155,46 @@ function Categories({ data }: { data: Category[] }) {
           );
         },
       },
-      // {
-      //   id: "featured",
-      //   accessorKey: "featured",
-      //   header: "featured",
-      //   cell: ({ row }) => {
-      //     const item: OptimisicDataType = row.original;
+      {
+        id: "additional",
+        accessorKey: "additional",
+        header: "Additional",
+        cell: ({ row }) => {
+          const item: OptimisicDataType = row.original;
 
-      //     return (
-      //       <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
-      //         <Switch
-      //           checked={item.featured}
-      //           onCheckedChange={async () => {
-      //             const { featured, ...rest } = item;
+          return (
+            <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
+              <Switch
+                checked={item.additional}
+                onCheckedChange={async () => {
+                  const { additional, ...rest } = item;
 
-      //             const optimisticObj: OptimisicDataType = {
-      //               ...rest,
-      //               featured: !featured,
-      //               isPending: !isPending,
-      //             };
+                  const optimisticObj: OptimisicDataType = {
+                    ...rest,
+                    additional: !additional,
+                    isPending: !isPending,
+                  };
 
-      //             startTransition(() => {
-      //               addOptimisticData((prev: Subproduct[]) => [
-      //                 ...prev.filter((sub) => sub.id !== item.id),
-      //                 optimisticObj,
-      //               ]);
-      //             });
+                  startTransition(() => {
+                    addOptimisticData((prev: Category[]) => [
+                      ...prev.filter((sub) => sub.id !== item.id),
+                      optimisticObj,
+                    ]);
+                  });
 
-      //             const res: ActionResponse = await editSubproduct({
-      //               uuid: item.uuid,
-      //               property: "featured",
-      //               value: !item.featured,
-      //             });
+                  const res: ActionResponse = await editCategory({
+                    uuid: item.uuid,
+                    property: "additional",
+                    value: !item.additional,
+                  });
 
-      //             notify(res);
-      //           }}
-      //         />
-      //       </span>
-      //     );
-      //   },
-      // },
+                  notify(res);
+                }}
+              />
+            </span>
+          );
+        },
+      },
       {
         id: "actions",
         cell: ({ row }) => {
@@ -245,7 +249,7 @@ function Categories({ data }: { data: Category[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, addOptimisticData, labels]
   );
 
   return (
