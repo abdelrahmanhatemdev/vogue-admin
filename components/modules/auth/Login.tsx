@@ -39,7 +39,7 @@ const Login = () => {
     });
     notify(res);
     if (!res?.error) {
-      router.push("/admin")
+      router.push("/")
     }
   }
 

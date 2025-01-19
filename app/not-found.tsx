@@ -11,7 +11,7 @@ export default async function NotFound() {
         This is not page you are looking for!
       </p>
       <Link
-        href={`/admin`}
+        href={`/`}
         className="text-neutral-100 hover:bg-slate-100 hover:text-neutral-900 dark:text-neutral-50 p-2 rounded-md text-sm transition-colors text-center "
       >
         Take me back to <strong>Webiste</strong>

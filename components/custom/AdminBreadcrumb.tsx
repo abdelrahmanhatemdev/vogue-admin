@@ -40,7 +40,7 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/admin">Dashboard</Link>
+              <Link href="/">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

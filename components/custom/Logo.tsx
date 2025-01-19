@@ -25,7 +25,7 @@ function Logo({
 
 
   return (
-    <Link className={cn("", className)} href="/admin">
+    <Link className={cn("", className)} href="/">
       {theme ? (<Image
         src={`${src}.png`}
         alt="Vogue Logo"

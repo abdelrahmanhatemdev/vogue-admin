@@ -50,7 +50,7 @@ import { cn } from "@/lib/utils";
 export const SidebarLinks = [
   {
     title: "Dashboard",
-    link: "/admin",
+    link: "/",
     icon: MdSpaceDashboard,
   },
   {
@@ -124,8 +124,8 @@ function AdminSidebar() {
             <SidebarMenu>
               {SidebarLinks.map((link) => {
                 const isActive =
-                  link.link === "/admin"
-                    ? currentPath === "/admin"
+                  link.link === "/"
+                    ? currentPath === "/"
                     : currentPath.startsWith(link.link);
 
                 return (
