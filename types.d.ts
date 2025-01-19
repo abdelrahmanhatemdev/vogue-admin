@@ -60,6 +60,16 @@ interface Color {
   delatedAt?: string;
 }
 
+interface Label {
+  id: string;
+  uuid: string;
+  title: string;
+  hex: string;
+  createdAt: string;
+  updatedAt: string;
+  delatedAt?: string;
+}
+
 interface Product {
   id: string;
   uuid: string;

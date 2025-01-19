@@ -45,6 +45,8 @@ import { CgSize } from "react-icons/cg";
 import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdLabel } from "react-icons/md";
+
 import { cn } from "@/lib/utils";
 
 export const SidebarLinks = [
@@ -82,6 +84,11 @@ export const SidebarLinks = [
     title: "Colors",
     link: "/colors",
     icon: IoIosColorPalette,
+  },
+  {
+    title: "Labels",
+    link: "/labels",
+    icon: MdLabel,
   },
   {
     title: "Products",
