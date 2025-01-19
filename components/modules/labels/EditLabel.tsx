@@ -82,9 +82,9 @@ function EditLabel({
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input {...field} defaultValue={item.title} />
+                  <Input {...field} />
                 </FormControl>
-                <FormDescription>New Label Title</FormDescription>
+                <FormDescription>Update Label Title</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -105,14 +105,14 @@ function EditLabel({
                     }}
                   />
                 </FormControl>
-                <FormDescription>New Hex Label Code</FormDescription>
+                <FormDescription>Update Hex Label Code</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
         <DialogFooter>
-          <Button type="submit">Add</Button>
+          <Button type="submit">Update</Button>
         </DialogFooter>
       </form>
     </Form>

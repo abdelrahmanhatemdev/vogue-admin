@@ -82,9 +82,9 @@ function EditColor({
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} defaultValue={item.name} />
+                  <Input {...field} />
                 </FormControl>
-                <FormDescription>New Color Name</FormDescription>
+                <FormDescription>Update Color Name</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -105,14 +105,14 @@ function EditColor({
                     }}
                   />
                 </FormControl>
-                <FormDescription>New Hex Color Code</FormDescription>
+                <FormDescription>Update Hex Color Code</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
         <DialogFooter>
-          <Button type="submit">Add</Button>
+          <Button type="submit">Update</Button>
         </DialogFooter>
       </form>
     </Form>

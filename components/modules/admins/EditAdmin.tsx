@@ -89,7 +89,7 @@ function EditAdmin({
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
-              <FormDescription>New Admin Email</FormDescription>
+              <FormDescription>Update Admin Email</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -107,7 +107,7 @@ function EditAdmin({
                   {...field}
                 />
               </FormControl>
-              <FormDescription>New Admin Password</FormDescription>
+              <FormDescription>Update Admin Password</FormDescription>
               <FormMessage />
             </FormItem>
           )}

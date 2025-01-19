@@ -102,7 +102,7 @@ function EditBrand({
                   <Input {...field} className="ps-4" />
                 </FormControl>
               </div>
-              <FormDescription>New Category slug</FormDescription>
+              <FormDescription>Update Category slug</FormDescription>
               <FormMessage />
             </FormItem>
           )}
