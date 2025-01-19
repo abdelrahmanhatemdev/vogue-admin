@@ -21,6 +21,7 @@ import { X } from "lucide-react";
 import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import { Separator } from "@/components/ui/separator";
 import type{ OptimisicImagesType } from "@/components/modules/admin/subproducts/Subproduct";
+import { mutate } from "swr";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";
@@ -107,7 +108,12 @@ function AddSubproductPhotos({
           body: formData,
         });
         const resObj = await res.json()
+
+        mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
+        // if(resObj.ok){
+        // }
         notify(resObj);
+        
       } catch (error) {
         console.log(error);
       }

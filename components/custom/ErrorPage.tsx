@@ -18,7 +18,7 @@ async function ErrorPage({children}: {children: ReactNode}) {
       <div className="flex h-[90svh] lg:h-full  w-full flex-wrap">
         <div className="w-full h-full relative flex items-center justify-center">
           <Image
-            src={`/assets/images/404/404.png`}
+            src={`/assets/media/404/404.png`}
             alt="Not found page"
             fill
             className="rounded-lg object-cover filter brightness-[.7]"

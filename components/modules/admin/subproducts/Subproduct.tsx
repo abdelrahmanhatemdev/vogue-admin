@@ -15,8 +15,12 @@ import { Trash2Icon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ReactSortable } from "react-sortablejs";
-import { deleteProductImage, editProductImage } from "@/actions/Image";
+import {
+  deleteProductImage,
+  editProductImage,
+} from "@/actions/Image";
 import { DialogFooter } from "@/components/ui/dialog";
+import useSWR from "swr";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -59,6 +63,8 @@ type SubproductPageType = Subproduct & {
 
 export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 function Subproduct({
   subproduct,
   images,
@@ -66,19 +72,6 @@ function Subproduct({
   subproduct: SubproductPageType;
   images: ProductImage[];
 }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modal, setModal] = useState<ModalState>({
-    title: "",
-    description: "",
-    children: <></>,
-  });
-  const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-
-  const [isPending, startTransition] = useTransition();
-
-  const [optimisticImages, addOptimisticImages] =
-    useOptimistic<OptimisicImagesType[]>(imageList);
 
   const {
     uuid,
@@ -96,6 +89,44 @@ function Subproduct({
     product_slug,
     product_id,
   } = subproduct;
+
+  
+
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modal, setModal] = useState<ModalState>({
+    title: "",
+    description: "",
+    children: <></>,
+  });
+
+
+  
+  const { data:fetchedImages, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${uuid}`, fetcher);
+  
+
+  const [imageList, setImageList] = useState<OptimisicImagesType[]>([]);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+  const [isPending, startTransition] = useTransition();
+
+  const [optimisticImages, addOptimisticImages] =
+    useOptimistic<OptimisicImagesType[]>(imageList);
+
+    // useEffect(() => {
+    //   if (!isLoading && fetchedImages) {
+    //     setImageList(fetchedImages);
+    //   }
+    // }, [fetchedImages, isLoading]);
+
+    if (isLoading) {
+      
+      console.log(isLoading, fetchedImages.data?.images);
+    }
+
+    
+
+  
 
   const [productSlug] = useState(product_slug);
 
@@ -155,7 +186,7 @@ function Subproduct({
               setModalOpen(false);
               startTransition(() => {
                 addOptimisticImages((prev: OptimisicImagesType[]) => [
-                  ...prev.filter((item) => !selectedImages.includes(item.id))
+                  ...prev.filter((item) => !selectedImages.includes(item.id)),
                 ]);
               });
               for (const selected of selectedImages) {
@@ -251,22 +282,30 @@ function Subproduct({
         <div className="grid grid-cols-1 lg:grid-cols-4 xs:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Price</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Price
+              </span>
               <strong>{price}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Currency</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Currency
+              </span>
 
               <strong>{currency}</strong>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Discount</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Discount
+              </span>
               <strong>{discount}%</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Net Price</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Net Price
+              </span>
 
               <strong>
                 {discountPrice({ price, discount })} {currency}
@@ -275,23 +314,29 @@ function Subproduct({
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Quantity</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Quantity
+              </span>
               <strong>{qty}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Sold</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Sold
+              </span>
 
               <strong>{sold}</strong>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">Featured</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Featured
+              </span>
               <strong>
                 <Switch
                   checked={featured}
                   onCheckedChange={async () => {
-                    const { featured} = subproduct;
+                    const { featured } = subproduct;
 
                     const res: ActionResponse = await editSubproduct({
                       uuid: uuid,
@@ -305,12 +350,14 @@ function Subproduct({
               </strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-700 dark:text-neutral-300">In Stock</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                In Stock
+              </span>
               <strong>
                 <Switch
                   checked={inStock}
                   onCheckedChange={async () => {
-                    const { inStock} = subproduct;
+                    const { inStock } = subproduct;
 
                     const res: ActionResponse = await editSubproduct({
                       uuid,
@@ -328,7 +375,9 @@ function Subproduct({
         <div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 *:bg-background *:p-2 *:rounded-md">
             <div className="flex justify-between items-center">
-              <span className="text-neutral-700 dark:text-neutral-300">Colors</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Colors
+              </span>
 
               <span className="flex gap-2">
                 {colors.length > 0 ? (
@@ -359,7 +408,9 @@ function Subproduct({
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-700 dark:text-neutral-300">Sizes</span>
+              <span className="text-neutral-700 dark:text-neutral-300">
+                Sizes
+              </span>
 
               <span className="flex gap-2">
                 {sizes.length > 0 ? (
@@ -371,7 +422,10 @@ function Subproduct({
                         className="flex gap-2 p-1 bg-neutral-100 dark:bg-neutral-900 rounded-md items-center border border-neutral-200 dark:border-neutral-700"
                         key={itemSize.uuid}
                       >
-                        <span className="text-sm text-neutral-800 dark:text-neutral-300" key={itemSize.uuid}>
+                        <span
+                          className="text-sm text-neutral-800 dark:text-neutral-300"
+                          key={itemSize.uuid}
+                        >
                           {itemSize?.name}
                         </span>
                       </div>

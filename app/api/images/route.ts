@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     if (files.length > 0) {
       revalidateTag(tag);
       revalidateTag(subproductTag);
-      revalidatePath("/");
+      revalidatePath("//admin/products/men/wewe6");
       return NextResponse.json({
         message: `Photo${files.length > 1 ? "s" : ""} uploaded`,
         status: "200",
