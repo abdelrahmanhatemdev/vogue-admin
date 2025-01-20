@@ -133,8 +133,19 @@ interface Tag {
 interface Review {
   id: string;
 }
+interface SocialMedia {
+  id: string;
+  uuid: string;
+  platform: string;
+  link: string;
+  followers: number;
+  createdAt: string;
+  updatedAt: string;
+  delatedAt?: string;
+}
 
 type Currency = {
   name: string;
   code: string;
 };
+

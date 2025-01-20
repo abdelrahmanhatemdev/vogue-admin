@@ -47,6 +47,10 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLabel } from "react-icons/md";
 
+
+
+
+
 import { cn } from "@/lib/utils";
 
 export const SidebarLinks = [
@@ -60,11 +64,6 @@ export const SidebarLinks = [
     link: "/admins",
     icon: MdAdminPanelSettings,
   },
-  // {
-  //   title: "Users",
-  //   link: "/users",
-  //   icon: FaUsers,
-  // },
   {
     title: "Categories",
     link: "/categories",
@@ -94,6 +93,11 @@ export const SidebarLinks = [
     title: "Products",
     link: "/products",
     icon: AiOutlineProduct,
+  },
+  {
+    title: "Settings",
+    link: "/settings",
+    icon: IoSettingsOutline,
   },
 ];
 

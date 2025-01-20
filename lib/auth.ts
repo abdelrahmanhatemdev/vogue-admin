@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { RowDataPacket } from "mysql2";
 import db from "@/lib/db";
 import bcrypt from "bcrypt";
-import { AdminLoginSchema } from "./validation/adminAuth/adminLoginSchema";
+import { AdminLoginSchema } from "./validation/auth/adminLoginSchema";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({

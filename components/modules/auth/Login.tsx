@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AdminLoginSchema } from "@/lib/validation/adminAuth/adminLoginSchema";
+import { AdminLoginSchema } from "@/lib/validation/auth/adminLoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
