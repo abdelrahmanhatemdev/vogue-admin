@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { OptimisicDataType } from ".";
+import { Switch } from "@/components/ui/switch";
+
 function EditProduct({
   item,
   setModalOpen,
@@ -63,6 +65,7 @@ function EditProduct({
       brand_id: item?.brand_id as string,
       descriptionBrief: item.descriptionBrief,
       descriptionDetails: item.descriptionDetails,
+      trending: item.trending ? true : false
     },
     mode: "onChange",
   });
@@ -71,6 +74,7 @@ function EditProduct({
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
     setModalOpen(false);
+    
     const newCategories = values.categories.map((catId) => {
 
       const newCat = categories.find(
@@ -121,7 +125,7 @@ function EditProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 h-[70svh] overflow-y-auto scrollbar-hide"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 max-h-[70svh]  overflow-y-auto scrollbar-hide"
       >
         <FormField
           control={form.control}
@@ -254,6 +258,27 @@ function EditProduct({
               <FormDescription>
                 Update Product Description Details
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="trending"
+          render={({ field }) => (
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+              <div className="flex justify-between items-center">
+                <FormLabel>Is trending?</FormLabel>
+                <FormControl>
+                  <Switch
+                    {...field}
+                    value={`${field.value}`}
+                    onCheckedChange={field.onChange}
+                    checked={field.value}
+                  />
+                </FormControl>
+              </div>
+              <FormDescription>Is Product trending?</FormDescription>
               <FormMessage />
             </FormItem>
           )}

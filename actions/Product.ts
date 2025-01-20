@@ -58,7 +58,15 @@ export async function addProduct(data: Partial<Product>) {
     });
 }
 
-export async function editProduct(data: Partial<Product>) {
+export async function editProduct(
+  data: Partial<
+    Product & {
+      uuid: string;
+      property: string;
+      value: string | boolean | number | string[];
+    }
+  >
+) {
   return api
     .put(apiURL, data)
     .then((res) => {

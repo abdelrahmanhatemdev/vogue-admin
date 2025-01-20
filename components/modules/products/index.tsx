@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,6 +9,9 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
 import { arrayFromString } from "@/lib/format";
+import { cn, notify } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
+import { editProduct } from "@/actions/Product";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -51,6 +54,7 @@ function Products({ data }: { data: Product[] }) {
   const { data: brands } = useData("brands");
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
+  const [isPending, startTransition] = useTransition();
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
@@ -59,6 +63,9 @@ function Products({ data }: { data: Product[] }) {
         )
       : [];
   }, [optimisicData]);
+
+  console.log("sortedOptimisicData", sortedOptimisicData);
+  
   
 
   const columns: ColumnDef<Product>[] = useMemo(
@@ -154,102 +161,7 @@ function Products({ data }: { data: Product[] }) {
           return filterValue.length === 0 || filterValue.includes(rowValue);
         },
       },
-      {
-        id: "categories",
-        accessorKey: "categories",
-        header: "categories",
-        cell: ({ row }) => {
-          const item: OptimisicDataType = row.original;
-          const itemCatsString = item.categories
-            ? (item.categories as string)
-            : "";
-
-          const itemCatsArray = arrayFromString(itemCatsString);
-
-          const itemCats = itemCatsArray.map((cat) => {
-            const catArray = cat.split(" - ");
-            const name = catArray[0];
-            const slug = catArray[1];
-            return { name, slug };
-          });
-
-          return itemCats?.length > 0 ? (
-            itemCats.map((cat, index) => (
-              <Link
-                href={`/categories/${cat.slug}`}
-                className={
-                  "hover:bg-neutral-200 dark:hover:bg-neutral-500 p-2 rounded-lg text-xs" +
-                  (item.isPending ? " opacity-50" : "")
-                }
-                title="Go to categories page"
-                key={index}
-              >
-                {cat.name.length > 8 ? `${cat.name.slice(0, 8)}...` : cat.name}
-              </Link>
-            ))
-          ) : (
-            <></>
-          );
-        },
-
-        filterFn: (row, columnId, filterValue) => {
-          const rowValue: string = row.getValue(columnId);
-
-          const itemCatsString = rowValue ? (rowValue as string) : "";
-
-          const itemCatsArray = arrayFromString(itemCatsString);
-
-          const itemCatsIds = itemCatsArray.map((cat) => {
-            const catArray = cat.split(" - ");
-            const uuid = catArray[2];
-            return uuid;
-          });
-
-          return (
-            filterValue.length === 0 ||
-            itemCatsIds.some((id) => filterValue.includes(id))
-          );
-        },
-        sortingFn: (rowA, rowB) => {
-          const rowACatsString = rowA.original.categories
-            ? (rowA.original.categories as string)
-            : "";
-          const rowACatsArray = rowACatsString.split(",");
-          const categoriesA = rowACatsArray
-            .map((cat) => {
-              const catArray = cat.split(" - ");
-              const name = catArray[0];
-              return name;
-            })
-            .sort();
-
-          const rowBCatsString = rowB.original.categories
-            ? (rowB.original.categories as string)
-            : "";
-          const rowBCatsArray = rowBCatsString.split(",");
-          const categoriesB = rowBCatsArray
-            .map((cat) => {
-              const catArray = cat.split(" - ");
-              const name = catArray[0];
-              return name;
-            })
-            .sort();
-
-          if (!categoriesA.length && !categoriesB.length) return 0;
-          if (!categoriesA.length) return 1;
-          if (!categoriesB.length) return -1;
-
-          if (
-            typeof categoriesA[0] !== "undefined" &&
-            typeof categoriesB[0] !== "undefined"
-          ) {
-            if (categoriesA[0] < categoriesB[0]) return -1;
-            if (categoriesA[0] > categoriesB[0]) return 1;
-          }
-
-          return 0;
-        },
-      },
+     
       {
         id: "subproduct_count",
         accessorKey: "subproduct_count",
@@ -261,7 +173,47 @@ function Products({ data }: { data: Product[] }) {
             ? Number(item.subproduct_count)
             : 0;
 
-          return <>{subproductsCount}</>;
+          return <span className="flex justify-center items-center dark:bg-neutral-700 rounded-md">{subproductsCount}</span>;
+        },
+      },
+      {
+        id: "trending",
+        accessorKey: "trending",
+        header: "trending",
+        cell: ({ row }) => {
+          const item: OptimisicDataType = row.original;
+
+          return (
+            <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
+              <Switch
+                checked={item.trending}
+                onCheckedChange={async () => {
+                  const { trending, ...rest } = item;
+
+                  const optimisticObj: OptimisicDataType = {
+                    ...rest,
+                    trending: !trending,
+                    isPending: !isPending,
+                  };
+
+                  startTransition(() => {
+                    addOptimisticData((prev: Product[]) => [
+                      ...prev.filter((sub) => sub.id !== item.id),
+                      optimisticObj,
+                    ]);
+                  });
+
+                  const res: ActionResponse = await editProduct({
+                    uuid: item.uuid,
+                    property: "trending",
+                    value: !item.trending,
+                  });
+
+                  notify(res);
+                }}
+              />
+            </span>
+          );
         },
       },
       {

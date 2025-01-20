@@ -31,6 +31,7 @@ export const ProductSchema = z.object({
   descriptionDetails: z.string().min(1, {
     message: "Description Details is required",
   }),
+  trending: z.boolean({ message: "Trending field is required." }).optional(),
 })
 .superRefine(async (obj, ctx) => {
   const { uuid, slug } = obj;

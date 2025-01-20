@@ -82,6 +82,7 @@ interface Product {
   categories: Category[] | string | string[];
   descriptionBrief: string;
   descriptionDetails: string;
+  trending: boolean;
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;

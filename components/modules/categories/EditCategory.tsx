@@ -171,7 +171,7 @@ function EditCategory({
                     {categories
                       .filter((cat) => !cat.parent)
                       .map((item) => (
-                        <SelectItem value={`${item.uuid}`} key={item.uuid}>
+                        <SelectItem value={`${item.uuid}`} key={item.id}>
                           {item.name}
                         </SelectItem>
                       ))}

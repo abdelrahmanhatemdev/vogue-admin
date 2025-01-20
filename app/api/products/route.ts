@@ -49,6 +49,7 @@ export async function POST(request: Request) {
       categories,
       descriptionBrief,
       descriptionDetails,
+      trending
     } = await request.json();
 
     //Ensure Server Validation
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
       categories,
       descriptionBrief,
       descriptionDetails,
+      trending
     });
 
     const [slugCheck] = await db.execute(
@@ -91,9 +93,10 @@ export async function POST(request: Request) {
       slug,
       brand_id,
       descriptionBrief,
-      descriptionDetails
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
-      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails]
+      descriptionDetails,
+      trending
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [uuid, name, slug, brand_id, descriptionBrief, descriptionDetails, trending]
     );
 
     const catArray = nonEmptyCategories.map((c: string) => [uuid, c]);
@@ -119,6 +122,24 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const reqData = await request.json();
+
+  if (reqData?.property) {
+    const { property, uuid, value } = reqData;
+    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      `UPDATE ${tableName} SET 
+      ${property} = ?
+      WHERE 
+      uuid = ?`,
+      [value, uuid]
+    );
+
+    if (result.affectedRows) {
+      return NextResponse.json({ message: "Product updated" }, { status: 200 });
+    }
+    return NextResponse.json({ message: "Something wrong" }, { status: 500 });
+  }
+
   try {
     const {
       uuid,
@@ -128,7 +149,8 @@ export async function PUT(request: Request) {
       categories,
       descriptionBrief,
       descriptionDetails,
-    } = await request.json();
+      trending
+    } = reqData;
 
     // // Ensure Server Validation
     await ProductSchema.parseAsync({
@@ -139,6 +161,7 @@ export async function PUT(request: Request) {
       categories,
       descriptionBrief,
       descriptionDetails,
+      trending
     });
 
     const [slugCheck] = await db.execute(
@@ -177,8 +200,8 @@ export async function PUT(request: Request) {
     );
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, descriptionBrief = ?, descriptionDetails = ?  WHERE uuid = ?`,
-      [name, slug, brand_id, descriptionBrief, descriptionDetails, uuid]
+      `UPDATE ${tableName} SET name = ?, slug = ?, brand_id = ?, descriptionBrief = ?, descriptionDetails = ?, trending = ?  WHERE uuid = ?`,
+      [name, slug, brand_id, descriptionBrief, descriptionDetails, trending, uuid]
     );
 
     if (result.affectedRows) {

@@ -32,6 +32,7 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuidv4 } from "uuid";
 import type { OptimisicDataType } from ".";
+import { Switch } from "@/components/ui/switch";
 
 function AddProduct({
   setModalOpen,
@@ -55,6 +56,7 @@ function AddProduct({
       brand_id: "",
       descriptionBrief: "",
       descriptionDetails: "",
+      trending: false
     },
     mode: "onChange",
   });
@@ -90,7 +92,7 @@ function AddProduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 h-[70svh] overflow-y-auto scrollbar-hide"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 max-h-[70svh]  overflow-y-auto scrollbar-hide"
       >
         <FormField
           control={form.control}
@@ -218,6 +220,27 @@ function AddProduct({
                 />
               </FormControl>
               <FormDescription>New Product Description Details</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="trending"
+          render={({ field }) => (
+            <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
+              <div className="flex justify-between items-center">
+                <FormLabel>Is trending?</FormLabel>
+                <FormControl>
+                  <Switch
+                    {...field}
+                    value={`${field.value}`}
+                    onCheckedChange={field.onChange}
+                    checked={field.value}
+                  />
+                </FormControl>
+              </div>
+              <FormDescription>Is New Product Trending?</FormDescription>
               <FormMessage />
             </FormItem>
           )}

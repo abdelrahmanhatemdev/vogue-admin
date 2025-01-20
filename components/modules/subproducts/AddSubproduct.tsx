@@ -96,7 +96,7 @@ function AddSubproduct({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 h-[70svh] overflow-y-auto scrollbar-hide"
+        className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-2 max-h-[70svh]  overflow-y-auto scrollbar-hide"
         encType="multipart/form-data"
       >
         <FormField
