@@ -118,7 +118,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
         className="space-y-2"
       >
         <div className="flex flex-col gap-4">
-          <div className="border-b border-neutral-700 pb-4 flex flex-col lg:flex-row lg:justify-between items-center w-full">
+          <div className="border-b border-neutral-700 pb-4 flex flex-col xs:flex-row justify-between xs:items-center w-full gap-4">
             <div>
               <h2 className="capitalize text-xl font-semibold text-neutral-900 dark:text-neutral-50">
                 Social Media
@@ -131,9 +131,9 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
               <Button
                 variant="nostyle"
                 size="sm"
-                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg"
+                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4"
               >
-                <h4 className="text-sm font-semibold">Add New</h4>
+                <h4 className="text-sm font-semibold text-center w-full">Add New</h4>
               </Button>
             </CollapsibleTrigger>
           </div>

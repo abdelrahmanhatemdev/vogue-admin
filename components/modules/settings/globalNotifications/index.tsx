@@ -116,12 +116,12 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
   return (
     <div className="flex flex-col rounded-lg bg-background">
       <Collapsible
-        open={isAddOpen} 
+        open={isAddOpen}
         onOpenChange={(isOpen) => setIsAddOpen(isOpen)}
         className="space-y-2"
       >
         <div className="flex flex-col gap-4">
-          <div className="border-b border-neutral-700 pb-4 flex flex-col lg:flex-row lg:justify-between items-center w-full">
+          <div className="border-b border-neutral-700 pb-4 flex flex-col xs:flex-row justify-between xs:items-center w-full gap-4">
             <div>
               <h2 className="capitalize text-xl font-semibold text-neutral-900 dark:text-neutral-50">
                 Global Notifications
@@ -134,9 +134,11 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
               <Button
                 variant="nostyle"
                 size="sm"
-                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg"
+                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4"
               >
-                <h4 className="text-sm font-semibold">Add New</h4>
+                <h4 className="text-sm font-semibold text-center w-full">
+                  Add New
+                </h4>
               </Button>
             </CollapsibleTrigger>
           </div>
@@ -159,7 +161,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
               className="space-y-2"
               key={`${item.uuid}`}
             >
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-start">
                 <p className="text-sm inline">
                   {item.text}
                   <a

@@ -78,7 +78,7 @@ const AddSocialMedia = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"
       >
-        <div className="grid grid-cols-[calc(40%-2rem/3)_calc(30%-2rem/3)_calc(30%-2rem/3)] gap-4 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[calc(40%-2rem/3)_calc(30%-2rem/3)_calc(30%-2rem/3)] gap-4 w-full">
           <FormField
             control={form.control}
             name="link"

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -8,6 +8,11 @@ import Link from "next/link";
 import { memo } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+const Heading = dynamic(
+  () => import("@/components/custom/Heading")
+);
 
 const sidebarLinks = [
   {
@@ -38,34 +43,37 @@ const sidebarLinks = [
 ];
 
 const SettingsSidebar = () => {
-
   const currentPath = usePathname();
 
-
-
   return (
-    <ul className="w-full flex lg:flex-col -ms-2">
-      {sidebarLinks.map((link, index) => {
-        const isActive = currentPath.startsWith(link.link);
+    <div className="flex flex-col gap-4 w-full">
+      <div className="flex justify-between items-center">
+        <Heading
+          title="Settings"
+          description="Manage your account settings and info!"
+        />
+      </div>
+      <ul className="lg:w-full flex lg:flex-col gap-1 overflow-auto scrollbar-hide w-full">
+        {sidebarLinks.map((link, index) => {
+          const isActive = currentPath.startsWith(link.link);
 
-          // console.log('currentPath === "/settings"', currentPath === "/settings");
-          console.log('isActive', isActive);
-          console.log('currentPath', currentPath);
-          console.log('link.link', link.link);
-          
-        return (
-          <li className="w-full" key={index}>
-            <Link
-              href={`${link.link}`}
-              className={cn("rounded-lg dark:hover:bg-neutral-700 transition-colors p-2 w-full flex gap-2 items-center", isActive ? "bg-neutral-700" : "")}
-            >
-              <link.icon />
-              <span>{link.title}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+          return (
+            <li className="lg:w-full" key={index}>
+              <Link
+                href={`${link.link}`}
+                className={cn(
+                  "rounded-lg dark:hover:bg-neutral-700 transition-colors p-2 w-full flex gap-2 items-center font-medium",
+                  isActive ? "bg-neutral-700" : ""
+                )}
+              >
+                <link.icon />
+                <p className="w-max truncate">{link.title}</p>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 export default memo(SettingsSidebar);
