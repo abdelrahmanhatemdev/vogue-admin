@@ -11,27 +11,27 @@ import { cn } from "@/lib/utils";
 
 const sidebarLinks = [
   {
-    link: "/settnigs/social-media",
+    link: "/settings/social-media",
     title: "Social Media",
     icon: IoShareSocialOutline,
   },
   {
-    link: "/settnigs/global-notifications",
+    link: "/settings/global-notifications",
     title: "Global Notifications",
     icon: IoIosNotifications,
   },
   {
-    link: "/settnigs/currencies",
+    link: "/settings/currencies",
     title: "Currencies",
     icon: BsCurrencyDollar,
   },
   {
-    link: "/settnigs/appearence",
+    link: "/settings/appearence",
     title: "Appearnce",
     icon: CgDarkMode,
   },
   {
-    link: "/settnigs/shipping",
+    link: "/settings/shipping",
     title: "Shipping",
     icon: FaShippingFast,
   },
@@ -46,13 +46,12 @@ const SettingsSidebar = () => {
   return (
     <ul className="w-full flex lg:flex-col -ms-2">
       {sidebarLinks.map((link, index) => {
-        const isActive =
-        link.link === "/settings"
-          ? currentPath === "/settings"
-          : currentPath.startsWith(link.link);
+        const isActive = currentPath.startsWith(link.link);
 
-          console.log('currentPath === "/settings"', currentPath === "/settings");
+          // console.log('currentPath === "/settings"', currentPath === "/settings");
           console.log('isActive', isActive);
+          console.log('currentPath', currentPath);
+          console.log('link.link', link.link);
           
         return (
           <li className="w-full" key={index}>

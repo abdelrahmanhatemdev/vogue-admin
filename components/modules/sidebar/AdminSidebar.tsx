@@ -96,7 +96,7 @@ export const SidebarLinks = [
   },
   {
     title: "Settings",
-    link: "/settings",
+    link: "/settings/social-media",
     icon: IoSettingsOutline,
   },
 ];
