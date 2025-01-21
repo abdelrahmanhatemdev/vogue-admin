@@ -104,6 +104,9 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
       : [];
   }, [optimisicData]);
 
+  const followersArray = sortedOptimisicData.map(item => item.followers)
+  const totalFollowers = followersArray.reduce((accumulator, currentValue) => accumulator + currentValue)
+
   return (
     <div className="flex flex-col rounded-lg bg-background">
       <Collapsible className="space-y-2">
@@ -195,6 +198,12 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
             </Collapsible>
           );
         })}
+      </div>
+
+      <div className="border-t border-neutral-700 pt-4 flex gap-2 items-center">
+        <h5 className="text-neutral-300">Total Followers:</h5>
+        <span className="text-xl font-semibold">{totalFollowers}k</span>
+
       </div>
 
       <Modal
