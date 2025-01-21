@@ -67,6 +67,14 @@ const EditSocialMedia = dynamic(
     loading: Loading,
   }
 );
+
+const DeleteSocialMedia = dynamic(
+  () => import("@/components/modules/settings/socialMedia/DeleteSocialMedia"),
+  {
+    loading: Loading,
+  }
+);
+
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
 
@@ -74,6 +82,12 @@ export type OptimisicDataType = SocialMedia & { isPending?: boolean };
 
 function SocialMedia({ data }: { data: SocialMedia[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
+
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+  const handleOpenChange = (uuid: string, isOpen: boolean) => {
+    setOpenStates((prev) => ({ ...prev, [uuid]: isOpen }));
+  };
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -124,7 +138,12 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
         {sortedOptimisicData.map((item) => {
           const social = socialMediaList.find((s) => s.value === item.platform);
           return (
-            <Collapsible className="space-y-2" key={`${item.uuid}`}>
+            <Collapsible
+              open={openStates[item.uuid] || false} // Default to false if not set
+              onOpenChange={(isOpen) => handleOpenChange(item.uuid, isOpen)}
+              className="space-y-2"
+              key={`${item.uuid}`}
+            >
               <div className="flex justify-between items-center">
                 <a
                   href={`${item.link}`}
@@ -146,28 +165,32 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                     color="#dc2626"
                     className="cursor-pointer"
                     onClick={() => {
-                      // setModalOpen(true);
-                      // setModal({
-                      //   title: `Delete SocialMedia`,
-                      //   description: (
-                      //     <p className="font-medium">
-                      //       Are you sure To delete the SocialMedia permenantly ?
-                      //     </p>
-                      //   ),
-                      //   children: (
-                      //     <DeleteSocialMedia
-                      //       itemId={item.uuid}
-                      //       setModalOpen={setModalOpen}
-                      //       addOptimisticData={addOptimisticData}
-                      //     />
-                      //   ),
-                      // });
+                      setModalOpen(true);
+                      setModal({
+                        title: `Delete Social Media`,
+                        description: (
+                          <p className="font-medium">
+                            Are you sure To delete the social media permenantly ?
+                          </p>
+                        ),
+                        children: (
+                          <DeleteSocialMedia
+                            itemId={item.uuid}
+                            setModalOpen={setModalOpen}
+                            addOptimisticData={addOptimisticData}
+                          />
+                        ),
+                      });
                     }}
                   />
                 </div>
               </div>
               <CollapsibleContent>
-              <EditSocialMedia item={item} addOptimisticData={addOptimisticData}/>
+                <EditSocialMedia
+                  item={item}
+                  addOptimisticData={addOptimisticData}
+                  setOpenStates={setOpenStates}
+                />
               </CollapsibleContent>
             </Collapsible>
           );

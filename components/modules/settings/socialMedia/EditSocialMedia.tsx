@@ -18,7 +18,7 @@ import {
 import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/socialMedia/SocialMedia";
-import { memo, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSocialMedia } from "@/actions/SocialMedia";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -31,11 +31,13 @@ import { Button } from "@/components/ui/button";
 const EditSocialMedia = ({
   item,
   addOptimisticData,
+  setOpenStates
 }: {
   addOptimisticData: (
     action: SocialMedia[] | ((pendingState: SocialMedia[]) => SocialMedia[])
   ) => void;
   item: SocialMedia;
+  setOpenStates: Dispatch<SetStateAction<Record<string, boolean>>>;
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -51,6 +53,7 @@ const EditSocialMedia = ({
   });
 
   async function onSubmit(values: z.infer<typeof SocialMediaSchema>) {
+    setOpenStates({})
     const date = new Date().toISOString();
     const data = {
       ...values,
