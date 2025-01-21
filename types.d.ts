@@ -133,12 +133,24 @@ interface Tag {
 interface Review {
   id: string;
 }
+
 interface SocialMedia {
   id: string;
   uuid: string;
   platform: string;
   link: string;
   followers: number;
+  createdAt: string;
+  updatedAt: string;
+  delatedAt?: string;
+}
+
+interface GlobalNotification {
+  id: string;
+  uuid: string;
+  text: string;
+  anchorText: string;
+  anchorLink: string;
   createdAt: string;
   updatedAt: string;
   delatedAt?: string;

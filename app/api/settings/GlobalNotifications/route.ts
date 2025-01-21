@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
-import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
+import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
 
-export const tableName = "settings_social_media";
+export const tableName = "settings_global-notification";
 
 export async function GET() {
   try {
@@ -11,7 +11,7 @@ export async function GET() {
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
     );
 
-    const data = rows as SocialMedia[];
+    const data = rows as GlobalNotification[];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -22,19 +22,19 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, link, platform, followers } = await request.json();
+    const { uuid, text, anchorText, anchorLink } = await request.json();
 
     // Ensure Server Validation
-    SocialMediaSchema.parseAsync({ uuid, link, platform, followers });
+    GlobalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink });
 
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, link, platform, followers) VALUES (?, ?, ?, ?)`,
-      [uuid, link, platform, followers]
+      `INSERT INTO ${tableName} (uuid, text, anchorText, anchorLink) VALUES (?, ?, ?, ?)`,
+      [uuid, text, anchorText, anchorLink]
     );
 
     if (result.insertId) {
       return NextResponse.json(
-        { message: "Social Media added", result },
+        { message: "Global Notification added", result },
         { status: 200 }
       );
     }
@@ -48,19 +48,19 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, link, platform, followers  } = await request.json();
+    const { uuid, text, anchorText, anchorLink  } = await request.json();
 
     // Ensure Server Validation
-    SocialMediaSchema.parseAsync({ uuid, link, platform, followers  });
+    GlobalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink  });
       
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET link = ?, platform = ?, followers = ? WHERE uuid = ?`,
-      [ link, platform, followers , uuid]
+      `UPDATE ${tableName} SET text = ?, anchorText = ?, anchorLink = ? WHERE uuid = ?`,
+      [ text, anchorText, anchorLink  , uuid]
     );
 
     if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Social Media updated", result },
+        { message: "Global Notification updated", result },
         { status: 200 }
       );
     }
@@ -83,7 +83,7 @@ export async function DELETE(request: Request) {
 
     if (result.affectedRows) {
       return NextResponse.json(
-        { message: "Social Media Deleted", result },
+        { message: "Global Notification Deleted", result },
         { status: 200 }
       );
     }

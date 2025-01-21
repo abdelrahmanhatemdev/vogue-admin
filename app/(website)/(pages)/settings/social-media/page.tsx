@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import {title} from "@/app/(website)/(pages)/settings/layout"
 import { getSocialMedia } from "@/actions/SocialMedia";
 const SocialMedia = dynamic(
-  () => import("@/components/modules/settings/socialMedia/SocialMedia")
+  () => import("@/components/modules/settings/socialMedia")
 );
 
 export const SubTitle = "Social Media"

@@ -15,44 +15,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
+import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
 import { z } from "zod";
-import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
+import { OptimisicDataType } from "@/components/modules/settings/globalNotifications";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
-import { editSocialMedia } from "@/actions/SocialMedia";
+import { editGlobalNotification } from "@/actions/GlobalNotification";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { v4 as uuidv4 } from "uuid";
-import { socialMedia as socialMediaList } from "@/constants/socialMedia";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-const EditSocialMedia = ({
+const EditGlobalNotification = ({
   item,
   addOptimisticData,
   setOpenStates
 }: {
   addOptimisticData: (
-    action: SocialMedia[] | ((pendingState: SocialMedia[]) => SocialMedia[])
+    action: GlobalNotification[] | ((pendingState: GlobalNotification[]) => GlobalNotification[])
   ) => void;
-  item: SocialMedia;
+  item: GlobalNotification;
   setOpenStates: Dispatch<SetStateAction<Record<string, boolean>>>;
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SocialMediaSchema>>({
-    resolver: zodResolver(SocialMediaSchema),
+  const form = useForm<z.infer<typeof GlobalNotificationSchema>>({
+    resolver: zodResolver(GlobalNotificationSchema),
     defaultValues: {
       uuid: item.uuid,
-      link: item.link,
-      platform: item.platform as "instagram",
-      followers: item.followers,
+      text: item.text,
+      anchorText: item.anchorText,
+      anchorLink: item.anchorLink,
     },
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof SocialMediaSchema>) {
+  async function onSubmit(values: z.infer<typeof GlobalNotificationSchema>) {
     setOpenStates({})
     const date = new Date().toISOString();
     const data = {
@@ -68,9 +67,9 @@ const EditSocialMedia = ({
     };
 
     startTransition(() => {
-      addOptimisticData((prev: SocialMedia[]) => [...prev.filter(i => i.uuid !== item.uuid), optimisticObj]);
+      addOptimisticData((prev: GlobalNotification[]) => [...prev.filter(i => i.uuid !== item.uuid), optimisticObj]);
     });
-    const res: ActionResponse = await editSocialMedia(data);
+    const res: ActionResponse = await editGlobalNotification(data);
     notify(res);
   }
 
@@ -80,61 +79,45 @@ const EditSocialMedia = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"
       >
-        <div className="grid grid-cols-[calc(40%-2rem/3)_calc(30%-2rem/3)_calc(30%-2rem/3)] gap-4 w-full">
+        <div className="grid grid-cols-1 gap-4 w-full">
           <FormField
             control={form.control}
-            name="link"
+            name="text"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Link</FormLabel>
+                <FormLabel>Text</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-                <FormDescription>Social Media Link</FormDescription>
+                <FormDescription>Notification Text</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="platform"
+            name="anchorText"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Platform</FormLabel>
-
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose Platform" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {socialMediaList.map((platform) => (
-                      <SelectItem
-                        value={`${platform.value}`}
-                        key={platform.value}
-                      >
-                        <span className="w-full flex items-center gap-2">
-                          <platform.icon />
-                          <span>{platform.name}</span>
-                        </span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormDescription>Social Media Platform</FormDescription>
+                <FormLabel>Anchor Text</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription>Notification anchor text</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="followers"
+            name="anchorLink"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Followers</FormLabel>
+                <FormLabel>Anchor Link</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-                <FormDescription>Followers in k</FormDescription>
+                <FormDescription>Notification anchor link</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -147,4 +130,4 @@ const EditSocialMedia = ({
     </Form>
   );
 };
-export default memo(EditSocialMedia);
+export default memo(EditGlobalNotification);

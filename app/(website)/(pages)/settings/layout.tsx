@@ -6,7 +6,7 @@ import Heading from "@/components/custom/Heading";
 import SettingsSidebar from "@/components/modules/settings/SettingsSidebar";
 import { ReactNode } from "react";
 
-const SettingsModule = dynamic(() => import("@/components/modules/settings/socialMedia/SocialMedia"));
+const SettingsModule = dynamic(() => import("@/components/modules/settings/socialMedia"));
 
 export const title = "Settings";
 

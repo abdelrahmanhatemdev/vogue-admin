@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
 import { z } from "zod";
-import { OptimisicDataType } from "@/components/modules/settings/socialMedia/SocialMedia";
+import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
 import { memo, useTransition } from "react";
 import { addSocialMedia } from "@/actions/SocialMedia";
 import { notify } from "@/lib/utils";
