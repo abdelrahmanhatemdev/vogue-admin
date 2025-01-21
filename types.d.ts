@@ -156,6 +156,15 @@ interface GlobalNotification {
   delatedAt?: string;
 }
 
+interface Currency {
+  id: string;
+  uuid: string;
+  code: string;
+  createdAt: string;
+  updatedAt: string;
+  delatedAt?: string;
+}
+
 type Currency = {
   name: string;
   code: string;

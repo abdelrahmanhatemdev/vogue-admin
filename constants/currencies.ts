@@ -1,4 +1,4 @@
-export const currencies: Currency[] = [
+export const currencies = [
   { name: "US Dollar", code: "USD" },
   { name: "Kuwaiti Dinar", code: "KWD" },
   { name: "Bahraini Dinar", code: "BHD" },
