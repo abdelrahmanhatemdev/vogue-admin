@@ -3,7 +3,7 @@ import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
 import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
 
-export const tableName = "settings_global-notification";
+export const tableName = "settings_global_notifications";
 
 export async function GET() {
   try {

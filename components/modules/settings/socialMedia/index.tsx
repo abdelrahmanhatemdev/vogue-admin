@@ -84,6 +84,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
   const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const handleOpenChange = (uuid: string, isOpen: boolean) => {
     setOpenStates((prev) => ({ ...prev, [uuid]: isOpen }));
@@ -104,12 +105,18 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
       : [];
   }, [optimisicData]);
 
-  const followersArray = sortedOptimisicData.map(item => item.followers)
-  const totalFollowers = followersArray.reduce((accumulator, currentValue) => accumulator + currentValue)
+  const followersArray = sortedOptimisicData.map((item) => item.followers);
+  const totalFollowers = followersArray.reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
-      <Collapsible className="space-y-2">
+      <Collapsible
+        open={isAddOpen}
+        onOpenChange={(isOpen) => setIsAddOpen(isOpen)}
+        className="space-y-2"
+      >
         <div className="flex flex-col gap-4">
           <div className="border-b border-neutral-700 pb-4 flex flex-col lg:flex-row lg:justify-between items-center w-full">
             <div>
@@ -132,7 +139,10 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
           </div>
 
           <CollapsibleContent className="space-y-2">
-            <AddSocialMedia addOptimisticData={addOptimisticData} />
+            <AddSocialMedia
+              addOptimisticData={addOptimisticData}
+              setIsAddOpen={setIsAddOpen}
+            />
           </CollapsibleContent>
         </div>
       </Collapsible>
@@ -173,7 +183,8 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                         title: `Delete Social Media`,
                         description: (
                           <p className="font-medium">
-                            Are you sure To delete the social media permenantly ?
+                            Are you sure To delete the social media permenantly
+                            ?
                           </p>
                         ),
                         children: (
@@ -203,7 +214,6 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
       <div className="border-t border-neutral-700 pt-4 flex gap-2 items-center">
         <h5 className="text-neutral-300">Total Followers:</h5>
         <span className="text-xl font-semibold">{totalFollowers}k</span>
-
       </div>
 
       <Modal

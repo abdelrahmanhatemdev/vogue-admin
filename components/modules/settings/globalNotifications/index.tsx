@@ -92,6 +92,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
   const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const handleOpenChange = (uuid: string, isOpen: boolean) => {
     setOpenStates((prev) => ({ ...prev, [uuid]: isOpen }));
@@ -114,7 +115,11 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
-      <Collapsible className="space-y-2">
+      <Collapsible
+        open={isAddOpen} 
+        onOpenChange={(isOpen) => setIsAddOpen(isOpen)}
+        className="space-y-2"
+      >
         <div className="flex flex-col gap-4">
           <div className="border-b border-neutral-700 pb-4 flex flex-col lg:flex-row lg:justify-between items-center w-full">
             <div>
@@ -137,7 +142,10 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
           </div>
 
           <CollapsibleContent className="space-y-2">
-            <AddGlobalNotification addOptimisticData={addOptimisticData} />
+            <AddGlobalNotification
+              addOptimisticData={addOptimisticData}
+              setIsAddOpen={setIsAddOpen}
+            />
           </CollapsibleContent>
         </div>
       </Collapsible>
@@ -152,13 +160,16 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
               key={`${item.uuid}`}
             >
               <div className="flex justify-between items-center">
-                <a
-                  href={`${item.anchorLink}`}
-                  target="_blank"
-                  className="flex gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg"
-                >
-                  <span className="text-sm">{item.anchorText}</span>
-                </a>
+                <p className="text-sm inline">
+                  {item.text}
+                  <a
+                    href={`${item.anchorLink}`}
+                    target="_blank"
+                    className="ms-2 inline-block gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg font-bold"
+                  >
+                    <span className="text-sm">{item.anchorText}</span>
+                  </a>
+                </p>
                 <div className="flex items-center gap-2 justify-end">
                   <CollapsibleTrigger>
                     <TbEdit size={20} className="cursor-pointer" />

@@ -1,10 +1,24 @@
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
-import { memo, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addSocialMedia } from "@/actions/SocialMedia";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -15,46 +29,49 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 const AddSocialMedia = ({
-
   addOptimisticData,
+  setIsAddOpen,
 }: {
   addOptimisticData: (
     action: SocialMedia[] | ((pendingState: SocialMedia[]) => SocialMedia[])
   ) => void;
+  setIsAddOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const [isPending, startTransition] = useTransition();
-    async function onSubmit(values: z.infer<typeof SocialMediaSchema>) {
-        const date = new Date().toISOString();
-        const data = {
-          ...values,
-          createdAt: date,
-          updatedAt: date,
-        };
-    
-        const optimisticObj: OptimisicDataType = {
-          ...data,
-          id: `${data.uuid}`,
-          isPending: !isPending,
-        };
-    
-        startTransition(() => {
-          addOptimisticData((prev: SocialMedia[]) => [...prev, optimisticObj]);
-        });
-        const res: ActionResponse = await addSocialMedia(data);
-        notify(res);
-      }
-    
-      const form = useForm<z.infer<typeof SocialMediaSchema>>({
-        resolver: zodResolver(SocialMediaSchema),
-        defaultValues: {
-          uuid: uuidv4(),
-          link: "",
-          platform: undefined,
-          followers: 0,
-        },
-        mode: "onChange",
-      });
-    
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<z.infer<typeof SocialMediaSchema>>({
+    resolver: zodResolver(SocialMediaSchema),
+    defaultValues: {
+      uuid: uuidv4(),
+      link: "",
+      platform: undefined,
+      followers: 0,
+    },
+    mode: "onChange",
+  });
+
+  async function onSubmit(values: z.infer<typeof SocialMediaSchema>) {
+    setIsAddOpen(false);
+    const date = new Date().toISOString();
+    const data = {
+      ...values,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    const optimisticObj: OptimisicDataType = {
+      ...data,
+      id: `${data.uuid}`,
+      isPending: !isPending,
+    };
+
+    startTransition(() => {
+      addOptimisticData((prev: SocialMedia[]) => [...prev, optimisticObj]);
+    });
+    const res: ActionResponse = await addSocialMedia(data);
+    notify(res);
+  }
+
   return (
     <Form {...form}>
       <form

@@ -18,7 +18,7 @@ import {
 import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/globalNotifications";
-import { memo, useTransition } from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addGlobalNotification } from "@/actions/GlobalNotification";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -29,15 +29,30 @@ import { Button } from "@/components/ui/button";
 
 const AddGlobalNotification = ({
   addOptimisticData,
+  setIsAddOpen,
 }: {
   addOptimisticData: (
     action:
       | GlobalNotification[]
       | ((pendingState: GlobalNotification[]) => GlobalNotification[])
   ) => void;
+  setIsAddOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isPending, startTransition] = useTransition();
+
+  const form = useForm<z.infer<typeof GlobalNotificationSchema>>({
+    resolver: zodResolver(GlobalNotificationSchema),
+    defaultValues: {
+      uuid: uuidv4(),
+      text: "",
+      anchorText: "",
+      anchorLink: "",
+    },
+    mode: "onChange",
+  });
+
   async function onSubmit(values: z.infer<typeof GlobalNotificationSchema>) {
+    setIsAddOpen(false)
     const date = new Date().toISOString();
     const data = {
       ...values,
@@ -61,17 +76,6 @@ const AddGlobalNotification = ({
     notify(res);
   }
 
-  const form = useForm<z.infer<typeof GlobalNotificationSchema>>({
-    resolver: zodResolver(GlobalNotificationSchema),
-    defaultValues: {
-      uuid: uuidv4(),
-      text: "",
-      anchorText: "",
-      anchorLink: "",
-    },
-    mode: "onChange",
-  });
-
   return (
     <Form {...form}>
       <form
@@ -84,11 +88,11 @@ const AddGlobalNotification = ({
             name="text"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Link</FormLabel>
+                <FormLabel>Text</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-                <FormDescription>Social Media Link</FormDescription>
+                <FormDescription>Notification Text</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
