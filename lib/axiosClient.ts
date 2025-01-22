@@ -5,10 +5,6 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  // const token = await getToken();
-  // if (token) {
-  //   config.headers["Authorization"] = `Barer ${token}`;
-  // }
   return config;
 });
 

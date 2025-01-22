@@ -1,10 +1,5 @@
 "use client";
-import {
-  memo,
-  useMemo,
-  useOptimistic,
-  useState,
-} from "react";
+import { memo, useMemo, useOptimistic, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
@@ -51,6 +46,10 @@ const DeleteCurrency = dynamic(
 
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
+const NoResults = dynamic(
+  () => import("@/components/custom/NoResults"),
+  { loading: Loading }
+);
 
 export type OptimisicDataType = Currency & { isPending?: boolean };
 
@@ -119,61 +118,64 @@ function Currency({ data }: { data: Currency[] }) {
       </Collapsible>
 
       <div className="flex flex-col gap-2 py-4">
-        {sortedOptimisicData.map((item) => {
-          const curruncy = currencyList.find((s) => s.code === item.code);
-          return (
-            <Collapsible
-              open={openStates[item.uuid] || false} // Default to false if not set
-              onOpenChange={(isOpen) => handleOpenChange(item.uuid, isOpen)}
-              className="space-y-2"
-              key={`${item.uuid}`}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="dark:bg-neutral-700 bg-neutral-200 w-fit p-2 rounded-lg">
-                  {curruncy?.name}
-                </h3>
+        {sortedOptimisicData.length > 0 ? (
+          sortedOptimisicData.map((item) => {
+            const curruncy = currencyList.find((s) => s.code === item.code);
+            return (
+              <Collapsible
+                open={openStates[item.uuid] || false} // Default to false if not set
+                onOpenChange={(isOpen) => handleOpenChange(item.uuid, isOpen)}
+                className="space-y-2"
+                key={`${item.uuid}`}
+              >
+                <div className="flex justify-between items-center">
+                  <h3 className="dark:bg-neutral-700 bg-neutral-200 w-fit p-2 rounded-lg text-sm">
+                    {curruncy?.name}
+                  </h3>
 
-                <div className="flex items-center gap-2 justify-end">
-                  <CollapsibleTrigger>
-                    <TbEdit size={20} className="cursor-pointer" />
-                  </CollapsibleTrigger>
+                  <div className="flex items-center gap-2 justify-end">
+                    <CollapsibleTrigger>
+                      <TbEdit size={20} className="cursor-pointer" />
+                    </CollapsibleTrigger>
 
-                  <Trash2Icon
-                    size={20}
-                    color="#dc2626"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setModalOpen(true);
-                      setModal({
-                        title: `Delete Currency`,
-                        description: (
-                          <p className="font-medium">
-                            Are you sure To delete the currency permenantly
-                            ?
-                          </p>
-                        ),
-                        children: (
-                          <DeleteCurrency
-                            itemId={item.uuid}
-                            setModalOpen={setModalOpen}
-                            addOptimisticData={addOptimisticData}
-                          />
-                        ),
-                      });
-                    }}
-                  />
+                    <Trash2Icon
+                      size={20}
+                      color="#dc2626"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setModalOpen(true);
+                        setModal({
+                          title: `Delete Currency`,
+                          description: (
+                            <p className="font-medium">
+                              Are you sure To delete the currency permenantly ?
+                            </p>
+                          ),
+                          children: (
+                            <DeleteCurrency
+                              itemId={item.uuid}
+                              setModalOpen={setModalOpen}
+                              addOptimisticData={addOptimisticData}
+                            />
+                          ),
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <CollapsibleContent>
-                <EditCurrency
-                  item={item}
-                  addOptimisticData={addOptimisticData}
-                  setOpenStates={setOpenStates}
-                />
-              </CollapsibleContent>
-            </Collapsible>
-          );
-        })}
+                <CollapsibleContent>
+                  <EditCurrency
+                    item={item}
+                    addOptimisticData={addOptimisticData}
+                    setOpenStates={setOpenStates}
+                  />
+                </CollapsibleContent>
+              </Collapsible>
+            );
+          })
+        ) : (
+          <NoResults title="Add some Currencies to show data!" />
+        )}
       </div>
 
       <Modal

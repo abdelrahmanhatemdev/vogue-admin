@@ -85,6 +85,10 @@ const DeleteGlobalNotification = dynamic(
 
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
+const NoResults = dynamic(
+  () => import("@/components/custom/NoResults"),
+  { loading: Loading }
+);
 
 export type OptimisicDataType = GlobalNotification & { isPending?: boolean };
 
@@ -153,66 +157,70 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
       </Collapsible>
 
       <div className="flex flex-col gap-2 py-4">
-        {sortedOptimisicData.map((item) => {
-          return (
-            <Collapsible
-              open={openStates[item.uuid] || false} // Default to false if not set
-              onOpenChange={(isOpen) => handleOpenChange(item.uuid, isOpen)}
-              className="space-y-2"
-              key={`${item.uuid}`}
-            >
-              <div className="flex justify-between items-start">
-                <p className="text-sm inline">
-                  {item.text}
-                  <a
-                    href={`${item.anchorLink}`}
-                    target="_blank"
-                    className="ms-2 inline-block gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg font-bold"
-                  >
-                    <span className="text-sm">{item.anchorText}</span>
-                  </a>
-                </p>
-                <div className="flex items-center gap-2 justify-end">
-                  <CollapsibleTrigger>
-                    <TbEdit size={20} className="cursor-pointer" />
-                  </CollapsibleTrigger>
+        {sortedOptimisicData.length > 0 ? (
+          sortedOptimisicData.map((item) => {
+            return (
+              <Collapsible
+                open={openStates[item.uuid] || false} // Default to false if not set
+                onOpenChange={(isOpen) => handleOpenChange(item.uuid, isOpen)}
+                className="space-y-2"
+                key={`${item.uuid}`}
+              >
+                <div className="flex justify-between items-start">
+                  <p className="text-sm inline">
+                    {item.text}
+                    <a
+                      href={`${item.anchorLink}`}
+                      target="_blank"
+                      className="ms-2 inline-block gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg font-bold"
+                    >
+                      <span className="text-sm">{item.anchorText}</span>
+                    </a>
+                  </p>
+                  <div className="flex items-center gap-2 justify-end">
+                    <CollapsibleTrigger>
+                      <TbEdit size={20} className="cursor-pointer" />
+                    </CollapsibleTrigger>
 
-                  <Trash2Icon
-                    size={20}
-                    color="#dc2626"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setModalOpen(true);
-                      setModal({
-                        title: `Delete Global Notifications`,
-                        description: (
-                          <p className="font-medium">
-                            Are you sure To delete the Global Notifications
-                            permenantly ?
-                          </p>
-                        ),
-                        children: (
-                          <DeleteGlobalNotification
-                            itemId={item.uuid}
-                            setModalOpen={setModalOpen}
-                            addOptimisticData={addOptimisticData}
-                          />
-                        ),
-                      });
-                    }}
-                  />
+                    <Trash2Icon
+                      size={20}
+                      color="#dc2626"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setModalOpen(true);
+                        setModal({
+                          title: `Delete Global Notifications`,
+                          description: (
+                            <p className="font-medium">
+                              Are you sure To delete the Global Notifications
+                              permenantly ?
+                            </p>
+                          ),
+                          children: (
+                            <DeleteGlobalNotification
+                              itemId={item.uuid}
+                              setModalOpen={setModalOpen}
+                              addOptimisticData={addOptimisticData}
+                            />
+                          ),
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <CollapsibleContent>
-                <EditGlobalNotification
-                  item={item}
-                  addOptimisticData={addOptimisticData}
-                  setOpenStates={setOpenStates}
-                />
-              </CollapsibleContent>
-            </Collapsible>
-          );
-        })}
+                <CollapsibleContent>
+                  <EditGlobalNotification
+                    item={item}
+                    addOptimisticData={addOptimisticData}
+                    setOpenStates={setOpenStates}
+                  />
+                </CollapsibleContent>
+              </Collapsible>
+            );
+          })
+        ) : (
+          <NoResults title="Add some Global Notifications to show data!" />
+        )}
       </div>
 
       <Modal

@@ -102,3 +102,36 @@ export const isValidEmail = async ({
     return true;
   }
 };
+
+export const isValidCurrencyCode = async ({
+  code,
+  table,
+  uuid,
+}: {
+  code: string;
+  table: string;
+  uuid?: string;
+}) => {
+  try {
+    const res = await api(`${apiURL}/${table}`);
+
+    if (res) {
+      const {
+        data: { data },
+      } = res;
+
+      const check = data.some((item: { uuid: string; code: string }) => {
+        if (item.uuid === uuid) {
+          return false;
+        }
+
+        return item.code === code;
+      });
+
+      return check;
+    }
+    return true;
+  } catch {
+    return true;
+  }
+};

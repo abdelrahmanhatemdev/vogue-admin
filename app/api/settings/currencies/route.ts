@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { FieldPacket, ResultSetHeader } from "mysql2";
 import { CurrencySchema } from "@/lib/validation/settings/CurrencySchema";
+import { ZodError } from "zod";
 
 export const tableName = "settings_currencies";
 
@@ -41,6 +42,12 @@ export async function POST(request: Request) {
 
     return new Error("Something Wrong");
   } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 500 }
+      );
+    }
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -48,14 +55,13 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, code  } = await request.json();
+    const { uuid, code } = await request.json();
 
-    // Ensure Server Validation
-    CurrencySchema.parseAsync({ uuid, code  });
-      
+    CurrencySchema.parseAsync({ uuid, code });
+
     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       `UPDATE ${tableName} SET code = ? WHERE uuid = ?`,
-      [ code , uuid]
+      [code, uuid]
     );
 
     if (result.affectedRows) {
@@ -67,6 +73,12 @@ export async function PUT(request: Request) {
 
     return new Error("Something Wrong");
   } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 500 }
+      );
+    }
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
