@@ -1,4 +1,3 @@
-
 import { memo } from "react";
 import Link from "next/link";
 import {
@@ -13,12 +12,15 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 
-const ToggleThemeSwitch = dynamic(() => import("@/components/custom/ToggleThemeSwitch"), {
-  loading: Loading,
-});
+const ToggleThemeSwitch = dynamic(
+  () => import("@/components/custom/ToggleThemeSwitch"),
+  {
+    loading: Loading,
+  }
+);
 
 interface AdminBreadcrumbProps {
-  page: string;
+  page?: string;
   between?: {
     link: string;
     title: string;
@@ -43,7 +45,7 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
               <Link href="/">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
+          {(between?.length > 0  || page) && <BreadcrumbSeparator />}
           {between?.length > 0 ? (
             between.map((item) => (
               <span
@@ -61,9 +63,11 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
           ) : (
             <></>
           )}
-          <BreadcrumbItem>
-            <BreadcrumbPage>{page}</BreadcrumbPage>
-          </BreadcrumbItem>
+          {page && (
+            <BreadcrumbItem>
+              <BreadcrumbPage>{page}</BreadcrumbPage>
+            </BreadcrumbItem>
+          )}
         </BreadcrumbList>
       </Breadcrumb>
       <ToggleThemeSwitch />
