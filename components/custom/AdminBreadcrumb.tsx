@@ -13,7 +13,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 
-const ToggleTheme = dynamic(() => import("@/components/custom/ToggleTheme"), {
+const ToggleThemeSwitch = dynamic(() => import("@/components/custom/ToggleThemeSwitch"), {
   loading: Loading,
 });
 
@@ -66,7 +66,7 @@ function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <ToggleTheme />
+      <ToggleThemeSwitch />
     </div>
   );
 }

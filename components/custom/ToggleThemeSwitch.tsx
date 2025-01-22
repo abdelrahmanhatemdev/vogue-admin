@@ -5,7 +5,7 @@ import { IoMoonSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-function ToggleTheme() {
+function ToggleThemeSwitch() {
   const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -39,4 +39,4 @@ function ToggleTheme() {
     </div>
   );
 }
-export default ToggleTheme;
+export default ToggleThemeSwitch;
