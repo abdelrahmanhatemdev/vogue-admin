@@ -1,46 +1,20 @@
 "use client";
 import {
   memo,
-  startTransition,
   useMemo,
   useOptimistic,
   useState,
-  useTransition,
 } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CurrencySchema } from "@/lib/validation/settings/CurrencySchema";
-import { z } from "zod";
-
-import { addCurrency } from "@/actions/Currency";
-import { notify } from "@/lib/utils";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown, Trash2Icon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Trash2Icon } from "lucide-react";
 import { currencies as currencyList } from "@/constants/currencies";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -119,7 +93,7 @@ function Currency({ data }: { data: Currency[] }) {
                 currency
               </h2>
               <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                Manage your currency accounts!
+                Manage your currency details!
               </p>
             </div>
             <CollapsibleTrigger asChild>

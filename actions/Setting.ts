@@ -2,10 +2,10 @@
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/settings/globalNotifications`;
-const tag: string = "GlobalNotifications";
+const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/settings/setting`;
+const tag: string = "Settings";
 
-export const getGlobalNotification = async () => {
+export const getSetting = async () => {
   try {
     const res = await fetch(apiURL, {
       next: { tags: [tag] },
@@ -16,7 +16,7 @@ export const getGlobalNotification = async () => {
 
       if (data) {
 
-        return data.sort((a: GlobalNotification, b: GlobalNotification) =>
+        return data.sort((a: Setting, b: Setting) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
       }
@@ -27,7 +27,7 @@ export const getGlobalNotification = async () => {
   }
 };
 
-export async function getGlobalNotificationById(id: string) {
+export async function getSettingById(id: string) {
   try {
     const res = await fetch(`${apiURL}/${id}`, {
       next: { tags: [tag] },
@@ -41,7 +41,7 @@ export async function getGlobalNotificationById(id: string) {
   }
 }
 
-export async function addGlobalNotification(data: Partial<GlobalNotification>) {
+export async function addSetting(data: Partial<Setting>) {
   return api
     .post(apiURL, data)
     .then((res) => {
@@ -59,7 +59,7 @@ export async function addGlobalNotification(data: Partial<GlobalNotification>) {
     });
 }
 
-export async function editGlobalNotification(data: Partial<GlobalNotification>) {
+export async function editSetting(data: Partial<Setting>) {
   return api
     .put(apiURL, data)
     .then((res) => {
@@ -77,7 +77,7 @@ export async function editGlobalNotification(data: Partial<GlobalNotification>) 
     });
 }
 
-export async function deleteGlobalNotification(data: { uuid: string }) {
+export async function deleteSetting(data: { uuid: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

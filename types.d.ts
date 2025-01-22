@@ -165,6 +165,16 @@ interface Currency {
   delatedAt?: string;
 }
 
+interface Setting {
+  id: string;
+  uuid: string;
+  key: string;
+  value: string;
+  createdAt: string;
+  updatedAt: string;
+  delatedAt?: string;
+}
+
 type Currency = {
   name: string;
   code: string;

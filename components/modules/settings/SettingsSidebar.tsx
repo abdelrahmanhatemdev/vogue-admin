@@ -3,16 +3,15 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { CgDarkMode } from "react-icons/cg";
-import { FaShippingFast } from "react-icons/fa";
+import { CiSettings } from "react-icons/ci";
+
 import Link from "next/link";
 import { memo } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 
-const Heading = dynamic(
-  () => import("@/components/custom/Heading")
-);
+const Heading = dynamic(() => import("@/components/custom/Heading"));
 
 const sidebarLinks = [
   {
@@ -36,9 +35,9 @@ const sidebarLinks = [
     icon: CgDarkMode,
   },
   {
-    link: "/settings/shipping",
-    title: "Shipping",
-    icon: FaShippingFast,
+    link: "/settings/settings",
+    title: "Global Settings",
+    icon: CiSettings,
   },
 ];
 
