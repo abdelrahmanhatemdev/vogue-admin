@@ -317,7 +317,7 @@ function ProductList({
                 </Popover>
               </>
             )}
-            {isData && categories.length > 0 && (
+            {/* {isData && categories.length > 0 && (
               <>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -392,7 +392,7 @@ function ProductList({
                   </PopoverContent>
                 </Popover>
               </>
-            )}
+            )} */}
 
             {(selectedBrands.length > 0 || selectedCategories.length > 0) && (
               <Button
