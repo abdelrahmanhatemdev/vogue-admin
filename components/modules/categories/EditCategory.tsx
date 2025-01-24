@@ -19,7 +19,13 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import useData, { useRefresh } from "@/hooks/useData";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 
@@ -41,13 +47,13 @@ function EditCategory({
       slug: item.slug,
       uuid: item.uuid,
       label: item.label,
-      parent: item.parent ,
-      additional: item.additional ?? false,
+      parent: item.parent,
+      additional: item.additional ? true : false,
     },
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useRefresh();
 
   const { data: categories } = useData("categories");
   const { data: labels } = useData("labels");
@@ -61,23 +67,23 @@ function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      label: item.label,
-      parent: item.parent ,
-      additional: item.additional? true : false,
+      label: values.label ?? "",
+      parent: values.parent === " " ? "" : values.parent ?? "",
+      additional: values.additional ? true : false,
       isPending: !isPending,
     };
 
     startTransition(async () => {
       addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.uuid),
+        ...prev.filter((item) => item.uuid !== data.uuid),
         data,
       ]);
     });
-
+    
     const res: ActionResponse = await editCategory(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -171,13 +177,14 @@ function EditCategory({
                     <SelectValue placeholder="Choose Parent" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories
-                      .filter((cat) => !cat.parent)
-                      .map((item) => (
-                        <SelectItem value={`${item.uuid}`} key={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
+                    {parentCats.map((item) => (
+                      <SelectItem value={`${item.uuid}`} key={item.id}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value=" " key="noParent">
+                      No Parent
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>New Category Parent</FormDescription>

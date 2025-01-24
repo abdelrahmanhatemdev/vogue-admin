@@ -75,22 +75,19 @@ function AddCategory({
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,
-      additional: values.additional ?? false, 
+      additional: values.additional ?? false,
       parent: values.parent ?? "",
       label: values.label ?? "",
     };
 
-    console.log("data", data);
-    
-
     startTransition(() => {
       addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
     });
-    // const res: ActionResponse = await addCategory(data);
-    // notify(res);
-    // if (res?.status === "success") {
-    //   refresh();
-    // }
+    const res: ActionResponse = await addCategory(data);
+    notify(res);
+    if (res?.status === "success") {
+      refresh();
+    }
   }
 
   return (
@@ -201,7 +198,7 @@ function AddCategory({
           <FormField
             control={form.control}
             name="parent"
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => <Input {...field} className="hidden" />}
           />
         )}
 
