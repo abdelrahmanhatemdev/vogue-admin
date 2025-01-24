@@ -75,6 +75,7 @@ function AddProduct({
     const optimisticObj: OptimisicDataType = {
       ...data,
       categories: "",
+      trending: data.trending ?? false,
       id: `optimisticID-${data.name}`,
 
       isPending: !isPending,

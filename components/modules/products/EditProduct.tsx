@@ -96,6 +96,7 @@ function EditProduct({
     const optimisticData = {
       id: item.id,
       ...updatedValues,
+      trending: values.trending ?? false,
       createdAt: item.createdAt,
       updatedAt: date,
     };
