@@ -41,8 +41,8 @@ function EditCategory({
       slug: item.slug,
       uuid: item.uuid,
       label: item.label,
-      parent: item.parent,
-      additional: item.additional? true : false,
+      parent: item.parent ,
+      additional: item.additional ?? false,
     },
   });
 
@@ -61,12 +61,15 @@ function EditCategory({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
+      label: item.label,
+      parent: item.parent ,
+      additional: item.additional? true : false,
       isPending: !isPending,
     };
 
     startTransition(async () => {
       addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
+        ...prev.filter((item) => item.id !== data.uuid),
         data,
       ]);
     });

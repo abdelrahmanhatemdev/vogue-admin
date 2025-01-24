@@ -70,20 +70,27 @@ function AddCategory({
       createdAt: date,
       updatedAt: date,
     };
+
     const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
       isPending: !isPending,
+      additional: values.additional ?? false, 
+      parent: values.parent ?? "",
+      label: values.label ?? "",
     };
+
+    console.log("data", data);
+    
 
     startTransition(() => {
       addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
     });
-    const res: ActionResponse = await addCategory(data);
-    notify(res);
-    if (res?.status === "success") {
-      refresh();
-    }
+    // const res: ActionResponse = await addCategory(data);
+    // notify(res);
+    // if (res?.status === "success") {
+    //   refresh();
+    // }
   }
 
   return (
@@ -142,7 +149,7 @@ function AddCategory({
                       <SelectItem value={`${item.uuid}`} key={item.uuid}>
                         <span
                           style={{ background: item.hex }}
-                          className="p-1 rounded-lg"
+                          className="p-1 rounded text-xs"
                         >
                           {item.title}
                         </span>
@@ -163,7 +170,7 @@ function AddCategory({
             </FormItem>
           )}
         />
-        {parentCats.length > 0 && (
+        {parentCats.length > 0 ? (
           <FormField
             control={form.control}
             name="parent"
@@ -189,6 +196,12 @@ function AddCategory({
                 <FormMessage />
               </FormItem>
             )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="parent"
+            render={({ field }) => <Input {...field} />}
           />
         )}
 
