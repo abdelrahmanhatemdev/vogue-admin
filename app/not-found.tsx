@@ -12,7 +12,7 @@ export default async function NotFound() {
       </p>
       <Link
         href={`/`}
-        className="text-neutral-100 hover:bg-slate-100 hover:text-neutral-900 dark:text-neutral-50 p-2 rounded-md text-sm transition-colors text-center "
+        className="text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-950 hover:bg-opacity-50 dark:hover:bg-opacity-50 hover:text-neutral-900 dark:text-neutral-50 p-2 rounded-md text-sm transition-colors text-center "
       >
         Take me back to <strong>Webiste</strong>
       </Link>
