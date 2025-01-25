@@ -13,6 +13,8 @@ export async function GET(
 
   const { productId } = await params;
 
+  
+
   try {
     const [rows] = await db.query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND subproduct_id = ? Order By sort_order ASC, updatedAt DESC`,

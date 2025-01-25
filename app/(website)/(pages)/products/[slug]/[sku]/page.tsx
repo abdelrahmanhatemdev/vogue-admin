@@ -49,6 +49,8 @@ export default async function SubproductPage(props: {
 
   const resJson = await imagesRes.json();
 
+  
+
   const images: ProductImage[] = resJson?.images ? resJson.images : [];
 
   return <Subproduct subproduct={data} images={images} />;

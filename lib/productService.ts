@@ -4,8 +4,8 @@ export const discountPrice = ({
 }: {
   price: number;
   discount: number;
-}): number => {
-  return price - price * (discount / 100);
+}) => {
+  return (price - price * (discount / 100)).toFixed(2);
 };
 
 export const currencyPrice = ({
