@@ -4,6 +4,7 @@ import {
   Dispatch,
   memo,
   SetStateAction,
+  useEffect,
   useOptimistic,
   useState,
   useTransition,
@@ -24,6 +25,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const uploadsPath = `${process.env.NEXT_PUBLIC_APP_UPLOADS}/images`;
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -46,12 +49,11 @@ const SubproductImages = ({
   setModal,
   setModalOpen,
   uuid,
-  images,
-}: {
+}:
+{
   setModal: Dispatch<SetStateAction<ModalState>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   uuid: string;
-  images: ProductImage[];
 }) => {
   const [imageList, setImageList] = useState<OptimisicImagesType[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -70,16 +72,15 @@ const SubproductImages = ({
     fetcher
   );
 
-   // useEffect(() => {
-  //   if (!isLoading && fetchedImages) {
-  //     setImageList(fetchedImages);
-  //   }
-  // }, [fetchedImages, isLoading]);
+  useEffect(() => {
+    if (!isLoading && fetchedImages) {
+      setImageList(fetchedImages);
+    }
+  }, [fetchedImages, isLoading]);
 
-  // if (isLoading) {
-
-  //   console.log(isLoading, fetchedImages.data?.images);
-  // }
+  if (isLoading) return;
+  
+  
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     // startTransition(() => {
@@ -92,7 +93,7 @@ const SubproductImages = ({
     notify(res);
   }
 
-  async function handleRemove(id: string) {
+  async function deleteImage(id: string) {
     setModalOpen(false);
     startTransition(() => {
       addOptimisticImages((prev: ProductImage[]) => [
@@ -138,12 +139,14 @@ const SubproductImages = ({
               setSelectedImages([]);
             }}
           >
-            Delete All
+            Delete {selectedImages.length > 1 && "All"}
           </Button>
         </DialogFooter>
       ),
     });
   }
+
+  console.log("images", imageList);
 
   return (
     <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
@@ -205,6 +208,8 @@ const SubproductImages = ({
         >
           {optimisticImages.map((image, index) => {
             const { id, src, isPending } = image;
+            const path = `${uploadsPath}/${uuid}/${src}`;
+
             return (
               <div
                 className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden"
@@ -221,18 +226,32 @@ const SubproductImages = ({
                   });
                 }}
               >
-                {src && (
-                  <Image
-                    key={id}
-                    src={isPending ? src : `/api/images/src${src}`}
-                    alt={`Subproduct photo-${id} `}
-                    className={cn(
-                      "w-full lg:w-auto lg:h-32 rounded-md",
-                      isPending ? "opacity-50" : ""
-                    )}
-                    height={100}
-                    width={200}
-                  />
+                {path && (
+                  <>
+                    {/* <Image
+                      key={id}
+                      src={isPending ? path : `/api/images/src/${path}`}
+                      alt={`Subproduct photo-${id}`}
+                      className={cn(
+                        "w-full lg:w-auto lg:h-32 rounded-md",
+                        isPending ? "opacity-50" : ""
+                      )}
+                      height={100}
+                      width={200}
+                      priority
+                    /> */}
+                    <img
+                      key={id}
+                      src={isPending ? path : "/api/images/src/" + path}
+                      alt={`Subproduct photo-${id} `}
+                      className={cn(
+                        "w-full lg:w-auto lg:h-32 rounded-md",
+                        isPending ? "opacity-50" : ""
+                      )}
+                      height={100}
+                      width={200}
+                    />
+                  </>
                 )}
                 <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                   <X
@@ -240,7 +259,7 @@ const SubproductImages = ({
                     size={15}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleRemove(id);
+                      deleteImage(id);
                     }}
                   />
                   <Checkbox
@@ -260,9 +279,7 @@ const SubproductImages = ({
             );
           })}
         </ReactSortable>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </div>
   );
 };

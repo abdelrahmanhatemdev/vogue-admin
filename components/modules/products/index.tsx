@@ -166,10 +166,6 @@ function Products({ data }: { data: Product[] }) {
         header: "Sub Products",
         cell: ({ row }) => {
           const item: Product & { subproduct_count?: string } = row.original;
-
-          console.log("item?.subproduct_count", item?.subproduct_count);
-          
-
           const subproductsCount: number = item?.subproduct_count
             ? Number(item.subproduct_count)
             : 0;

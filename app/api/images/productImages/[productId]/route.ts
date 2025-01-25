@@ -13,8 +13,6 @@ export async function GET(
 
   const { productId } = await params;
 
-  
-
   try {
     const [rows] = await db.query(
       `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND subproduct_id = ? Order By sort_order ASC, updatedAt DESC`,
@@ -22,11 +20,9 @@ export async function GET(
     );
 
     const images = rows as ProductImage[];
-
-    const data = { images };
     
-    if (data) {
-      return NextResponse.json({ data }, { status: 200 });
+    if (images.length > 0) {
+      return NextResponse.json(images , { status: 200 });
     }
 
     throw new Error("No Data Found!");

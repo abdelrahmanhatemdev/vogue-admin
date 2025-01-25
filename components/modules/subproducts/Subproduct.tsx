@@ -1,11 +1,12 @@
 "use client";
-import { memo, useState } from "react";
+import { memo, useState} from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -70,11 +71,10 @@ export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
   subproduct,
-  images,
 }: {
   subproduct: SubproductPageType;
-  images: ProductImage[];
 }) {
+  
   const {
     uuid,
     sku,
@@ -100,10 +100,10 @@ function Subproduct({
   });
 
   const [productSlug] = useState(product_slug);
-
+  
   return (
     <div className="flex flex-col gap-4">
-      <AdminBreadcrumb
+      {/* <AdminBreadcrumb
         page={`${sku}`}
         between={[
           {
@@ -115,9 +115,9 @@ function Subproduct({
             title: `${productName}`,
           },
         ]}
-      />
+      /> */}
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
-        <div className="flex flex-col gap-4 sm:flex-row justify-between sm:items-center">
+        {/* <div className="flex flex-col gap-4 sm:flex-row justify-between sm:items-center">
           <Heading
             title={`${sku}`}
             description="Here's details of your subproduct!"
@@ -173,10 +173,10 @@ function Subproduct({
               <Trash2Icon size={20} className="cursor-pointer" />
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-4 ">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+          {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
             <DetailsSquares
               price={price}
               currency={`${currency}`}
@@ -188,25 +188,17 @@ function Subproduct({
               uuid={uuid}
             />
 
-            <ColorsChart sold={sold} />
+            <ColorsChart sold= {sold}/>
           </div>
-          <ColorsAndSizes
-            item_colors={item_colors as string}
-            item_sizes={item_sizes as string}
-          />
-          <SubproductImages
-            setModal={setModal}
-            setModalOpen={setModalOpen}
-            uuid={uuid}
-            images={images}
-          />
-          <div className="flex flex-wrap gap-4 rounded-lg">
+          <ColorsAndSizes item_colors={item_colors as string} item_sizes={item_sizes as string}/> */}
+          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid}/>
+          {/* <div className="flex flex-wrap gap-4 rounded-lg">
             <PaymentChart
               title="Sold Orders"
               description="Your Marketing target are ahead of where you normally are."
             />
             <GoalCalender />
-          </div>
+          </div> */}
         </div>
       </div>
       <Modal

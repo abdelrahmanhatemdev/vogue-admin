@@ -10,14 +10,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
 
-const tag = "productImages";
+const tag = "products";
 const subproductTag= "subproducts"
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 export async function POST(req: Request) {
   try {
@@ -63,6 +57,8 @@ export async function POST(req: Request) {
         const filenameMatch = part.match(/filename="(.+?)"/);
         const filename = filenameMatch?.[1];
         if (!filename) continue;
+        
+        const newwFileName = filename.replaceAll(" ", "_")
 
         const fileStart = part.indexOf("\r\n\r\n") + 4;
         const fileEnd = part.lastIndexOf("\r\n");
@@ -86,24 +82,25 @@ export async function POST(req: Request) {
         await fs.mkdir(uploadDir, { recursive: true });
 
         // Save the file
-        const filePath = path.join(uploadDir, filename);
+        const filePath = path.join(uploadDir, newwFileName);
 
         await fs.writeFile(filePath, fileBuffer);
         const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
           `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
-          [productId, `/uploads/images/${productId}/${filename}`, 0]
+          [productId, newwFileName, 0]
         );
 
         if (result.insertId) {
-          files.push(`/uploads/images/${productId}/${filename}`);
+          files.push(`/uploads/images/${productId}/${newwFileName}`);
         }
       }
     }
 
     if (files.length > 0) {
+
       revalidateTag(tag);
       revalidateTag(subproductTag);
-      revalidatePath("//products/men/wewe6");
+
       return NextResponse.json({
         message: `Photo${files.length > 1 ? "s" : ""} uploaded`,
         status: "200",

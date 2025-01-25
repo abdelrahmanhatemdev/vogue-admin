@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
-// import { getSubproductImages } from "@/actions/Image";
 import { Metadata } from "next";
 const Subproduct = dynamic(
   () => import("@/components/modules/subproducts/Subproduct"),
@@ -44,14 +43,6 @@ export default async function SubproductPage(props: {
   if (!data?.uuid) {
     notFound();
   }
-  
-  const imagesRes = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${data.uuid}`);
 
-  const resJson = await imagesRes.json();
-
-  
-
-  const images: ProductImage[] = resJson?.images ? resJson.images : [];
-
-  return <Subproduct subproduct={data} images={images} />;
+  return <Subproduct subproduct={data} />;
 }

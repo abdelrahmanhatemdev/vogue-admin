@@ -13,8 +13,6 @@ export async function GET() {
     );
 
     const data = rows as Admin[];
-
-    console.log("data", data);
     
 
     return NextResponse.json({ data }, { status: 200 });
