@@ -12,13 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
 import { currencies as currencyList } from "@/constants/currencies";
 
-const Heading = dynamic(() => import("@/components/custom/Heading"), {
-  loading: Loading,
-});
-const AdminBreadcrumb = dynamic(
-  () => import("@/components/custom/AdminBreadcrumb"),
-  { loading: Loading }
-);
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });

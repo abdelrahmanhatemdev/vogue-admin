@@ -1,13 +1,11 @@
 import {
   Form,
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -23,7 +21,6 @@ import { editCurrency } from "@/actions/Currency";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { v4 as uuidv4 } from "uuid";
 import { currencies as currencyList } from "@/constants/currencies";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";

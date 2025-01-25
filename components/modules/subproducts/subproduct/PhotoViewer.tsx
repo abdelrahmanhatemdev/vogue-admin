@@ -1,9 +1,6 @@
 "use client";
 import { Dispatch, memo, SetStateAction } from "react";
-import Image from "next/image";
-
-import type { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
-const uploadsPath = `${process.env.NEXT_PUBLIC_APP_UPLOADS}/images`;
+// import Image from "next/image";
 
 function PhotoViewer({
   src

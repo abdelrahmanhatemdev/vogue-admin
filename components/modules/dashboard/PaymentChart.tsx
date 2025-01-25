@@ -75,9 +75,9 @@ const PaymentChart = ({title, description}: {title: string; description: string}
     <div className="flex flex-col items-center gap-4 dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg shadow-md lg:w-[calc(100%-19rem-2px)] w-full">
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col">
-          <h4 className="font-semibold">Total Sold Orders</h4>
+          <h4 className="font-semibold">{title}</h4>
           <p className="text-neutral-500 text-sm">
-            Your Marketing target are ahead of where you normally are.
+            {description}
           </p>
         </div>
         <ChartContainer config={chartConfig} className="min-h-16 w-full h-48">

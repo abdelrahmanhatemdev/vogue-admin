@@ -7,17 +7,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { SettingSchema } from "@/lib/validation/settings/SettingSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/settings";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { memo, useTransition } from "react";
 import { editSetting } from "@/actions/Setting";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";

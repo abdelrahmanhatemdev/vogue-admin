@@ -10,7 +10,6 @@ import {
   useTransition,
 } from "react";
 import { ReactSortable } from "react-sortablejs";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
@@ -19,10 +18,10 @@ import type { ModalState } from "@/components/custom/Modal";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProductImage, editProductImage } from "@/actions/Image";
 import { Trash2Icon, X } from "lucide-react";
-import Image from "next/image";
+// import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -72,22 +71,36 @@ const SubproductImages = ({
   );
 
   useEffect(() => {
-    if (!isLoading && fetchedImages) {
-      setImageList(fetchedImages);
+    if (fetchedImages) {
+      setImageList(fetchedImages)
     }
-  }, [fetchedImages, isLoading]);
+  }, [fetchedImages]);
 
-  if (isLoading) return;
+  if (error) {
+    console.log("Images Fetshing Error: ", error);
+  }
+
+  console.log("");
+  
+
+  // console.log("isLoading", isLoading);
+  
+
+  // if (isLoading) return;
+
+  // console.log("images", imageList);
+  
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
-    // startTransition(() => {
-    //   addOptimisticImages(imageList);
-    // });
+    startTransition(() => {
+      addOptimisticImages(updatedList);
+    });
     // setImageList(updatedList);
 
     const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);
     notify(res);
+    mutate({ ...fetchedImages, data: { images: updatedList } }, false);
   }
 
   async function deleteImage(id: string) {
@@ -186,16 +199,16 @@ const SubproductImages = ({
           </Button>
         </div>
       </div>
-      {imageList.length > 0 ? (
+      {optimisticImages.length > 0 ? (
         <ReactSortable
-          list={imageList}
+          list={optimisticImages}
           setList={setImageList}
           animation="200"
           easing="ease-out"
           className="flex flex-wrap items-center justify-start gap-4"
           onEnd={({ oldIndex, newIndex }) => {
             if (oldIndex === newIndex) return;
-            const updatedList = [...imageList];
+            const updatedList = [...optimisticImages];
             const [movedItem] = updatedList.splice(oldIndex, 1);
             updatedList.splice(newIndex, 0, movedItem);
             handleSort(updatedList);
@@ -216,7 +229,7 @@ const SubproductImages = ({
                       <div>
                         <PhotoViewer
                           setModalOpen={setModalOpen}
-                          src = {`/api/images/src/${path}`}
+                          src={`/api/images/src/${path}`}
                         />
                       </div>
                     ),

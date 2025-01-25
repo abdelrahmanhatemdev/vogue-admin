@@ -13,13 +13,8 @@ import { memo } from "react";
 import { CiLogout } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading";
 import Logout from "@/components/modules/auth/Logout";
 
-// const Logout = dynamic(() => import("@/components/modules/auth/Logout"), {
-//   loading: Loading,
-// });
 
 function IconsGroup() {
   const { data: session } = useSession();

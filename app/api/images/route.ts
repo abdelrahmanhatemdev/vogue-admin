@@ -6,12 +6,8 @@ import { promises as fs } from "fs";
 import { ZodError } from "zod";
 import { Readable } from "stream";
 import { ReadableStream } from "stream/web";
-import { revalidatePath, revalidateTag } from "next/cache";
 
 export const tableName = "product_images";
-
-const tag = "products";
-const subproductTag= "subproducts"
 
 export async function POST(req: Request) {
   try {
@@ -97,9 +93,6 @@ export async function POST(req: Request) {
     }
 
     if (files.length > 0) {
-
-      revalidateTag(tag);
-      revalidateTag(subproductTag);
 
       return NextResponse.json({
         message: `Photo${files.length > 1 ? "s" : ""} uploaded`,

@@ -4,7 +4,6 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteGlobalNotification } from "@/actions/GlobalNotification";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
 
 function DeleteGlobalNotification({
   itemId,

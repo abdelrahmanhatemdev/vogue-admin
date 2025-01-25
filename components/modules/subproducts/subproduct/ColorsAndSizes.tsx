@@ -1,12 +1,6 @@
-import { editSubproduct } from "@/actions/Subproduct";
-import { Switch } from "@/components/ui/switch";
 import useData from "@/hooks/useData";
 import { arrayFromString } from "@/lib/format";
-import { discountPrice } from "@/lib/productService";
-import { notify } from "@/lib/utils";
 import { memo } from "react";
-import { ImArrowUp, ImArrowDown } from "react-icons/im";
-import { RiWaterPercentFill } from "react-icons/ri";
 
 const ColorsAndSizes = ({
   item_colors,

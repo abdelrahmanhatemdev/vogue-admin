@@ -23,7 +23,6 @@ import { editSocialMedia } from "@/actions/SocialMedia";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { v4 as uuidv4 } from "uuid";
 import { socialMedia as socialMediaList } from "@/constants/socialMedia";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";

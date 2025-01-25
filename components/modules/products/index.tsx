@@ -8,7 +8,6 @@ import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useData from "@/hooks/useData";
-import { arrayFromString } from "@/lib/format";
 import { cn, notify } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { editProduct } from "@/actions/Product";

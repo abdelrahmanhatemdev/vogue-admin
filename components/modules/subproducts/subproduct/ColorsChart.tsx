@@ -1,15 +1,6 @@
 "use client";
 import { memo, useMemo } from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -49,7 +40,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const DetailsSquares = ({ sold }: { sold: number }) => {
+const DetailsSquares = () => {
   const totalorders = useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.orders, 0);
   }, []);

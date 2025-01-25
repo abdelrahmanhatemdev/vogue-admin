@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
 import SettingsSidebar from "@/components/modules/settings/SettingsSidebar";

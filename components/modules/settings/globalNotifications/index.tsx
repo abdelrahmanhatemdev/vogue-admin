@@ -1,54 +1,21 @@
 "use client";
 import {
   memo,
-  startTransition,
   useMemo,
   useOptimistic,
   useState,
-  useTransition,
 } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
-import { z } from "zod";
-
-import { addGlobalNotification } from "@/actions/GlobalNotification";
-import { notify } from "@/lib/utils";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown, Trash2Icon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Trash2Icon } from "lucide-react";
 
-const Heading = dynamic(() => import("@/components/custom/Heading"), {
-  loading: Loading,
-});
-const AdminBreadcrumb = dynamic(
-  () => import("@/components/custom/AdminBreadcrumb"),
-  { loading: Loading }
-);
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
@@ -172,6 +139,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
                     <a
                       href={`${item.anchorLink}`}
                       target="_blank"
+                      rel="noopener"
                       className="ms-2 inline-block gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg font-bold"
                     >
                       <span className="text-sm">{item.anchorText}</span>

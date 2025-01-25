@@ -1,25 +1,7 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
-
+import { memo, useOptimistic } from "react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
-
-const Heading = dynamic(() => import("@/components/custom/Heading"), {
-  loading: Loading,
-});
-const AdminBreadcrumb = dynamic(
-  () => import("@/components/custom/AdminBreadcrumb"),
-  { loading: Loading }
-);
-const Modal = dynamic(() => import("@/components/custom/Modal"), {
-  loading: Loading,
-});
 
 const EditSetting = dynamic(
   () => import("@/components/modules/settings/settings/EditSetting"),

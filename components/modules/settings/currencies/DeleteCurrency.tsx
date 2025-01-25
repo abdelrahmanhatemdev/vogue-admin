@@ -4,7 +4,6 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteCurrency } from "@/actions/Currency";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
 
 function DeleteCurrency({
   itemId,

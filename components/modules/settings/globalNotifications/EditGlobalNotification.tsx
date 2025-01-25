@@ -8,13 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/globalNotifications";
@@ -23,7 +16,6 @@ import { editGlobalNotification } from "@/actions/GlobalNotification";
 import { notify } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { v4 as uuidv4 } from "uuid";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 

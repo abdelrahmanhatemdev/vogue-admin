@@ -1,16 +1,6 @@
 "use client";
 import { memo, useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading";
 import useTheme from "@/hooks/useTheme";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const ToggleTheme = dynamic(
-  () => import("@/components/custom/ToggleThemeSwitch"),
-  {
-    loading: Loading,
-  }
-);
 
 function Appearence() {
   const { theme, toggleTheme } = useTheme();
