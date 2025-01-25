@@ -143,8 +143,6 @@ const SubproductImages = ({
     });
   }
 
-  console.log("images", imageList);
-
   return (
     <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
       <div className="flex justify-between items-center">
@@ -209,7 +207,7 @@ const SubproductImages = ({
 
             return (
               <div
-                className="w-full lg:h-32 lg:w-auto relative rounded-md overflow-hidden"
+                className="w-full sm:h-32 sm:w-auto relative rounded-md overflow-hidden"
                 key={index}
                 onClick={() => {
                   setModalOpen(true);
@@ -247,7 +245,7 @@ const SubproductImages = ({
                       src={isPending ? path : "/api/images/src/" + path}
                       alt={`Subproduct photo-${id} `}
                       className={cn(
-                        "w-full lg:w-auto lg:h-32 rounded-md",
+                        "w-full sm:w-auto sm:h-32 rounded-md",
                         isPending ? "opacity-50" : ""
                       )}
                       height={100}
