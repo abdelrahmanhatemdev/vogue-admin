@@ -45,13 +45,11 @@ function Modal({
         }}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
       >
-        {title ? (
+        
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{title && title}</DialogTitle>
           </DialogHeader>
-        ) : (
-          <></>
-        )}
+        
         {description ? (
           <DialogDescription asChild>{description}</DialogDescription>
         ) : (

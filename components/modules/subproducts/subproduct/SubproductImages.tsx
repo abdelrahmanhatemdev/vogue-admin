@@ -49,8 +49,7 @@ const SubproductImages = ({
   setModal,
   setModalOpen,
   uuid,
-}:
-{
+}: {
   setModal: Dispatch<SetStateAction<ModalState>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   uuid: string;
@@ -79,8 +78,6 @@ const SubproductImages = ({
   }, [fetchedImages, isLoading]);
 
   if (isLoading) return;
-  
-  
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     // startTransition(() => {
@@ -218,7 +215,12 @@ const SubproductImages = ({
                   setModalOpen(true);
                   setModal({
                     children: (
-                      <PhotoViewer setModalOpen={setModalOpen} image={image} />
+                      <div>
+                        <PhotoViewer
+                          setModalOpen={setModalOpen}
+                          src = {`/api/images/src/${path}`}
+                        />
+                      </div>
                     ),
                     className:
                       "bg-transparent border-none lg:py-14  bg-[hsl(0,0%,0%,0.5)]",
