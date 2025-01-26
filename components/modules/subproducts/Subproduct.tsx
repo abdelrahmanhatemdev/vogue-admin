@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect, useState} from "react";
+import { memo, useState} from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";

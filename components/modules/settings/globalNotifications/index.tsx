@@ -139,7 +139,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
                     <a
                       href={`${item.anchorLink}`}
                       target="_blank"
-                      rel="noopener"
+                      rel="noreferrer"
                       className="ms-2 inline-block gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg font-bold"
                     >
                       <span className="text-sm">{item.anchorText}</span>

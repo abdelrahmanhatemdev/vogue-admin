@@ -42,13 +42,17 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload || payload.length === 0) return null;
+const CustomTooltip = ({ active, payload, label }: {
+  active?: boolean;
+  payload: { dataKey: string; value: number }[];
+  label: string | number;
+}) => {
+  if (!active || !payload || payload.length === 0 || typeof label !== "number") return null;
 
   return (
     <div className="rounded-md dark:bg-neutral-900 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
       <p className="text-sm dark:text-white text-black font-bold">Average</p>
-      {payload.map((item: any, index: number) => {
+      {payload.map((item: {dataKey: string; value: number }, index: number) => {
         const dataName =
           item.dataKey === "thisMonth" ? chartData[label].month : "Average";
 

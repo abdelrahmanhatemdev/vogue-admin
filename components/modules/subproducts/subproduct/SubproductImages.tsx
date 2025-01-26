@@ -72,7 +72,7 @@ const SubproductImages = ({
 
   useEffect(() => {
     if (fetchedImages) {
-      setImageList(fetchedImages)
+      setImageList(fetchedImages);
     }
   }, [fetchedImages]);
 
@@ -80,16 +80,7 @@ const SubproductImages = ({
     console.log("Images Fetshing Error: ", error);
   }
 
-  console.log("");
-  
-
-  // console.log("isLoading", isLoading);
-  
-
-  // if (isLoading) return;
-
-  // console.log("images", imageList);
-  
+  if (isLoading) return;
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     startTransition(() => {
@@ -100,14 +91,21 @@ const SubproductImages = ({
     const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);
     notify(res);
-    mutate({ ...fetchedImages, data: { images: updatedList } }, false);
+    mutate({ ...fetchedImages, data: updatedList }, false);
   }
 
   async function deleteImage(id: string) {
     setModalOpen(false);
+
     startTransition(() => {
       addOptimisticImages((prev: ProductImage[]) => [
-        ...prev.filter((item) => item.id !== id),
+        ...prev.map((item) => {
+          if (item.id === id) {
+            const pendingItem = { ...item, isPending: !isPending };
+            return pendingItem;
+          }
+          return item;
+        }),
       ]);
     });
     const res = await deleteProductImage({ id });

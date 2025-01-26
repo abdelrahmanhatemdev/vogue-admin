@@ -137,7 +137,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                   <a
                     href={`${item.link}`}
                     target="_blank"
-                    rel="noopener"
+                    rel="noreferrer"
                     className="flex gap-2 items-center dark:hover:bg-neutral-700 hover:bg-neutral-200 w-fit p-2 rounded-lg"
                   >
                     <span>{social && <social.icon />}</span>
