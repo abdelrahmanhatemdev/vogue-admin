@@ -268,7 +268,7 @@ const SubproductImages = ({
                 )}
                 <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                   <X
-                    className="absolute end-2 top-2 text-gray-300 hover:text-gray-50 transition-colors text-[.5rem] cursor-pointer"
+                    className="absolute end-2 top-2 text-neutral-300 hover:text-neutral-800 dark:text-neutral-950 dark:hover:text-neutral-400 transition-colors text-[.5rem] cursor-pointer"
                     size={15}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -276,7 +276,7 @@ const SubproductImages = ({
                     }}
                   />
                   <Checkbox
-                    className="absolute inset-2 cursor-pointer border-neutral-100"
+                    className="absolute inset-2 cursor-pointer border-neutral-100 dark:border-neutral-950 hover:border-neutral-950 dark:hover:border-neutral-400 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                     onCheckedChange={(value) =>
                       setSelectedImages((prev) =>

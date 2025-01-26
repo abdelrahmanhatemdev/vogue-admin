@@ -119,7 +119,7 @@ function AdminSidebar() {
       rounded-lg 
       border-transparent overflow-hidden"
     >
-      <SidebarHeader className="hidden md:block py-8 px-4">
+      <SidebarHeader className="hidden md:block p-4">
         {state === "expanded" ? (
           <Logo />
         ) : (
@@ -161,7 +161,7 @@ function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="p-4">
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger
