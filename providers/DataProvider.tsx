@@ -5,7 +5,7 @@ import { getColors } from "@/actions/Color";
 import { getLabels } from "@/actions/Label";
 import { getSizes } from "@/actions/Size";
 import DataContext from "@/context/DataContext";
-import { memo, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 const DataProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState([]);

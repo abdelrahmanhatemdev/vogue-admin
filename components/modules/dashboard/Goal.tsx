@@ -1,7 +1,7 @@
 "use client";
-import { memo, useState } from "react";
+import { memo, ReactNode, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import { Bar, BarChart, Tooltip } from "recharts";
+import { Bar, BarChart, Tooltip, TooltipProps } from "recharts";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 
@@ -29,24 +29,20 @@ const CustomTooltip = ({
   active,
   payload,
   label,
-}: {
-  active?: boolean;
-  payload: { dataKey: string; value: number }[];
-  label: string | number;
-}) => {
-  if (!active || !payload || payload.length === 0 || typeof label !== "number") return null;
+}: TooltipProps<number, string>): ReactNode => {
+  if (!active || !payload || payload.length === 0) return null;
 
   return (
     <div className="rounded-md dark:bg-neutral-900 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
-      <p className="text-sm dark:text-white text-black font-bold">Average</p>
-      {payload.map((item: {dataKey: string; value: number }, index: number) => {
-        const dataName =
-          item.dataKey === "thisMonth" ? chartData[label].month : "Average";
-
+      <p className="text-sm dark:text-white text-black font-bold">{label}</p>
+      {payload.map((item, index) => {
         const color =
           item.dataKey === "thisMonth"
             ? chartConfig.thisMonth.color
             : chartConfig.average.color;
+        const dataName =
+          item.dataKey === "thisMonth" ? chartData[index].month : "Average";
+
         return (
           <div
             key={index}

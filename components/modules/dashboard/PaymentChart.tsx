@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  TooltipProps,
 } from "recharts";
 const chartData = [
   { month: "January", thisMonth: 150, average: 100 },
@@ -42,28 +43,34 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CustomTooltip = ({ active, payload, label }: {
-  active?: boolean;
-  payload: { dataKey: string; value: number }[];
-  label: string | number;
-}) => {
-  if (!active || !payload || payload.length === 0 || typeof label !== "number") return null;
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipProps<number, string>) => {
+  if (!active || !payload || payload.length === 0 || typeof label !== "number")
+    return null;
 
   return (
     <div className="rounded-md dark:bg-neutral-900 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
       <p className="text-sm dark:text-white text-black font-bold">Average</p>
-      {payload.map((item: {dataKey: string; value: number }, index: number) => {
+      {payload.map((item, index) => {
         const dataName =
           item.dataKey === "thisMonth" ? chartData[label].month : "Average";
 
         const color =
-          item.dataKey === "thisMonth" ? chartConfig.thisMonth.color : chartConfig.average.color;
+          item.dataKey === "thisMonth"
+            ? chartConfig.thisMonth.color
+            : chartConfig.average.color;
         return (
           <div
             key={index}
             className="text-xs dark:text-gray-200 text-gray-800 flex gap-1 items-center"
           >
-            <span className="w-3 h-3 rounded" style={{background: color}}></span>
+            <span
+              className="w-3 h-3 rounded"
+              style={{ background: color }}
+            ></span>
             <span>{`${dataName}: ${item.value}`}</span>
           </div>
         );
@@ -72,7 +79,13 @@ const CustomTooltip = ({ active, payload, label }: {
   );
 };
 
-const PaymentChart = ({title, description}: {title: string; description: string}) => {
+const PaymentChart = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => {
   const [data] = useState(chartData);
 
   return (
@@ -80,36 +93,32 @@ const PaymentChart = ({title, description}: {title: string; description: string}
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col">
           <h4 className="font-semibold">{title}</h4>
-          <p className="text-neutral-500 text-sm">
-            {description}
-          </p>
+          <p className="text-neutral-500 text-sm">{description}</p>
         </div>
         <ChartContainer config={chartConfig} className="min-h-16 w-full h-48">
-          <ResponsiveContainer width="100%" height={500}>
-            <LineChart data={data}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="rgba(255, 255, 255, 0)"
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Line
-                yAxisId="1"
-                type="natural"
-                dataKey="thisMonth"
-                label="This Month"
-                stroke="var(--color-thisMonth)"
-                animationDuration={300}
-              />
-              <Line
-                yAxisId="2"
-                type="natural"
-                dataKey="average"
-                stroke="var(--color-average)"
-                label="Average"
-                animationDuration={300}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <LineChart data={data} className="w-full h-[500px]">
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="rgba(255, 255, 255, 0)"
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Line
+              yAxisId="1"
+              type="natural"
+              dataKey="thisMonth"
+              label="This Month"
+              stroke="var(--color-thisMonth)"
+              animationDuration={300}
+            />
+            <Line
+              yAxisId="2"
+              type="natural"
+              dataKey="average"
+              stroke="var(--color-average)"
+              label="Average"
+              animationDuration={300}
+            />
+          </LineChart>
         </ChartContainer>
       </div>
     </div>
