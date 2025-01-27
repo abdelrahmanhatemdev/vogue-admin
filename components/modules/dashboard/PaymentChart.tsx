@@ -6,7 +6,6 @@ import {
   Line,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   TooltipProps,
 } from "recharts";
 const chartData = [

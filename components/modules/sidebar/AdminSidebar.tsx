@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -25,7 +25,7 @@ import { memo } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,9 +35,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-const Logout = dynamic(() => import("@/components/modules/auth/Logout"), {
-  loading: Loading,
-});
 const Logo = dynamic(() => import("@/components/custom/Logo"), {
   loading: Loading,
 });
@@ -46,12 +43,6 @@ import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLabel } from "react-icons/md";
-
-
-
-
-
-import { cn } from "@/lib/utils";
 
 export const SidebarLinks = [
   {
@@ -109,6 +100,14 @@ function AdminSidebar() {
 
   const currentPath = usePathname();
 
+  const router = useRouter()
+
+    const handleLogOut = async () => {
+      await signOut({ redirect: false})
+      router.push("/login")
+    };
+
+
   return (
     <Sidebar
       collapsible="icon"
@@ -162,7 +161,7 @@ function AdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
-        {user ? (
+        {user && (
           <DropdownMenu>
             <DropdownMenuTrigger
               className="focus:ring-0 focus:bg-transparent data-[state=open]:bg-transparent
@@ -174,19 +173,19 @@ function AdminSidebar() {
                 className="w-full flex gap-2"
               >
                 <div
-                  className={cn(
-                    "bg-neutral-700 dark:bg-neutral-300 flex items-center justify-center rounded-md p-2 transition-all",
-                    state === "expanded" ? "w-10 h-10" : "w-8 h-8"
-                  )}
+                  className={
+                    "bg-neutral-700 dark:bg-neutral-300 flex items-center justify-center rounded-md p-2 transition-all"
+                  
+                  }
                 >
-                  <User className="text-neutral-50 dark:text-neutral-800" size={25} />
+                  <User className="text-neutral-50 dark:text-neutral-800" size={15}/>
                 </div>
                 {state === "expanded" ? (
-                  <div className="flex flex-col items-start">
-                    <div className="text-sm font-bold truncate">
+                  <div className="flex flex-col items-start text-xs">
+                    <div className="font-bold truncate">
                       {user.name}
                     </div>
-                    <div className="text-sm text-neutral-700 dark:text-neutral-300 capitalize truncate">
+                    <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
                       {user.email}
                     </div>
                   </div>
@@ -206,15 +205,13 @@ function AdminSidebar() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="flex gap-2 cursor-pointer">
+                <DropdownMenuItem className="flex gap-2 cursor-pointer" onClick={handleLogOut}>
                   <CiLogout />
-                  <Logout />
+                  <div>Logout</div>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        ) : (
-          <Link href={`/login`}>Login</Link>
         )}
       </SidebarFooter>
     </Sidebar>
