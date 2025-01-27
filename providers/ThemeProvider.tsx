@@ -4,9 +4,9 @@ import { ReactNode, useEffect, useState } from "react";
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState(
-    typeof window !== "undefined" && localStorage.getItem("theme") === "dark"
-      ? "dark"
-      : "light"
+    typeof window !== "undefined" && localStorage.getItem("light") === "light"
+      ? "light"
+      : "dark"
   );
 
   useEffect(() => {

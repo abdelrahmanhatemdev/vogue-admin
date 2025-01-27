@@ -1,27 +1,21 @@
-import { RateLimiterMemory } from "rate-limiter-flexible";
-
 import { NextResponse, type NextRequest } from "next/server";
+import rateLimit from "express-rate-limit";
 
-const rateLimiter = new RateLimiterMemory({
-  points: 10, 
-  duration: 1,
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, 
+  message: "Too many requests, please try again later.",
 });
 
-export async function middleware(req: NextRequest) {
-  const ip =
-    req.headers.get("x-real-ip") ||
-    req.headers.get("x-forwarded-for") ||
-    req.headers.get("host") ||
-    "unknown-ip";
+export async function middleware(req: NextRequest, res: NextResponse) {
+  apiLimiter(req, res, () => {
+    return NextResponse.json(
+      { error: "Too many requests, please try again later." },
+      { status: 500 }
+    );
+  });
 
-  try {
-    await rateLimiter.consume(ip);
-    return NextResponse.next();
-  } catch (err) {
-    return new Response("Too many requests, please try again later.", {
-      status: 429,
-    });
-  }
+  return NextResponse.next();
 }
 
 export const config = {

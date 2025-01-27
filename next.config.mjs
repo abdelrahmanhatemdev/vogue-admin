@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: `
-      default-src 'self'; 
-      script-src 'self' https://trusted.cdn.com; 
-      object-src 'none'; 
-      upgrade-insecure-requests; 
-    `.replace(/\s{2,}/g, " ").trim(),
-  },
+  // {
+  //   key: "Content-Security-Policy",
+  //   value: `
+  //     default-src 'self'; 
+  //     script-src 'self' https://trusted.cdn.com; 
+  //     object-src 'none'; 
+  //     upgrade-insecure-requests; 
+  //   `.replace(/\s{2,}/g, " ").trim(),
+  // },
   {
     key: "X-Content-Type-Options",
     value: "nosniff",
@@ -32,6 +32,14 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
   // swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
@@ -42,14 +50,6 @@ const nextConfig = {
       static: 180,
     },
     // dynamicIO: true,
-    async headers() {
-      return [
-        {
-          source: "/(.*)",
-          headers: securityHeaders,
-        },
-      ];
-    },
   }};
 
 export default nextConfig;
