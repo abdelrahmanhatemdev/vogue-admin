@@ -59,7 +59,7 @@ const DetailsSquares = ({
             <ImArrowDown size={10} />
             <span>1.13%</span>
           </div>
-          <span className="text-neutral-500">Since Last Month</span>
+          <span className="text-neutral-500 dark:text-neutral-200">Since Last Month</span>
         </div>
       </div>
       <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
@@ -72,7 +72,7 @@ const DetailsSquares = ({
             <ImArrowUp size={10} title="Discount" />
             <span>3.73%</span>
           </div>
-          <span className="text-neutral-500">Since Last Month</span>
+          <span className="text-neutral-500 dark:text-neutral-200">Since Last Month</span>
         </div>
       </div>
       <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
