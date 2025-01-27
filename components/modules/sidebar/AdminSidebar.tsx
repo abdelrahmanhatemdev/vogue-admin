@@ -43,6 +43,7 @@ import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLabel } from "react-icons/md";
+import { cn } from "@/lib/utils";
 
 export const SidebarLinks = [
   {
@@ -100,13 +101,14 @@ function AdminSidebar() {
 
   const currentPath = usePathname();
 
-  const router = useRouter()
+  const router = useRouter();
 
-    const handleLogOut = async () => {
-      await signOut({ redirect: false})
-      router.push("/login")
-    };
+  const handleLogOut = async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  };
 
+  if (!state) return;
 
   return (
     <Sidebar
@@ -173,18 +175,25 @@ function AdminSidebar() {
                 className="w-full flex gap-2"
               >
                 <div
-                  className={
-                    "bg-neutral-700 dark:bg-neutral-300 flex items-center justify-center rounded-md p-2 transition-all"
-                  
-                  }
+                  className={cn(
+                    "flex items-center justify-center rounded-md transition-all",
+                    state === "expanded"
+                      && "bg-neutral-700 dark:bg-neutral-300 p-2"
+                      
+                  )}
                 >
-                  <User className="text-neutral-50 dark:text-neutral-800" size={15}/>
+                  <User
+                    className={
+                      `${state === "expanded"
+                        ? "text-neutral-50 dark:text-neutral-800"
+                        : "dark:text-neutral-50 text-neutral-800"}`
+                    }
+                    size={15}
+                  />
                 </div>
                 {state === "expanded" ? (
                   <div className="flex flex-col items-start text-xs">
-                    <div className="font-bold truncate">
-                      {user.name}
-                    </div>
+                    <div className="font-bold truncate">{user.name}</div>
                     <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
                       {user.email}
                     </div>
@@ -205,7 +214,10 @@ function AdminSidebar() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="flex gap-2 cursor-pointer" onClick={handleLogOut}>
+                <DropdownMenuItem
+                  className="flex gap-2 cursor-pointer"
+                  onClick={handleLogOut}
+                >
                   <CiLogout />
                   <div>Logout</div>
                 </DropdownMenuItem>
