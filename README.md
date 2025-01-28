@@ -17,24 +17,9 @@ You can try to add a <style> tag at the top of your markdown file with rules to 
 
 But unfortunately I noticed it will only work locally on a preview. Github sanitizes the inline style and script tags
 
-<style>
-td, th {
-   border: none!important;
-}
-</style>
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> **Nextjs**&ensp; <img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
 
-
-| Time         | Length        | Speed              | Mass         |
-| ------------ | ------------- | ------------------ | ------------ |
-| -Millisecond | Millimetre    | Kilometre per hour | Milligram    |
-| Second       | Centimetre    | Foot per second    | Gram         |
-| Minute       | Inch          | Miles per hour     | Ounce        |
-
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;Javascript Framework for building server-rendered and static web applications.
-
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center"> ***React***&ensp;Component-based JavaScript library for building user interfaces.
-
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs.
+<!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
 <!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
 
