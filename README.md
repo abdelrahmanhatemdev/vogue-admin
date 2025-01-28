@@ -82,4 +82,4 @@ Give it a try and install it on your device :
 
 
  ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/license.png" alt="License" align="center"> License
-[MIT](https://opensource.org/license/mit)
+[<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/mit.png" alt="License" align="center">](https://opensource.org/license/mit)
