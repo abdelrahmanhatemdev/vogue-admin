@@ -13,19 +13,22 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 ### Tech Stack 
 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" title="Nextjs: JavaScript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" title="React: JavaScript library for building single-page applications.">](https://react.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="Tailwind" title="Tailwind: Utility-first CSS framework for designing modern UIs.">](https://tailwindcss.com/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shadcn.png" alt="Shadcn" title="Shadcn: Component library for building UI designs.">](https://shadcn.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="SQL" title="SQL: Structured Query Language for relational databases.">](https://www.sql.org/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" title="ESLint: Static code analysis tool for identifying problematic patterns in JavaScript.">](https://eslint.org/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger: Web hosting platform for scalable deployments.">](https://www.hostinger.com/) 
- 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-icons.png" alt="React Icons" title="React Icons: Library for popular SVG icons in React.">](https://react-icons.github.io/react-icons/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer.png" alt="Framer Motion" title="Framer Motion: Library for animations in React applications.">](https://www.framer.com/motion/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/zod.png" alt="Zod" title="Zod: TypeScript-first schema validation library.">](https://zod.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-hot-toast.png" alt="React Hot Toast" title="React Hot Toast: Library for toast notifications in React.">](https://react-hot-toast.com/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/axios.png" alt="Axios" title="Axios: Promise-based HTTP client for the browser and Node.js.">](https://axios-http.com/) &ensp;
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" title="Nextjs">](https://nextjs.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" title="React">](https://react.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="Tailwind" title="Tailwind">](https://tailwindcss.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shadcn.png" alt="Shadcn" title="Shadcn">](https://shadcn.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="SQL" title="SQL">](https://www.sql.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" title="ESLint">](https://eslint.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger">](https://www.hostinger.com/) 
+
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-icons.png" alt="React Icons" title="React Icons">](https://react-icons.github.io/react-icons/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer-motion.png" alt="Framer Motion" title="Framer Motion">](https://www.framer.com/motion/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/zod.png" alt="Zod" title="Zod">](https://zod.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-hot-toast.png" alt="React Hot Toast" title="React Hot Toast">](https://react-hot-toast.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/axios.png" alt="Axios" title="Axios">](https://axios-http.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/swiper.png" alt="Swiper" title="Swiper">](https://swiperjs.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/recharts.png" alt="Recharts" title="Recharts">](https://recharts.org/) &ensp;
+
 
 
 
