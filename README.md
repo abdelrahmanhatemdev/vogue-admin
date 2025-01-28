@@ -51,15 +51,15 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 9. **Settings** : Comprehensive settings module:
 
-- **Appearance**: Customize UI theme and layout.
+    - **Appearance**: Customize UI theme and layout.
 
-- **Currencies** : Manage and configure currencies.
+    - **Currencies** : Manage and configure currencies.
 
-- **Global Notifications** : Set up system-wide notifications.
+    - **Global Notifications** : Set up system-wide notifications.
 
-- **Social Media** : Link and manage social media accounts.
+    - **Social Media** : Link and manage social media accounts.
 
-- **Constants** : Configure constant values for the application. 
+    - **Constants** : Configure constant values for the application. 
 
 ##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
