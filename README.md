@@ -63,23 +63,22 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 ### Modules to be implemented 
 
-**Users**
+***Users*** 
+***User Dashboard***
 
-**User Dashboard**
+***User Addresses***
 
-**User Addresses**
+***User Orders***
 
-**User Orders**
+***User Wishlist***
 
-**User Wishlist**
+***User Recent views***
 
-**User Recent views**
+***Orders***
 
-**Orders**
+***Coupons***
 
-**Coupons**
-
-**Payments**
+***Payments***
 
 ##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
