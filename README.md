@@ -13,19 +13,6 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive wit
 
 ### Tech Stack 
 
-You can try to add a <style> tag at the top of your markdown file with rules to remove the border on <td> and <tr> elements.
-
-But unfortunately I noticed it will only work locally on a preview. Github sanitizes the inline style and script tags
-
-
-| Feature           | Description                                      |
-|-------------------|--------------------------------------------------|
-| **Framework**     | Built with Next.js for high performance          |
-| **Database**      | Uses MySQL and PostgreSQL for reliable storage   |
-| **APIs**          | REST, RPC, and GraphQL support                   |
-| **Automation**    | Automates data flows and business processes      |
-| **Deployment**    | CI for containerized deployments                 |
-| **Design**        | Clean, pixel-perfect UI                          |
 
 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> 
