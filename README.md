@@ -22,7 +22,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger">](https://www.hostinger.com/) 
 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-icons.png" alt="React Icons" title="React Icons">](https://react-icons.github.io/react-icons/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer-motion.png" alt="Framer Motion" title="Framer Motion">](https://www.framer.com/motion/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer.png" alt="Framer Motion" title="Framer Motion">](https://www.framer.com/motion/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/zod.png" alt="Zod" title="Zod">](https://zod.dev/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-hot-toast.png" alt="React Hot Toast" title="React Hot Toast">](https://react-hot-toast.com/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/axios.png" alt="Axios" title="Axios">](https://axios-http.com/) &ensp; 
