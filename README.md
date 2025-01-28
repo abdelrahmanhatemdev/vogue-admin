@@ -13,18 +13,14 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 ### Tech Stack 
 
-<SPAN>
-    <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">  
-    
-Nextjs
-</SPAN> &ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react-1.png" alt="React" align="center" title="Component-based JavaScript library for building user interfaces."> &ensp;
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp;
 
 
-<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
+<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
-<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
+<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
 
-<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
+<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
  
 
 
