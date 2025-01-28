@@ -14,23 +14,18 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive wit
 ### Tech Stack 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;Javascript Framework for building server-rendered and static web applications.
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/css.png" alt="CSS" align="center"> ***CSS***&ensp;<img src="https://abdulrahmanhatem.github.io/images/icons/tech/javascript.png" alt="Javascript" align="center"> ***Javascript***         
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center"> ***React***&ensp;Component-based JavaScript library for building user interfaces.
 
-Next.js: Javascript Framework for building server-rendered and static web applications.
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs.
 
-React: Component-based JavaScript library for building user interfaces.
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
 
-Tailwind CSS: Utility-first CSS framework for designing modern UIs.
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
+ 
 
-Shadcn: Customizable and accessible UI components.
-
-Geist UI: Aesthetic React components for modern apps.
+ 
 
 SQL: Database management for structured data.
-
-ESLint: Code linting tool for identifying problematic patterns.
-
-Next Fetch: Data fetching utilities for Next.js.
 
 Hostinger: Hosting platform for deploying the application.
 
