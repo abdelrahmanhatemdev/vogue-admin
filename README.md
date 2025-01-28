@@ -2,20 +2,20 @@
 
 Vogue Admin is a modern e-commerce management admin dashboard application.
 
-## Live Link
-<img src="https://abdulrahmanhatem.github.io/vogue-admin/favicon.ico" alt="Vogue Admin" align="center"> [Live Vogue Admin](https://abdulrahmanhatem.github.iovogue-admin/)
+<!-- ## Live Link
+<img src="https://abdulrahmanhatem.github.io/vogue-admin/favicon.ico" alt="Vogue Admin" align="center"> [Live Vogue Admin](https://abdulrahmanhatem.github.iovogue-admin/) -->
 
 ## Description 
 Vogue Admin is a modern e-commerce dashboard application built with cutting-edge technologies, designed to provide seamless management of e-commerce platforms. This application features a wide range of modules for effective and efficient administration.
 
 ### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/motivation.png" alt="Motivation" align="center"> Motivation 
-To create a user-friendly tool that empowers e-commerce businesses to thrive.
+To create a user-friendly tool that empowers e-commerce businesses to thrive with nextjs performance, scalability, and Capabilities
 
 ### Tech Stack 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs*** :Javascript Framework for building server-rendered and static web applications.&ensp;
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/css.png" alt="CSS" align="center"> ***CSS***&ensp;<img src="https://abdulrahmanhatem.github.io/images/icons/tech/javascript.png" alt="Javascript" align="center"> ***Javascript***         
 
-Next.js: Framework for building server-rendered and static web applications.
+Next.js: Javascript Framework for building server-rendered and static web applications.
 
 React: Component-based JavaScript library for building user interfaces.
 
