@@ -32,16 +32,18 @@ const CustomTooltip = ({
 }: TooltipProps<number, string>): ReactNode => {
   if (!active || !payload || payload.length === 0) return null;
 
+  const month = chartData[label].month
+
   return (
     <div className="rounded-md dark:bg-neutral-900 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
-      <p className="text-sm dark:text-white text-black font-bold">{label}</p>
+      <p className="text-sm dark:text-white text-black font-bold">{month}</p>
       {payload.map((item, index) => {
         const color =
           item.dataKey === "thisMonth"
             ? chartConfig.thisMonth.color
             : chartConfig.average.color;
         const dataName =
-          item.dataKey === "thisMonth" ? chartData[index].month : "Average";
+          item.dataKey === "thisMonth" ? month : "Average";
 
         return (
           <div
@@ -66,7 +68,7 @@ const Gaol = () => {
     <div className="flex flex-col justify-between gap-2 dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg shadow-md">
       <div className="flex flex-col">
         <h4 className="font-semibold">Marketing Goal</h4>
-        <p className="text-neutral-500 text-sm">
+        <p className="text-neutral-500 dark:text-neutral-400 text-sm">
           Set your monthly marketing goal
         </p>
       </div>
@@ -84,7 +86,7 @@ const Gaol = () => {
       </div>
       <ChartContainer config={chartConfig} className="min-h-16 w-full h-16">
         <BarChart accessibilityLayer data={chartData}>
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />}/>
           <Bar dataKey="thisMonth" fill="var(--color-thisMonth)" radius={4} />
           <Bar dataKey="average" fill="var(--color-average)" radius={4} />
         </BarChart>

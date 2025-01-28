@@ -107,7 +107,7 @@ const DetailsSquares = () => {
       </div>
       <div className="flex flex-col text-sm p-0 w-full items-center">
       <h3 className="font-semibold text-lg">Sold Orders By Colors</h3>
-        <span className="text-neutral-500 dark:text-neutral-200">
+        <span className="text-neutral-500 dark:text-neutral-00">
           {getMonthName(new Date()) === "January" ? "" : " - "}
           {getMonthName(new Date())} {year}
         </span>

@@ -92,7 +92,7 @@ const PaymentChart = ({
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col">
           <h4 className="font-semibold">{title}</h4>
-          <p className="text-neutral-500 text-sm">{description}</p>
+          <p className="text-neutral-500 dark:text-neutral-400 text-sm">{description}</p>
         </div>
         <ChartContainer config={chartConfig} className="min-h-16 w-full h-48">
           <LineChart data={data} className="w-full h-[500px]">
