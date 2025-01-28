@@ -20,18 +20,12 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="SQL" title="SQL: Structured Query Language for relational databases.">](https://www.sql.org/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" title="ESLint: Static code analysis tool for identifying problematic patterns in JavaScript.">](https://eslint.org/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger: Web hosting platform for scalable deployments.">](https://www.hostinger.com/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react_icons.png" alt="React Icons" title="React Icons: Library for popular SVG icons in React.">](https://react-icons.github.io/react-icons/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer_motion.png" alt="Framer Motion" title="Framer Motion: Library for animations in React applications.">](https://www.framer.com/motion/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-icons.png" alt="React Icons" title="React Icons: Library for popular SVG icons in React.">](https://react-icons.github.io/react-icons/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer.png" alt="Framer Motion" title="Framer Motion: Library for animations in React applications.">](https://www.framer.com/motion/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/zod.png" alt="Zod" title="Zod: TypeScript-first schema validation library.">](https://zod.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react_hot_toast.png" alt="React Hot Toast" title="React Hot Toast: Library for toast notifications in React.">](https://react-hot-toast.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-hot-toast.png" alt="React Hot Toast" title="React Hot Toast: Library for toast notifications in React.">](https://react-hot-toast.com/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/axios.png" alt="Axios" title="Axios: Promise-based HTTP client for the browser and Node.js.">](https://axios-http.com/) &ensp;
 
-
-Tanstack React Query: Data fetching and caching library. -->
-
-### Why Vogue Admin project ?
-
-To simplify e-commerce management with an intuitive and powerful dashboard.
 
 
 ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features.png" alt="Features" align="center">  Features
