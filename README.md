@@ -15,13 +15,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive wit
 
 
 
-<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> 
-<span>**Nextjs**</span>
-
-
-
-
-&ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
+<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications.">  &ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> &ensp;
 
 <!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
