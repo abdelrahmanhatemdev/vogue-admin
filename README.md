@@ -17,7 +17,16 @@ You can try to add a <style> tag at the top of your markdown file with rules to 
 
 But unfortunately I noticed it will only work locally on a preview. Github sanitizes the inline style and script tags
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> **Nextjs**&ensp; <img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
+<span style="display:flex;gap:10px;flex-direction:column;cursor:pointer;">
+
+
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> 
+<span>**Nextjs**</span>
+
+
+
+</span>
+&ensp; <img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
 
 <!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
