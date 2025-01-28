@@ -30,66 +30,36 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/recharts.png" alt="Recharts" title="Recharts">](https://recharts.org/) &ensp;
 
 
-
-
-## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features.png" alt="Features" align="center">  Features
+## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/modules.png" alt="Modules" align="center">  Modules
 Vogue Admin is specialized in managing various e-commerce operations with the following modules:
 
-1. Dashboard
+1. **Dashboard** : Overview of key metrics and insights.
 
-Overview of key metrics and insights.
+2. **Admins** : Manage administrator accounts.
 
-Quick access to core features.
+3. **Categories** : Organize Hierarchical categorization.
 
-2. Admins
+4. **Products** : Add, update, and manage product details.
 
-Manage administrator accounts.
+5. **Product Brands** : Manage and associate products with brands.
 
-Role-based access control.
+6. **Product Colors** : Add and manage product color variants.
 
-3. Categories
+7. **Product Sizes** : Define and manage size variants.
 
-Organize products into categories.
+8. **Authentication** : Secure user authentication system.
 
-Hierarchical categorization.
+9. **Settings** : Comprehensive settings module:
 
-4. Products
+***Appearance***: Customize UI theme and layout.
 
-Add, update, and manage product details.
+***Currencies*** : Manage and configure currencies.
 
-Inventory tracking and visibility.
+***Global Notifications*** : Set up system-wide notifications.
 
-5. Product Brands
+***Social Media*** : Link and manage social media accounts.
 
-Manage and associate products with brands.
-
-6. Product Colors
-
-Add and manage product color variants.
-
-7. Product Sizes
-
-Define and manage size variants.
-
-8. Authentication
-
-Secure user authentication system.
-
-Admin login and session management.
-
-9. Settings
-
-Comprehensive settings module:
-
-Appearance: Customize UI theme and layout.
-
-Currencies: Manage and configure currencies.
-
-Global Notifications: Set up system-wide notifications.
-
-Social Media: Link and manage social media accounts.
-
-Constants: Configure constant values for the application. 
+***Constants*** : Configure constant values for the application. 
 
 ##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
