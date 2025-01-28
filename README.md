@@ -13,8 +13,8 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 ### Tech Stack 
 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://react.dev/)
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react-1.png" alt="React" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://react.dev/)
 
 <!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
