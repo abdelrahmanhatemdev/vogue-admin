@@ -13,16 +13,22 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive wit
 
 ### Tech Stack 
 
-<table border="0">
- <tr>
-    <td><b style="font-size:30px">Title</b></td>
-    <td><b style="font-size:30px">Title 2</b></td>
- </tr>
- <tr>
-    <td>Lorem ipsum ...</td>
-    <td>Lorem ipsum ...</td>
- </tr>
-</table>
+You can try to add a <style> tag at the top of your markdown file with rules to remove the border on <td> and <tr> elements.
+
+But unfortunately I noticed it will only work locally on a preview. Github sanitizes the inline style and script tags
+
+<style>
+td, th {
+   border: none!important;
+}
+</style>
+
+
+| Time         | Length        | Speed              | Mass         |
+| ------------ | ------------- | ------------------ | ------------ |
+| -Millisecond | Millimetre    | Kilometre per hour | Milligram    |
+| Second       | Centimetre    | Foot per second    | Gram         |
+| Minute       | Inch          | Miles per hour     | Ounce        |
 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;Javascript Framework for building server-rendered and static web applications.
 
