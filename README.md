@@ -12,18 +12,30 @@ Vogue Admin is a modern e-commerce dashboard application built with cutting-edge
 To create a user-friendly tool that empowers e-commerce businesses to thrive with nextjs performance, scalability, and Capabilities
 
 ### Tech Stack 
+
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">Title</b></td>
+    <td><b style="font-size:30px">Title 2</b></td>
+ </tr>
+ <tr>
+    <td>Lorem ipsum ...</td>
+    <td>Lorem ipsum ...</td>
+ </tr>
+</table>
+
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;Javascript Framework for building server-rendered and static web applications.
 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center"> ***React***&ensp;Component-based JavaScript library for building user interfaces.
 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs.
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
+<!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
 
 <img src="https://abdulrahmanhatem.github.io/images/icons/tech/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
  
 
- 
+
 
 SQL: Database management for structured data.
 
@@ -39,7 +51,7 @@ React Hot Toast: Notifications for React apps.
 
 Axios: HTTP client for making API requests.
 
-Tanstack React Query: Data fetching and caching library.
+Tanstack React Query: Data fetching and caching library. -->
 
 ### Why Vogue Admin project ?
 
