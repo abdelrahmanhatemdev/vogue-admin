@@ -15,19 +15,19 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive wit
 
 
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> 
+<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs.png" alt="HTML" align="center" title="Javascript Framework for building server-rendered and static web applications."> 
 <span>**Nextjs**</span>
 
 
 
 
-&ensp; <img src="https://abdulrahmanhatem.github.io/images/icons/tech/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
+&ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react.png" alt="HTML" align="center" title="Component-based JavaScript library for building user interfaces."> **React**&ensp;
 
-<!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
+<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
-<!-- <img src="https://abdulrahmanhatem.github.io/images/icons/tech/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
+<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
+<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
  
 
 
