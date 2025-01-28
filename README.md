@@ -12,8 +12,8 @@ Vogue Admin is a modern e-commerce dashboard application built with cutting-edge
 To create a user-friendly tool that empowers e-commerce businesses to thrive.
 
 ### Tech Stack 
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech/nextjs.png" alt="HTML" align="center"> ***HTML***&ensp;
-<img src="https://abdulrahmanhatem.github.io/images/icons/tech//css.png" alt="CSS" align="center"> ***CSS***&ensp;<img src="https://abdulrahmanhatem.github.io/images/icons/tech/javascript.png" alt="Javascript" align="center"> ***Javascript***         
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/next-js.png" alt="HTML" align="center"> ***Nextjs***&ensp;
+<img src="https://abdulrahmanhatem.github.io/images/icons/tech/css.png" alt="CSS" align="center"> ***CSS***&ensp;<img src="https://abdulrahmanhatem.github.io/images/icons/tech/javascript.png" alt="Javascript" align="center"> ***Javascript***         
 
 Next.js: Framework for building server-rendered and static web applications.
 
