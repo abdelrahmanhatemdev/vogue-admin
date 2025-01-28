@@ -13,31 +13,19 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 ### Tech Stack 
 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" align="center" title="Javascript Framework for building server-rendered and static web applications.">](https://react.dev/)
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" align="center" title="JavaScript Framework for building server-rendered and static web applications.">](https://nextjs.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" align="center" title="JavaScript library for building single-page applications">](https://react.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="Tailwind" align="center" title="Utility-first CSS framework for designing modern UIs">](https://tailwindcss.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shadcn.png" alt="Shadcn" align="center" title="Component library for building UI designs">](https://shadcn.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="SQL" align="center" title="Structured Query Language for relational databases">](https://www.sql.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" align="center" title="Static code analysis tool for identifying problematic patterns in JavaScript">](https://eslint.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" align="center" title="Web hosting platform for scalable deployments">](https://www.hostinger.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react_icons.png" alt="React Icons" align="center" title="Library for popular SVG icons in React">](https://react-icons.github.io/react-icons/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/framer_motion.png" alt="Framer Motion" align="center" title="Library for animations in React applications">](https://www.framer.com/motion/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/zod.png" alt="Zod" align="center" title="TypeScript-first schema validation library">](https://zod.dev/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react_hot_toast.png" alt="React Hot Toast" align="center" title="Library for toast notifications in React">](https://react-hot-toast.com/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/axios.png" alt="Axios" align="center" title="Promise-based HTTP client for the browser and Node.js">](https://axios-http.com/) &ensp;
 
-<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
-
-<!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shad-cn.png" alt="HTML" align="center"> ***Shadcn***&ensp;Advanced Customizable and accessible UI components.
-
-<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="HTML" align="center"> ***ESLint***&ensp;Code linting tool for identifying problematic patterns.
- 
-
-
-
-SQL: Database management for structured data.
-
-Hostinger: Hosting platform for deploying the application.
-
-React Icons: Ready-to-use icons for React applications.
-
-Framer Motion: Library for animations and gestures.
-
-Zod: TypeScript-first schema validation library.
-
-React Hot Toast: Notifications for React apps.
-
-Axios: HTTP client for making API requests.
 
 Tanstack React Query: Data fetching and caching library. -->
 
