@@ -8,10 +8,10 @@ Vogue Admin is a modern e-commerce management admin dashboard application.
 ## Description 
 Vogue Admin is a modern e-commerce dashboard application built with cutting-edge technologies, designed to provide seamless management of e-commerce platforms. This application features a wide range of modules for effective and efficient administration.
 
-### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/motivation-1.png" alt="Motivation" align="center"> Motivation 
+### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/motivation.png" alt="Motivation" align="center"> Motivation 
 To create a user-friendly tool that empowers e-commerce businesses to thrive via nextjs Capabilities
 
-### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/stack-1.png" alt="Stack" align="center"> Stack 
+### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/stack.png" alt="Stack" align="center"> Stack 
 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/nextjs.png" alt="Nextjs" title="Nextjs">](https://nextjs.org/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" title="React">](https://react.dev/) &ensp; 
@@ -32,7 +32,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 
 
-## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features-1.png" alt="Features" align="center">  Features
+## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features.png" alt="Features" align="center">  Features
 Vogue Admin is specialized in managing various e-commerce operations with the following modules:
 
 1. Dashboard
@@ -91,7 +91,7 @@ Social Media: Link and manage social media accounts.
 
 Constants: Configure constant values for the application. 
 
-##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa-1.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
+##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
 It can be installed from Desktop, IOS and Android broswers and working normally as a regular native app.
 
@@ -99,17 +99,17 @@ Give it a try and install it on your device :
 [Install on Android](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DDesktop)\
 [Install on IOS](https://www.bitcot.com/how-to-install-a-pwa-to-your-device/#Installing_a_PWA_on_iOS)
 
-## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/performance-1.png" alt="Performance" align="center"> Performance
-<img src="https://abdulrahmanhatem.github.io/images/images/wall-clock/performance-1.png" alt="Performance" align="center">
+## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/performance.png" alt="Performance" align="center"> Performance
+<img src="https://abdulrahmanhatem.github.io/images/images/wall-clock/performance.png" alt="Performance" align="center">
 <img src="https://abdulrahmanhatem.github.io/images/images/wall-clock/performance-2.png" alt="Performance" align="center">
 <img src="https://abdulrahmanhatem.github.io/images/images/wall-clock/performance-3.png" alt="Performance" align="center">
 
-<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass-1.png" alt="Performance Passed" align="center"> Performance \
-<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass-1.png" alt="Accessibility Passed" align="center"> Accessibility \
-<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass-1.png" alt="Best Practices Passed" align="center"> Best Practices \
-<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass-1.png" alt="SEO Passed" align="center"> SEO \
-<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass-1.png" alt="PWA Passed" align="center"> PWA
+<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass.png" alt="Performance Passed" align="center"> Performance \
+<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass.png" alt="Accessibility Passed" align="center"> Accessibility \
+<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass.png" alt="Best Practices Passed" align="center"> Best Practices \
+<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass.png" alt="SEO Passed" align="center"> SEO \
+<img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pass.png" alt="PWA Passed" align="center"> PWA
 
 
- ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/license-1.png" alt="License" align="center"> License
+ ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/license.png" alt="License" align="center"> License
 [MIT](https://opensource.org/license/mit)
