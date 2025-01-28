@@ -61,9 +61,10 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
     - **Constants** : Configure constant values for the application. 
 
-### Modules to be implemented 
+## Modules to be implemented 
 
 ***Users*** 
+
 ***User Dashboard***
 
 ***User Addresses***
