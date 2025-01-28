@@ -9,13 +9,16 @@ Vogue Admin is a modern e-commerce management admin dashboard application.
 Vogue Admin is a modern e-commerce dashboard application built with cutting-edge technologies, designed to provide seamless management of e-commerce platforms. This application features a wide range of modules for effective and efficient administration.
 
 ### <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/motivation.png" alt="Motivation" align="center"> Motivation 
-To create a user-friendly tool that empowers e-commerce businesses to thrive with nextjs performance, scalability, and Capabilities
+To create a user-friendly tool that empowers e-commerce businesses to thrive via nextjs Capabilities
 
 ### Tech Stack 
 
+<SPAN>
+    <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">  
 
+Nextjs
+</SPAN> &ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react-1.png" alt="React" align="center" title="Component-based JavaScript library for building user interfaces."> &ensp;
 
-<img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">  &ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react-1.png" alt="React" align="center" title="Component-based JavaScript library for building user interfaces."> &ensp;
 
 <!-- <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/tailwind.png" alt="HTML" align="center"> ***Tailwind***&ensp;Utility-first CSS framework for designing modern UIs. -->
 
