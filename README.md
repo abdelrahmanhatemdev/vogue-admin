@@ -15,6 +15,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 
 <SPAN>
     <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/nextjs-1.png" alt="Nextjs" align="center" title="Javascript Framework for building server-rendered and static web applications.">  
+    
 Nextjs
 </SPAN> &ensp; <img src="https://abdulrahmanhatem.github.io/images/images/stack_names/react-1.png" alt="React" align="center" title="Component-based JavaScript library for building user interfaces."> &ensp;
 
