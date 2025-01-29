@@ -98,8 +98,8 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 ## 📂 Folder Structure
 
 ```
-📦 📦 **vogue-admin**  
-📄 README.md  
+📦 **vogue-admin**  
+<img src="https://abdulrahmanhatem.github.io/images/icons/folder_structure/readme.svg" alt="Read Me" align="center"> README.md  
 📄 .env  
 📄 next.config.js  
 📄 tailwind.config.ts  
