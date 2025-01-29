@@ -99,7 +99,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 ```
 📦 **vogue-admin**  
-![Read Me](https://raw.githubusercontent.com/username/repo/main/readme.svg)
+![Read Me](https://abdulrahmanhatem.github.io/images/icons/folder_structure/readme.svg)
 README.md  
 📄 .env  
 📄 next.config.js  
