@@ -17,7 +17,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" title="React">](https://react.dev/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="Tailwind" title="Tailwind">](https://tailwindcss.com/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shadcn.png" alt="Shadcn" title="Shadcn">](https://shadcn.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="SQL" title="SQL">](https://www.sql.org/) &ensp; 
+[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="Mysql" title="SQL">](https://www.mysql.com/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" title="ESLint">](https://eslint.org/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger">](https://www.hostinger.com/) 
 
