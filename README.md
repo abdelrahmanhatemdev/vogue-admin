@@ -98,82 +98,99 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 ## 📂 Folder Structure
 
 ```
-📦 **vogue-admin**  
-📄 README.md  
-📄 .env  
-📄 next.config.js  
-📄 tailwind.config.ts  
-📄 postcss.config.js  
-📄 tsconfig.json  
-📄 package.json  
+📦 vogue-admin  
 
-└───📂 **app**  
+└───📂 actions  
+│   📄 Admin.tsx  
+│   📄 Brand.tsx  
+│   📄 Category.tsx
+│    ...
+
+└───📂 app  
 │   📄 layout.tsx  
 │   📄 page.tsx  
-│   📄 middleware.ts  
-│   │  
-│   ├───📂 **(public)**  
+│   📄 middleware.ts   
+|
+├───📂 (public)  
 │   │   📄 layout.tsx  
 │   │   📄 page.tsx  
 │   │  
-│   ├───📂 **(auth)**  
+│   ├───📂 (auth)  
 │   │   📄 layout.tsx  
 │   │   📄 page.tsx  
 │   │  
-│   ├───📂 **dashboard**  
+│   ├───📂 dashboard  
 │   │   📄 layout.tsx  
 │   │   📄 page.tsx  
 │   │   │  
-│   │   ├───📂 **users**  
+│   │   ├───📂 users  
 │   │   │   📄 page.tsx  
 │   │   │   📄 [id]/page.tsx  
 │   │   │  
-│   │   ├───📂 **settings**  
+│   │   ├───📂 settings  
 │   │   │   📄 page.tsx  
 │   │  
-│   └───📂 **api**  
+│   └───📂 api  
 │       📄 route.ts  
 │       │  
-│       ├───📂 **auth**  
+│       ├───📂 auth  
 │       │   📄 route.ts  
 │       │  
-│       ├───📂 **users**  
+│       ├───📂 users  
 │       │   📄 route.ts  
 
-└───📂 **components**  
+└───📂 components  
 │   📄 index.ts  
 │   │  
-│   ├───📂 **ui**  
+│   ├───📂 custom  
 │   │   📄 button.tsx  
 │   │   📄 input.tsx  
 │   │  
-│   ├───📂 **layout**  
+│   ├───📂 modules  
 │   │   📄 navbar.tsx  
-│   │   📄 sidebar.tsx  
+│   │   📄 sidebar.tsx 
 
-└───📂 **lib**  
+│   ├───📂 ui
+
+└───📂 lib  
 │   📄 auth.ts  
 │   📄 fetch.ts  
 │   📄 hooks.ts  
 │   📄 constants.ts  
 
-└───📂 **styles**  
+└───📂 styles  
 │   📄 globals.css  
 │   📄 tailwind.css  
 
-└───📂 **public**  
+└───📂 public  
 │   📄 logo.png  
 │   📄 favicon.ico  
 
-└───📂 **config**  
+└───📂 config  
 │   📄 site.ts  
 │   📄 seo.ts  
 │   📄 api.ts  
 
-└───📂 **types**  
+└───📂 types  
 │   📄 auth.ts  
 │   📄 user.ts  
 │   📄 api.ts  
+
+📄 .gitignore
+📄 components.json  
+📄 eslint.config.mjs  
+📄 eslintrc.json 
+📄 middleware.ts  
+📄 next-auth.d.ts  
+📄 next.config.mjs  
+📄 package-lock.json  
+📄 package.json  
+📄 postcss.config.js  
+📄 README.md  
+📄 tailwind.config.ts  
+📄 package.json  
+📄 tsconfig.json  
+📄 types.d.ts  
 ```
 
 
