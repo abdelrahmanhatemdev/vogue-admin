@@ -81,19 +81,19 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 | **Category**  | **Features**  |
 |---|---|
-|  **User Authentication** | * Email and password login  
-|  **Data Fetching** | * Server*side rendering (SSR) for personalized content <br> * Static site generation (SSG) for fast performance <br> *  Client*side data fetching with SWR  |  
-| **API & Backend Integrations** | * REST API implementation with pages/api.<br> * CRUD operations with a database (MySQL).<br> * API caching with Next fetch. | 
-| **State Management** | * Context API for lightweight state management. | 
-| **Theming** | * Dark/light theme toggle with persistence.<br> * CRUD operations with a database (MySQL).<br> * API caching with Next fetch.<br> * Atomic CSS classes, No custom CSS needed ith tailwind<br> * Accessibility features (contrast, font size adjustments).|
-| **Performance** | * Lazy loading non*critical images and components.<br> * Code splitting for optimized bundles.<br> * Image optimization with Next.js Image component.<br> * Prefetching with next/link for faster navigation.<br> * Content Delivery Network (CDN) integration.<br> * Optimized Lighthouse scores (SEO, performance, accessibility). | 
-| **Security** | * Data validation with Zod in frontend and backend | 
-| **UI & UX Enhancements** | * Smooth animations with Framer Motion.<br> * Pagination for lists and tables.<br> * Toast notifications (React Hot Toast). | 
-| **Forms & Input Handling** | *Form validation with Zod.<br> * File upload with preview (images).<br> * Tag input with autocomplete suggestions. | 
-| **Dashboard & Admin Features** | * Dynamic sidebar navigation.<br> * Role*based content visibility.<br> * Chart visualizations with Recharts | 
-| **E*Commerce Features** | * Nested routes with dynamic segments.<br> * Discount codes & promotions.
-| **Navigation & Routing** | * Dynamic sidebar navigation.<br> * Breadcrumb navigation for better UX.<br> * Back button behavior customization. | 
-| **File Management & Uploads** | * Drag*and*drop file upload.<br> * File preview before submission.<br> * File type & size check before submission.<br> * Multiple file uploads.| 
+|  **User Authentication** | > * Email and password login  
+|  **Data Fetching** | > * Server> *side rendering (SSR) for personalized content <br> > * Static site generation (SSG) for fast performance <br> > *  Client> *side data fetching with SWR  |  
+| **API & Backend Integrations** | > * REST API implementation with pages/api.<br> > * CRUD operations with a database (MySQL).<br> > * API caching with Next fetch. | 
+| **State Management** | > * Context API for lightweight state management. | 
+| **Theming** | > * Dark/light theme toggle with persistence.<br> > * CRUD operations with a database (MySQL).<br> > * API caching with Next fetch.<br> > * Atomic CSS classes, No custom CSS needed ith tailwind<br> > * Accessibility features (contrast, font size adjustments).|
+| **Performance** | > * Lazy loading non> *critical images and components.<br> > * Code splitting for optimized bundles.<br> > * Image optimization with Next.js Image component.<br> > * Prefetching with next/link for faster navigation.<br> > * Content Delivery Network (CDN) integration.<br> > * Optimized Lighthouse scores (SEO, performance, accessibility). | 
+| **Security** | > * Data validation with Zod in frontend and backend | 
+| **UI & UX Enhancements** | > * Smooth animations with Framer Motion.<br> > * Pagination for lists and tables.<br> > * Toast notifications (React Hot Toast). | 
+| **Forms & Input Handling** | > *Form validation with Zod.<br> > * File upload with preview (images).<br> > * Tag input with autocomplete suggestions. | 
+| **Dashboard & Admin Features** | > * Dynamic sidebar navigation.<br> > * Role> *based content visibility.<br> > * Chart visualizations with Recharts | 
+| **E> *Commerce Features** | > * Nested routes with dynamic segments.<br> > * Discount codes & promotions.
+| **Navigation & Routing** | > * Dynamic sidebar navigation.<br> > * Breadcrumb navigation for better UX.<br> > * Back button behavior customization. | 
+| **File Management & Uploads** | > * Drag> *and> *drop file upload.<br> > * File preview before submission.<br> > * File type & size check before submission.<br> > * Multiple file uploads.| 
 
 
 
