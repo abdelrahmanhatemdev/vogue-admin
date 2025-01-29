@@ -63,7 +63,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 ### Modules to be implemented 
 
-- *Users* 
+- *Users* - *Orders* - *Coupons* - *Payments*
 
 <!-- - *User Dashboard*
 
@@ -75,11 +75,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 - *User Recent views* -->
 
-- *Orders*
 
-- *Coupons*
-
-- *Payments*
 
 ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features.png" alt="Features" align="center">  Features
 
