@@ -79,6 +79,70 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 ## <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/features.png" alt="Features" align="center">  Features
 
+User Authentication
+Email and password login
+
+Data Fetching
+Server-side rendering (SSR) for personalized content.
+Static site generation (SSG) for fast performance.
+Client-side data fetching with SWR 
+
+API & Backend Integrations
+REST API implementation with pages/api.
+CRUD operations with a database (MySQL).
+API caching with Next fetch.
+
+
+State Management
+Context API for lightweight state management.
+
+Theming
+Dark/light theme toggle with persistence.
+CSS variables for custom theming.
+Accessibility features (contrast, font size adjustments).
+
+Performance
+Lazy loading non-critical images and components.
+Code splitting for optimized bundles.
+Image optimization with Next.js Image component.
+Prefetching with next/link for faster navigation.
+Content Delivery Network (CDN) integration.
+Optimized Lighthouse scores (SEO, performance, accessibility).
+
+Security
+Data validation with Zod in frontend and backend
+
+UI & UX Enhancements
+Smooth animations with Framer Motion.
+Pagination for lists and tables.
+Toast notifications (React Hot Toast).
+
+Forms & Input Handling
+Form validation with Zod or Yup.
+File upload with preview (e.g., images, PDFs).
+Tag input with autocomplete suggestions.
+
+Dashboard & Admin Features
+Dynamic sidebar navigation.
+Role-based content visibility.
+Chart visualizations with Recharts
+
+E-Commerce Features
+Product filtering & sorting.
+Discount codes & promotions.
+
+Navigation & Routing
+Nested routes with dynamic segments.
+Breadcrumb navigation for better UX.
+Back button behavior customization.
+
+
+
+File Management & Uploads
+Drag-and-drop file upload.
+File preview before submission.
+File type & size check before submission.
+Multiple file uploads 
 
 
 ##  <img src="https://abdulrahmanhatem.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
