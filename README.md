@@ -101,80 +101,105 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 📦 vogue-admin  
 
 └───📂 actions  
-│   📄 Admin.tsx  
-│   📄 Brand.tsx  
-│   📄 Category.tsx
-│    ...
+    📄 Admin.tsx  
+    📄 Brand.tsx  
+    📄 Category.tsx
+     ...
 
 └───📂 app  
-│   📄 layout.tsx  
-│   📄 page.tsx  
-│   📄 middleware.ts   
-|
-├───📂 (public)  
-│   │   📄 layout.tsx  
-│   │   📄 page.tsx  
-│   │  
-│   ├───📂 (auth)  
-│   │   📄 layout.tsx  
-│   │   📄 page.tsx  
-│   │  
-│   ├───📂 dashboard  
-│   │   📄 layout.tsx  
-│   │   📄 page.tsx  
-│   │   │  
-│   │   ├───📂 users  
-│   │   │   📄 page.tsx  
-│   │   │   📄 [id]/page.tsx  
-│   │   │  
-│   │   ├───📂 settings  
-│   │   │   📄 page.tsx  
-│   │  
-│   └───📂 api  
-│       📄 route.ts  
-│       │  
-│       ├───📂 auth  
-│       │   📄 route.ts  
-│       │  
-│       ├───📂 users  
-│       │   📄 route.ts  
+    📄 layout.tsx  
+    📄 Loading.tsx  
+    📄 global.css
+    📄 global-error.tsx
+    📄 favicon.ico   
 
-└───📂 components  
-│   📄 index.ts  
-│   │  
-│   ├───📂 custom  
-│   │   📄 button.tsx  
-│   │   📄 input.tsx  
-│   │  
-│   ├───📂 modules  
-│   │   📄 navbar.tsx  
-│   │   📄 sidebar.tsx 
+    └──📂 (website)   
+        └───📂 (auth)  
 
-│   ├───📂 ui
+            └───📂 login 
+                📄 page.tsx  
+            📄 layout.tsx  
+
+        └───📂 (pages)  
+            📄 layout.tsx  
+            
+            └───📂 (dashboard)  
+                📄 page.tsx   
+            
+            └───📂 settings  
+                📄 page.tsx  
+            ...
+        
+        └───📂 api  
+            📄 route.ts  
+            
+            └───📂 admins  
+                📄 route.ts  
+            
+            └───📂 products  
+                └───📂 [slug] 
+                📄 route.ts  
+            ...    
+
+└───📂 components   
+
+    └───📂 custom  
+        📄 AppLayout.tsx  
+        📄 Logo.tsx  
+        📄 Loading.tsx  
+        ...
+       
+    └───📂 modules  
+        └───📂 admins 
+        └───📂 brands 
+        └───📂 colors
+        ... 
+
+    └───📂 ui
+        📄 Button.tsx  
+        📄 Card.tsx  
+        📄 Form.tsx 
+        ... 
+
+└───📂 constants  
+    📄 currencies.ts  
+    📄 socialMedia.tsx  
+
+└───📂 context  
+    📄 DataContext.tsx 
+    📄 ThemeContext.tsx  
+
+└───📂 hooks  
+    📄 useData.ts  
+    📄 useTheme.ts  
+    📄 use-mobile.ts  
 
 └───📂 lib  
-│   📄 auth.ts  
-│   📄 fetch.ts  
-│   📄 hooks.ts  
-│   📄 constants.ts  
+    └───📂 validation  
+        📄 adminSchema.ts 
+        📄 brandSchema.ts 
+        📄 productSchema.ts 
+        ...
+    📄 auth.ts  
+    📄 db.ts  
+    📄 utils.ts  
+    📄 ...
 
-└───📂 styles  
-│   📄 globals.css  
-│   📄 tailwind.css  
+└───📂 node_modules  
+    ... 
+
+└───📂 providers  
+    📄 DataProvider.tsx
+    📄 index.tsx
+    📄 ThemeProvider.tsx
 
 └───📂 public  
-│   📄 logo.png  
-│   📄 favicon.ico  
-
-└───📂 config  
-│   📄 site.ts  
-│   📄 seo.ts  
-│   📄 api.ts  
-
-└───📂 types  
-│   📄 auth.ts  
-│   📄 user.ts  
-│   📄 api.ts  
+    └───📂 icons    
+    └───📂 images    
+    └───📂 loaders    
+ 
+└───📂 uploads  
+    └───📂 images  
 
 📄 .gitignore
 📄 components.json  
