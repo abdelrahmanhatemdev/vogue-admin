@@ -97,7 +97,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 
 ## 📂 Folder Structure
 
-```
+
 📦 **vogue-admin**  
 ![Read Me](https://abdulrahmanhatem.github.io/images/icons/folder_structure/readme.svg)
 README.md  
@@ -175,7 +175,7 @@ README.md
 │   📄 auth.ts  
 │   📄 user.ts  
 │   📄 api.ts  
-```
+
 
 
 
