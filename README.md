@@ -82,9 +82,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 | **Category**  | **Features**  |
 |---|---|
 |  **User Authentication** | Email and password login  
-|  **Data Fetching** | - Server-side rendering (SSR) for personalized content 
-- Static site generation (SSG) for fast performance
--  Client-side data fetching with SWR  |   
+|  **Data Fetching** | - Server-side rendering (SSR) for personalized content <br>- Static site generation (SSG) for fast performance <br>-  Client-side data fetching with SWR  |   
 
 
 
