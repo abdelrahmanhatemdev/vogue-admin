@@ -98,85 +98,82 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 ## 📂 Folder Structure
 
 ```
-📦 vogue-admin
-│   README.md
-│   .env
-│   next.config.js
-│   tailwind.config.ts
-│   postcss.config.js
-│   tsconfig.json
-│   package.json
-│
-└───📂 app 
-│   │   layout.tsx
-│   │   page.tsx
-│   │   middleware.ts
-│   │
-│   ├───📂 (public)
-│   │   │   layout.tsx
-│   │   │   page.tsx
-│   │
-│   ├───📂 (auth)
-│   │   │   layout.tsx
-│   │   │   page.tsx
-│   │
-│   ├───📂 dashboard
-│   │   │   layout.tsx
-│   │   │   page.tsx
-│   │   │
-│   │   ├───📂 users
-│   │   │   │   page.tsx
-│   │   │   │   [id]/page.tsx
+📦 📦 **vogue-admin**  
+📄 README.md  
+📄 .env  
+📄 next.config.js  
+📄 tailwind.config.ts  
+📄 postcss.config.js  
+📄 tsconfig.json  
+📄 package.json  
+
+└───📂 **app**  
+│   📄 layout.tsx  
+│   📄 page.tsx  
+│   📄 middleware.ts  
+│   │  
+│   ├───📂 **(public)**  
+│   │   📄 layout.tsx  
+│   │   📄 page.tsx  
+│   │  
+│   ├───📂 **(auth)**  
+│   │   📄 layout.tsx  
+│   │   📄 page.tsx  
+│   │  
+│   ├───📂 **dashboard**  
+│   │   📄 layout.tsx  
+│   │   📄 page.tsx  
 │   │   │  
-│   │   ├───📂 settings
-│   │   │   │   page.tsx
-│   │
-│   └───📂 api
-│       │   route.ts
-│       │
-│       ├───📂 auth
-│       │   │   route.ts
-│       │
-│       ├───📂 users
-│       │   │   route.ts
-│
-└───📂 components
-│   │   index.ts
-│   │
-│   ├───📂 ui
-│   │   │   button.tsx
-│   │   │   input.tsx
-│   │
-│   ├───📂 layout
-│   │   │   navbar.tsx
-│   │   │   sidebar.tsx
-│
-└───📂 lib
-│   │   auth.ts
-│   │   fetch.ts
-│   │   hooks.ts
-│   │   constants.ts
-│
-└───📂 styles
-│   │   globals.css
-│   │   tailwind.css
-│
-└───📂 public
-│   │   logo.png
-│   │   favicon.ico
-│
-└───📂 config
-│   │   site.ts
-│   │   seo.ts
-│   │   api.ts
-│
-└───📂 types
-│   │   auth.ts
-│   │   user.ts
-│   │   api.ts
-│
-```
- ├── 📂 (public) # Public routes (accessible by all users) │ │ ├── 📂 about # Example: About page │ │ ├── 📂 contact # Example: Contact page │ │ ├── 📂 layout.tsx # Shared layout for public pages │ │ └── 📂 page.tsx # Home page (index) │ ├── 📂 (auth) # Authentication-related routes (e.g., login, register) │ │ ├── 📂 login │ │ ├── 📂 register │ │ ├── 📂 layout.tsx # Shared layout for auth pages │ │ └── 📂 page.tsx # Default auth page │ ├── 📂 dashboard # Protected dashboard pages │ │ ├── 📂 users │ │ │ ├── 📂 [id] # Dynamic user profile page │ │ │ └── 📂 page.tsx │ │ ├── 📂 settings │ │ ├── 📂 layout.tsx # Dashboard layout │ │ └── 📂 page.tsx # Main dashboard page │ ├── 📂 api # Server actions & API routes │ │ ├── 📂 auth │ │ ├── 📂 users │ │ └── 📂 route.ts # Default API route handler │ ├── 📂 middleware.ts # Middleware for authentication & security │ ├── 📂 layout.tsx # Root layout (HTML structure) │ └── 📂 page.tsx # Root page (e.g., homepage) ├── 📂 components # Reusable UI components │ ├── 📂 ui # Generic UI components (buttons, inputs, etc.) │ ├── 📂 layout # Layout components (navbar, sidebar, footer) │ ├── 📂 form # Form components (inputs, validations, etc.) │ ├── 📂 modal # Modal dialogs │ └── index.ts # Central export for components ├── 📂 lib # Utility functions, hooks, and API clients │ ├── auth.ts # Authentication helpers │ ├── fetch.ts # API fetch utility │ ├── format.ts # Formatting utilities │ ├── hooks.ts # Custom React hooks │ └── constants.ts # App-wide constants ├── 📂 styles # Global styles & themes │ ├── globals.css # Global styles │ ├── tailwind.css # Tailwind configuration │ ├── theme.css # Theme variables │ └── animations.css # Custom animations ├── 📂 public # Static assets (images, fonts, etc.) │ ├── logo.png # Example: App logo │ └── favicon.ico # Favicon ├── 📂 config # Configuration files (e.g., env settings) │ ├── site.ts # Site metadata & settings │ ├── seo.ts # SEO configuration │ ├── api.ts # API base URLs │ └── auth.ts # Auth settings ├── 📂 types # TypeScript type definitions │ ├── auth.ts # Auth-related types │ ├── user.ts # User model types │ ├── api.ts # API response types │ └── index.ts # Central export for types ├── .env # Environment variables ├── next.config.js # Next.js configuration ├── tailwind.config.ts # Tailwind configuration ├── postcss.config.js # PostCSS configuration ├── tsconfig.json # TypeScript configuration ├── package.json # Project dependencies & scripts └── README.md # Project documentation
+│   │   ├───📂 **users**  
+│   │   │   📄 page.tsx  
+│   │   │   📄 [id]/page.tsx  
+│   │   │  
+│   │   ├───📂 **settings**  
+│   │   │   📄 page.tsx  
+│   │  
+│   └───📂 **api**  
+│       📄 route.ts  
+│       │  
+│       ├───📂 **auth**  
+│       │   📄 route.ts  
+│       │  
+│       ├───📂 **users**  
+│       │   📄 route.ts  
+
+└───📂 **components**  
+│   📄 index.ts  
+│   │  
+│   ├───📂 **ui**  
+│   │   📄 button.tsx  
+│   │   📄 input.tsx  
+│   │  
+│   ├───📂 **layout**  
+│   │   📄 navbar.tsx  
+│   │   📄 sidebar.tsx  
+
+└───📂 **lib**  
+│   📄 auth.ts  
+│   📄 fetch.ts  
+│   📄 hooks.ts  
+│   📄 constants.ts  
+
+└───📂 **styles**  
+│   📄 globals.css  
+│   📄 tailwind.css  
+
+└───📂 **public**  
+│   📄 logo.png  
+│   📄 favicon.ico  
+
+└───📂 **config**  
+│   📄 site.ts  
+│   📄 seo.ts  
+│   📄 api.ts  
+
+└───📂 **types**  
+│   📄 auth.ts  
+│   📄 user.ts  
+│   📄 api.ts  
 ```
 
 
