@@ -84,7 +84,7 @@ export async function editProduct(
     });
 }
 
-export async function deleteProduct(data: { uuid: string }) {
+export async function deleteProduct(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

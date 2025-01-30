@@ -77,7 +77,7 @@ export async function editSize(data: Partial<Size>) {
     });
 }
 
-export async function deleteSize(data: { uuid: string }) {
+export async function deleteSize(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

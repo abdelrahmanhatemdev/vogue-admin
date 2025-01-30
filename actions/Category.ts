@@ -82,7 +82,7 @@ export async function editCategory(data: Partial<
     });
 }
 
-export async function deleteCategory(data: { uuid: string }) {
+export async function deleteCategory(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

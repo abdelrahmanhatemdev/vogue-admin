@@ -77,7 +77,7 @@ export async function editSocialMedia(data: Partial<SocialMedia>) {
     });
 }
 
-export async function deleteSocialMedia(data: { uuid: string }) {
+export async function deleteSocialMedia(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

@@ -76,7 +76,7 @@ export async function editBrand(data: Partial<Brand>) {
     });
 }
 
-export async function deleteBrand(data: { uuid: string }) {
+export async function deleteBrand(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

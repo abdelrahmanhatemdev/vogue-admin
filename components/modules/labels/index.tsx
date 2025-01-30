@@ -156,7 +156,7 @@ function Labels({ data }: { data: Label[] }) {
                     ),
                     children: (
                       <DeleteLabel
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

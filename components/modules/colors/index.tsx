@@ -156,7 +156,7 @@ function Colors({ data }: { data: Color[] }) {
                     ),
                     children: (
                       <DeleteColor
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

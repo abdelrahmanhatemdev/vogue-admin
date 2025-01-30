@@ -163,7 +163,7 @@ function Brands({ data }: { data: Brand[] }) {
                     ),
                     children: (
                       <DeleteBrand
-                      itemId={item.uuid}
+                      itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

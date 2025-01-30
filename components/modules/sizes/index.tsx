@@ -48,7 +48,7 @@ function Sizes({ data }: { data: Size[] }) {
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
       ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
-          b.sort_order < a.sort_order ? -1 : 1
+          b.sortOrder < a.sortOrder ? -1 : 1
         )
       : [];
   }, [optimisicData]);
@@ -102,12 +102,12 @@ function Sizes({ data }: { data: Size[] }) {
         },
       },
       {
-        id: "sort_order",
-        accessorKey: "sort_order",
+        id: "sortOrder",
+        accessorKey: "sortOrder",
         header: "Order",
         cell: ({ row }) => {
           const item: Size = row.original;
-          return <span>{item.sort_order}</span>;
+          return <span>{item.sortOrder}</span>;
         },
       },
       {
@@ -151,7 +151,7 @@ function Sizes({ data }: { data: Size[] }) {
                     ),
                     children: (
                       <DeleteSize
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

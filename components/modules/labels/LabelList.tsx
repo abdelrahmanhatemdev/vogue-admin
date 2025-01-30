@@ -134,7 +134,7 @@ function LabelList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -167,7 +167,7 @@ function LabelList({
                 startTransition(() => {
                   addOptimisticData((prev: Label[]) => [
                     ...prev.map((item) => {
-                      if (selectedRows.includes(item.uuid)) {
+                      if (selectedRows.includes(item.id)) {
                         const pendingItem = { ...item, isPending: !isPending };
                         return pendingItem;
                       }
@@ -176,7 +176,7 @@ function LabelList({
                   ]);
                 });
                 for (const row of selectedRows) {
-                  const data = { uuid: row };
+                  const data = { id: row };
                   const res: ActionResponse = await deleteLabel(data);
                   notify(res);
                 }

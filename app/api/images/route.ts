@@ -82,7 +82,7 @@ export async function POST(req: Request) {
 
         await fs.writeFile(filePath, fileBuffer);
         const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-          `INSERT INTO ${tableName} (subproduct_id, src, sort_order) VALUES (?, ?, ?)`,
+          `INSERT INTO ${tableName} (subproduct_id, src, sortOrder) VALUES (?, ?, ?)`,
           [productId, newwFileName, 0]
         );
 
@@ -120,7 +120,7 @@ export async function PUT(req: Request) {
     const orderArray = await req.json();
 
     const updatedOrder = orderArray.map((orderID: number, index: number) => {
-      db.execute(`UPDATE ${tableName} SET sort_order=? WHERE id = ?`, [
+      db.execute(`UPDATE ${tableName} SET sortOrder=? WHERE id = ?`, [
         index,
         orderID,
       ]);

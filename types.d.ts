@@ -16,7 +16,7 @@ interface Category {
   label: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Brand {
@@ -26,7 +26,7 @@ interface Brand {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Admin {
@@ -39,7 +39,7 @@ interface Admin {
   createdAt: string;
   updatedAt: string;
   provider_id?: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Size {
@@ -47,10 +47,10 @@ interface Size {
   uuid: string;
   name: string;
   symbol: string;
-  sort_order: number;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Color {
@@ -60,7 +60,7 @@ interface Color {
   hex: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Label {
@@ -70,7 +70,7 @@ interface Label {
   hex: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Product {
@@ -85,7 +85,7 @@ interface Product {
   trending: boolean;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
   subproducts?: Subproduct[] | number | { sku: string; id: string }[];
   reviews?: Review[];
 }
@@ -107,7 +107,7 @@ interface Subproduct {
   images?: ProductImage[] | string[] | string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Paragraph {
@@ -120,10 +120,10 @@ interface ProductImage {
   uuid: string;
   src: string;
   subproduct_id: string;
-  sort_order: number;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Tag {
@@ -142,7 +142,7 @@ interface SocialMedia {
   followers: number;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface GlobalNotification {
@@ -153,7 +153,7 @@ interface GlobalNotification {
   anchorLink: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Currency {
@@ -162,7 +162,7 @@ interface Currency {
   code: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 interface Setting {
@@ -172,7 +172,7 @@ interface Setting {
   value: string;
   createdAt: string;
   updatedAt: string;
-  delatedAt?: string;
+  deletedAt?: string;
 }
 
 type Currency = {

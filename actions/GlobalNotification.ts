@@ -77,7 +77,7 @@ export async function editGlobalNotification(data: Partial<GlobalNotification>) 
     });
 }
 
-export async function deleteGlobalNotification(data: { uuid: string }) {
+export async function deleteGlobalNotification(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

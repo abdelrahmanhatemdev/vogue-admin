@@ -42,8 +42,8 @@ function AddSize({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
       uuid: uuidv4(), 
-      symbol: "", 
-      sort_order: 0
+      symbol: undefined, 
+      sortOrder: 0
     },
     mode: "onChange",
   });
@@ -110,7 +110,7 @@ function AddSize({
         />
         <FormField
           control={form.control}
-          name="sort_order"
+          name="sortOrder"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Order</FormLabel>

@@ -77,7 +77,7 @@ export async function editSetting(data: Partial<Setting>) {
     });
 }
 
-export async function deleteSetting(data: { uuid: string }) {
+export async function deleteSetting(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

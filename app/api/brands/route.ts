@@ -1,17 +1,33 @@
-import { NextResponse } from "next/server";
-import db from "@/lib/db";
-import { FieldPacket, ResultSetHeader } from "mysql2";
 import { BrandSchema } from "@/lib/validation/brandSchema";
+import { NextResponse } from "next/server";
 
-export const tableName = "brands";
+import { db } from "@/database/firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+
+export const collectionName = "brands";
+export const collectionRef = collection(db, collectionName);
 
 export async function GET() {
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
-    );
+    const snapShot = (await getDocs(collectionRef)).docs;
 
-    const data = rows as Brand[];
+    const data =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Brand[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -24,33 +40,32 @@ export async function POST(request: Request) {
   try {
     const { uuid, name, slug } = await request.json();
 
-    // Ensure Server Validation
-    BrandSchema.parseAsync({ uuid, name, slug });
+    await BrandSchema.parseAsync({ uuid, name, slug });
 
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-      [slug]
-    );
+    const q = query(collectionRef, where("slug", "==", slug));
 
-    const existedItems = slugCheck as Brand[];
+    const existedItems = await getDocs(q);
 
-    if (existedItems.length > 0) {
+    if (!existedItems.empty) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }
       );
     }
+    const date = new Date().toISOString();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name, slug) VALUES (?, ?, ?)`,
-      [uuid, name, slug]
-    );
+    const data = {
+      uuid,
+      name,
+      slug,
+      createdAt: date,
+      updatedAt: date,
+    };
 
-    if (result.insertId) {
-      return NextResponse.json(
-        { message: "Brand added", result },
-        { status: 200 }
-      );
+    const docRef = await addDoc(collectionRef, data);
+
+    if (docRef.id) {
+      return NextResponse.json({ message: "Brand added" }, { status: 200 });
     }
 
     return new Error("Something Wrong");
@@ -62,18 +77,18 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, name, slug } = await request.json();
+    const { id, uuid, name, slug } = await request.json();
 
-    // Ensure Server Validation
-    BrandSchema.parseAsync({ uuid, name, slug });
+    await BrandSchema.parseAsync({ uuid, name, slug });
 
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
-      [slug, uuid]
+    const list = (await getDocs(collectionRef)).docs.filter(
+      (doc) => doc.id !== id && doc.data().slug === slug
     );
 
-    const existedItems = slugCheck as Brand[];
-
+    const existedItems =
+      list.length > 0
+        ? list.filter((doc) => doc.id === id && doc.data().slug !== slug)
+        : [];
     if (existedItems.length > 0) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
@@ -81,18 +96,16 @@ export async function PUT(request: Request) {
       );
     }
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ? , slug = ? WHERE uuid = ?`,
-      [name, slug, uuid]
-    );
+    const docRef = doc(db, collectionName, id);
 
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Brand updated", result },
-        { status: 200 }
-      );
+    if (docRef?.id) {
+      await updateDoc(docRef, {
+        name,
+        slug,
+        updatedAt: new Date().toISOString(),
+      });
+      return NextResponse.json({ message: "Brand Updated" }, { status: 200 });
     }
-
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
@@ -102,20 +115,18 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { uuid } = await request.json();
+    const { id } = await request.json();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
-      [uuid]
+    const docRef = doc(db, collectionName, id);
+
+    const data = { deletedAt: new Date().toISOString() };
+
+    const result = await updateDoc(docRef, data);
+
+    return NextResponse.json(
+      { message: "Brand Deleted", result },
+      { status: 200 }
     );
-
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Brand Deleted", result },
-        { status: 200 }
-      );
-    }
-    return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

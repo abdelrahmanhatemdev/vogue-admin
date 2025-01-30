@@ -77,7 +77,7 @@ export async function editColor(data: Partial<Color>) {
     });
 }
 
-export async function deleteColor(data: { uuid: string }) {
+export async function deleteColor(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

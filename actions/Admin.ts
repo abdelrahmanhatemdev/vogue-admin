@@ -77,7 +77,7 @@ export async function editAdmin(data: Partial<Admin>) {
     });
 }
 
-export async function deleteAdmin(data: { uuid: string }) {
+export async function deleteAdmin(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

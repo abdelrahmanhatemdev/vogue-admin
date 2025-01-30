@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getBrands } from "@/actions/Brand";
-import db from "@/lib/db";
-import { tableName } from "@/app/api/brands/route";
+import { collectionRef } from "@/app/api/brands/route";
+import { getDocs, query, where } from "firebase/firestore";
 
 export const dynamic = "force-static";
 
@@ -9,21 +9,30 @@ export async function GET(
   req: Request,
   props: { params: Promise<{ slug: string }> }
 ) {
-  const params = await props.params;
-
-  const { slug } = await params;
-
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? LIMIT 1`, [slug]
-    );
+    const params = await props.params;
 
-    const items = rows as Brand[];
+    const { slug } = await params;
 
-    const data = items[0]
+    const q = query(collectionRef, where("slug", "==", slug));
+    const snapShot = (await getDocs(q)).docs;
 
-    if (data) {
-      return NextResponse.json({ data }, { status: 200 });
+    const items =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Brand[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
+
+    if (items.length > 0) {
+      const data = items[0];
+
+      if (data) {
+        return NextResponse.json({ data }, { status: 200 });
+      }
     }
 
     throw new Error("No Data Found!");

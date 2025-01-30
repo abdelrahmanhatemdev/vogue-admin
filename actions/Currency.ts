@@ -77,7 +77,7 @@ export async function editCurrency(data: Partial<Currency>) {
     });
 }
 
-export async function deleteCurrency(data: { uuid: string }) {
+export async function deleteCurrency(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

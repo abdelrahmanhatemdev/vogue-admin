@@ -44,7 +44,7 @@ function EditSize({
       uuid: item.uuid,
       name: item.name,
       symbol: item.symbol,
-      sort_order: item.sort_order,
+      sortOrder: item.sortOrder,
     },
   });
 
@@ -113,7 +113,7 @@ function EditSize({
         />
         <FormField
           control={form.control}
-          name="sort_order"
+          name="sortOrder"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Order</FormLabel>

@@ -17,7 +17,7 @@ function DeleteBrand({
     action: Brand[] | ((pendingState: Brand[]) => Brand[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
   const refresh = useRefresh()
@@ -27,7 +27,7 @@ function DeleteBrand({
     startTransition(() => {
       addOptimisticData((prev: Brand[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

@@ -167,7 +167,7 @@ function ColorList({
                 startTransition(() => {
                   addOptimisticData((prev: Color[]) => [
                     ...prev.map((item) => {
-                      if (selectedRows.includes(item.uuid)) {
+                      if (selectedRows.includes(item.id)) {
                         const pendingItem = { ...item, isPending: !isPending };
                         return pendingItem;
                       }
@@ -176,7 +176,7 @@ function ColorList({
                   ]);
                 });
                 for (const row of selectedRows) {
-                  const data = { uuid: row };
+                  const data = { id: row };
                   const res: ActionResponse = await deleteColor(data);
                   notify(res);
                 }

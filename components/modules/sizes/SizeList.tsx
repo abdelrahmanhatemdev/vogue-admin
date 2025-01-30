@@ -134,7 +134,7 @@ function SizeList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -167,7 +167,7 @@ function SizeList({
                 startTransition(() => {
                   addOptimisticData((prev: Size[]) => [
                     ...prev.map((item) => {
-                      if (selectedRows.includes(item.uuid)) {
+                      if (selectedRows.includes(item.id)) {
                         const pendingItem = { ...item, isPending: !isPending };
                         return pendingItem;
                       }
@@ -176,7 +176,7 @@ function SizeList({
                   ]);
                 });
                 for (const row of selectedRows) {
-                  const data = { uuid: row };
+                  const data = { id: row };
                   const res: ActionResponse = await deleteSize(data);
                   notify(res);
                 }

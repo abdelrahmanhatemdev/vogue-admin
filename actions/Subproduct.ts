@@ -88,7 +88,7 @@ export async function editSubproduct(
     });
 }
 
-export async function deleteSubproduct(data: { uuid: string }) {
+export async function deleteSubproduct(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

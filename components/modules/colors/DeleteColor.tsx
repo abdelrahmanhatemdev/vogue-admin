@@ -17,7 +17,7 @@ function DeleteColor({
     action: Color[] | ((pendingState: Color[]) => Color[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
   const refresh = useRefresh()
@@ -27,7 +27,7 @@ function DeleteColor({
     startTransition(() => {
       addOptimisticData((prev: Color[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

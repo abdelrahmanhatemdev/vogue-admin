@@ -18,7 +18,7 @@ export const SizeSchema = z.object({
     .max(4, {
       message: "Symbol should not have more than 4 charachters.",
     }),
-  sort_order: z.coerce
+  sortOrder: z.coerce
     .number()
     .nonnegative("Order must be zero or positive")
     .max(100, {

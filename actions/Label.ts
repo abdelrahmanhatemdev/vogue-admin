@@ -77,7 +77,7 @@ export async function editLabel(data: Partial<Label>) {
     });
 }
 
-export async function deleteLabel(data: { uuid: string }) {
+export async function deleteLabel(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
