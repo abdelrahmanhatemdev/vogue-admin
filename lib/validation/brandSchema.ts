@@ -20,7 +20,7 @@ export const BrandSchema = z
         message:
           "Slug can only contain lowercase letters, numbers, and a hyphen between letters or numbers",
       })
-      .max(20, { message: "Slug cannot exceed 20 characters" }),
+      .max(50, { message: "Slug cannot exceed 50 characters" }),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, slug } = obj;

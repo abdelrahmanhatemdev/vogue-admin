@@ -558,7 +558,7 @@ function ProductList({
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody>
+            <TableBody className="scrollbar-hide">
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow

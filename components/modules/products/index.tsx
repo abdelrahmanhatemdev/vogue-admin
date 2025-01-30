@@ -63,8 +63,6 @@ function Products({ data }: { data: Product[] }) {
       : [];
   }, [optimisicData]);
 
-
-  
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
       {
@@ -122,7 +120,12 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item: OptimisicDataType = row.original;
           return (
-            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
+            <span
+              className={
+                "p-2 line-clamp-1 leading-4 h-6" +
+                (item.isPending ? " opacity-50" : "")
+              }
+            >
               {item.slug ? "/" + item.slug : ""}
             </span>
           );
@@ -158,7 +161,7 @@ function Products({ data }: { data: Product[] }) {
           return filterValue.length === 0 || filterValue.includes(rowValue);
         },
       },
-     
+
       {
         id: "subproduct_count",
         accessorKey: "subproduct_count",
@@ -169,7 +172,13 @@ function Products({ data }: { data: Product[] }) {
             ? Number(item.subproduct_count)
             : 0;
 
-          return <span className="flex justify-center items-center dark:bg-neutral-700 rounded-md">{subproductsCount}</span>;
+          return (
+            <div className="flex items-center justify-center">
+              <span className="text-center dark:bg-neutral-700 rounded-md p-1 w-6 ">
+                {subproductsCount}
+              </span>
+            </div>
+          );
         },
       },
       {
@@ -180,7 +189,12 @@ function Products({ data }: { data: Product[] }) {
           const item: OptimisicDataType = row.original;
 
           return (
-            <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
+            <span
+              className={cn(
+                `${item.isPending ? " opacity-50" : ""}`,
+                "dark:border-border"
+              )}
+            >
               <Switch
                 checked={item.trending}
                 onCheckedChange={async () => {

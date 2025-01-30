@@ -20,7 +20,7 @@ export const CategorySchema = z
         message:
           "Slug can only contain lowercase letters, numbers, and a hyphen between letters or numbers",
       })
-      .max(20, { message: "Slug cannot exceed 20 characters" }),
+      .max(50, { message: "Slug cannot exceed 50 characters" }),
     parent: z.string().optional(),
     label: z.string().optional(),
     additional: z.boolean({ message: "Additional field is required." }).optional(),

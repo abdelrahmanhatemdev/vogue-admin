@@ -8,8 +8,8 @@ export const ProductSchema = z.object({
     .min(1, {
       message: "Name is required",
     })
-    .max(20, {
-      message: "Name should not have more than 20 charachters.",
+    .max(100, {
+      message: "Name should not have more than 100 charachters.",
     }),
   slug: z
     .string()
@@ -18,7 +18,7 @@ export const ProductSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       message: "Slug can only contain lowercase letters, numbers, and a hyphen between letters or numbers",
     })
-    .max(20, { message: "Slug cannot exceed 20 characters" }), // Optional max length
+    .max(100, { message: "Slug cannot exceed 100 characters" }), // Optional max length
   categories: z.array(z.string()).nonempty({
     message: "Choose at least one category",
   }),
