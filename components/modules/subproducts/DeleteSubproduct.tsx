@@ -21,7 +21,7 @@ function DeleteSubproduct({
   productSlug?: string;
   redirect?: boolean;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 

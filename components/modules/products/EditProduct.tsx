@@ -46,14 +46,7 @@ function EditProduct({
   const { data: categories } = useData("categories");
   const { data: brands } = useData("brands");
 
-  const itemCatsString = item.categories as string;
 
-  const itemCatsArray = itemCatsString?.split(",");
-  const itemCatsIds = itemCatsArray.map((cat) => {
-    const catArray = cat.split(" - ");
-    const uuid = catArray[2];
-    return uuid;
-  });
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
@@ -61,8 +54,8 @@ function EditProduct({
       uuid: item.uuid,
       name: item.name,
       slug: item.slug,
-      categories: itemCatsIds,
-      brand_id: item?.brand_id as string,
+      categories: item.categories as string[],
+      brandId: item?.brandId as string,
       descriptionBrief: item.descriptionBrief,
       descriptionDetails: item.descriptionDetails,
       trending: item.trending ? true : false
@@ -74,28 +67,11 @@ function EditProduct({
 
   async function onSubmit(values: z.infer<typeof ProductSchema>) {
     setModalOpen(false);
-    
-    const newCategories = values.categories.map((catId) => {
-
-      const newCat = categories.find(
-        (cat) => cat.uuid === catId
-      );
-      if (newCat) {
-        const { name, slug, uuid } = newCat
-        return `${name} - ${slug} - ${uuid}`
-      }
-      return;
-      
-    }).join(",");
-    const { ...rest} = values
-
-    const updatedValues : Omit<z.infer<typeof ProductSchema>, "categories"> & { categories: string }
-    = {...rest, categories: newCategories}
 
     const date = new Date().toISOString();
     const optimisticData = {
       id: item.id,
-      ...updatedValues,
+      ...values,
       trending: values.trending ?? false,
       createdAt: item.createdAt,
       updatedAt: date,
@@ -197,7 +173,7 @@ function EditProduct({
         />
         <FormField
           control={form.control}
-          name="brand_id"
+          name="brandId"
           render={({ field }) => (
             <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>

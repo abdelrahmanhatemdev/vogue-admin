@@ -64,18 +64,21 @@ const SubproductImages = dynamic(
 type SubproductPageType = Subproduct & {
   product_slug: string;
   product_name: string;
-  product_id: string;
+  productId: string;
 };
 
 export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
   subproduct,
+  product
 }: {
   subproduct: SubproductPageType;
+  product: Partial<Product>
 }) {
   
   const {
+    id,
     uuid,
     sku,
     currency,
@@ -85,12 +88,12 @@ function Subproduct({
     sold,
     featured,
     inStock,
-    colors: item_colors,
-    sizes: item_sizes,
-    product_name: productName,
-    product_slug,
-    product_id,
+    colors,
+    sizes,
   } = subproduct;
+
+  const {name: productName, slug: product_slug, id: productId} = product
+
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -136,7 +139,7 @@ function Subproduct({
                     <EditSubproduct
                       item={subproduct}
                       setModalOpen={setModalOpen}
-                      productId={product_id}
+                      productId={productId as string}
                     />
                   ),
                 });
@@ -160,7 +163,7 @@ function Subproduct({
                   ),
                   children: (
                     <DeleteSubproduct
-                      itemId={uuid}
+                      itemId={id}
                       setModalOpen={setModalOpen}
                       redirect={true}
                       productSlug={productSlug}
@@ -185,12 +188,12 @@ function Subproduct({
               qty={qty}
               featured={featured}
               inStock={inStock}
-              uuid={uuid}
+              id={id}
             />
 
             <ColorsChart/>
           </div>
-          <ColorsAndSizes item_colors={item_colors as string} item_sizes={item_sizes as string}/>
+          <ColorsAndSizes itemColors={colors as string[]} itemSizes={sizes as string[]}/>
           <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid}/>
           <div className="flex flex-wrap gap-4 rounded-lg">
             <PaymentChart

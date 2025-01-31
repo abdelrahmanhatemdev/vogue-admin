@@ -132,25 +132,27 @@ function Products({ data }: { data: Product[] }) {
         },
       },
       {
-        id: "brand_name",
-        accessorKey: "brand_name",
+        id: "brandId",
+        accessorKey: "brandId",
         header: "Brand",
         cell: ({ row }) => {
-          const item = row.original as OptimisicDataType & {
-            brand_name: string;
-            brand_slug: string;
-          };
+          const item = row.original as OptimisicDataType;
+          const rowBrand =
+            brands.length > 0
+              ? brands.find((brand) => brand.uuid === item.brandId)
+              : undefined;
+          const brand = { ...rowBrand, isPending: item.isPending };
 
-          return item.brand_slug ? (
+          return brand ? (
             <Link
-              href={`/brands/${item.brand_slug}`}
+              href={`/brands/${brand.slug}`}
               className={
                 "hover:bg-neutral-200 dark:hover:bg-neutral-500 p-2 rounded-lg" +
-                (item.isPending ? " opacity-50" : "")
+                (brand.isPending ? " opacity-50" : "")
               }
               title="Go to brand page"
             >
-              {item.brand_name}
+              {brand.name}
             </Link>
           ) : (
             <></>
@@ -163,13 +165,13 @@ function Products({ data }: { data: Product[] }) {
       },
 
       {
-        id: "subproduct_count",
-        accessorKey: "subproduct_count",
+        id: "subproductCount",
+        accessorKey: "subproductCount",
         header: "Sub Products",
         cell: ({ row }) => {
-          const item: Product & { subproduct_count?: string } = row.original;
-          const subproductsCount: number = item?.subproduct_count
-            ? Number(item.subproduct_count)
+          const item: Product & { subproductCount?: string } = row.original;
+          const subproductsCount: number = item?.subproductCount
+            ? Number(item.subproductCount)
             : 0;
 
           return (
@@ -214,7 +216,7 @@ function Products({ data }: { data: Product[] }) {
                   });
 
                   const res: ActionResponse = await editProduct({
-                    uuid: item.uuid,
+                    id: item.id,
                     property: "trending",
                     value: !item.trending,
                   });
@@ -268,7 +270,7 @@ function Products({ data }: { data: Product[] }) {
                     ),
                     children: (
                       <DeleteProduct
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

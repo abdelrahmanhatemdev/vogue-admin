@@ -1,23 +1,15 @@
 import useData from "@/hooks/useData";
-import { arrayFromString } from "@/lib/format";
 import { memo } from "react";
 
 const ColorsAndSizes = ({
-  item_colors,
-  item_sizes,
+  itemColors,
+  itemSizes,
 }: {
-  item_colors: string;
-  item_sizes: string;
+  itemColors: string[];
+  itemSizes: string[];
 }) => {
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
-
-  const itemColors: string[] = Array.from(
-    new Set(arrayFromString(item_colors as string))
-  );
-  const itemSizes: string[] = Array.from(
-    new Set(arrayFromString(item_sizes as string))
-  );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[calc(50%-.5rem)_calc(50%-.5rem)] gap-4">

@@ -22,7 +22,7 @@ export const ProductSchema = z.object({
   categories: z.array(z.string()).nonempty({
     message: "Choose at least one category",
   }),
-  brand_id: z.string().min(1, {
+  brandId: z.string().min(1, {
     message: "Brand is required",
   }),
   descriptionBrief: z.string().min(1, {
@@ -38,7 +38,7 @@ export const ProductSchema = z.object({
   const exists = await isValidSlug({
     slug,
     uuid,
-    table: "products",
+    collection: "products",
   });
 
   if (exists) {

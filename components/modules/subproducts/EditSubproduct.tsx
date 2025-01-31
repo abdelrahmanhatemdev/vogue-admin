@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/select";
 import type { OptimisicDataType } from "@/components/modules/products/Product";
 import { currencies } from "@/constants/currencies";
-import { arrayFromString } from "@/lib/format";
 
 function EditSubproduct({
   item,
@@ -49,15 +48,14 @@ function EditSubproduct({
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 
-  const itemColors: string[] = Array.from(new Set(arrayFromString(item.colors as string)));
-  const itemSizes: string[] = Array.from(new Set(arrayFromString(item.sizes as string)));
+
 
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
       uuid: item.uuid,
       sku: item.sku,
-      product_id: productId,
+      productId: item.productId,
       price: item.price,
       currency: item.currency,
       discount: item.discount,
@@ -65,8 +63,8 @@ function EditSubproduct({
       sold: item.sold,
       featured: item.featured ? true : false,
       inStock: item.inStock ? true : false,
-      colors: itemColors,
-      sizes: itemSizes,
+      colors: item.colors as string[],
+      sizes: item.sizes as string[],
     },
     mode: "onChange",
   });
@@ -77,7 +75,6 @@ function EditSubproduct({
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {
-      productId: productId,
       id: item.id,
       ...values,
       createdAt: item.createdAt,

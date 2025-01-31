@@ -35,7 +35,7 @@ export const AdminAddSchema = z
     const exists = await isValidEmail({
       email,
       uuid,
-      table: "admins",
+      collection: "admins",
     });
 
     if (exists) {
@@ -81,7 +81,7 @@ export const AdminEditSchema = z
     const exists = await isValidEmail({
       email,
       uuid,
-      table: "admins",
+      collection: "admins",
     });
 
     if (exists) {

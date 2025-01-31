@@ -125,7 +125,6 @@ function ProductList({
   const [isPending, startTransition] = useTransition();
 
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const table = useReactTable({
     data,
@@ -154,7 +153,7 @@ function ProductList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -193,7 +192,7 @@ function ProductList({
               startTransition(() => {
                 addOptimisticData((prev: Product[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.uuid)) {
+                    if (selectedRows.includes(item.id)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
@@ -202,7 +201,7 @@ function ProductList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { uuid: row };
+                const data = { id: row };
                 const res: ActionResponse = await deleteProduct(data);
                 notify(res);
               }
@@ -257,7 +256,7 @@ function ProductList({
                         <>
                           <Separator orientation="vertical" />
                           {selectedBrands.length > 2 ? (
-                            <span className="bg-neutral-200 p-1 rounded-md text-xs truncate">
+                            <span className="dark:bg-neutral-700 bg-neutral-200 p-1 rounded-md text-xs truncate">
                               {selectedBrands.length} Selected
                             </span>
                           ) : (
@@ -281,32 +280,33 @@ function ProductList({
                           className="w-full flex gap-2 justify-start items-center cursor-pointer"
                           variant={"ghost"}
                           key={item.id}
-                          onClick={() =>
+                          onClick={() => {
+                            
                             setSelectedBrands((prev) => {
-                              const updatedFilter = prev.includes(item.name)
-                                ? prev.filter((b) => b !== item.name)
-                                : [...prev, item.name];
+                              const updatedFilter = prev.includes(item.uuid)
+                                ? prev.filter((b) => b !== item.uuid)
+                                : [...prev, item.uuid];
 
                               setColumnFilters((prevFilters) => {
                                 const newFilters = prevFilters.filter(
-                                  (filter) => filter.id !== "brand_name"
+                                  (filter) => filter.id !== "brandId"
                                 );
                                 return [
                                   ...newFilters,
                                   {
-                                    id: "brand_name",
+                                    id: "brandId",
                                     value: updatedFilter,
                                   },
                                 ];
                               });
                               return updatedFilter;
-                            })
-                          }
+                            });
+                          }}
                           asChild
                         >
                           <div>
                             <Checkbox
-                              checked={selectedBrands.includes(item.name)}
+                              checked={selectedBrands.includes(item.uuid)}
                             />
                             <span className="truncate">{item.name}</span>
                           </div>
@@ -317,84 +317,8 @@ function ProductList({
                 </Popover>
               </>
             )}
-            {/* {isData && categories.length > 0 && (
-              <>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"ghost"}
-                      className="border-dashed border-neutral-300 border-2"
-                    >
-                      <div className="flex items-center justify-center gap-1 font-bold">
-                        <PiPlusCircle size={30} />
-                        <span>categories</span>
-                      </div>
-                      {selectedCategories.length > 0 && (
-                        <>
-                          <Separator orientation="vertical" />
-                          {selectedCategories.length > 2 ? (
-                            <span className="bg-neutral-200 p-1 rounded-md text-xs truncate">
-                              {selectedCategories.length} Selected
-                            </span>
-                          ) : (
-                            selectedCategories.map((uuid) => (
-                              <span
-                                key={uuid}
-                                className="bg-secondary text-secondary-foreground p-1 rounded-md text-xs truncate"
-                              >
-                                {categories.find((c) => c.uuid === uuid)?.name}
-                              </span>
-                            ))
-                          )}
-                        </>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-40 p-2">
-                    <div className="flex flex-col gap-2 ">
-                      {categories.map(({ name, uuid }) => (
-                        <Button
-                          className="w-full flex gap-2 justify-start items-center cursor-pointer"
-                          variant={"ghost"}
-                          key={uuid}
-                          onClick={() =>
-                            setSelectedCategories((prev) => {
-                              const updatedFilter = prev.includes(uuid)
-                                ? prev.filter((c) => c !== uuid)
-                                : [...prev, uuid];
 
-                              setColumnFilters((prevFilters) => {
-                                const newFilters = prevFilters.filter(
-                                  (filter) => filter.id !== "categories"
-                                );
-                                return [
-                                  ...newFilters,
-                                  {
-                                    id: "categories",
-                                    value: updatedFilter,
-                                  },
-                                ];
-                              });
-                              return updatedFilter;
-                            })
-                          }
-                          asChild
-                        >
-                          <div>
-                            <Checkbox
-                              checked={selectedCategories.includes(uuid)}
-                            />
-                            <span className="truncate">{name}</span>
-                          </div>
-                        </Button>
-                      ))}
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </>
-            )} */}
-
-            {(selectedBrands.length > 0 || selectedCategories.length > 0) && (
+            {selectedBrands.length > 0 && (
               <Button
                 variant={"ghost"}
                 onClick={() => {
@@ -404,20 +328,7 @@ function ProductList({
 
                       setColumnFilters((prevFilters) => {
                         const newFilters = prevFilters.filter(
-                          (filter) => filter.id !== "brand_name"
-                        );
-                        return [...newFilters];
-                      });
-                      return updatedFilter;
-                    });
-                  }
-                  if (selectedCategories.length > 0) {
-                    setSelectedCategories(() => {
-                      const updatedFilter: string[] = [];
-
-                      setColumnFilters((prevFilters) => {
-                        const newFilters = prevFilters.filter(
-                          (filter) => filter.id !== "categories"
+                          (filter) => filter.id !== "brandId"
                         );
                         return [...newFilters];
                       });

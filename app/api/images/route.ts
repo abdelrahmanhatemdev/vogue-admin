@@ -82,7 +82,7 @@ export async function POST(req: Request) {
 
         await fs.writeFile(filePath, fileBuffer);
         const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-          `INSERT INTO ${tableName} (subproduct_id, src, sortOrder) VALUES (?, ?, ?)`,
+          `INSERT INTO ${tableName} (subproductId, src, sortOrder) VALUES (?, ?, ?)`,
           [productId, newwFileName, 0]
         );
 

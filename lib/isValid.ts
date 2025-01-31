@@ -4,15 +4,15 @@ const apiURL = process.env.NEXT_PUBLIC_APP_API;
 
 export const isValidSlug = async ({
   slug,
-  table,
+  collection,
   uuid,
 }: {
   slug: string;
-  table: string;
+  collection: string;
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${table}`);
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
       const {
@@ -37,15 +37,15 @@ export const isValidSlug = async ({
 
 export const isValidSku = async ({
   sku,
-  table,
+  collection,
   uuid,
 }: {
   sku: string;
-  table: string;
+  collection: string;
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${table}`);
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
       const {
@@ -72,15 +72,15 @@ export const isValidSku = async ({
 
 export const isValidEmail = async ({
   email,
-  table,
+  collection,
   uuid,
 }: {
   email: string;
-  table: string;
+  collection: string;
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${table}`);
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
       const {
@@ -105,15 +105,15 @@ export const isValidEmail = async ({
 
 export const isValidCurrencyCode = async ({
   code,
-  table,
+  collection,
   uuid,
 }: {
   code: string;
-  table: string;
+  collection: string;
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${table}`);
+    const res = await api(`${apiURL}/${collection}`);
 
     if (res) {
       const {

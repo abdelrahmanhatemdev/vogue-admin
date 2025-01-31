@@ -49,6 +49,7 @@ function Product({
   product: Partial<Product>;
   subproducts: Subproduct[];
 }) {
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -236,7 +237,7 @@ function Product({
                   });
 
                   const res: ActionResponse = await editSubproduct({
-                    uuid: item.uuid,
+                    id: item.id,
                     property: "featured",
                     value: !item.featured,
                   });
@@ -276,7 +277,7 @@ function Product({
                   });
 
                   const res: ActionResponse = await editSubproduct({
-                    uuid: item.uuid,
+                    id: item.id,
                     property: "inStock",
                     value: !item.inStock,
                   });
@@ -310,7 +311,7 @@ function Product({
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
-                        productId={product.id as string}
+                        productId={product.uuid as string}
                       />
                     ),
                   });
@@ -331,7 +332,7 @@ function Product({
                     ),
                     children: (
                       <DeleteSubproduct
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
@@ -346,11 +347,12 @@ function Product({
     ],
     [setModalOpen, setModal, addOptimisticData, sizes, colors]
   );
+  
 
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb
-        page={product.slug as string}
+        page={product.name}
         between={[{ link: "/products", title: "Products" }]}
       />
       <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">

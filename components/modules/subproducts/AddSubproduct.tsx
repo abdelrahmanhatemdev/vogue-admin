@@ -45,6 +45,8 @@ function AddSubproduct({
   ) => void;
   productId: string;
 }) {
+  
+  
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");
 
@@ -52,7 +54,7 @@ function AddSubproduct({
     resolver: zodResolver(SubproductSchema),
     defaultValues: {
       uuid: uuidv4(),
-      product_id: productId,
+      productId: productId,
       sku: "",
       price: 0,
       currency: "USD",

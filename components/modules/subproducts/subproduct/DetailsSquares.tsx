@@ -14,7 +14,7 @@ const DetailsSquares = ({
   qty,
   featured,
   inStock,
-  uuid,
+  id,
 }: {
   price: number;
   discount: number;
@@ -23,7 +23,7 @@ const DetailsSquares = ({
   qty: number;
   featured: boolean;
   inStock: boolean;
-  uuid: string;
+  id: string;
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-[calc(50%-.5rem)_calc(50%-.5rem)] gap-4">
@@ -87,7 +87,7 @@ const DetailsSquares = ({
                 checked={featured}
                 onCheckedChange={async () => {
                   const res: ActionResponse = await editSubproduct({
-                    uuid: uuid,
+                    id: id,
                     property: "featured",
                     value: !featured,
                   });
@@ -109,7 +109,7 @@ const DetailsSquares = ({
                 checked={inStock}
                 onCheckedChange={async () => {
                   const res: ActionResponse = await editSubproduct({
-                    uuid: uuid,
+                    id: id,
                     property: "inStock",
                     value: !inStock,
                   });

@@ -44,9 +44,18 @@ export async function POST(request: Request) {
 
     const q = query(collectionRef, where("slug", "==", slug));
 
-    const existedItems = await getDocs(q);
+    const snapShot = (await getDocs(q)).docs;
+    const existedItems =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Brand[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
-    if (!existedItems.empty) {
+    if (existedItems.length > 0) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }

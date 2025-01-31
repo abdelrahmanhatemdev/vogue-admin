@@ -7,7 +7,7 @@ const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 export const SubproductSchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
-    product_id: z.string().uuid({ message: "Invalid UUID format." }),
+    productId: z.string().uuid({ message: "Invalid UUID format." }),
     sku: z
       .string()
       .min(1, {
@@ -49,7 +49,7 @@ export const SubproductSchema = z
     const exists = await isValidSku({
       sku,
       uuid,
-      table: "subproducts",
+      collection: "subproducts",
     });
 
     if (exists) {

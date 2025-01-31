@@ -87,7 +87,7 @@ function AddSubproductPhotos({
           id: src,
           uuid: uuidv4(),
           src,
-          subproduct_id: subproductId,
+          subproductId: subproductId,
           sortOrder: 0,
           createdAt: date,
           updatedAt: date,

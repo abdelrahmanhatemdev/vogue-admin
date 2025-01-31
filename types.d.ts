@@ -78,7 +78,7 @@ interface Product {
   uuid: string;
   name: string;
   slug: string;
-  brand_id: Brand | string;
+  brandId: Brand | string;
   categories: Category[] | string | string[];
   descriptionBrief: string;
   descriptionDetails: string;
@@ -93,7 +93,7 @@ interface Product {
 interface Subproduct {
   id: string;
   uuid: string;
-  product_id: string;
+  productId: string;
   sku: string;
   currency: string;
   price: number;
@@ -119,7 +119,7 @@ interface ProductImage {
   id: string;
   uuid: string;
   src: string;
-  subproduct_id: string;
+  subproductId: string;
   sortOrder: number;
   createdAt: string;
   updatedAt: string;

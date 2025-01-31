@@ -1,18 +1,33 @@
-import { NextResponse } from "next/server";
-import db from "@/lib/db";
-import { FieldPacket, ResultSetHeader } from "mysql2";
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
-import { ZodError } from "zod";
+import { NextResponse } from "next/server";
 
-export const tableName = "subproducts";
+import { db } from "@/database/firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+
+export const collectionName = "subproducts";
+export const collectionRef = collection(db, collectionName);
 
 export async function GET() {
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL`
-    );
+    const snapShot = (await getDocs(collectionRef)).docs;
 
-    const data = rows as Subproduct[];
+    const data =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Subproduct[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -25,7 +40,7 @@ export async function POST(request: Request) {
   try {
     const {
       uuid,
-      product_id,
+      productId,
       sku,
       currency,
       price,
@@ -40,7 +55,7 @@ export async function POST(request: Request) {
 
     await SubproductSchema.parseAsync({
       uuid,
-      product_id,
+      productId,
       sku,
       currency,
       price,
@@ -53,12 +68,17 @@ export async function POST(request: Request) {
       sizes,
     });
 
-    const [skuCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND sku = ?`,
-      [sku]
-    );
-
-    const existedItems = skuCheck as Product[];
+    const q = query(collectionRef, where("sku", "==", sku));
+    const snapShot = (await getDocs(q)).docs;
+    const existedItems =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Subproduct[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     if (existedItems.length > 0) {
       return NextResponse.json(
@@ -67,98 +87,86 @@ export async function POST(request: Request) {
       );
     }
 
-    const nonEmptyColors = colors.filter((cat: string) => cat.trim() !== "");
+    const nonEmptyColors = colors.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
     if (nonEmptyColors.length === 0) {
-      throw new Error("Choose at least one color");
+      throw new Error("Choose at least one Color");
     }
-    const nonEmptySizes = sizes.filter((cat: string) => cat.trim() !== "");
+
+    const nonEmptySizes = sizes.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
     if (nonEmptySizes.length === 0) {
-      throw new Error("Choose at least one size");
+      throw new Error("Choose at least one Size");
     }
 
-    await db.execute(
-      `INSERT INTO ${tableName} (
-        uuid,
-        product_id,
-        sku,
-        currency,
-        price,
-        discount,
-        qty,
-        sold,
-        featured,
-        inStock
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        uuid,
-        product_id,
-        sku,
-        currency,
-        price,
-        discount,
-        qty,
-        sold,
-        featured,
-        inStock,
-      ]
-    );
+    const date = new Date().toISOString();
 
-    const colorsArray = nonEmptyColors.map((c: string) => [uuid, c]);
-    const colorsPlaceholders = colorsArray.map(() => "(?, ?)").join(", ");
-    const colorsFlattenedValues = colorsArray.flat();
+    const data = {
+      uuid,
+      productId,
+      sku,
+      currency,
+      price,
+      discount,
+      qty,
+      sold,
+      featured,
+      inStock,
+      colors,
+      sizes,
+      createdAt: date,
+      updatedAt: date,
+    };
 
-    await db.execute(
-      `INSERT INTO subproduct_colors (subproduct_id, color_id) VALUES ${colorsPlaceholders}`,
-      colorsFlattenedValues
-    );
+    const docRef = await addDoc(collectionRef, data);
 
-    const sizesArray = nonEmptySizes.map((c: string) => [uuid, c]);
-    const sizesPlaceholders = sizesArray.map(() => "(?, ?)").join(", ");
-    const sizesFlattenedValues = sizesArray.flat();
-
-    await db.execute(
-      `INSERT INTO subproduct_sizes (subproduct_id, size_id) VALUES ${sizesPlaceholders}`,
-      sizesFlattenedValues
-    );
-
-    return NextResponse.json({ message: "Product added" }, { status: 200 });
-  } catch (error) {
-    if (error instanceof ZodError) {
+    if (docRef.id) {
       return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 500 }
+        { message: "Subproduct added" },
+        { status: 200 }
       );
     }
 
+    return new Error("Something Wrong");
+  } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
 export async function PUT(request: Request) {
+
   const reqData = await request.json();
 
-  if (reqData?.property) {
-    const { property, uuid, value } = reqData;
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET 
-      ${property} = ?
-      WHERE 
-      uuid = ?`,
-      [value, uuid]
-    );
+  console.log("reqData", reqData);
+  
 
-    if (result.affectedRows) {
-      return NextResponse.json({ message: "Product updated" }, { status: 200 });
+  if (reqData?.property) {
+    const { property, id, value } = reqData;
+    const docRef = doc(db, collectionName, id);
+
+    if (docRef?.id) {
+      await updateDoc(docRef, {
+        [property]: value,
+        updatedAt: new Date().toISOString(),
+      });
+
+      return NextResponse.json(
+        { message: "Subproduct updated" },
+        { status: 200 }
+      );
     }
-    return NextResponse.json({ message: "Something wrong" }, { status: 500 });
   }
+
   try {
     const {
+      id,
       uuid,
-      product_id,
+      productId,
       sku,
       currency,
       price,
@@ -173,7 +181,7 @@ export async function PUT(request: Request) {
 
     await SubproductSchema.parseAsync({
       uuid,
-      product_id,
+      productId,
       sku,
       currency,
       price,
@@ -184,15 +192,16 @@ export async function PUT(request: Request) {
       inStock,
       colors,
       sizes,
-      // images,
     });
 
-    const [skuCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND sku = ? AND uuid != ?`,
-      [sku, uuid]
+    const list = (await getDocs(collectionRef)).docs.filter(
+      (doc) => doc.id !== id && doc.data().sku === sku
     );
 
-    const existedItems = skuCheck as Product[];
+    const existedItems =
+      list.length > 0
+        ? list.filter((doc) => doc.id === id && doc.data().sku !== sku)
+        : [];
 
     if (existedItems.length > 0) {
       return NextResponse.json(
@@ -200,66 +209,45 @@ export async function PUT(request: Request) {
         { status: 400 }
       );
     }
-
-    const nonEmptyColors = colors.filter((cat: string) => cat.trim() !== "");
+    const nonEmptyColors = colors.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
     if (nonEmptyColors.length === 0) {
-      throw new Error("Choose at least one color");
+      throw new Error("Choose at least one Color");
     }
-    const nonEmptySizes = sizes.filter((cat: string) => cat.trim() !== "");
+
+    const nonEmptySizes = sizes.filter(
+      (cat: string) => cat.trim() !== ""
+    );
 
     if (nonEmptySizes.length === 0) {
-      throw new Error("Choose at least one size");
+      throw new Error("Choose at least one Size");
     }
 
-    await db.execute(`DELETE FROM subproduct_colors WHERE subproduct_id = ?`, [
-      uuid,
-    ]);
+    const docRef = doc(db, collectionName, id);
 
-    const colorArray = nonEmptyColors.map((c: string) => [uuid, c]);
-    const colorPlaceholders = colorArray.map(() => "(?, ?)").join(", ");
-    const colorFlattenedValues = colorArray.flat();
-    await db.execute(
-      `INSERT INTO subproduct_colors (subproduct_id, color_id) VALUES ${colorPlaceholders}`,
-      colorFlattenedValues
-    );
-
-    await db.execute(`DELETE FROM subproduct_sizes WHERE subproduct_id = ?`, [
-      uuid,
-    ]);
-
-    const sizeArray = nonEmptySizes.map((s: string) => [uuid, s]);
-    const sizePlaceholders = sizeArray.map(() => "(?, ?)").join(", ");
-    const sizeFlattenedValues = sizeArray.flat();
-    await db.execute(
-      `INSERT INTO subproduct_sizes (subproduct_id, size_id) VALUES ${sizePlaceholders}`,
-      sizeFlattenedValues
-    );
-
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET 
-        sku = ?, 
-        currency = ?, 
-        price = ?, 
-        discount = ?, 
-        qty = ?, 
-        sold = ?, 
-        featured = ?, 
-        inStock = ?
-        WHERE 
-        uuid = ?`,
-      [sku, currency, price, discount, qty, sold, featured, inStock, uuid]
-    );
-    if (result.affectedRows) {
-      return NextResponse.json({ message: "Product updated" }, { status: 200 });
-    }
-  } catch (error) {
-    if (error instanceof ZodError) {
+    if (docRef?.id) {
+      await updateDoc(docRef, {
+        sku,
+        currency,
+        price,
+        discount,
+        qty,
+        sold,
+        featured,
+        inStock,
+        colors,
+        sizes,
+        updatedAt: new Date().toISOString(),
+      });
       return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 500 }
+        { message: "Subproduct Updated" },
+        { status: 200 }
       );
     }
+    return new Error("Something Wrong");
+  } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -267,18 +255,21 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { uuid } = await request.json();
+    const { id } = await request.json();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
-      [uuid]
+    const docRef = doc(db, collectionName, id);
+
+    const data = { deletedAt: new Date().toISOString() };
+
+    const result = await updateDoc(docRef, data);
+
+    return NextResponse.json(
+      { message: "Subproduct Deleted", result },
+      { status: 200 }
     );
-
-    if (result.affectedRows) {
-      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
-    }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+

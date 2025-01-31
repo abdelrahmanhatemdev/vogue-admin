@@ -54,11 +54,9 @@ import { notify } from "@/lib/utils";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Subproduct>>(
   () => import("@/components/custom/ToggleColumnView"),
-  { loading: Loading }
 );
 const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
-  { loading: Loading }
 );
 const AddSubproduct = dynamic(
   () => import("@/components/modules/subproducts/AddSubproduct"),
@@ -141,7 +139,7 @@ function SubproductList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -174,7 +172,7 @@ function SubproductList({
               startTransition(() => {
                 addOptimisticData((prev: Subproduct[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.uuid)) {
+                    if (selectedRows.includes(item.id)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
@@ -183,7 +181,7 @@ function SubproductList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { uuid: row };
+                const data = { id: row };
                 const res: ActionResponse = await deleteSubproduct(data);
                 notify(res);
               }

@@ -28,7 +28,21 @@ export const getProducts = async () => {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}`, {
+    const res = await fetch(`${apiURL}/${slug}/product`, {
+      next: { tags: [tag] },
+      cache: "force-cache",
+    });
+
+    const { data } = await res.json();
+    return data;
+  } catch (error) {
+    return console.log(error);
+  }
+}
+
+export async function getProducSubproducts(slug: string) {
+  try {
+    const res = await fetch(`${apiURL}/${slug}/subproducts`, {
       next: { tags: [tag] },
       cache: "force-cache",
     });

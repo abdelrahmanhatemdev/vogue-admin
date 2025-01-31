@@ -27,7 +27,7 @@ export const BrandSchema = z
     const exists = await isValidSlug({
       slug,
       uuid,
-      table: "brands",
+      collection: "brands",
     });
 
     if (exists) {

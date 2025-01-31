@@ -16,7 +16,7 @@ function DeleteProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +25,7 @@ function DeleteProduct({
     startTransition(() => {
       addOptimisticData((prev: Product[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

@@ -139,7 +139,7 @@ function CategoryList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -172,7 +172,7 @@ function CategoryList({
               startTransition(() => {
                 addOptimisticData((prev: Category[]) => [
                   ...prev.map((item) => {
-                    if (selectedRows.includes(item.uuid)) {
+                    if (selectedRows.includes(item.id)) {
                       const pendingItem = { ...item, isPending: !isPending };
                       return pendingItem;
                     }
@@ -181,7 +181,7 @@ function CategoryList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { uuid: row };
+                const data = { id: row };
                 const res: ActionResponse = await deleteCategory(data);
                 notify(res);
               }

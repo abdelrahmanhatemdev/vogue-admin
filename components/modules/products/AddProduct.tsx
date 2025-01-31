@@ -53,7 +53,7 @@ function AddProduct({
       name: "",
       slug: "",
       categories: [],
-      brand_id: "",
+      brandId: "",
       descriptionBrief: "",
       descriptionDetails: "",
       trending: false
@@ -163,7 +163,7 @@ function AddProduct({
         />
         <FormField
           control={form.control}
-          name="brand_id"
+          name="brandId"
           render={({ field }) => (
             <FormItem className="w-full lg:w-[calc(50%-.75rem)]">
               <FormLabel>Brand</FormLabel>

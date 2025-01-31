@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
-import { getSubproducts } from "@/actions/Subproduct";
-import { collectionRef } from "@/app/api/subproducts/route";
+import { getProducts } from "@/actions/Product";
+import { collectionRef } from "@/app/api/products/route";
+import { collectionRef as subproductCollection } from "@/app/api/subproducts/route";
 import { getDocs, query, where } from "firebase/firestore";
 
 export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ sku: string }> }
+  props: { params: Promise<{ slug: string }> }
 ) {
   try {
     const params = await props.params;
 
-    const { sku } = await params;
+    const { slug } = await params;
 
-    const q = query(collectionRef, where("sku", "==", sku));
+    const q = query(collectionRef, where("slug", "==", slug));
     const snapShot = (await getDocs(q)).docs;
 
     const items =
@@ -23,15 +24,15 @@ export async function GET(
             snapShot.map((doc) => ({
               id: doc.id,
               ...doc.data(),
-            })) as Subproduct[]
+            })) as Product[]
           ).filter((doc) => !doc.deletedAt)
         : [];
 
     if (items.length > 0) {
-      const Subproduct = items[0];
+      const product = items[0];
 
-      if (Subproduct.uuid) {
-        const data = Subproduct;
+      if (product.uuid) {
+        const data = product;
 
         return NextResponse.json({ data }, { status: 200 });
       }
@@ -45,7 +46,7 @@ export async function GET(
 }
 
 export async function generateStaticParams() {
-  const list: Subproduct[] = await getSubproducts();
+  const list: Product[] = await getProducts();
 
-  return list.map(({ sku }: { sku: string }) => ({ sku }));
+  return list.map(({ slug }: { slug: string }) => ({ slug }));
 }

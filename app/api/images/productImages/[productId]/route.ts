@@ -15,7 +15,7 @@ export async function GET(
 
   try {
     const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND subproduct_id = ? Order By sortOrder ASC, updatedAt DESC`,
+      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND subproductId = ? Order By sortOrder ASC, updatedAt DESC`,
       [productId]
     );
 

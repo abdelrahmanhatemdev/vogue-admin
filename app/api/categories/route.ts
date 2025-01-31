@@ -1,17 +1,33 @@
-import { NextResponse } from "next/server";
-import db from "@/lib/db";
-import { FieldPacket, ResultSetHeader } from "mysql2";
 import { CategorySchema } from "@/lib/validation/categorySchema";
+import { NextResponse } from "next/server";
 
-export const tableName = "categories";
+import { db } from "@/database/firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+
+export const collectionName = "categories";
+export const collectionRef = collection(db, collectionName);
 
 export async function GET() {
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
-    );
+    const snapShot = (await getDocs(collectionRef)).docs;
 
-    const data = rows as Category[];
+    const data =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Category[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -22,17 +38,30 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name, slug, additional, parent, label  } = await request.json();
-    
-    // Ensure Server Validation
-    CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label});
+    const { uuid, name, slug, additional, parent, label } =
+      await request.json();
 
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ?`,
-      [slug]
-    );
+    await CategorySchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      additional,
+      parent,
+      label,
+    });
 
-    const existedItems = slugCheck as Category[];
+    const q = query(collectionRef, where("slug", "==", slug));
+
+    const snapShot = (await getDocs(q)).docs;
+    const existedItems =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Category[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     if (existedItems.length > 0) {
       return NextResponse.json(
@@ -40,17 +69,23 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    const date = new Date().toISOString();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, name, slug, additional, parent, label ) VALUES (?, ?, ?, ?, ?, ?)`,
-      [uuid, name, slug, additional, parent, label ]
-    );
+    const data = {
+      uuid,
+      name,
+      slug,
+      additional,
+      parent,
+      label,
+      createdAt: date,
+      updatedAt: date,
+    };
 
-    if (result.insertId) {
-      return NextResponse.json(
-        { message: "Category added", result },
-        { status: 200 }
-      );
+    const docRef = await addDoc(collectionRef, data);
+
+    if (docRef.id) {
+      return NextResponse.json({ message: "Category added" }, { status: 200 });
     }
 
     return new Error("Something Wrong");
@@ -61,37 +96,27 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const reqData = await request.json();
-  if (reqData?.property) {
-    const { property, uuid, value } = reqData;
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET 
-      ${property} = ?
-      WHERE 
-      uuid = ?`,
-      [value, uuid]
-    );
-
-    if (result.affectedRows) {
-      return NextResponse.json({ message: "Product updated" }, { status: 200 });
-    }
-    return NextResponse.json({ message: "Something wrong" }, { status: 500 });
-  }
-
   try {
-    const { uuid, name, slug, additional, parent, label } = reqData;
-   
+    const { id, uuid, name, slug, additional, parent, label } =
+      await request.json();
 
-    // Ensure Server Validation
-    CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label });
+    await CategorySchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      additional,
+      parent,
+      label,
+    });
 
-    const [slugCheck] = await db.execute(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL AND slug = ? AND uuid != ?`,
-      [slug, uuid]
+    const list = (await getDocs(collectionRef)).docs.filter(
+      (doc) => doc.id !== id && doc.data().slug === slug
     );
 
-    const existedItems = slugCheck as Category[];
-
+    const existedItems =
+      list.length > 0
+        ? list.filter((doc) => doc.id === id && doc.data().slug !== slug)
+        : [];
     if (existedItems.length > 0) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
@@ -99,18 +124,22 @@ export async function PUT(request: Request) {
       );
     }
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET name = ? ,slug = ?, additional = ?, parent = ?, label = ? WHERE uuid = ?`,
-      [name, slug, additional, parent, label , uuid]
-    );
+    const docRef = doc(db, collectionName, id);
 
-    if (result.affectedRows) {
+    if (docRef?.id) {
+      await updateDoc(docRef, {
+        name,
+        slug,
+        additional,
+        parent,
+        label,
+        updatedAt: new Date().toISOString(),
+      });
       return NextResponse.json(
-        { message: "Category updated", result },
+        { message: "Category Updated" },
         { status: 200 }
       );
     }
-
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
@@ -120,20 +149,18 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { uuid } = await request.json();
+    const { id } = await request.json();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
-      [uuid]
+    const docRef = doc(db, collectionName, id);
+
+    const data = { deletedAt: new Date().toISOString() };
+
+    const result = await updateDoc(docRef, data);
+
+    return NextResponse.json(
+      { message: "Category Deleted", result },
+      { status: 200 }
     );
-
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Category Deleted", result },
-        { status: 200 }
-      );
-    }
-    return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

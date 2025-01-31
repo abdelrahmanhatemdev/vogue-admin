@@ -30,7 +30,7 @@ export const CategorySchema = z
     const exists = await isValidSlug({
       slug,
       uuid,
-      table: "categories",
+      collection: "categories",
     });
 
     if (exists) {

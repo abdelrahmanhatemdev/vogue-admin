@@ -236,7 +236,7 @@ function Categories({ data }: { data: Category[] }) {
                     ),
                     children: (
                       <DeleteCategory
-                        itemId={item.uuid}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
