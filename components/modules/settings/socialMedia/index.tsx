@@ -77,9 +77,9 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
   }, [optimisicData]);
 
   const followersArray = sortedOptimisicData.map((item) => item.followers);
-  const totalFollowers = followersArray.reduce(
+  const totalFollowers = followersArray.length > 0 ? followersArray.reduce(
     (accumulator, currentValue) => accumulator + currentValue
-  );
+  ) : 0;
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
@@ -166,7 +166,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                           ),
                           children: (
                             <DeleteSocialMedia
-                              itemId={item.uuid}
+                              itemId={item.id}
                               setModalOpen={setModalOpen}
                               addOptimisticData={addOptimisticData}
                             />
@@ -193,7 +193,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
 
       <div className="border-t border-neutral-700 pt-4 flex gap-2 items-center">
         <h5 className="text-neutral-300">Total Followers:</h5>
-        <span className="text-xl font-semibold">{totalFollowers}k</span>
+        <span className="text-xl font-semibold">{totalFollowers ? `${totalFollowers}k` : 0 }</span>
       </div>
 
       <Modal

@@ -16,7 +16,7 @@ function DeleteGlobalNotification({
     action: GlobalNotification[] | ((pendingState: GlobalNotification[]) => GlobalNotification[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +25,7 @@ function DeleteGlobalNotification({
     startTransition(() => {
       addOptimisticData((prev: GlobalNotification[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

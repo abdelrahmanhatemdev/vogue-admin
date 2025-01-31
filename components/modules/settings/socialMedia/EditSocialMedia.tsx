@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
+import { SocialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
@@ -56,18 +56,19 @@ const EditSocialMedia = ({
     const date = new Date().toISOString();
     const data = {
       ...values,
+      id: item.id,
       createdAt: date,
       updatedAt: date,
     };
 
     const optimisticObj: OptimisicDataType = {
       ...data,
-      id: `${data.uuid}`,
+      id: `${data.id}`,
       isPending: !isPending,
     };
 
     startTransition(() => {
-      addOptimisticData((prev: SocialMedia[]) => [...prev.filter(i => i.uuid !== item.uuid), optimisticObj]);
+      addOptimisticData((prev: SocialMedia[]) => [...prev.filter(i => i.id !== item.id), optimisticObj]);
     });
     const res: ActionResponse = await editSocialMedia(data);
     notify(res);

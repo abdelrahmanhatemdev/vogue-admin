@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
+import { SocialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";

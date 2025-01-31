@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { GlobalNotificationSchema } from "@/lib/validation/settings/GlobalNotificationSchema";
+import { GlobalNotificationSchema } from "@/lib/validation/settings/globalNotificationSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/globalNotifications";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
@@ -48,6 +48,7 @@ const EditGlobalNotification = ({
     const date = new Date().toISOString();
     const data = {
       ...values,
+      id: item.id,
       createdAt: date,
       updatedAt: date,
     };

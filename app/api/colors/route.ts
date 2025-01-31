@@ -7,9 +7,7 @@ import {
   collection,
   doc,
   getDocs,
-  query,
   updateDoc,
-  where,
 } from "firebase/firestore";
 
 export const collectionName = "colors";

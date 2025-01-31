@@ -16,7 +16,7 @@ function DeleteSocialMedia({
     action: SocialMedia[] | ((pendingState: SocialMedia[]) => SocialMedia[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +25,7 @@ function DeleteSocialMedia({
     startTransition(() => {
       addOptimisticData((prev: SocialMedia[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

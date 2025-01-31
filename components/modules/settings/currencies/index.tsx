@@ -146,7 +146,7 @@ function Currency({ data }: { data: Currency[] }) {
                           ),
                           children: (
                             <DeleteCurrency
-                              itemId={item.uuid}
+                              itemId={item.id}
                               setModalOpen={setModalOpen}
                               addOptimisticData={addOptimisticData}
                             />

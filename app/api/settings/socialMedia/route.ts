@@ -1,17 +1,31 @@
+import { SocialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
-import { FieldPacket, ResultSetHeader } from "mysql2";
-import { SocialMediaSchema } from "@/lib/validation/settings/SocialMediaSchema";
 
-export const tableName = "settings_social_media";
+import { db } from "@/database/firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+
+export const collectionName = "socialMedia";
+export const collectionRef = collection(db, collectionName);
 
 export async function GET() {
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM ${tableName} WHERE deletedAt IS NULL ORDER BY updatedAt DESC`
-    );
+    const snapShot = (await getDocs(collectionRef)).docs;
 
-    const data = rows as SocialMedia[];
+    const data =
+      snapShot.length > 0
+        ? (
+            snapShot.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as SocialMedia[]
+          ).filter((doc) => !doc.deletedAt)
+        : [];
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -22,21 +36,23 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, link, platform, followers } = await request.json();
+    const { uuid, platform, link, followers} = await request.json();
 
-    // Ensure Server Validation
-    SocialMediaSchema.parseAsync({ uuid, link, platform, followers });
+    await SocialMediaSchema.parseAsync({ uuid, platform, link, followers});
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `INSERT INTO ${tableName} (uuid, link, platform, followers) VALUES (?, ?, ?, ?)`,
-      [uuid, link, platform, followers]
-    );
+    const date = new Date().toISOString();
 
-    if (result.insertId) {
-      return NextResponse.json(
-        { message: "Social Media added", result },
-        { status: 200 }
-      );
+    const data = {
+      uuid,
+      platform, link, followers,
+      createdAt: date,
+      updatedAt: date,
+    };
+
+    const docRef = await addDoc(collectionRef, data);
+
+    if (docRef.id) {
+      return NextResponse.json({ message: "SocialMedia added" }, { status: 200 });
     }
 
     return new Error("Something Wrong");
@@ -48,23 +64,19 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { uuid, link, platform, followers  } = await request.json();
+    const { id, uuid, platform, link, followers} = await request.json();
 
-    // Ensure Server Validation
-    SocialMediaSchema.parseAsync({ uuid, link, platform, followers  });
-      
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET link = ?, platform = ?, followers = ? WHERE uuid = ?`,
-      [ link, platform, followers , uuid]
-    );
+    await SocialMediaSchema.parseAsync({ uuid, platform, link, followers});
 
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Social Media updated", result },
-        { status: 200 }
-      );
+    const docRef = doc(db, collectionName, id);
+
+    if (docRef?.id) {
+      await updateDoc(docRef, {
+        platform, link, followers,
+        updatedAt: new Date().toISOString(),
+      });
+      return NextResponse.json({ message: "SocialMedia Updated" }, { status: 200 });
     }
-
     return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
@@ -74,20 +86,18 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { uuid } = await request.json();
+    const { id } = await request.json();
 
-    const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE uuid = ?`,
-      [uuid]
+    const docRef = doc(db, collectionName, id);
+
+    const data = { deletedAt: new Date().toISOString() };
+
+    const result = await updateDoc(docRef, data);
+
+    return NextResponse.json(
+      { message: "SocialMedia Deleted", result },
+      { status: 200 }
     );
-
-    if (result.affectedRows) {
-      return NextResponse.json(
-        { message: "Social Media Deleted", result },
-        { status: 200 }
-      );
-    }
-    return new Error("Something Wrong");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CurrencySchema } from "@/lib/validation/settings/CurrencySchema";
+import { CurrencySchema } from "@/lib/validation/settings/currencySchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/currencies";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";

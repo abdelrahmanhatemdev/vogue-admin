@@ -166,7 +166,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
                           ),
                           children: (
                             <DeleteGlobalNotification
-                              itemId={item.uuid}
+                              itemId={item.id}
                               setModalOpen={setModalOpen}
                               addOptimisticData={addOptimisticData}
                             />

@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SettingSchema } from "@/lib/validation/settings/SettingSchema";
+import { SettingSchema } from "@/lib/validation/settings/settingSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/settings";
 import { memo, useTransition } from "react";
@@ -44,6 +44,7 @@ const EditSetting = ({
     const date = new Date().toISOString();
     const data = {
       ...values,
+      id: item.id,
       createdAt: date,
       updatedAt: date,
     };

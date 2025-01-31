@@ -14,7 +14,7 @@ export const CurrencySchema = z
     const exists = await isValidCurrencyCode({
       code,
       uuid,
-      table: "settings/currencies",
+      collection: "settings/currencies",
     });
 
     if (exists) {
