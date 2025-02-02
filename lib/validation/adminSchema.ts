@@ -4,6 +4,7 @@ import { isValidEmail } from "@/lib/isValid";
 export const AdminAddSchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
+    uid: z.string().optional(),
     name: z
       .string()
       .min(1, {
@@ -51,6 +52,7 @@ export const AdminAddSchema = z
 export const AdminEditSchema = z
   .object({
     uuid: z.string().uuid(),
+    uid: z.string().optional(),
     name: z
       .string()
       .min(1, {

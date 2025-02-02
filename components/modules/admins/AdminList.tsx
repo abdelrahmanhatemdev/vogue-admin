@@ -142,7 +142,7 @@ function AdminList({
       const email = row.getValue("email")?.toString().toLowerCase();
       return name?.includes(searchTerm) || email?.includes(searchTerm) || false;
     },
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
@@ -184,8 +184,9 @@ function AdminList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { uuid: row };
-                const res: ActionResponse = await deleteAdmin(data);
+                const user = data.find(doc => doc.id === row) as Admin
+                const deleteData = { id: row, uid: user.uid };
+                const res: ActionResponse = await deleteAdmin(deleteData);
                 notify(res);
               }
             }}

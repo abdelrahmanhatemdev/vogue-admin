@@ -1,7 +1,8 @@
 import { AdminAddSchema, AdminEditSchema } from "@/lib/validation/adminSchema";
 import { NextResponse } from "next/server";
 
-import { auth, db } from "@/database/firebase";
+import { db } from "@/database/firebase";
+import { adminAuth } from "@/database/firebase-admin";
 import {
   addDoc,
   collection,
@@ -9,7 +10,6 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const collectionName = "admins";
 export const collectionRef = collection(db, collectionName);
@@ -41,25 +41,29 @@ export async function POST(request: Request) {
 
     await AdminAddSchema.parseAsync({ uuid, name, email, password });
 
-    await createUserWithEmailAndPassword(
-      auth,
+    const user = await adminAuth.createUser({
       email,
-      password
-    );
+      password,
+      emailVerified: true,
+      disabled: false,
+    });
 
-    const date = new Date().toISOString();
+    await adminAuth.setCustomUserClaims(user.uid, { admin: true });
 
-    const data = {
-      uuid,
-      name,
-      email,
-      createdAt: date,
-      updatedAt: date,
-    };
+    if (user.uid) {
+      const date = new Date().toISOString();
 
-    const docRef = await addDoc(collectionRef, data);
+      const data = {
+        uuid,
+        uid: user.uid,
+        name,
+        email,
+        createdAt: date,
+        updatedAt: date,
+      };
 
-    if (docRef.id) {
+      const docRef = await addDoc(collectionRef, data);
+
       return NextResponse.json({ message: "Admin added" }, { status: 200 });
     }
 
@@ -72,9 +76,11 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, name, email, password } = await request.json();
+    const { id, uuid, uid, name, email, password } = await request.json();
 
     await AdminEditSchema.parseAsync({ uuid, name, email, password });
+
+    await adminAuth.updateUser(uid, { email, password });
 
     const docRef = doc(db, collectionName, id);
 
@@ -82,7 +88,6 @@ export async function PUT(request: Request) {
       await updateDoc(docRef, {
         name,
         email,
-        password,
         updatedAt: new Date().toISOString(),
       });
       return NextResponse.json({ message: "Admin Updated" }, { status: 200 });
@@ -96,16 +101,18 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { id } = await request.json();
+    const { id, uid } = await request.json();
 
     const docRef = doc(db, collectionName, id);
 
     const data = { deletedAt: new Date().toISOString() };
 
-    const result = await updateDoc(docRef, data);
+    await updateDoc(docRef, data);
 
+    await adminAuth.deleteUser(uid);
+    
     return NextResponse.json(
-      { message: "Admin Deleted", result },
+      { message: "Admin Deleted" },
       { status: 200 }
     );
   } catch (error) {

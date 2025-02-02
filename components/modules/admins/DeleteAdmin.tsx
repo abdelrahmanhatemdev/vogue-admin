@@ -7,16 +7,18 @@ import { notify } from "@/lib/utils";
 
 function DeleteAdmin({
   itemId,
+  itemUid,
   setModalOpen,
   addOptimisticData,
 }: {
   itemId: string;
+  itemUid: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Admin[] | ((pendingState: Admin[]) => Admin[])
   ) => void;
 }) {
-  const data = { uuid: itemId };
+  const data = { id: itemId, uid: itemUid };
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +27,7 @@ function DeleteAdmin({
     startTransition(() => {
       addOptimisticData((prev: Admin[]) => [
         ...prev.map((item) => {
-          if (item.uuid === data.uuid) {
+          if (item.id === data.id) {
             const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }

@@ -32,6 +32,7 @@ interface Brand {
 interface Admin {
   id: string;
   uuid: string;
+  uid: string;
   name: string;
   email: string;
   password?: string;

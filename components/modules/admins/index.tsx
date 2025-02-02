@@ -142,7 +142,8 @@ function Admins({ data }: { data: Admin[] }) {
                     ),
                     children: (
                       <DeleteAdmin
-                        itemId={item.uuid}
+                        itemId={item.id}
+                        itemUid={item.uid}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
