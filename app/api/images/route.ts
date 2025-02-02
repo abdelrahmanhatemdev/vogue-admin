@@ -11,86 +11,8 @@ export const tableName = "product_images";
 
 export async function POST(req: Request) {
   try {
-    if (!req.body) {
-      return NextResponse.json(
-        { success: false, message: "No request body found" },
-        { status: 400 }
-      );
-    }
-
-    const contentType = req.headers.get("content-type") || "";
-    const boundary = contentType.split("boundary=")?.[1];
-    if (!boundary) {
-      return NextResponse.json(
-        { success: false, message: "Missing form-data boundary" },
-        { status: 400 }
-      );
-    }
-
-    const readable = Readable.fromWeb(req.body as ReadableStream);
-
-    const chunks: Uint8Array[] = [];
-    for await (const chunk of readable) {
-      chunks.push(chunk);
-    }
-
-    const data = Buffer.concat(chunks).toString("binary");
-
-    const parts = data.split(`--${boundary}`);
-    let productId = "";
+   
     const files: string[] = [];
-
-    for (const part of parts) {
-      if (part.includes('Content-Disposition: form-data; name="productId"')) {
-        const valueStart = part.indexOf("\r\n\r\n") + 4;
-        const valueEnd = part.lastIndexOf("\r\n");
-        productId = part.substring(valueStart, valueEnd).trim();
-      } else if (
-        part.includes("Content-Disposition: form-data;") &&
-        part.includes("filename=")
-      ) {
-        // Extract file data
-        const filenameMatch = part.match(/filename="(.+?)"/);
-        const filename = filenameMatch?.[1];
-        if (!filename) continue;
-        
-        const newwFileName = filename.replaceAll(" ", "_")
-
-        const fileStart = part.indexOf("\r\n\r\n") + 4;
-        const fileEnd = part.lastIndexOf("\r\n");
-        const fileBuffer = Buffer.from(
-          part.substring(fileStart, fileEnd),
-          "binary"
-        );
-
-        if (!productId) {
-          return NextResponse.json(
-            { success: false, message: "Missing product ID in form-data" },
-            { status: 400 }
-          );
-        }
-
-        // Ensure directory exists
-        const uploadDir = path.join(
-          process.cwd(),
-          `uploads/images/${productId}`
-        );
-        await fs.mkdir(uploadDir, { recursive: true });
-
-        // Save the file
-        const filePath = path.join(uploadDir, newwFileName);
-
-        await fs.writeFile(filePath, fileBuffer);
-        const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-          `INSERT INTO ${tableName} (subproductId, src, sortOrder) VALUES (?, ?, ?)`,
-          [productId, newwFileName, 0]
-        );
-
-        if (result.insertId) {
-          files.push(`/uploads/images/${productId}/${newwFileName}`);
-        }
-      }
-    }
 
     if (files.length > 0) {
 

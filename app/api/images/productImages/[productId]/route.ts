@@ -9,6 +9,8 @@ export async function GET(
   req: Request,
   props: { params: Promise<{ productId: string }> }
 ) {
+
+  NextResponse.json({ message: "Images" }, { status: 200 });
   const params = await props.params;
 
   const { productId } = await params;

@@ -61,26 +61,26 @@ const SubproductImages = ({
   const [optimisticImages, addOptimisticImages] =
     useOptimistic<OptimisicImagesType[]>(imageList);
 
-  const {
-    data: fetchedImages,
-    error,
-    isLoading,
-  } = useSWR(
-    `${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${uuid}`,
-    fetcher
-  );
+  // const {
+  //   data: fetchedImages,
+  //   error,
+  //   isLoading,
+  // } = useSWR(
+  //   `${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${uuid}`,
+  //   fetcher
+  // );
 
-  useEffect(() => {
-    if (fetchedImages) {
-      setImageList(fetchedImages);
-    }
-  }, [fetchedImages]);
+  // useEffect(() => {
+  //   if (fetchedImages) {
+  //     setImageList(fetchedImages);
+  //   }
+  // }, [fetchedImages]);
 
-  if (error) {
-    console.log("Images Fetshing Error: ", error);
-  }
+  // if (error) {
+  //   console.log("Images Fetshing Error: ", error);
+  // }
 
-  if (isLoading) return;
+  // if (isLoading) return;
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     startTransition(() => {
@@ -197,7 +197,7 @@ const SubproductImages = ({
           </Button>
         </div>
       </div>
-      {optimisticImages.length > 0 ? (
+      {/* {optimisticImages.length > 0 ? (
         <ReactSortable
           list={optimisticImages}
           setList={setImageList}
@@ -239,18 +239,6 @@ const SubproductImages = ({
               >
                 {path && (
                   <>
-                    {/* <Image
-                      key={id}
-                      src={isPending ? path : `/api/images/src/${path}`}
-                      alt={`Subproduct photo-${id}`}
-                      className={cn(
-                        "w-full lg:w-auto lg:h-32 rounded-md",
-                        isPending ? "opacity-50" : ""
-                      )}
-                      height={100}
-                      width={200}
-                      priority
-                    /> */}
                     <img
                       key={id}
                       src={isPending ? path : "/api/images/src/" + path}
@@ -290,7 +278,7 @@ const SubproductImages = ({
             );
           })}
         </ReactSortable>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };

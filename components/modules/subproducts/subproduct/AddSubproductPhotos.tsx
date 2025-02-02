@@ -22,6 +22,8 @@ import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema"
 import { Separator } from "@/components/ui/separator";
 import type{ OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
 import { mutate } from "swr";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "@/database/firebase";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";
@@ -71,52 +73,83 @@ function AddSubproductPhotos({
   async function onSubmit(values: z.infer<typeof SubproductPhotosSchema>) {
     setModalOpen(false);
     if (values?.images) {
+
+      const uploadedUrls = [];
+
       const { images: formImages, productId } = values;
 
-      const imagesArr = Array.from(formImages);
 
-      const formData = new FormData();
-      formData.append("productId", productId);
 
-      imagesArr.forEach((image) => formData.append("files", image));
+      // console.log("images", images);
 
-      const date = new Date().toISOString();
+      for (const image of formImages) {
+        // Create a reference to the file in Firebase Storage
+        const storageRef = ref(storage, `products/${image.name}`);
 
-      const optimisticNewImages: OptimisicImagesType[] = images.map(
-        ({ src }) => ({
-          id: src,
-          uuid: uuidv4(),
-          src,
-          subproductId: subproductId,
-          sortOrder: 0,
-          createdAt: date,
-          updatedAt: date,
-          isPending: !isPending,
-        })
-      );
+        // Upload the file
+        const snapshot = await uploadBytes(storageRef, image);
+        console.log("Uploaded a file:", image.name);
 
-      startTransition(() => {
-        addOptimisticData((prev: OptimisicImagesType[]) => [
-          ...prev,
-          ...optimisticNewImages,
-        ]);
-      });
-
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
-          method: "POST",
-          body: formData,
-        });
-        const resObj = await res.json()
-
-        mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
-        // if(resObj.ok){
-        // }
-        notify(resObj);
-        
-      } catch (error) {
-        console.log(error);
+        // Get the download URL
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        uploadedUrls.push(downloadURL);
       }
+
+      // Set the URLs state
+      // setUrls(uploadedUrls);
+      console.log("All files uploaded successfully!");
+
+
+
+      // const { images: formImages, productId } = values;
+
+      
+
+      // const imagesArr = Array.from(formImages);
+
+      // const formData = new FormData();
+      // formData.append("productId", productId);
+
+      // imagesArr.forEach((image) => formData.append("files", image));
+
+      // const date = new Date().toISOString();
+
+      // const optimisticNewImages: OptimisicImagesType[] = images.map(
+      //   ({ src }) => ({
+      //     id: src,
+      //     uuid: uuidv4(),
+      //     src,
+      //     subproductId: subproductId,
+      //     sortOrder: 0,
+      //     createdAt: date,
+      //     updatedAt: date,
+      //     isPending: !isPending,
+      //   })
+      // );
+
+      // startTransition(() => {
+      //   addOptimisticData((prev: OptimisicImagesType[]) => [
+      //     ...prev,
+      //     ...optimisticNewImages,
+      //   ]);
+      // });
+
+      // try {
+        
+      //   // const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
+      //   //   method: "POST",
+      //   //   body: formData,
+      //   // });
+
+      //   // const resObj = await res.json()
+
+      //   // mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
+        
+      //   // notify(resObj);
+        
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
   }
 
