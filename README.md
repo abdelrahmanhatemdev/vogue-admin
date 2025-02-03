@@ -17,7 +17,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/react.png" alt="React" title="React">](https://react.dev/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/tailwind.png" alt="Tailwind" title="Tailwind">](https://tailwindcss.com/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/shadcn.png" alt="Shadcn" title="Shadcn">](https://shadcn.dev/) &ensp; 
-[<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/sql.png" alt="Mysql" title="SQL">](https://www.mysql.com/) &ensp; 
+Firebase
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/eslint.png" alt="ESLint" title="ESLint">](https://eslint.org/) &ensp; 
 [<img src="https://abdulrahmanhatem.github.io/images/images/stack_frames/hostinger.png" alt="Hostinger" title="Hostinger">](https://www.hostinger.com/) 
 
@@ -83,9 +83,9 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 |---|---|
 |  **User Authentication** | Email and password login  
 |  **Data Fetching** | Serveside rendering (SSR) for personalized content <br> Static site generation (SSG) for fast performance <br>  Clienside data fetching with SWR  |  
-| **API & Backend Integrations** | REST API implementation with pages/api.<br> CRUD operations with a database (MySQL).<br> API caching with Next fetch. | 
+| **API & Backend Integrations** | REST API implementation with pages/api.<br> CRUD operations with a database (Firebase).<br> API caching with Next fetch. | 
 | **State Management** | Context API for lightweight state management. | 
-| **Theming** | Dark/light theme toggle with persistence.<br> CRUD operations with a database (MySQL).<br> API caching with Next fetch.<br> Atomic CSS classes, No custom CSS needed ith tailwind<br> Accessibility features (contrast, font size adjustments).|
+| **Theming** | Dark/light theme toggle with persistence.<br> CRUD operations with a database (Firebase).<br> API caching with Next fetch.<br> Atomic CSS classes, No custom CSS needed ith tailwind<br> Accessibility features (contrast, font size adjustments).|
 | **Performance** | Lazy loading nocritical images and components.<br> Code splitting for optimized bundles.<br> Image optimization with Next.js Image component.<br> Prefetching with next/link for faster navigation.<br> Content Delivery Network (CDN) integration.<br> Optimized Lighthouse scores (SEO, performance, accessibility). | 
 | **Security** | Data validation with Zod in frontend and backend | 
 | **UI & UX Enhancements** | Smooth animations with Framer Motion.<br> Pagination for lists and tables.<br> Toast notifications (React Hot Toast). | 
