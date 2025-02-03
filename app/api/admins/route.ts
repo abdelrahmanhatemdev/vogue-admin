@@ -46,9 +46,10 @@ export async function POST(request: Request) {
       password,
       emailVerified: true,
       disabled: false,
+      displayName: name
     });
 
-    await adminAuth.setCustomUserClaims(user.uid, { admin: true });
+    await adminAuth.setCustomUserClaims(user.uid, { admin: true});
 
     if (user.uid) {
       const date = new Date().toISOString();
@@ -80,7 +81,7 @@ export async function PUT(request: Request) {
 
     await AdminEditSchema.parseAsync({ uuid, name, email, password });
 
-    await adminAuth.updateUser(uid, { email, password });
+    await adminAuth.updateUser(uid, { email, password, displayName: name });
 
     const docRef = doc(db, collectionName, id);
 

@@ -6,9 +6,7 @@ import ThemeProvider from "@/providers/ThemeProvider";
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <ThemeProvider>
-      {/* <SessionProvider> */}
         <DataProvider>{children}</DataProvider>
-      {/* </SessionProvider> */}
     </ThemeProvider>
   );
 };

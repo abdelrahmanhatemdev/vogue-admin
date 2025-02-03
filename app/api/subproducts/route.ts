@@ -142,9 +142,6 @@ export async function PUT(request: Request) {
 
   const reqData = await request.json();
 
-  console.log("reqData", reqData);
-  
-
   if (reqData?.property) {
     const { property, id, value } = reqData;
     const docRef = doc(db, collectionName, id);

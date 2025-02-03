@@ -2,8 +2,9 @@ import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
-// import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { adminAuth } from "@/database/firebase-admin";
 
 const Logo = dynamic(() => import("@/components/custom/Logo"), {
   loading: Loading,
@@ -23,11 +24,22 @@ export default async function layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
 
+   const token = (await cookies()).get("session")?.value;
+    const user = token ? await adminAuth.verifyIdToken(token) : null;
+
+    console.log("server token", token);
+    console.log("server user", user);
+    
+  
+  //   if (!user) return <h1>Unauthorized</h1>;
+
   // const session = await getServerSession(authOptions);
 
   // if (session && session?.user?.role === "admin") {
   //   redirect("/")
   // }
+
+  
 
   return (
     <MainLayout>

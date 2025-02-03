@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { notify } from "@/lib/utils";
 import { memo } from "react";
 import { signIn } from "@/lib/auth";
-
+import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
@@ -30,24 +30,16 @@ const Login = () => {
   });
   const router = useRouter();
 
-
-
+  const { login } = useAuth();
 
   async function onSubmit(values: z.infer<typeof AdminLoginSchema>) {
-    const {email, password} = values;
+    const { email, password } = values;
 
-     const res = await signIn(
-      email,
-      password
-    );
+    const res = await login(email, password);
 
-    // console.log("res", res);
-    
-
-    // notify(res);
-    // if (!res?.error) {
-    //   router.push("/")
-    // }
+    if (res.uid) {
+      router.push("/")
+    }
   }
 
   return (

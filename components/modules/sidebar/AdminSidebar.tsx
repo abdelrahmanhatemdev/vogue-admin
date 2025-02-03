@@ -43,6 +43,7 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLabel } from "react-icons/md";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 export const SidebarLinks = [
   {
@@ -93,9 +94,7 @@ export const SidebarLinks = [
 ];
 
 function AdminSidebar() {
-  // const { data: session } = useSession();
-  const user = true
-  // session?.user;
+  const { user, logout } = useAuth();
 
   const { state } = useSidebar();
 
@@ -104,7 +103,7 @@ function AdminSidebar() {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    // await signOut({ redirect: false });
+    await logout();
     router.push("/login");
   };
 
@@ -194,10 +193,10 @@ function AdminSidebar() {
                 {state === "expanded" ? (
                   <div className="flex flex-col items-start text-xs">
                     <div className="font-bold truncate">
-                      {/* {user.name} */}
+                      {user.displayName}
                       </div>
                     <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
-                      {/* {user.email} */}
+                      {user.email}
                     </div>
                   </div>
                 ) : (
@@ -206,7 +205,7 @@ function AdminSidebar() {
               </Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel className="bg-neutral-100 dark:bg-neutral-700">My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem className="flex gap-2 cursor-pointer">
