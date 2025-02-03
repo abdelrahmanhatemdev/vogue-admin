@@ -25,7 +25,6 @@ import { memo } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import { signOut, useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,8 +93,9 @@ export const SidebarLinks = [
 ];
 
 function AdminSidebar() {
-  const { data: session } = useSession();
-  const user = session?.user;
+  // const { data: session } = useSession();
+  const user = true
+  // session?.user;
 
   const { state } = useSidebar();
 
@@ -104,7 +104,7 @@ function AdminSidebar() {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    await signOut({ redirect: false });
+    // await signOut({ redirect: false });
     router.push("/login");
   };
 
@@ -193,9 +193,11 @@ function AdminSidebar() {
                 </div>
                 {state === "expanded" ? (
                   <div className="flex flex-col items-start text-xs">
-                    <div className="font-bold truncate">{user.name}</div>
+                    <div className="font-bold truncate">
+                      {/* {user.name} */}
+                      </div>
                     <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
-                      {user.email}
+                      {/* {user.email} */}
                     </div>
                   </div>
                 ) : (

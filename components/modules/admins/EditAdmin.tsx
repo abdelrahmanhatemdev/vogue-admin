@@ -46,6 +46,7 @@ function EditAdmin({
     setModalOpen(false);
     const data = {
       id: item.id,
+      uid: item.uid,
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,

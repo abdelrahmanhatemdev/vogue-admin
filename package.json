@@ -41,7 +41,6 @@
     "lucide-react": "^0.469.0",
     "mysql2": "^3.11.5",
     "next": "^15.1.2",
-    "next-auth": "^4.24.11",
     "react": "^19",
     "react-day-picker": "^8.10.1",
     "react-dom": "^19",

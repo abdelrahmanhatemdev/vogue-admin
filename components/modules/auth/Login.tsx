@@ -13,10 +13,11 @@ import { AdminLoginSchema } from "@/lib/validation/auth/adminLoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { notify } from "@/lib/utils";
 import { memo } from "react";
+import { signIn } from "@/lib/auth";
+
 
 const Login = () => {
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
@@ -29,18 +30,24 @@ const Login = () => {
   });
   const router = useRouter();
 
+
+
+
   async function onSubmit(values: z.infer<typeof AdminLoginSchema>) {
     const {email, password} = values;
 
-     const res = await signIn("credentials", {
-      redirect: false,
+     const res = await signIn(
       email,
       password
-    });
-    notify(res);
-    if (!res?.error) {
-      router.push("/")
-    }
+    );
+
+    // console.log("res", res);
+    
+
+    // notify(res);
+    // if (!res?.error) {
+    //   router.push("/")
+    // }
   }
 
   return (

@@ -206,7 +206,6 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 📄 eslint.config.mjs  
 📄 eslintrc.json 
 📄 middleware.ts  
-📄 next-auth.d.ts  
 📄 next.config.mjs  
 📄 package-lock.json  
 📄 package.json  
