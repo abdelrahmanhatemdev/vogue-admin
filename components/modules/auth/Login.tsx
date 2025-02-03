@@ -14,9 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { useRouter } from "next/navigation";
-import { notify } from "@/lib/utils";
 import { memo } from "react";
-import { signIn } from "@/lib/auth";
 import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {

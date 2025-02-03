@@ -42,7 +42,7 @@ function AddSize({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
       uuid: uuidv4(), 
-      symbol: undefined, 
+      symbol: "", 
       sortOrder: 0
     },
     mode: "onChange",
@@ -115,7 +115,9 @@ function AddSize({
             <FormItem>
               <FormLabel>Order</FormLabel>
               <FormControl>
-                <Select value={`${field.value}`} onValueChange={field.onChange}>
+                <Select 
+                value={field.value !== undefined ? `${field.value}` : ""} 
+                onValueChange={field.onChange}>
                   <SelectTrigger className="bg-neutral-200 dark:bg-neutral-800 rounded-md">
                     <SelectValue
                       placeholder="Select Currency"

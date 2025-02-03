@@ -3,16 +3,15 @@ import { ReactNode } from "react";
 import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-// import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { getUser } from "@/lib/auth";
 const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
   loading: Loading,
 });
 
-const Header = dynamic(
-  () => import("@/components/modules/header/Header"),
-  { loading: Loading }
-);
+const Header = dynamic(() => import("@/components/modules/header/Header"), {
+  loading: Loading,
+});
 const SidebarProvider = dynamic(
   () =>
     import("@/components/ui/sidebar").then((module) => module.SidebarProvider),
@@ -27,27 +26,28 @@ const ContentContainer = dynamic(
   { loading: Loading }
 );
 
-const Footer = dynamic(
-  () => import("@/components/modules/footer/Footer"),
-  { loading: Loading }
-);
+const Footer = dynamic(() => import("@/components/modules/footer/Footer"), {
+  loading: Loading,
+});
 export default async function layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
-  // const session = await getServerSession(authOptions);
+  const user = await getUser();
+  const isAdminUser = user ? user.admin : null
 
-  // if (!session || session?.user?.role !== "admin") {
-  //   redirect("/login");
-  // }
+  // if (!isAdminUser) redirect("/login");
 
   return (
     <MainLayout>
-      <SidebarProvider defaultOpen={defaultOpen} className="
+      <SidebarProvider
+        defaultOpen={defaultOpen}
+        className="
       md:h-full md:min-h-full
-      overflow-auto scrollbar-hide">
+      overflow-auto scrollbar-hide"
+      >
         <Header />
         <motion.div
           initial={{ y: -100, opacity: 0 }}
