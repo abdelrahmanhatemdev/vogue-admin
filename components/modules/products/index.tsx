@@ -165,19 +165,16 @@ function Products({ data }: { data: Product[] }) {
       },
 
       {
-        id: "subproductCount",
-        accessorKey: "subproductCount",
+        id: "subproducts",
+        accessorKey: "subproducts",
         header: "Sub Products",
         cell: ({ row }) => {
-          const item: Product & { subproductCount?: string } = row.original;
-          const subproductsCount: number = item?.subproductCount
-            ? Number(item.subproductCount)
-            : 0;
+          const item = row.original;
 
           return (
             <div className="flex items-center justify-center">
               <span className="text-center dark:bg-neutral-700 rounded-md p-1 w-6 ">
-                {subproductsCount}
+                {item.subproducts as number}
               </span>
             </div>
           );
