@@ -16,7 +16,6 @@ export const getProductImages = async () => {
       const { data } = await res.json();
 
       if (data) {
-
         return data.sort((a: ProductImage, b: ProductImage) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
@@ -42,6 +41,27 @@ export async function getSubproductImages(id: string) {
     return console.log(error);
   }
 }
+
+export async function addProductImage(data: FormData) {
+  return fetch(apiURL, {
+    method: "POST",
+    body: data,
+  }).then(res => res.json())
+    .then((res) => {
+      if (res?.statusText === "OK" && res?.data?.message) {
+        revalidateTag(tag);
+        return { status: "success", message: res.data.message };
+      }
+      if (res?.data?.error) {
+        return { status: "error", message: res.data.error };
+      }
+    })
+    .catch((error) => {
+      const message = error?.response?.data?.error || "Something Wrong";
+      return { status: "error", message };
+    });
+}
+
 export async function editProductImage(data: string[]) {
   return api
     .put(apiURL, data)

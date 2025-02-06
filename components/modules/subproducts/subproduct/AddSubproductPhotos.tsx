@@ -20,11 +20,12 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import { Separator } from "@/components/ui/separator";
-import type{ OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
+import type { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
 import { mutate } from "swr";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/database/firebase";
 import axios from "axios";
+import { addProductImage } from "@/actions/Image";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";
@@ -52,7 +53,7 @@ function AddSubproductPhotos({
   const form = useForm<z.infer<typeof SubproductPhotosSchema>>({
     resolver: zodResolver(SubproductPhotosSchema),
     defaultValues: {
-      productId: subproductId,
+      subproductId: subproductId,
       images: {
         length: 0,
         item: () => null,
@@ -75,67 +76,20 @@ function AddSubproductPhotos({
     setModalOpen(false);
 
     if (values?.images) {
+      const { images: formImages, subproductId } = values;
 
+      const formData = new FormData();
+      Array.from(formImages).forEach((file) => {
+        formData.append("files", file);
+      });
+      formData.append("subproductId", subproductId);
 
+      const res = await addProductImage(formData);
+      notify(res);
 
-      // *******************
-      const { images: formImages, productId } = values;
-
-      const uploadedUrls: string[] = [];
-
-      for (const file of formImages) {
-        const fileRef = ref(storage, `products/${file.name}`);
-        try {
-          await uploadBytes(fileRef, file);
-          const url = await getDownloadURL(fileRef);
-          uploadedUrls.push(url);
-        } catch (error) {
-          console.error("File upload failed", error);
-        }
-      }
-      // *******************
-      
-
-      
-
-      // const date = new Date().toISOString();
-
-      // const optimisticNewImages: OptimisicImagesType[] = images.map(
-      //   ({ src }) => ({
-      //     id: src,
-      //     uuid: uuidv4(),
-      //     src,
-      //     subproductId: subproductId,
-      //     sortOrder: 0,
-      //     createdAt: date,
-      //     updatedAt: date,
-      //     isPending: !isPending,
-      //   })
+      // mutate(
+      //   `${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`
       // );
-
-      // startTransition(() => {
-      //   addOptimisticData((prev: OptimisicImagesType[]) => [
-      //     ...prev,
-      //     ...optimisticNewImages,
-      //   ]);
-      // });
-
-      try {
-        
-        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
-          method: "POST",
-          body: formData,
-        });
-
-        // const resObj = await res.json()
-
-        // mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
-        
-        // notify(resObj);
-        
-      } catch (error) {
-        console.log(error);
-      }
     }
   }
 
@@ -158,10 +112,10 @@ function AddSubproductPhotos({
         });
 
         dataTransfer.items.add(file);
-        
+
         if (newImages.length === files.length) {
           setImages((prev) => [...prev, ...newImages]);
-          form.setValue("images", dataTransfer.files); 
+          form.setValue("images", dataTransfer.files);
         }
       };
       reader.readAsDataURL(file);

@@ -4,7 +4,6 @@ import {
   Dispatch,
   memo,
   SetStateAction,
-  useEffect,
   useOptimistic,
   useState,
   useTransition,
@@ -18,14 +17,9 @@ import type { ModalState } from "@/components/custom/Modal";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProductImage, editProductImage } from "@/actions/Image";
 import { Trash2Icon, X } from "lucide-react";
-// import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import useSWR, { mutate } from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-const uploadsPath = `${process.env.NEXT_PUBLIC_APP_UPLOADS}/images`;
+import Image from "next/image";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -48,39 +42,20 @@ const SubproductImages = ({
   setModal,
   setModalOpen,
   uuid,
+  images,
 }: {
   setModal: Dispatch<SetStateAction<ModalState>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   uuid: string;
+  images: ProductImage[];
 }) => {
-  const [imageList, setImageList] = useState<OptimisicImagesType[]>([]);
+  const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const [isPending, startTransition] = useTransition();
 
   const [optimisticImages, addOptimisticImages] =
     useOptimistic<OptimisicImagesType[]>(imageList);
-
-  // const {
-  //   data: fetchedImages,
-  //   error,
-  //   isLoading,
-  // } = useSWR(
-  //   `${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${uuid}`,
-  //   fetcher
-  // );
-
-  // useEffect(() => {
-  //   if (fetchedImages) {
-  //     setImageList(fetchedImages);
-  //   }
-  // }, [fetchedImages]);
-
-  // if (error) {
-  //   console.log("Images Fetshing Error: ", error);
-  // }
-
-  // if (isLoading) return;
 
   async function handleSort(updatedList: OptimisicImagesType[]) {
     startTransition(() => {
@@ -91,7 +66,6 @@ const SubproductImages = ({
     const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);
     notify(res);
-    mutate({ ...fetchedImages, data: updatedList }, false);
   }
 
   async function deleteImage(id: string) {
@@ -197,7 +171,7 @@ const SubproductImages = ({
           </Button>
         </div>
       </div>
-      {/* {optimisticImages.length > 0 ? (
+      {optimisticImages.length > 0 ? (
         <ReactSortable
           list={optimisticImages}
           setList={setImageList}
@@ -213,8 +187,7 @@ const SubproductImages = ({
           }}
         >
           {optimisticImages.map((image, index) => {
-            const { id, src, isPending } = image;
-            const path = `${uploadsPath}/${uuid}/${src}`;
+            const { id, isPending, url } = image;
 
             return (
               <div
@@ -227,7 +200,7 @@ const SubproductImages = ({
                       <div>
                         <PhotoViewer
                           setModalOpen={setModalOpen}
-                          src={`/api/images/src/${path}`}
+                          src={`${url}`}
                         />
                       </div>
                     ),
@@ -237,11 +210,11 @@ const SubproductImages = ({
                   });
                 }}
               >
-                {path && (
+                {url && (
                   <>
-                    <img
+                    <Image
                       key={id}
-                      src={isPending ? path : "/api/images/src/" + path}
+                      src={isPending ? url : `${url}`}
                       alt={`Subproduct photo-${id} `}
                       className={cn(
                         "w-full sm:w-auto sm:h-32 rounded-md",
@@ -278,7 +251,7 @@ const SubproductImages = ({
             );
           })}
         </ReactSortable>
-      ) : null} */}
+      ) : null}
     </div>
   );
 };

@@ -71,10 +71,11 @@ export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
   subproduct,
-  product
+  product, images
 }: {
   subproduct: SubproductPageType;
-  product: Partial<Product>
+  product: Partial<Product>;
+  images: ProductImage[]
 }) {
   
   const {
@@ -194,7 +195,7 @@ function Subproduct({
             <ColorsChart/>
           </div>
           <ColorsAndSizes itemColors={colors as string[]} itemSizes={sizes as string[]}/>
-          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid}/>
+          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid} images={images}/>
           <div className="flex flex-wrap gap-4 rounded-lg">
             <PaymentChart
               title="Sold Orders"

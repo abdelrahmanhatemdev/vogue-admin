@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const SubproductPhotosSchema = z.object({
-  productId: z.string().uuid({ message: "Invalid UUID format." }),
+  subproductId: z.string().uuid({ message: "Invalid UUID format." }),
   images: z
     .custom<FileList>(files => files instanceof FileList, {
       message: "Must be a valid file input"

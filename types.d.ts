@@ -119,7 +119,7 @@ interface Paragraph {
 interface ProductImage {
   id: string;
   uuid: string;
-  src: string;
+  url: string;
   subproductId: string;
   sortOrder: number;
   createdAt: string;

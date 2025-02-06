@@ -4,82 +4,69 @@ import { v4 as uuidv4 } from "uuid";
 import { Formidable } from "formidable";
 import { adminDB, adminStorage } from "@/database/firebase-admin";
 import { promises as fs } from "fs";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { db, storage } from "@/database/firebase";
+import { collection, doc, writeBatch } from "firebase/firestore";
+
+export const collectionName = "images";
+export const collectionRef = collection(db, collectionName);
 
 export const config = {
-  api: { bodyParser: false }, // Required for file uploads
+  api: {
+    bodyParser: false, // Important for file uploads
+  },
 };
 
-async function parseForm(req: NextRequest) {
-  const formData = await req.formData(); // ✅ Correctly parse form data
+export async function POST(req: Request) {
+  try {
+    const formData = await req.formData();
+    const files = formData.getAll("files");
+    const subproductId = formData.get("subproductId") as string;
 
-  const files: any[] = [];
-  const fields: Record<string, any> = {};
-
-  for (const [key, value] of formData.entries()) {
-    if (value instanceof Blob) {
-      // ✅ Convert Blob to a file-like object
-      const buffer = Buffer.from(await value.arrayBuffer());
-      files.push({
-        fieldName: key,
-        buffer,
-        originalFilename: value.name,
-        mimetype: value.type,
-      });
-    } else {
-      fields[key] = value;
+    if (!files || files.length === 0) {
+      return NextResponse.json({ error: "No files uploaded" }, { status: 400 });
     }
+
+    if (!subproductId) {
+      return NextResponse.json({ error: "Missing subp roductId" }, { status: 400 });
+    }
+
+    const downloadUrls: string[] = [];
+
+    for (const file of files) {
+      if (!(file instanceof File)) continue;
+
+      const fileRef = ref(storage, `uploads/${file.name}`);
+
+      await uploadBytes(fileRef, file);
+
+      const downloadURL = await getDownloadURL(fileRef);
+
+      downloadUrls.push(downloadURL);
+    }
+
+    const batch = writeBatch(db);
+    const date = new Date().toISOString();
+
+    downloadUrls.forEach((url) => {
+      const imageDocRef = doc(collectionRef);
+      batch.set(imageDocRef, {
+        subproductId,
+        url,
+        uuid: uuidv4(),
+        createdAt: date,
+        updatedAt: date,
+      });
+    });
+
+    await batch.commit();
+
+    return NextResponse.json({ message: "Photos added" }, { status: 200 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  return { fields, files };
 }
-
-
-// export async function POST(req: NextRequest) {
-//   try {
-//     // ✅ Parse form data
-//     const { fields, files } = await parseForm(req);
-
-    
-    
-
-//     if (files.length === 0) {
-//       return NextResponse.json({ error: "No images uploaded" }, { status: 400 });
-//     }
-
-//     const uploadedImages: string[] = [];
-
-//     for (const file of files) {
-//       const uniqueFileName = `${uuidv4()}-${file.originalFilename}`;
-//       const fileUpload = adminStorage.file(`images/${uniqueFileName}`);
-
-//       console.log("fileUpload",fileUpload );
-
-//       // ✅ Upload file from buffer
-//       const uploaded = await fileUpload.save(file.buffer, {
-//         metadata: { contentType: file.mimetype },
-//         public: true,
-//       });
-
-//       console.log("uploaded", uploaded);
-
-//       const publicUrl = `https://storage.googleapis.com/${adminStorage.name}/uploads/${uniqueFileName}`;
-//       uploadedImages.push(publicUrl);
-
-//       // ✅ Save metadata in Firestore
-//       await adminDB.collection("uploads").add({
-//         url: publicUrl,
-//         createdAt: new Date(),
-//       });
-//     }
-
-//     return NextResponse.json({ urls: uploadedImages }, { status: 200 });
-//   } catch (error) {
-//     const message = error instanceof Error ? error.message : "Something went wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
-
-
 
 // export async function PUT(req: Request) {
 //   try {

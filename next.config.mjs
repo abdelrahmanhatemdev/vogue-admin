@@ -40,6 +40,9 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+  },
   // swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,

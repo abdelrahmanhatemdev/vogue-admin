@@ -5,6 +5,7 @@ import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getProductBySlug } from "@/actions/Product";
+import { getSubproductImages } from "@/actions/Image";
 const Subproduct = dynamic(
   () => import("@/components/modules/subproducts/Subproduct"),
   { loading: Loading }
@@ -53,5 +54,7 @@ export default async function SubproductPage(props: {
     slug: productObj?.slug,
   };
 
-  return <Subproduct subproduct={subproduct} product={product} />;
+  const images = await getSubproductImages(subproduct.uuid)
+
+  return <Subproduct subproduct={subproduct} product={product} images= {images}/>;
 }
