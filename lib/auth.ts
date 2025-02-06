@@ -1,6 +1,7 @@
 import { adminAuth } from "@/database/firebase-admin";
 import { cookies } from "next/headers";
 
+
 export async function getUser() {
   const token = (await cookies()).get("session")?.value;
 

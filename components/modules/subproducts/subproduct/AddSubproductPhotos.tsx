@@ -24,6 +24,7 @@ import type{ OptimisicImagesType } from "@/components/modules/subproducts/Subpro
 import { mutate } from "swr";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/database/firebase";
+import axios from "axios";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";
@@ -72,45 +73,30 @@ function AddSubproductPhotos({
 
   async function onSubmit(values: z.infer<typeof SubproductPhotosSchema>) {
     setModalOpen(false);
+
     if (values?.images) {
 
-      const uploadedUrls = [];
 
+
+      // *******************
       const { images: formImages, productId } = values;
 
+      const uploadedUrls: string[] = [];
 
-
-      // console.log("images", images);
-
-      for (const image of formImages) {
-        // Create a reference to the file in Firebase Storage
-        const storageRef = ref(storage, `products/${image.name}`);
-
-        // Upload the file
-        const snapshot = await uploadBytes(storageRef, image);
-        console.log("Uploaded a file:", image.name);
-
-        // Get the download URL
-        const downloadURL = await getDownloadURL(snapshot.ref);
-        uploadedUrls.push(downloadURL);
+      for (const file of formImages) {
+        const fileRef = ref(storage, `products/${file.name}`);
+        try {
+          await uploadBytes(fileRef, file);
+          const url = await getDownloadURL(fileRef);
+          uploadedUrls.push(url);
+        } catch (error) {
+          console.error("File upload failed", error);
+        }
       }
-
-      // Set the URLs state
-      // setUrls(uploadedUrls);
-      console.log("All files uploaded successfully!");
-
-
-
-      // const { images: formImages, productId } = values;
-
+      // *******************
       
 
-      // const imagesArr = Array.from(formImages);
-
-      // const formData = new FormData();
-      // formData.append("productId", productId);
-
-      // imagesArr.forEach((image) => formData.append("files", image));
+      
 
       // const date = new Date().toISOString();
 
@@ -134,22 +120,22 @@ function AddSubproductPhotos({
       //   ]);
       // });
 
-      // try {
+      try {
         
-      //   // const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
-      //   //   method: "POST",
-      //   //   body: formData,
-      //   // });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API}/images`, {
+          method: "POST",
+          body: formData,
+        });
 
-      //   // const resObj = await res.json()
+        // const resObj = await res.json()
 
-      //   // mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
+        // mutate(`${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`);
         
-      //   // notify(resObj);
+        // notify(resObj);
         
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

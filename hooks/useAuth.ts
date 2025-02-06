@@ -7,6 +7,7 @@ import {
 import { auth } from "@/database/firebase";
 import axios from "axios";
 
+
 export function useAuth() {
   const [user, setUser] = useState<any>(null);
 

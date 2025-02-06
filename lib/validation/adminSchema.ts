@@ -39,6 +39,7 @@ export const AdminAddSchema = z
       collection: "admins",
     });
 
+
     if (exists) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

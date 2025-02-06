@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 export async function POST(req: Request) {
   try {
     const { idToken } = await req.json();
+
     const decodedToken = await adminAuth.verifyIdToken(idToken);
     const isAdmin = decodedToken.admin || false; 
 
@@ -13,6 +14,13 @@ export async function POST(req: Request) {
     });
 
     (await cookies()).set("session", sessionCookie, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+    });
+
+    (await cookies()).set("token", idToken, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",

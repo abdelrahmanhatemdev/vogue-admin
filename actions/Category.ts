@@ -1,23 +1,40 @@
 "use server";
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
 export const getCategories = async () => {
   try {
-    const res = await fetch(apiURL, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
-    if (res?.ok) {
-      const { data } = await res.json();
+    const token = (await cookies()).get("token")?.value;
 
-      if (data) {
-        return data.sort((a: Category, b: Category) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
+    // console.log("token", token);
+    
+
+    if (token) {
+      const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // Send the session token
+      };
+      const res = await fetch(apiURL, {
+        next: { tags: [tag] },
+        cache: "force-cache",
+        headers,
+      })
+
+      // const res = await fetchWithAuth({url: apiURL, tag, cache: "force-cache"});
+
+      if (res?.ok) {
+        const { data } = await res.json();
+
+        if (data) {
+          return data.sort((a: Category, b: Category) =>
+            b.updatedAt.localeCompare(a.updatedAt)
+          );
+        }
       }
     }
     return [];
@@ -58,13 +75,15 @@ export async function addCategory(data: Partial<Category>) {
     });
 }
 
-export async function editCategory(data: Partial<
-  Category & {
-    uuid: string;
-    property: string;
-    value: string | boolean | number | string[];
-  }
->) {
+export async function editCategory(
+  data: Partial<
+    Category & {
+      uuid: string;
+      property: string;
+      value: string | boolean | number | string[];
+    }
+  >
+) {
   return api
     .put(apiURL, data)
     .then((res) => {

@@ -9,6 +9,12 @@ export async function POST() {
     path: "/",
     expires: new Date(0),
   });
-
+  (await cookies()).set("token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(0),
+  });
   return NextResponse.json({ success: true });
 }

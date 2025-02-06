@@ -38,7 +38,7 @@ export default async function layout({
   const user = await getUser();
   const isAdminUser = user ? user.admin : null
 
-  // if (!isAdminUser) redirect("/login");
+  if (!isAdminUser) redirect("/login");
 
   return (
     <MainLayout>

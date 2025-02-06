@@ -1,39 +1,85 @@
-import { NextResponse } from "next/server";
-import path from "path";
-import { promises as fs } from "fs";
-import { ZodError } from "zod";
+import { NextRequest, NextResponse } from "next/server";
 import { Readable } from "stream";
-import { ReadableStream } from "stream/web";
+import { v4 as uuidv4 } from "uuid";
+import { Formidable } from "formidable";
+import { adminDB, adminStorage } from "@/database/firebase-admin";
+import { promises as fs } from "fs";
 
-export const tableName = "product_images";
+export const config = {
+  api: { bodyParser: false }, // Required for file uploads
+};
 
-// export async function POST(req: Request) {
+async function parseForm(req: NextRequest) {
+  const formData = await req.formData(); // ✅ Correctly parse form data
+
+  const files: any[] = [];
+  const fields: Record<string, any> = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (value instanceof Blob) {
+      // ✅ Convert Blob to a file-like object
+      const buffer = Buffer.from(await value.arrayBuffer());
+      files.push({
+        fieldName: key,
+        buffer,
+        originalFilename: value.name,
+        mimetype: value.type,
+      });
+    } else {
+      fields[key] = value;
+    }
+  }
+
+  return { fields, files };
+}
+
+
+// export async function POST(req: NextRequest) {
 //   try {
-   
-//     const files: string[] = [];
+//     // ✅ Parse form data
+//     const { fields, files } = await parseForm(req);
 
-//     if (files.length > 0) {
+    
+    
 
-//       return NextResponse.json({
-//         message: `Photo${files.length > 1 ? "s" : ""} uploaded`,
-//         status: "200",
+//     if (files.length === 0) {
+//       return NextResponse.json({ error: "No images uploaded" }, { status: 400 });
+//     }
+
+//     const uploadedImages: string[] = [];
+
+//     for (const file of files) {
+//       const uniqueFileName = `${uuidv4()}-${file.originalFilename}`;
+//       const fileUpload = adminStorage.file(`images/${uniqueFileName}`);
+
+//       console.log("fileUpload",fileUpload );
+
+//       // ✅ Upload file from buffer
+//       const uploaded = await fileUpload.save(file.buffer, {
+//         metadata: { contentType: file.mimetype },
+//         public: true,
+//       });
+
+//       console.log("uploaded", uploaded);
+
+//       const publicUrl = `https://storage.googleapis.com/${adminStorage.name}/uploads/${uniqueFileName}`;
+//       uploadedImages.push(publicUrl);
+
+//       // ✅ Save metadata in Firestore
+//       await adminDB.collection("uploads").add({
+//         url: publicUrl,
+//         createdAt: new Date(),
 //       });
 //     }
-//     return NextResponse.json({
-//       message: `No photos uploaded`,
-//       status: "400",
-//     });
+
+//     return NextResponse.json({ urls: uploadedImages }, { status: 200 });
 //   } catch (error) {
-//     if (error instanceof ZodError) {
-//       return NextResponse.json(
-//         { error: error.errors[0].message },
-//         { status: 500 }
-//       );
-//     }
-//     const message = error instanceof Error ? error.message : "Something Wrong";
+//     const message = error instanceof Error ? error.message : "Something went wrong";
 //     return NextResponse.json({ error: message }, { status: 500 });
 //   }
 // }
+
+
 
 // export async function PUT(req: Request) {
 //   try {

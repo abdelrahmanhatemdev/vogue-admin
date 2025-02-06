@@ -171,12 +171,16 @@ function Products({ data }: { data: Product[] }) {
         cell: ({ row }) => {
           const item = row.original;
 
-          return (
+          const spCount = item.subproducts as number;
+
+          return spCount ? (
             <div className="flex items-center justify-center">
               <span className="text-center dark:bg-neutral-700 rounded-md p-1 w-6 ">
-                {item.subproducts as number}
+                {spCount}
               </span>
             </div>
+          ) : (
+            ""
           );
         },
       },

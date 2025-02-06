@@ -1,5 +1,5 @@
 import { CategorySchema } from "@/lib/validation/categorySchema";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/database/firebase";
 import {
@@ -11,6 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { adminAuth } from "@/database/firebase-admin";
 
 export const collectionName = "categories";
 export const collectionRef = collection(db, collectionName);

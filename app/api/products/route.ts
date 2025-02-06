@@ -11,6 +11,7 @@ import {
   collection,
   writeBatch,
   getDoc,
+  addDoc,
 } from "firebase/firestore";
 
 import { collectionName as spCollectionName, collectionRef as spCollectionRef } from "@/app/api/subproducts/route";
