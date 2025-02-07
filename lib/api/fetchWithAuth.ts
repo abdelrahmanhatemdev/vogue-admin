@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 export async function fetchWithAuth({
   url,
   tag,
-  cache = "default",
+  cache = "force-cache",
   options = {},
 }: {
   url: string;
@@ -30,6 +30,6 @@ export async function fetchWithAuth({
     headers,
     method: "GET",
     next: tag ? { tags: [tag] } : undefined,
-    cache: cache || "default",
+    cache: cache || "force-cache",
   });
 }

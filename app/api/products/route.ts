@@ -1,37 +1,27 @@
 import { ProductSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
-
-import { db } from "@/database/firebase";
-import {
-  doc,
-  getDocs,
-  query,
-  where,
-  updateDoc,
-  collection,
-  writeBatch,
-  getDoc,
-  addDoc,
-} from "firebase/firestore";
+import { adminDB } from "@/database/firebase-admin";
 
 import { collectionName as spCollectionName } from "@/app/api/subproducts/route";
 
 export const collectionName = "products";
-export const collectionRef = collection(db, collectionName);
+export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = (await getDocs(collectionRef)).docs;
+    const snapShot = await collectionRef.get();
 
-    const data =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Product[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as Product)
+          )
+          .filter((doc) => !doc.deletedAt);
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -64,18 +54,20 @@ export async function POST(request: Request) {
       trending,
     });
 
-    const q = query(collectionRef, where("slug", "==", slug));
+    const q = collectionRef.where("slug", "==", slug);
 
-    const snapShot = (await getDocs(q)).docs;
-    const existedItems =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Product[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+    const snapShot = await q.get();
+    const existedItems = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as Product)
+          )
+          .filter((doc) => !doc.deletedAt);
 
     if (existedItems.length > 0) {
       return NextResponse.json(
@@ -107,7 +99,7 @@ export async function POST(request: Request) {
       updatedAt: date,
     };
 
-    const docRef = await addDoc(collectionRef, data);
+    const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
       return NextResponse.json({ message: "Product added" }, { status: 200 });
@@ -125,10 +117,10 @@ export async function PUT(request: Request) {
 
   if (reqData?.property) {
     const { property, id, value } = reqData;
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
-      await updateDoc(docRef, {
+      await docRef.update({
         [property]: value,
         updatedAt: new Date().toISOString(),
       });
@@ -161,7 +153,7 @@ export async function PUT(request: Request) {
       trending,
     });
 
-    const list = (await getDocs(collectionRef)).docs.filter(
+    const list = (await collectionRef.get()).docs.filter(
       (doc) => doc.id !== id && doc.data().slug === slug
     );
 
@@ -184,10 +176,10 @@ export async function PUT(request: Request) {
       throw new Error("Choose at least one Category");
     }
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
-      await updateDoc(docRef, {
+      await docRef.update({
         name,
         slug,
         brandId,
@@ -206,34 +198,32 @@ export async function PUT(request: Request) {
   }
 }
 
-
-
 export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
 
-    // Fetch the product document
-    const productDoc = doc(db, "products", id);
-    const productSnap = await getDoc(productDoc);
+    const productDoc = await adminDB.collection("products").doc(id).get();
 
-    if (!productSnap.exists()) {
+    if (!productDoc.exists) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    const productData = productSnap.data() as Product;
-    const productUUID = productData.uuid; // Get UUID since subproducts use it as productId
+    const productData = productDoc.data() as Product;
+    const productUUID = productData.uuid; 
 
-    const subproductsQuery = query(collection(db, spCollectionName), where("productId", "==", productUUID));
-    const subproductsSnap = await getDocs(subproductsQuery);
+    const subproductsSnap = await adminDB
+      .collection("subproducts")
+      .where("productId", "==", productUUID)
+      .get();
 
-    const batch = writeBatch(db);
     const deletedAt = new Date().toISOString();
+    const batch = adminDB.batch();
 
     subproductsSnap.forEach((subproductDoc) => {
       batch.update(subproductDoc.ref, { deletedAt });
     });
 
-    batch.update(productDoc, { deletedAt });
+    batch.update(adminDB.collection("products").doc(id), { deletedAt });
 
     await batch.commit();
 
@@ -242,7 +232,8 @@ export async function DELETE(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Something went wrong";
+    const message =
+      error instanceof Error ? error.message : "Something went wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

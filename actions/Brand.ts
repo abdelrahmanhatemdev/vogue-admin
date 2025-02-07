@@ -1,4 +1,5 @@
 "use server";
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -7,10 +8,7 @@ const tag: string = "brands";
 
 export const getBrands = async () => {
   try {
-    const res = await fetch(apiURL, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: apiURL, tag });
     if (res?.ok) {
       const { data } = await res.json();
 
@@ -28,10 +26,7 @@ export const getBrands = async () => {
 
 export async function getBrandBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: `${apiURL}/${slug}`, tag });
 
     const { data } = await res.json();
     return data;

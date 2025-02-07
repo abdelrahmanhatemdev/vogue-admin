@@ -1,25 +1,21 @@
 import { CategorySchema } from "@/lib/validation/categorySchema";
 import { NextResponse } from "next/server";
-
 import { adminDB } from "@/database/firebase-admin"; // Use Firebase Admin SDK
-import { addDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 export const collectionName = "categories";
-export const collectionRef = adminDB.collection(collectionName); // ✅ Correct Firestore Admin collection reference
+export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
     const snapShot = await collectionRef.get();
 
-    const data =
-      snapShot.empty
-        ? []
-        : snapShot.docs
-            .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-            .filter((doc) => !doc.deletedAt);
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map((doc) => {
+            return { id: doc.id, ...doc.data() } as Category;
+          })
+          .filter((doc) => !doc.deletedAt);
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -42,7 +38,6 @@ export async function POST(request: Request) {
       label,
     });
 
-    // Check if the slug is already used
     const q = collectionRef.where("slug", "==", slug);
     const snapShot = await q.get();
 
@@ -54,9 +49,18 @@ export async function POST(request: Request) {
     }
 
     const date = new Date().toISOString();
-    const data = { uuid, name, slug, additional, parent, label, createdAt: date, updatedAt: date };
+    const data = {
+      uuid,
+      name,
+      slug,
+      additional,
+      parent,
+      label,
+      createdAt: date,
+      updatedAt: date,
+    };
 
-    const docRef = await collectionRef.add(data); // ✅ Correct Firestore Admin SDK usage
+    const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
       return NextResponse.json({ message: "Category added" }, { status: 200 });
@@ -71,9 +75,17 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, name, slug, additional, parent, label } = await request.json();
+    const { id, uuid, name, slug, additional, parent, label } =
+      await request.json();
 
-    await CategorySchema.parseAsync({ uuid, name, slug, additional, parent, label });
+    await CategorySchema.parseAsync({
+      uuid,
+      name,
+      slug,
+      additional,
+      parent,
+      label,
+    });
 
     const list = (await collectionRef.get()).docs.filter(
       (doc) => doc.id !== id && doc.data().slug === slug
@@ -86,7 +98,7 @@ export async function PUT(request: Request) {
       );
     }
 
-    const docRef = collectionRef.doc(id); // ✅ Correct Firestore Admin SDK usage
+    const docRef = collectionRef.doc(id);
 
     await docRef.update({
       name,
@@ -108,7 +120,7 @@ export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
 
-    const docRef = collectionRef.doc(id); // ✅ Correct Firestore Admin SDK usage
+    const docRef = collectionRef.doc(id);
 
     await docRef.update({ deletedAt: new Date().toISOString() });
 

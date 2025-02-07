@@ -1,32 +1,22 @@
 import { AdminAddSchema, AdminEditSchema } from "@/lib/validation/adminSchema";
-import { NextResponse } from "next/server";
-
-import { db } from "@/database/firebase";
-import { adminAuth } from "@/database/firebase-admin";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { NextResponse } from "next/server";import { adminAuth } from "@/database/firebase-admin";
+import { adminDB } from "@/database/firebase-admin";
 
 export const collectionName = "admins";
-export const collectionRef = collection(db, collectionName);
+export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = (await getDocs(collectionRef)).docs;
+    const snapShot = await collectionRef.get();
 
-    const data =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map((doc) => ({
               id: doc.id,
               ...doc.data(),
-            })) as Admin[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+            } as Admin))
+          .filter((doc) => !doc.deletedAt)
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -63,7 +53,7 @@ export async function POST(request: Request) {
         updatedAt: date,
       };
 
-      await addDoc(collectionRef, data);
+      await collectionRef.add(data);
 
       return NextResponse.json({ message: "Admin added" }, { status: 200 });
     }
@@ -83,10 +73,10 @@ export async function PUT(request: Request) {
 
     await adminAuth.updateUser(uid, { email, password, displayName: name });
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
-      await updateDoc(docRef, {
+      await docRef.update({
         name,
         email,
         updatedAt: new Date().toISOString(),
@@ -104,11 +94,11 @@ export async function DELETE(request: Request) {
   try {
     const { id, uid } = await request.json();
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     const data = { deletedAt: new Date().toISOString() };
 
-    await updateDoc(docRef, data);
+    await docRef.update(data);
 
     await adminAuth.deleteUser(uid);
     

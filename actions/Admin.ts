@@ -1,4 +1,5 @@
 "use server";
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -7,10 +8,7 @@ const tag: string = "admins";
 
 export const getAdmins = async () => {
   try {
-    const res = await fetch(apiURL, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: apiURL, tag });
 
     if (res?.ok) {
       const { data } = await res.json();
@@ -29,10 +27,7 @@ export const getAdmins = async () => {
 
 export async function getAdminById(uuid: string) {
   try {
-    const res = await fetch(`${apiURL}/${uuid}`, {
-      next: { tags: [`${tag}:${uuid}`] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: `${apiURL}/${uuid}`, tag });
 
     const { data } = await res.json();
     return data;

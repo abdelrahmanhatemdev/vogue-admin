@@ -5,7 +5,7 @@ import { db, storage } from "@/database/firebase";
 import { collection, deleteDoc, doc, updateDoc, writeBatch } from "firebase/firestore";
 
 export const collectionName = "images";
-export const collectionRef = collection(db, collectionName);
+export const collectionRef = adminDB.collection(collectionName);
 
 export const config = {
   api: {
@@ -75,10 +75,10 @@ export async function PUT(req: Request) {
     const orderArray = await req.json();
 
     const updatedOrder = orderArray.map(async (id: string, index: number) => {
-      const docRef = doc(db, collectionName, id);
+      const docRef = collectionRef.doc(id);
 
       if (docRef?.id) {
-        await updateDoc(docRef, {
+        await docRef.update({
           sortOrder: index,
           updatedAt: new Date().toISOString(),
         });
@@ -108,13 +108,13 @@ export async function DELETE(req: Request) {
 
     await deleteObject(fileRef);
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     const result = await deleteDoc(docRef);
   
 
     return NextResponse.json(
-      { message: "Photo Deleted", result },
+      { message: "Photo Deleted"},
       { status: 200 }
     );
   } catch (error) {

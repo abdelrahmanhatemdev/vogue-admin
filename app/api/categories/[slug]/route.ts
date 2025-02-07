@@ -1,38 +1,34 @@
 import { NextResponse } from "next/server";
 import { getCategories } from "@/actions/Category";
-import { collectionRef } from "@/app/api/categories/route";
-import { getDocs, query, where } from "firebase/firestore";
+import { adminDB } from "@/database/firebase-admin"; // ✅ Use Firestore Admin SDK
+import { collectionName } from "@/app/api/categories/route";
 
 export const dynamic = "force-static";
 
 export async function GET(
   req: Request,
-  props: { params: Promise<{ slug: string }> }
+  props: { params: { slug: string } }
 ) {
   try {
-    const params = await props.params;
+    const { slug } = props.params;
 
-    const { slug } = await params;
-
-    const q = query(collectionRef, where("slug", "==", slug));
-    const snapShot = (await getDocs(q)).docs;
+    const snapShot = await adminDB
+      .collection(collectionName)
+      .where("slug", "==", slug)
+      .get();
 
     const items =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
+      !snapShot.empty
+        ? snapShot.docs
+            .map((doc) => ({
               id: doc.id,
-              ...doc.data(),
-            })) as Category[]
-          ).filter((doc) => !doc.deletedAt)
+              ...doc.data() ,
+            } as Category))
+            .filter((doc) => !doc.deletedAt)
         : [];
 
     if (items.length > 0) {
-      const data = items[0];
-
-      if (data) {
-        return NextResponse.json({ data }, { status: 200 });
-      }
+      return NextResponse.json({ data: items[0] }, { status: 200 });
     }
 
     throw new Error("No Data Found!");
@@ -45,5 +41,5 @@ export async function GET(
 export async function generateStaticParams() {
   const list: Category[] = await getCategories();
 
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  return list.map(({ slug }) => ({ slug }));
 }

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getBrands } from "@/actions/Brand";
 import { collectionRef } from "@/app/api/brands/route";
-import { getDocs, query, where } from "firebase/firestore";
 
 export const dynamic = "force-static";
 
@@ -14,18 +13,20 @@ export async function GET(
 
     const { slug } = await params;
 
-    const q = query(collectionRef, where("slug", "==", slug));
-    const snapShot = (await getDocs(q)).docs;
+    const q = collectionRef.where("slug", "==", slug);
+    const snapShot = await q.get();
 
     const items =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
+      snapShot.empty
+      ? []
+      : snapShot.docs
+          .map(
+            (doc) =>
+              ({
               id: doc.id,
               ...doc.data(),
-            })) as Brand[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+            } as Brand))
+          .filter((doc) => !doc.deletedAt)
 
     if (items.length > 0) {
       const data = items[0];

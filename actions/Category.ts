@@ -8,7 +8,7 @@ const tag: string = "categories";
 
 export const getCategories = async () => {
   try {
-    const res = await fetchWithAuth({ url: apiURL, tag, cache: "force-cache" });
+    const res = await fetchWithAuth({ url: apiURL, tag });
 
     if (res?.ok) {
       const { data } = await res.json();
@@ -28,7 +28,7 @@ export const getCategories = async () => {
 
 export async function getCategoryBySlug(slug: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${slug}`, tag, cache: "force-cache" });
+    const res = await fetchWithAuth({ url: `${apiURL}/${slug}`, tag });
 
     const { data } = await res.json();
     return data;

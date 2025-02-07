@@ -1,31 +1,23 @@
 import { LabelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
-
-import { db } from "@/database/firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { adminDB } from "@/database/firebase-admin";
 
 export const collectionName = "labels";
-export const collectionRef = collection(db, collectionName);
+export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = (await getDocs(collectionRef)).docs;
+    const snapShot = await collectionRef.get();
 
-    const data =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map((doc) => ({
               id: doc.id,
               ...doc.data(),
-            })) as Label[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+            } as Label))
+          .filter((doc) => !doc.deletedAt)
+        
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -50,7 +42,7 @@ export async function POST(request: Request) {
       updatedAt: date,
     };
 
-    const docRef = await addDoc(collectionRef, data);
+    const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
       return NextResponse.json({ message: "Label added" }, { status: 200 });
@@ -69,10 +61,10 @@ export async function PUT(request: Request) {
 
     await LabelSchema.parseAsync({ uuid, title, hex });
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
-      await updateDoc(docRef, {
+      await docRef.update({
         title,
         hex,
         updatedAt: new Date().toISOString(),
@@ -90,14 +82,14 @@ export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     const data = { deletedAt: new Date().toISOString() };
 
-    const result = await updateDoc(docRef, data);
+    await docRef.update({ deletedAt: new Date().toISOString() });
 
     return NextResponse.json(
-      { message: "Label Deleted", result },
+      { message: "Label Deleted"},
       { status: 200 }
     );
   } catch (error) {

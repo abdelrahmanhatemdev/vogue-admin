@@ -1,4 +1,5 @@
 "use server";
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -7,10 +8,7 @@ const tag: string = "productImages";
 
 export const getProductImages = async () => {
   try {
-    const res = await fetch(apiURL, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: apiURL, tag });
 
     if (res?.ok) {
       const { data } = await res.json();
@@ -29,23 +27,21 @@ export const getProductImages = async () => {
 
 export async function getSubproductImages(id: string) {
   try {
-    const res = await fetch(`${apiURL}/productImages/${id}`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
+    const res = await fetchWithAuth({
+      url: `${apiURL}/productImages/${id}`,
+      tag,
     });
 
     if (res?.ok) {
       const { data } = await res.json();
 
       if (data) {
-        return data.sort(
-          (a: ProductImage, b: ProductImage) => {
-            if (a.sortOrder === b.sortOrder ) {
-              return b.updatedAt.localeCompare(a.updatedAt)
-            }
-            return a.sortOrder - b.sortOrder;
+        return data.sort((a: ProductImage, b: ProductImage) => {
+          if (a.sortOrder === b.sortOrder) {
+            return b.updatedAt.localeCompare(a.updatedAt);
           }
-        );
+          return a.sortOrder - b.sortOrder;
+        });
       }
     }
 

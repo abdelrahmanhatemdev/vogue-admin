@@ -1,4 +1,5 @@
 "use server";
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -7,10 +8,7 @@ const tag: string = "products";
 
 export const getProducts = async () => {
   try {
-    const res = await fetch(apiURL, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: apiURL, tag });
     if (res?.ok) {
       const { data } = await res.json();
 
@@ -28,10 +26,7 @@ export const getProducts = async () => {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}/product`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: `${apiURL}/${slug}/product`, tag });
 
     const { data } = await res.json();
     return data;
@@ -42,10 +37,8 @@ export async function getProductBySlug(slug: string) {
 
 export async function getProducSubproducts(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}/subproducts`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+  
+    const res = await fetchWithAuth({ url: `${apiURL}/${slug}/subproducts`, tag });
 
     const { data } = await res.json();
     return data;

@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProducts } from "@/actions/Product";
-import { collectionRef } from "@/app/api/products/route";
-import { collectionRef as subproductCollection } from "@/app/api/subproducts/route";
-import { getDocs, query, where } from "firebase/firestore";
+import { adminDB } from "@/database/firebase-admin"; // ✅ Firestore Admin SDK
 
 export const dynamic = "force-static";
 
@@ -12,50 +10,46 @@ export async function GET(
 ) {
   try {
     const params = await props.params;
-
     const { slug } = await params;
 
-    const q = query(collectionRef, where("slug", "==", slug));
-    const snapShot = (await getDocs(q)).docs;
+    const productSnap = await adminDB
+      .collection("products")
+      .where("slug", "==", slug)
+      .get();
 
-    const items =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Product[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
-
-    if (items.length > 0) {
-      const product = items[0];
-
-      if (product.uuid) {
-        const q = query(
-          subproductCollection,
-          where("productId", "==", product.uuid)
-        );
-        const subproductsSnapShot = (await getDocs(q)).docs;
-
-        const items =
-          subproductsSnapShot.length > 0
-            ? (
-                subproductsSnapShot.map((doc) => ({
-                  id: doc.id,
-                  ...doc.data(),
-                })) as Subproduct[]
-              ).filter((doc) => !doc.deletedAt)
-            : [];
-        const subproducts: Subproduct[] = items;
-
-        const data = subproducts;
-
-        return NextResponse.json({ data }, { status: 200 });
-      }
+    if (productSnap.empty) {
+      throw new Error("No Product Found!");
     }
 
-    throw new Error("No Data Found!");
+    const product = productSnap.docs
+      .map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as Product)
+      )
+      .filter((doc) => !doc.deletedAt)[0];
+
+    if (!product || !product.uuid) {
+      throw new Error("Invalid Product Data!");
+    }
+
+    const subproductsSnap = await adminDB
+      .collection("subproducts")
+      .where("productId", "==", product.uuid)
+      .get();
+
+    const subproducts = subproductsSnap.empty
+      ? []
+      : (subproductsSnap.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          } as Subproduct))
+          .filter((doc) => !doc.deletedAt));
+
+    return NextResponse.json({ product, subproducts }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -64,6 +58,5 @@ export async function GET(
 
 export async function generateStaticParams() {
   const list: Product[] = await getProducts();
-
   return list.map(({ slug }: { slug: string }) => ({ slug }));
 }

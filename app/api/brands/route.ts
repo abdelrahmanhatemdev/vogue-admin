@@ -1,33 +1,21 @@
 import { BrandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
-
-import { db } from "@/database/firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { adminDB } from "@/database/firebase-admin";
 
 export const collectionName = "brands";
-export const collectionRef = collection(db, collectionName);
+export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = (await getDocs(collectionRef)).docs;
+    const snapShot = await collectionRef.get();
 
-    const data =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Brand[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map((doc) => {
+            return { id: doc.id, ...doc.data() } as Brand;
+          })
+          .filter((doc) => !doc.deletedAt);
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -42,18 +30,20 @@ export async function POST(request: Request) {
 
     await BrandSchema.parseAsync({ uuid, name, slug });
 
-    const q = query(collectionRef, where("slug", "==", slug));
+    const q = collectionRef.where("slug", "==", slug);
 
-    const snapShot = (await getDocs(q)).docs;
-    const existedItems =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Brand[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+    const snapShot = await q.get();
+    const existedItems = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as Brand)
+          )
+          .filter((doc) => !doc.deletedAt);
 
     if (existedItems.length > 0) {
       return NextResponse.json(
@@ -71,7 +61,7 @@ export async function POST(request: Request) {
       updatedAt: date,
     };
 
-    const docRef = await addDoc(collectionRef, data);
+    const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
       return NextResponse.json({ message: "Brand added" }, { status: 200 });
@@ -90,7 +80,7 @@ export async function PUT(request: Request) {
 
     await BrandSchema.parseAsync({ uuid, name, slug });
 
-    const list = (await getDocs(collectionRef)).docs.filter(
+   const list = (await collectionRef.get()).docs.filter(
       (doc) => doc.id !== id && doc.data().slug === slug
     );
 
@@ -105,10 +95,10 @@ export async function PUT(request: Request) {
       );
     }
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
-      await updateDoc(docRef, {
+      await docRef.update({
         name,
         slug,
         updatedAt: new Date().toISOString(),
@@ -126,14 +116,14 @@ export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
 
-    const docRef = doc(db, collectionName, id);
+    const docRef = collectionRef.doc(id);
 
     const data = { deletedAt: new Date().toISOString() };
 
-    const result = await updateDoc(docRef, data);
+    await docRef.update({ deletedAt: new Date().toISOString() });
 
     return NextResponse.json(
-      { message: "Brand Deleted", result },
+      { message: "Brand Deleted"},
       { status: 200 }
     );
   } catch (error) {

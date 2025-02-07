@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { collectionRef } from "@/app/api/images/route";
-import { getDocs, query, where } from "firebase/firestore";
+
 import { getSubproducts } from "@/actions/Subproduct";
 
 export const dynamic = "force-static";
@@ -16,17 +16,16 @@ export async function GET(
 
     const q = query(collectionRef, where("subproductId", "==", subproductId));
 
-    const snapShot = (await getDocs(q)).docs;
+    const snapShot = await q.get();
 
-    const data =
-      snapShot.length > 0
-        ? (
-            snapShot.map((doc) => ({
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs
+          .map((doc) => ({
               id: doc.id,
               ...doc.data(),
             })) as Brand[]
-          ).filter((doc) => !doc.deletedAt)
-        : [];
+          .filter((doc) => !doc.deletedAt)
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
