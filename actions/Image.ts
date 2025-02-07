@@ -39,7 +39,12 @@ export async function getSubproductImages(id: string) {
 
       if (data) {
         return data.sort(
-          (a: ProductImage, b: ProductImage) => a.sortOrder - b.sortOrder
+          (a: ProductImage, b: ProductImage) => {
+            if (a.sortOrder === b.sortOrder ) {
+              return b.updatedAt.localeCompare(a.updatedAt)
+            }
+            return a.sortOrder - b.sortOrder;
+          }
         );
       }
     }
@@ -57,9 +62,7 @@ export async function addProductImage(data: FormData) {
   })
     .then((res) => res.json())
     .then((res) => {
-      
-      
-      if (res?.statusText === "OK" && res?.data?.message) {
+      if (res?.data?.message) {
         revalidateTag(tag);
         return { status: "success", message: res.data.message };
       }

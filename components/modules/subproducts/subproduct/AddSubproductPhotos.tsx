@@ -84,9 +84,33 @@ function AddSubproductPhotos({
       });
       formData.append("subproductId", subproductId);
 
+      const data = new Date().toISOString();
+
+      const optimisticData = images.map((image, index) => ({
+        id: `${data}-${index}`,
+        uuid: `${data}-${index}`,
+        url: image.src,
+        subproductId: subproductId,
+        sortOrder: 0,
+        createdAt: data,
+        updatedAt: data,
+        isPending: true,
+      }));
+
+      startTransition(() => {
+        addOptimisticData((prev) => {
+          return [...prev, ...optimisticData].sort(
+            (a: ProductImage, b: ProductImage) => {
+              if (a.sortOrder === b.sortOrder ) {
+                return b.updatedAt.localeCompare(a.updatedAt)
+              }
+              return a.sortOrder - b.sortOrder;
+            }
+          );
+        });
+      });
+
       const res = await addProductImage(formData);
-      console.log("res", res);
-      
       notify(res);
     }
   }
@@ -210,7 +234,7 @@ function AddSubproductPhotos({
                   name="images"
                   render={() => (
                     <FormItem className="w-full h-full">
-                      <FormLabel className="border border-dashed border-neutral-300 dark:border-neutral-950 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 flex justify-center rounded-lg items-center cursor-pointer w-full h-full">
+                      <FormLabel className="border border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 flex justify-center rounded-lg items-center cursor-pointer w-full h-full">
                         <div className="flex flex-col items-center gap-1 justify-center p-4">
                           <div>Choose Photos</div>
                         </div>

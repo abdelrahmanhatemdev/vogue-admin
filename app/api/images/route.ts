@@ -39,7 +39,9 @@ export async function POST(req: Request) {
     for (const file of files) {
       if (!(file instanceof File)) continue;
 
-      const fileRef = ref(storage, `uploads/${file.name}`);
+      const date = new Date().toISOString()
+
+      const fileRef = ref(storage, `uploads/${file.name}-${date}`);
 
       await uploadBytes(fileRef, file);
 
@@ -56,6 +58,7 @@ export async function POST(req: Request) {
       batch.set(imageDocRef, {
         subproductId,
         url,
+        sortOrder: 0,
         uuid: uuidv4(),
         createdAt: date,
         updatedAt: date,

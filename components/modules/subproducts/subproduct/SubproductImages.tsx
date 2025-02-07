@@ -113,10 +113,14 @@ const SubproductImages = ({
                 ]);
               });
               for (const selected of selectedImages) {
-                const selectedImage = imageList.find(image => image.id === selected)
+                const selectedImage = imageList.find(
+                  (image) => image.id === selected
+                );
 
-                
-                const data = { id: selected, url: selectedImage?.url ? selectedImage.url : "" };
+                const data = {
+                  id: selected,
+                  url: selectedImage?.url ? selectedImage.url : "",
+                };
                 console.log("data", data);
                 const res: ActionResponse = await deleteProductImage(data);
                 notify(res);
@@ -190,34 +194,34 @@ const SubproductImages = ({
           }}
         >
           {optimisticImages.map((image, index) => {
-            const { id, isPending, sortOrder, url } = image;
+            const { id, isPending, url } = image;
 
             return (
-              <div
-                className="w-full sm:h-32 sm:w-auto relative rounded-md overflow-hidden"
-                key={index}
-                onClick={() => {
-                  setModalOpen(true);
-                  setModal({
-                    children: (
-                      <div>
-                        <PhotoViewer
-                          setModalOpen={setModalOpen}
-                          src={`${url}`}
-                        />
-                      </div>
-                    ),
-                    className:
-                      "bg-transparent border-none lg:py-14  bg-[hsl(0,0%,0%,0.5)]",
-                    onPointerDownOutsideClose: true,
-                  });
-                }}
-              >
-                {url && (
+              url && (
+                <div
+                  className="w-full sm:h-32 sm:w-auto relative rounded-md overflow-hidden"
+                  key={index}
+                  onClick={() => {
+                    setModalOpen(true);
+                    setModal({
+                      children: (
+                        <div>
+                          <PhotoViewer
+                            setModalOpen={setModalOpen}
+                            src={`${url}`}
+                          />
+                        </div>
+                      ),
+                      className:
+                        "bg-transparent border-none lg:py-14 w-[100px] bg-[hsl(0,0%,0%,0.5)]",
+                      onPointerDownOutsideClose: true,
+                    });
+                  }}
+                >
                   <>
                     <Image
                       key={id}
-                      src={isPending ? url : `${url}`}
+                      src={`${url}`}
                       alt={`Subproduct photo-${id} `}
                       className={cn(
                         "w-full sm:w-auto sm:h-32 rounded-md",
@@ -227,30 +231,30 @@ const SubproductImages = ({
                       width={200}
                     />
                   </>
-                )}
-                <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
-                  <X
-                    className="absolute end-2 top-2 text-neutral-300 hover:text-neutral-800 dark:text-neutral-950 dark:hover:text-neutral-400 transition-colors text-[.5rem] cursor-pointer"
-                    size={15}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteImage(id, url);
-                    }}
-                  />
-                  <Checkbox
-                    className="absolute inset-2 cursor-pointer border-neutral-100 dark:border-neutral-950 hover:border-neutral-950 dark:hover:border-neutral-400 transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                    onCheckedChange={(value) =>
-                      setSelectedImages((prev) =>
-                        value
-                          ? [...prev, id]
-                          : [...prev.filter((selected) => selected !== id)]
-                      )
-                    }
-                    checked={selectedImages.includes(id)}
-                  />
+                  <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
+                    <X
+                      className="absolute end-2 top-2 text-neutral-300 hover:text-neutral-800 dark:text-neutral-950 dark:hover:text-neutral-400 transition-colors text-[.5rem] cursor-pointer"
+                      size={15}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteImage(id, url);
+                      }}
+                    />
+                    <Checkbox
+                      className="absolute inset-2 cursor-pointer border-neutral-100 dark:border-neutral-950 hover:border-neutral-950 dark:hover:border-neutral-400 transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                      onCheckedChange={(value) =>
+                        setSelectedImages((prev) =>
+                          value
+                            ? [...prev, id]
+                            : [...prev.filter((selected) => selected !== id)]
+                        )
+                      }
+                      checked={selectedImages.includes(id)}
+                    />
+                  </div>
                 </div>
-              </div>
+              )
             );
           })}
         </ReactSortable>
