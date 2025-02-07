@@ -17,27 +17,19 @@ export async function fetchWithAuth({
     | "reload";
   options?: RequestInit;
 }) {
-
   const token = (await cookies()).get("token")?.value;
 
-  console.log("token", token);
-  
+  const headers = {
+    ...(options.headers || {}),
+    "Content-Type": "application/json",
+    Authorization: token ? `Bearer ${token}` : "", // Send the session token
+  };
 
-  if (token) {
-    const headers = {
-        ...(options.headers || {}),
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,  // Send the session token
-    };
-
-    return fetch(url, {
-      ...options,
-      headers,
-      method: "GET",
-      next: tag ? { tags: [tag] } : undefined,
-      cache: cache || "default",
-    }).then((res) => res.json())
-  }
-
-  return { error: "User not authenticated" };
+  return fetch(url, {
+    ...options,
+    headers,
+    method: "GET",
+    next: tag ? { tags: [tag] } : undefined,
+    cache: cache || "default",
+  });
 }

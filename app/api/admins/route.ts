@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       displayName: name
     });
 
-    await adminAuth.setCustomUserClaims(user.uid, { admin: true});
+    await adminAuth.setCustomUserClaims(user.uid, { admin: true, role: "admin"});
 
     if (user.uid) {
       const date = new Date().toISOString();

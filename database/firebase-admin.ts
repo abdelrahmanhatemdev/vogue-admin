@@ -16,7 +16,7 @@ const app =
 
 const adminAuth = getAuth(app);
 
-const adminStorage = getStorage()
-const adminDB = getFirestore()
+const adminStorage = getStorage(app)
+const adminDB = getFirestore(app)
 
 export { adminAuth, adminStorage, adminDB };

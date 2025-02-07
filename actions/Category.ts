@@ -2,41 +2,24 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/axiosClient";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
 export const getCategories = async () => {
   try {
-    const token = (await cookies()).get("token")?.value;
+    const res = await fetchWithAuth({ url: apiURL, tag, cache: "force-cache" });
 
-    // console.log("token", token);
-    
+    if (res?.ok) {
+      const { data } = await res.json();
 
-    if (token) {
-      const headers = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Send the session token
-      };
-      const res = await fetch(apiURL, {
-        next: { tags: [tag] },
-        cache: "force-cache",
-        headers,
-      })
-
-      // const res = await fetchWithAuth({url: apiURL, tag, cache: "force-cache"});
-
-      if (res?.ok) {
-        const { data } = await res.json();
-
-        if (data) {
-          return data.sort((a: Category, b: Category) =>
-            b.updatedAt.localeCompare(a.updatedAt)
-          );
-        }
+      if (data) {
+        return data.sort((a: Category, b: Category) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
       }
     }
+
     return [];
   } catch (error) {
     return console.log(error);
@@ -45,10 +28,7 @@ export const getCategories = async () => {
 
 export async function getCategoryBySlug(slug: string) {
   try {
-    const res = await fetch(`${apiURL}/${slug}`, {
-      next: { tags: [tag] },
-      cache: "force-cache",
-    });
+    const res = await fetchWithAuth({ url: `${apiURL}/${slug}`, tag, cache: "force-cache" });
 
     const { data } = await res.json();
     return data;
