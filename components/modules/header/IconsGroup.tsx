@@ -13,7 +13,6 @@ import { memo } from "react";
 import { CiLogout } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { cookies } from "next/headers";
 
 
 function IconsGroup() {

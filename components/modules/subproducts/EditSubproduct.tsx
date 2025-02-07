@@ -36,14 +36,12 @@ function EditSubproduct({
   item,
   setModalOpen,
   addOptimisticData,
-  productId,
 }: {
   item: Subproduct;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData?: (
     action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
-  productId: string;
 }) {
   const { data: colors } = useData("colors");
   const { data: sizes } = useData("sizes");

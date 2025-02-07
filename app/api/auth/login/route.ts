@@ -29,6 +29,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, uid: decodedToken.uid, isAdmin });
   } catch (error) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

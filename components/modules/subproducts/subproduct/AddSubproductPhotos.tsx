@@ -15,16 +15,11 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useState, useTransition } from "react";
 import { cn, notify } from "@/lib/utils";
-import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import { Separator } from "@/components/ui/separator";
 import type { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
-import { mutate } from "swr";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/database/firebase";
-import axios from "axios";
 import { addProductImage } from "@/actions/Image";
 
 export type PreviewType = {
@@ -94,7 +89,7 @@ function AddSubproductPhotos({
         sortOrder: 0,
         createdAt: data,
         updatedAt: data,
-        isPending: true,
+        isPending: !isPending,
       }));
 
       startTransition(() => {

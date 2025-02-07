@@ -93,7 +93,7 @@ function Subproduct({
     sizes,
   } = subproduct;
 
-  const {name: productName, slug: product_slug, id: productId} = product
+  const {name: productName, slug: product_slug} = product
 
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -140,7 +140,6 @@ function Subproduct({
                     <EditSubproduct
                       item={subproduct}
                       setModalOpen={setModalOpen}
-                      productId={productId as string}
                     />
                   ),
                 });

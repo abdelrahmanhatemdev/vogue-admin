@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProducts } from "@/actions/Product";
 import { collectionRef } from "@/app/api/products/route";
-import { collectionRef as subproductCollection } from "@/app/api/subproducts/route";
 import { getDocs, query, where } from "firebase/firestore";
 
 export const dynamic = "force-static";

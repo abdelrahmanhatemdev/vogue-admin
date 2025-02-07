@@ -1,5 +1,3 @@
-import { auth } from "@/database/firebase";
-import { adminAuth } from "@/database/firebase-admin";
 import { cookies } from "next/headers";
 
 export async function fetchWithAuth({

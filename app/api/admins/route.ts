@@ -63,7 +63,7 @@ export async function POST(request: Request) {
         updatedAt: date,
       };
 
-      const docRef = await addDoc(collectionRef, data);
+      await addDoc(collectionRef, data);
 
       return NextResponse.json({ message: "Admin added" }, { status: 200 });
     }

@@ -2,7 +2,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import NoInternet from "./NoInternet";
 import AppLayout from "./AppLayout";
-import { useAuth } from "@/context/AuthContext";
 
 function MainLayout({ children }: Readonly<{ children: ReactNode }>) {
   const [isOnline, setIsOnline] = useState(true);

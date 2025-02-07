@@ -14,7 +14,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 
-import { collectionName as spCollectionName, collectionRef as spCollectionRef } from "@/app/api/subproducts/route";
+import { collectionName as spCollectionName } from "@/app/api/subproducts/route";
 
 export const collectionName = "products";
 export const collectionRef = collection(db, collectionName);
