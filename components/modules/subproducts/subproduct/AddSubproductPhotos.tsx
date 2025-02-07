@@ -85,11 +85,9 @@ function AddSubproductPhotos({
       formData.append("subproductId", subproductId);
 
       const res = await addProductImage(formData);
+      console.log("res", res);
+      
       notify(res);
-
-      // mutate(
-      //   `${process.env.NEXT_PUBLIC_APP_API}/images/productImages/${subproductId}`
-      // );
     }
   }
 

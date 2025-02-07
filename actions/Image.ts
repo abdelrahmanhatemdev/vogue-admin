@@ -34,9 +34,17 @@ export async function getSubproductImages(id: string) {
       cache: "force-cache",
     });
 
-    const { data } = await res.json();
+    if (res?.ok) {
+      const { data } = await res.json();
 
-    return data;
+      if (data) {
+        return data.sort(
+          (a: ProductImage, b: ProductImage) => a.sortOrder - b.sortOrder
+        );
+      }
+    }
+
+    return [];
   } catch (error) {
     return console.log(error);
   }
@@ -46,8 +54,11 @@ export async function addProductImage(data: FormData) {
   return fetch(apiURL, {
     method: "POST",
     body: data,
-  }).then(res => res.json())
+  })
+    .then((res) => res.json())
     .then((res) => {
+      
+      
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
         return { status: "success", message: res.data.message };
@@ -80,7 +91,7 @@ export async function editProductImage(data: string[]) {
     });
 }
 
-export async function deleteProductImage(data: { id: string }) {
+export async function deleteProductImage(data: { id: string; url: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

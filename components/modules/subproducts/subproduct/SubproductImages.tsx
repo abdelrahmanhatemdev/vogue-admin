@@ -61,14 +61,13 @@ const SubproductImages = ({
     startTransition(() => {
       addOptimisticImages(updatedList);
     });
-    // setImageList(updatedList);
 
     const list: string[] = updatedList.map((image) => image.id);
     const res = await editProductImage(list);
     notify(res);
   }
 
-  async function deleteImage(id: string) {
+  async function deleteImage(id: string, url: string) {
     setModalOpen(false);
 
     startTransition(() => {
@@ -82,7 +81,7 @@ const SubproductImages = ({
         }),
       ]);
     });
-    const res = await deleteProductImage({ id });
+    const res = await deleteProductImage({ id, url });
     notify(res);
   }
 
@@ -114,7 +113,11 @@ const SubproductImages = ({
                 ]);
               });
               for (const selected of selectedImages) {
-                const data = { id: selected };
+                const selectedImage = imageList.find(image => image.id === selected)
+
+                
+                const data = { id: selected, url: selectedImage?.url ? selectedImage.url : "" };
+                console.log("data", data);
                 const res: ActionResponse = await deleteProductImage(data);
                 notify(res);
               }
@@ -187,7 +190,7 @@ const SubproductImages = ({
           }}
         >
           {optimisticImages.map((image, index) => {
-            const { id, isPending, url } = image;
+            const { id, isPending, sortOrder, url } = image;
 
             return (
               <div
@@ -231,7 +234,7 @@ const SubproductImages = ({
                     size={15}
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteImage(id);
+                      deleteImage(id, url);
                     }}
                   />
                   <Checkbox

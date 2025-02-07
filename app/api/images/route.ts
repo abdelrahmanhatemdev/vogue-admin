@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import { Formidable } from "formidable";
 import { adminDB, adminStorage } from "@/database/firebase-admin";
 import { promises as fs } from "fs";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "@/database/firebase";
-import { collection, doc, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, updateDoc, writeBatch } from "firebase/firestore";
 
 export const collectionName = "images";
 export const collectionRef = collection(db, collectionName);
@@ -28,7 +28,10 @@ export async function POST(req: Request) {
     }
 
     if (!subproductId) {
-      return NextResponse.json({ error: "Missing subp roductId" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing subp roductId" },
+        { status: 400 }
+      );
     }
 
     const downloadUrls: string[] = [];
@@ -61,57 +64,62 @@ export async function POST(req: Request) {
 
     await batch.commit();
 
-    return NextResponse.json({ message: "Photos added" }, { status: 200 });
+    return NextResponse.json({ data: {message: "Photos added"} }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// export async function PUT(req: Request) {
-//   try {
-//     const orderArray = await req.json();
+export async function PUT(req: Request) {
+  try {
+    const orderArray = await req.json();
 
-//     const updatedOrder = orderArray.map((orderID: number, index: number) => {
-//       db.execute(`UPDATE ${tableName} SET sortOrder=? WHERE id = ?`, [
-//         index,
-//         orderID,
-//       ]);
-//     });
+    const updatedOrder = orderArray.map(async (id: string, index: number) => {
+      const docRef = doc(db, collectionName, id);
 
-//     await Promise.all(updatedOrder);
+      if (docRef?.id) {
+        await updateDoc(docRef, {
+          sortOrder: index,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+    });
 
-//     return NextResponse.json({ message: "Photos are sorted" }, { status: 200 });
-//   } catch (error) {
-//     if (error instanceof ZodError) {
-//       return NextResponse.json(
-//         { error: error.errors[0].message },
-//         { status: 500 }
-//       );
-//     }
-//     const message = error instanceof Error ? error.message : "Something Wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
+    await Promise.all(updatedOrder);
 
-// export async function DELETE(request: Request) {
-//   try {
-//     const { id } = await request.json();
+    return NextResponse.json({ message: "Photos are sorted" }, { status: 200 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
 
-//     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-//       `UPDATE ${tableName} SET deletedAt = CURRENT_TIMESTAMP WHERE id = ?`,
-//       [id]
-//     );
+export async function DELETE(req: Request) {
+  try {
+    const { id, url } = await req.json();
 
-//     if (result.affectedRows) {
-//       return NextResponse.json(
-//         { message: "Photo Deleted", result },
-//         { status: 200 }
-//       );
-//     }
-//     return new Error("Something Wrong");
-//   } catch (error) {
-//     const message = error instanceof Error ? error.message : "Something Wrong";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
+    if (!url) {
+      return NextResponse.json({ error: "No image URL provided" }, { status: 400 });
+    }
+
+    const path = decodeURIComponent(url.split("/o/")[1].split("?")[0]);
+
+    const fileRef = ref(storage, path);
+
+    await deleteObject(fileRef);
+
+    const docRef = doc(db, collectionName, id);
+
+    const result = await deleteDoc(docRef);
+  
+
+    return NextResponse.json(
+      { message: "Photo Deleted", result },
+      { status: 200 }
+    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
