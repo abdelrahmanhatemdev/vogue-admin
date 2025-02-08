@@ -49,7 +49,7 @@ export async function GET(
           } as Subproduct))
           .filter((doc) => !doc.deletedAt));
 
-    return NextResponse.json({ product, subproducts }, { status: 200 });
+    return NextResponse.json({ data: subproducts }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

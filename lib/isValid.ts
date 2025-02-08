@@ -1,4 +1,4 @@
-import api from "./axiosClient";
+import api from "./api/axiosClient";
 
 const apiURL = process.env.NEXT_PUBLIC_APP_API;
 

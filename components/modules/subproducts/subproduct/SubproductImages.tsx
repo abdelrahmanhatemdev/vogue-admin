@@ -20,6 +20,9 @@ import { Trash2Icon, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import Image from "next/image";
+import { deleteObject, ref } from "firebase/storage";
+import { db, storage } from "@/database/firebase";
+import { collection } from "firebase/firestore";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -67,6 +70,14 @@ const SubproductImages = ({
     notify(res);
   }
 
+  async function deleteStorageFile(url: string) {
+    const path = decodeURIComponent(url.split("/o/")[1].split("?")[0]);
+    const fileRef = ref(storage, path);
+    await deleteObject(fileRef);
+  }
+
+  
+
   async function deleteImage(id: string, url: string) {
     setModalOpen(false);
 
@@ -74,14 +85,17 @@ const SubproductImages = ({
       addOptimisticImages((prev: ProductImage[]) => [
         ...prev.map((item) => {
           if (item.id === id) {
-            const pendingItem = { ...item, isPending: !isPending };
+            const pendingItem = { ...item, isPending: true };
             return pendingItem;
           }
           return item;
         }),
       ]);
     });
-    const res = await deleteProductImage({ id, url });
+
+    await deleteStorageFile(url)
+
+    const res = await deleteProductImage({ id });
     notify(res);
   }
 
@@ -121,7 +135,9 @@ const SubproductImages = ({
                   id: selected,
                   url: selectedImage?.url ? selectedImage.url : "",
                 };
-                console.log("data", data);
+                if (data.url) {
+                  await deleteStorageFile(data.url)
+                }
                 const res: ActionResponse = await deleteProductImage(data);
                 notify(res);
               }

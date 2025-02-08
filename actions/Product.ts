@@ -1,6 +1,6 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
-import api from "@/lib/axiosClient";
+import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/products`;
@@ -27,9 +27,16 @@ export const getProducts = async () => {
 export async function getProductBySlug(slug: string) {
   try {
     const res = await fetchWithAuth({ url: `${apiURL}/${slug}/product`, tag });
+    
 
-    const { data } = await res.json();
-    return data;
+    if (res?.ok) {
+      const { data } = await res.json();
+
+      if (data) {
+        return data
+      }
+    }
+    return [];
   } catch (error) {
     return console.log(error);
   }
@@ -40,8 +47,16 @@ export async function getProducSubproducts(slug: string) {
   
     const res = await fetchWithAuth({ url: `${apiURL}/${slug}/subproducts`, tag });
 
-    const { data } = await res.json();
-    return data;
+    if (res?.ok) {
+      const { data } = await res.json();
+
+      if (data) {
+        return data.sort((a: Product, b: Product) =>
+          b.updatedAt.localeCompare(a.updatedAt)
+        );
+      }
+    }
+    return [];
   } catch (error) {
     return console.log(error);
   }

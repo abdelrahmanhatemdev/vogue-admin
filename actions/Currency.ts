@@ -1,6 +1,6 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
-import api from "@/lib/axiosClient";
+import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/settings/currencies`;

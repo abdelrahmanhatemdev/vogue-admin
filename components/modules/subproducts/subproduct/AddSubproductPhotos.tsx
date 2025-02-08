@@ -21,6 +21,8 @@ import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema"
 import { Separator } from "@/components/ui/separator";
 import type { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
 import { addProductImage } from "@/actions/Image";
+import { storage } from "@/database/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export type PreviewType = {
   type: "image/jpeg" | "image/png" | "image/webp";
@@ -73,22 +75,16 @@ function AddSubproductPhotos({
     if (values?.images) {
       const { images: formImages, subproductId } = values;
 
-      const formData = new FormData();
-      Array.from(formImages).forEach((file) => {
-        formData.append("files", file);
-      });
-      formData.append("subproductId", subproductId);
-
-      const data = new Date().toISOString();
+      const date = new Date().toISOString();
 
       const optimisticData = images.map((image, index) => ({
-        id: `${data}-${index}`,
-        uuid: `${data}-${index}`,
+        id: `${date}-${index}`,
+        uuid: `${date}-${index}`,
         url: image.src,
         subproductId: subproductId,
         sortOrder: 0,
-        createdAt: data,
-        updatedAt: data,
+        createdAt: date,
+        updatedAt: date,
         isPending: !isPending,
       }));
 
@@ -96,8 +92,8 @@ function AddSubproductPhotos({
         addOptimisticData((prev) => {
           return [...prev, ...optimisticData].sort(
             (a: ProductImage, b: ProductImage) => {
-              if (a.sortOrder === b.sortOrder ) {
-                return b.updatedAt.localeCompare(a.updatedAt)
+              if (a.sortOrder === b.sortOrder) {
+                return b.updatedAt.localeCompare(a.updatedAt);
               }
               return a.sortOrder - b.sortOrder;
             }
@@ -105,7 +101,26 @@ function AddSubproductPhotos({
         });
       });
 
-      const res = await addProductImage(formData);
+      const uploadPromises = Array.from(formImages).map(async (file) => {
+        if (!(file instanceof File)) return null;
+
+        const filePath = `products/${file.name}-${date}`;
+        const fileRef = ref(storage, filePath);
+
+        await uploadBytes(fileRef, file);
+        return getDownloadURL(fileRef);
+      });
+
+      const urls = (await Promise.all(uploadPromises)).filter(
+        Boolean
+      ) as string[];
+
+      const data = {
+        subproductId: subproductId,
+        urls,
+      };
+
+      const res = await addProductImage(data);
       notify(res);
     }
   }

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { collectionRef } from "@/app/api/images/route";
-
 import { getSubproducts } from "@/actions/Subproduct";
 
 export const dynamic = "force-static";
@@ -14,18 +13,19 @@ export async function GET(
   try {
     const { subproductId } = await params;
 
-    const q = query(collectionRef, where("subproductId", "==", subproductId));
+    const q = collectionRef.where("subproductId", "==", subproductId);
 
     const snapShot = await q.get();
 
     const data = snapShot.empty
       ? []
-      : snapShot.docs
-          .map((doc) => ({
+      : snapShot.docs.map(
+          (doc) =>
+            ({
               id: doc.id,
               ...doc.data(),
-            })) as Brand[]
-          .filter((doc) => !doc.deletedAt)
+            })
+        );
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

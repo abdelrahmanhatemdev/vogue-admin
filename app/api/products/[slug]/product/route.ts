@@ -16,7 +16,7 @@ export async function GET(
 
     const q = collectionRef.where("slug", "==", slug);
     const snapShot = await q.get();
-
+  
     const items =
       snapShot.empty
       ? []
@@ -26,7 +26,7 @@ export async function GET(
               ({
               id: doc.id,
               ...doc.data(),
-            } as Product))
+            } as Product)) 
           .filter((doc) => !doc.deletedAt)
 
     if (items.length > 0) {

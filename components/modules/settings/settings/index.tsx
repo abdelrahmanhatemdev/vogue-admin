@@ -32,7 +32,7 @@ function Setting({ data }: { data: Setting[] }) {
 
       <div className="flex flex-col gap-2 py-4">
         {optimisicData.map((item) => (
-          <div key={item.uuid}>
+          <div key={item.id}>
             <EditSetting item={item} addOptimisticData={addOptimisticData} />
           </div>
         ))}

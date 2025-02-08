@@ -17,11 +17,11 @@ export async function generateMetadata({
   const { slug } = await params;
 
   if (slug) {
-    const data = await getProductBySlug(slug);
+    const product = await getProductBySlug(slug);
 
-    if (data?.product?.name) {
+    if (product?.name) {
       return {
-        title: `${title} - ${data.product.name}`,
+        title: `${title} - ${product.name}`,
       };
     }
   }
@@ -36,6 +36,7 @@ export default async function ProductPage(props: {
   const params = await props.params;
 
   const { slug } = await params;
+  
   const productObj = await getProductBySlug(slug);
 
   if (!productObj?.id) {

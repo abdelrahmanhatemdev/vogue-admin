@@ -1,10 +1,11 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
-import api from "@/lib/axiosClient";
+import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/images`;
-const tag: string = "productImages";
+const tag = "productImages";
+const subproductTag = "subproducts";
 
 export const getProductImages = async () => {
   try {
@@ -51,15 +52,13 @@ export async function getSubproductImages(id: string) {
   }
 }
 
-export async function addProductImage(data: FormData) {
-  return fetch(apiURL, {
-    method: "POST",
-    body: data,
-  })
-    .then((res) => res.json())
+export async function addProductImage(data: {subproductId: string; urls:string[]}) {
+  return api
+    .post(apiURL, data)
     .then((res) => {
-      if (res?.data?.message) {
+      if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(subproductTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -76,8 +75,11 @@ export async function editProductImage(data: string[]) {
   return api
     .put(apiURL, data)
     .then((res) => {
+      console.log(res);
+      
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(subproductTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -90,12 +92,13 @@ export async function editProductImage(data: string[]) {
     });
 }
 
-export async function deleteProductImage(data: { id: string; url: string }) {
+export async function deleteProductImage(data: { id: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
+        revalidateTag(subproductTag);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
