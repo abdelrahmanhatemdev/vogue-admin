@@ -21,8 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import Image from "next/image";
 import { deleteObject, ref } from "firebase/storage";
-import { db, storage } from "@/database/firebase";
-import { collection } from "firebase/firestore";
+import { storage } from "@/database/firebase";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -85,7 +84,7 @@ const SubproductImages = ({
       addOptimisticImages((prev: ProductImage[]) => [
         ...prev.map((item) => {
           if (item.id === id) {
-            const pendingItem = { ...item, isPending: true };
+            const pendingItem = { ...item, isPending: !isPending };
             return pendingItem;
           }
           return item;

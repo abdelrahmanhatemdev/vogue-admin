@@ -2,8 +2,6 @@ import { ProductSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 
-import { collectionName as spCollectionName } from "@/app/api/subproducts/route";
-
 export const collectionName = "products";
 export const collectionRef = adminDB.collection(collectionName);
 

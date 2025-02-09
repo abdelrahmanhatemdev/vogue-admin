@@ -66,7 +66,7 @@ export async function DELETE(req: Request) {
 
     const docRef = collectionRef.doc(id);
 
-    const result = await docRef.delete();
+    await docRef.delete();
 
     return NextResponse.json({ message: "Photo Deleted" }, { status: 200 });
   } catch (error) {

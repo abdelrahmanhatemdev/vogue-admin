@@ -13,24 +13,18 @@ import { memo } from "react";
 import { CiLogout } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-
+import { useAuth } from "@/hooks/useAuth";
 
 function IconsGroup() {
-  // const { data: session } = useSession();
-  // const user = session?.user;
-
- 
-
+  const { user, logout } = useAuth();
   const router = useRouter();
-  
-    const handleLogOut = async () => {
-      // await signOut({ redirect: false });
-      router.push("/login");
-    };
 
-  return true ?
-  // user && user?.role === "admin" 
-   (
+  const handleLogOut = async () => {
+    await logout();
+    router.push("/login");
+  };
+
+  return user ? (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -56,7 +50,10 @@ function IconsGroup() {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem className="flex gap-2 cursor-pointer" onClick={handleLogOut}>
+            <DropdownMenuItem
+              className="flex gap-2 cursor-pointer"
+              onClick={handleLogOut}
+            >
               <CiLogout />
               <span>Logout</span>
             </DropdownMenuItem>

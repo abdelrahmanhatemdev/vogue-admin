@@ -84,8 +84,6 @@ export async function DELETE(request: Request) {
 
     const docRef = collectionRef.doc(id);
 
-    const data = { deletedAt: new Date().toISOString() };
-
     await docRef.update({ deletedAt: new Date().toISOString() });
 
     return NextResponse.json(

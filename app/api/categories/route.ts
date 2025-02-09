@@ -74,9 +74,23 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const reqData = await request.json();
+  if (reqData?.property) {
+    const { property, id, value } = reqData;
+    const docRef = collectionRef.doc(id);
+
+    if (docRef?.id) {
+      await docRef.update({
+        [property]: value,
+        updatedAt: new Date().toISOString(),
+      });
+
+      return NextResponse.json({ message: "Category updated" }, { status: 200 });
+    }
+  }
+
   try {
-    const { id, uuid, name, slug, additional, parent, label } =
-      await request.json();
+    const { id, uuid, name, slug, additional, parent, label } = reqData;
 
     await CategorySchema.parseAsync({
       uuid,

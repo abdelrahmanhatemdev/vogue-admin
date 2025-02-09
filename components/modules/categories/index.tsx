@@ -183,7 +183,7 @@ function Categories({ data }: { data: Category[] }) {
                   });
 
                   const res: ActionResponse = await editCategory({
-                    uuid: item.uuid,
+                    id: item.id,
                     property: "additional",
                     value: !item.additional,
                   });
