@@ -7,7 +7,7 @@ export const ColorSchema = z.object({
     .min(1, {
       message: "Name is required",
     })
-    .max(9, {
+    .max(20, {
       message: "Name should not have more than 9 charachters.",
     }),
   hex: z.string().min(1, {

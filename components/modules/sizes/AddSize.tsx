@@ -116,7 +116,7 @@ function AddSize({
               <FormLabel>Order</FormLabel>
               <FormControl>
                 <Select 
-                value={`${field.value}`} 
+                value={`${field.value?.toString() ?? "0"}`} 
                 onValueChange={field.onChange}>
                   <SelectTrigger className="bg-neutral-200 dark:bg-neutral-800 rounded-md">
                     <SelectValue

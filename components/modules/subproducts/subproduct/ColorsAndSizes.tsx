@@ -47,7 +47,7 @@ const ColorsAndSizes = ({
 
               return itemSize ? (
                 <span
-                  className={`h-5 w-5 rounded-sm flex justify-center items-center ring-ring ring-1 text-xs font-thin`}
+                  className={`rounded-sm p-1 flex justify-center items-center ring-ring ring-1 text-xs font-thin`}
                   key={itemSize.uuid}
                   title={`${itemSize.name}`}
                 >
