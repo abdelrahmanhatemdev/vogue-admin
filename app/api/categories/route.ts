@@ -41,7 +41,11 @@ export async function POST(request: Request) {
     const q = collectionRef.where("slug", "==", slug);
     const snapShot = await q.get();
 
-    if (!snapShot.empty) {
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some((doc) => !doc.data().deletedAt);
+
+    if (existed) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }
@@ -85,7 +89,10 @@ export async function PUT(request: Request) {
         updatedAt: new Date().toISOString(),
       });
 
-      return NextResponse.json({ message: "Category updated" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Category updated" },
+        { status: 200 }
+      );
     }
   }
 
