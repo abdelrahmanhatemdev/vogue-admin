@@ -199,7 +199,7 @@ const SubproductImages = ({
           setList={setImageList}
           animation="200"
           easing="ease-out"
-          className="flex flex-wrap items-center justify-start gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
           onEnd={({ oldIndex, newIndex }) => {
             if (oldIndex === newIndex) return;
             const updatedList = [...optimisticImages];
@@ -214,7 +214,7 @@ const SubproductImages = ({
             return (
               url && (
                 <div
-                  className="w-full sm:h-32 sm:w-auto relative rounded-md overflow-hidden"
+                  className="w-full relative rounded-md overflow-hidden"
                   key={index}
                   onClick={() => {
                     setModalOpen(true);
@@ -228,8 +228,9 @@ const SubproductImages = ({
                         </div>
                       ),
                       className:
-                        "bg-transparent border-none lg:py-14 w-[100px] bg-[hsl(0,0%,0%,0.5)]",
+                        "bg-transparent border-none lg:py-14 bg-[hsl(0,0%,0%,0.5)]",
                       onPointerDownOutsideClose: true,
+                      showHeader: false
                     });
                   }}
                 >
@@ -239,7 +240,7 @@ const SubproductImages = ({
                       src={`${url}`}
                       alt={`Subproduct photo-${id} `}
                       className={cn(
-                        "w-full sm:w-auto sm:h-32 rounded-md",
+                        "w-full sm:w-full sm:h-auto rounded-md",
                         isPending ? "opacity-50" : ""
                       )}
                       height={100}

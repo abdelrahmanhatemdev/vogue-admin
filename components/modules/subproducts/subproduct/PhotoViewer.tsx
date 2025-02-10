@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { Dispatch, memo, SetStateAction } from "react";
 // import Image from "next/image";
 
@@ -9,13 +10,13 @@ function PhotoViewer({
   src: string;
 }) {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <img
+    <div className="flex justify-center items-center">
+      <Image
         src={src}
         alt="Photo Viewer"
-        className="rounded-lg"
+        className="rounded-lg w-auto h-[80svh]"
         sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
-        // priority={true}
+        priority={true}
         width={400}
         height={200}
       />

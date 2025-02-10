@@ -14,6 +14,7 @@ export type ModalState = {
   children: ReactNode;
   className?: string;
   onPointerDownOutsideClose?: boolean;
+  showHeader?: boolean
 };
 
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
@@ -26,6 +27,7 @@ function Modal({
   setModalOpen,
   className,
   onPointerDownOutsideClose = false,
+  showHeader = true
 }: {
   title: ModalState["title"];
   description: ModalState["description"];
@@ -34,6 +36,7 @@ function Modal({
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   className?: string;
   onPointerDownOutsideClose?: boolean;
+  showHeader? : ModalState["showHeader"]
 }) {
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen} modal={true}>
@@ -45,9 +48,9 @@ function Modal({
         }}
         className={cn("w-[90vw] rounded-lg lg:w-lg", className)}
       >
-        <DialogHeader>
+        {showHeader && <DialogHeader>
           <DialogTitle>{title && title}</DialogTitle>
-        </DialogHeader>
+        </DialogHeader>}
 
         {description ? (
           <DialogDescription asChild>{description}</DialogDescription>
