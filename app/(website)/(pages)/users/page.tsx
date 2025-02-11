@@ -6,8 +6,8 @@ const AdminBreadcrumb = dynamic(
   () => import("@/components/custom/AdminBreadcrumb"),
   { loading: Loading }
 );
-const AddUser = dynamic(
-  () => import("@/components/modules/users/AddUser"),
+const UsersModule = dynamic(
+  () => import("@/components/modules/users"),
   { loading: Loading }
 );
 
@@ -20,8 +20,7 @@ export const metadata: Metadata = {
 export default function Users() {
   return (
     <>
-      <AdminBreadcrumb page="Users" />
-      <AddUser />
+      <UsersModule />
     </>
   );
 }

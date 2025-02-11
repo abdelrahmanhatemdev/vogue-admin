@@ -42,6 +42,10 @@ import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLabel } from "react-icons/md";
+import { TbUsers } from "react-icons/tb";
+import { PiTruckTrailerDuotone } from "react-icons/pi";
+import { HiOutlineCurrencyDollar } from "react-icons/hi";
+
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -55,6 +59,11 @@ export const SidebarLinks = [
     title: "Admins",
     link: "/admins",
     icon: MdAdminPanelSettings,
+  },
+  {
+    title: "Users",
+    link: "/users",
+    icon: TbUsers,
   },
   {
     title: "Categories",
@@ -85,6 +94,16 @@ export const SidebarLinks = [
     title: "Products",
     link: "/products",
     icon: AiOutlineProduct,
+  },
+  {
+    title: "Orders",
+    link: "/orders",
+    icon: PiTruckTrailerDuotone,
+  },
+  {
+    title: "Payments",
+    link: "/payments",
+    icon: HiOutlineCurrencyDollar,
   },
   {
     title: "Settings",
