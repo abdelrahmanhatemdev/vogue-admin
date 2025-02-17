@@ -146,7 +146,7 @@ function Categories({ data }: { data: Category[] }) {
           return (
             <span className={"p-1" + (item.isPending ? " opacity-50" : "")}>
               <span
-                className="p-1 rounded-md text-xs"
+                className="p-1 rounded-md text-xs text-neutral-100"
                 style={{ background: label?.hex }}
               >
                 {label?.title}
