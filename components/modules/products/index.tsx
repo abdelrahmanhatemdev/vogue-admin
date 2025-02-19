@@ -50,19 +50,19 @@ function Products({ data }: { data: Product[] }) {
     children: <></>,
   });
 
-  const categories = useCategoryStore(state => state.data);
+  const {data: categories}  =  useCategoryStore();
   const brands = useBrandStore(state => state.data);
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [isPending, startTransition] = useTransition();
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
@@ -299,7 +299,7 @@ function Products({ data }: { data: Product[] }) {
           />
         </div>
         <ProductList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

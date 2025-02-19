@@ -46,13 +46,13 @@ function Brands({ data }: { data: Brand[] }) {
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<Brand>[] = useMemo(
     () => [
@@ -188,7 +188,7 @@ function Brands({ data }: { data: Brand[] }) {
         </div>
 
         <BrandList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

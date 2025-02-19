@@ -11,12 +11,11 @@ const AdminBreadcrumb = dynamic(
   () => import("@/components/custom/AdminBreadcrumb"),
   { loading: Loading }
 );
-
+const WorkingOnArea = dynamic(
+  () => import("@/components/custom/WorkingOnArea"),
+  { loading: Loading }
+);
 function Orders() {
-  const { theme } = useTheme();
-
-  const isLight = theme ? (theme === "light" ? true : false) : false;
-
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Orders" />
@@ -25,20 +24,7 @@ function Orders() {
           <Heading title="Orders" description="Here's a list of your Orders!" />
         </div>
 
-        <div className="flex flex-col gap-4 justify-center items-center border border-dashed rounded-lg p-4 lg:mx-20 lg:p-10">
-          <div className="border border-dashed rounded-md">
-            <Image
-              src={`/assets/images/working-on${isLight ? "-light" : ""}.png`}
-              alt="Working ON"
-              className="rounded-lg"
-              sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
-              priority={true}
-              width={400}
-              height={200}
-            />
-          </div>
-          <h2>Working On Area</h2>
-        </div>
+        <WorkingOnArea />
       </div>
     </div>
   );

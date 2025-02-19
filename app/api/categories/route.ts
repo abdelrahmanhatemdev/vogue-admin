@@ -41,7 +41,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name, slug, additional, parent, label } =
+    const { uuid, name, slug, additional, parent, label, 
+      createdAt,
+      updatedAt, } =
       await request.json();
 
     await CategorySchema.parseAsync({

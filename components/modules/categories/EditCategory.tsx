@@ -33,13 +33,9 @@ import useLabelStore from "@/store/useLabelStore";
 function EditCategory({
   item,
   setModalOpen,
-  addOptimisticData,
 }: {
   item: Category;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -54,11 +50,9 @@ function EditCategory({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useCategoryStore(state => state.fetchData)
 
-  const categories  = useCategoryStore(state => state.data);
-  const labels  = useLabelStore(state => state.data);
-
+  const { data: categories, fetchData: refresh, setData } = useCategoryStore();
+  const { data: labels } = useLabelStore();
 
   const parentCats = categories.filter((cat) => !cat.parent);
 
@@ -75,13 +69,8 @@ function EditCategory({
       isPending: !isPending,
     };
 
-    startTransition(async () => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.uuid !== data.uuid),
-        data,
-      ]);
-    });
-    
+    setData([...categories.filter((item) => item.uuid !== data.uuid), data]);
+
     const res: ActionResponse = await editCategory(data);
     notify(res);
     if (res?.status === "success") {
@@ -145,12 +134,15 @@ function EditCategory({
                       <SelectItem value={`${item.uuid}`} key={item.uuid}>
                         <span
                           style={{ background: item.hex }}
-                          className="p-1 rounded-lg"
+                          className="p-1 rounded-lg text-xs"
                         >
                           {item.title}
                         </span>
                       </SelectItem>
                     ))}
+                    <SelectItem value=" " key="noLabel">
+                      No Label
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               ) : (

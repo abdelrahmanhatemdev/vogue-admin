@@ -42,6 +42,7 @@ function AddSize({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
       uuid: uuidv4(), 
+      name: "",
       symbol: "", 
       sortOrder: 0
     },
@@ -117,7 +118,7 @@ function AddSize({
               <FormLabel>Order</FormLabel>
               <FormControl>
                 <Select 
-                value={`${field.value?.toString() ?? "0"}`} 
+                value={field.value?.toString() ?? "0"} 
                 onValueChange={field.onChange}>
                   <SelectTrigger className="bg-neutral-200 dark:bg-neutral-800 rounded-md">
                     <SelectValue

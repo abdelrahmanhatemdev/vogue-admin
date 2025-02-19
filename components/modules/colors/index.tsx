@@ -45,13 +45,13 @@ function Colors({ data }: { data: Color[] }) {
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<Color>[] = useMemo(
     () => [
@@ -88,8 +88,12 @@ function Colors({ data }: { data: Color[] }) {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
-          const item: Color = row.original;
-          return <span>{item.name}</span>;
+          const item: OptimisicDataType = row.original;
+          return <div
+          className={
+            (item.isPending ? " opacity-50" : "")
+          }
+        >{item.name}</div>;
         },
       },
       {
@@ -181,7 +185,7 @@ function Colors({ data }: { data: Color[] }) {
         </div>
 
         <ColorList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

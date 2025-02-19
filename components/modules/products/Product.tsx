@@ -65,13 +65,13 @@ function Product({
   const [optimisicData, addOptimisticData] = useOptimistic(subproducts);
   const [isPending, startTransition] = useTransition();
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -364,7 +364,7 @@ function Product({
           />
         </div>
         <SubproductList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

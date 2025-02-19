@@ -63,13 +63,13 @@ function Currency({ data }: { data: Currency[] }) {
     children: <></>,
   });
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
@@ -111,8 +111,8 @@ function Currency({ data }: { data: Currency[] }) {
       </Collapsible>
 
       <div className="flex flex-col gap-2 py-4">
-        {sortedOptimisicData.length > 0 ? (
-          sortedOptimisicData.map((item) => {
+        {sortedData.length > 0 ? (
+          sortedData.map((item) => {
             const curruncy = currencyList.find((s) => s.code === item.code);
             return (
               <Collapsible

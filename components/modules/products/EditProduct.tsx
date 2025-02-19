@@ -44,7 +44,7 @@ function EditProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const categories = useCategoryStore(state => state.data);
+  const {data: categories}  =  useCategoryStore();
   const brands = useBrandStore(state => state.data);
 
   const form = useForm<z.infer<typeof ProductSchema>>({

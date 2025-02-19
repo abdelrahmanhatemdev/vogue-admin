@@ -45,13 +45,13 @@ function Labels({ data }: { data: Label[] }) {
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<Label>[] = useMemo(
     () => [
@@ -88,8 +88,12 @@ function Labels({ data }: { data: Label[] }) {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => {
-          const item: Label = row.original;
-          return <span>{item.title}</span>;
+          const item: OptimisicDataType = row.original;
+          return <div
+          className={
+            (item.isPending ? " opacity-50" : "")
+          }
+        >{item.title}</div>;;
         },
       },
       {
@@ -181,7 +185,7 @@ function Labels({ data }: { data: Label[] }) {
         </div>
 
         <LabelList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

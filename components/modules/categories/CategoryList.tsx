@@ -40,7 +40,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
@@ -73,9 +72,6 @@ interface CategoryListProps<TData> {
   columns: ColumnDef<Category>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
 }
 
 interface RowSelectionType {
@@ -87,7 +83,6 @@ function CategoryList({
   columns,
   setModal,
   setModalOpen,
-  addOptimisticData,
 }: CategoryListProps<Category>) {
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
@@ -109,11 +104,10 @@ function CategoryList({
 
   const isData = data?.length > 0 ? true : false;
 
-  const refresh = useCategoryStore(state => state.fetchData)
+  const { fetchData: refresh, setData } = useCategoryStore();
 
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -172,23 +166,23 @@ function CategoryList({
             onClick={async () => {
               setModalOpen(false);
               setShowDeleteAll(false);
-              startTransition(() => {
-                addOptimisticData((prev: Category[]) => [
-                  ...prev.map((item) => {
-                    if (selectedRows.includes(item.id)) {
-                      const pendingItem = { ...item, isPending: !isPending };
-                      return pendingItem;
-                    }
-                    return item;
-                  }),
-                ]);
-              });
+
+              setData([
+                ...data.map((item) => {
+                  if (selectedRows.includes(item.id)) {
+                    const pendingItem = { ...item, isPending: true };
+                    return pendingItem;
+                  }
+                  return item;
+                }),
+              ]);
+
               for (const row of selectedRows) {
                 const data = { id: row };
                 const res: ActionResponse = await deleteCategory(data);
                 notify(res);
                 if (res?.status === "success") {
-                  refresh()
+                  refresh();
                 }
               }
             }}
@@ -229,12 +223,7 @@ function CategoryList({
                 title: "Add Category",
                 description:
                   "Add new Category here. Click Add when you'are done.",
-                children: (
-                  <AddCategory
-                    setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticData}
-                  />
-                ),
+                children: <AddCategory setModalOpen={setModalOpen} />,
               });
             }}
           >
@@ -278,7 +267,7 @@ function CategoryList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">

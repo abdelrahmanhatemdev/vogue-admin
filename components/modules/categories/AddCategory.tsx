@@ -35,12 +35,9 @@ import useLabelStore from "@/store/useLabelStore";
 
 function AddCategory({
   setModalOpen,
-  addOptimisticData,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Category[] | ((pendingState: Category[]) => Category[])
-  ) => void;
+ 
 }) {
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -55,10 +52,8 @@ function AddCategory({
     mode: "onChange",
   });
 
-  const [isPending, startTransition] = useTransition();
-
-  const categories  =  useCategoryStore(state => state.data);
-  const labels  = useLabelStore(state => state.data);
+  const {data: categories, setData}  =  useCategoryStore();
+  const {data: labels}  = useLabelStore();
 
   const refresh = useCategoryStore(state => state.fetchData)
   
@@ -75,18 +70,14 @@ function AddCategory({
 
     const optimisticObj: OptimisicDataType = {
       ...data,
-      id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: !isPending,
+      id: data.uuid,
+      isPending: true,
       additional: values.additional ?? false,
       parent: values.parent ?? "",
       label: values.label ?? "",
     };
 
-
-
-    startTransition(() => {
-      addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
-    });
+    setData([...categories, optimisticObj])
     const res: ActionResponse = await addCategory(data);
     notify(res);
     if (res?.status === "success") {
@@ -141,7 +132,7 @@ function AddCategory({
             <FormItem className="w-full lg:w-[calc(50%-.4rem)]">
               <FormLabel>Label</FormLabel>
               {labels ? (
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} value={field.value?.toString() ?? "0"}>
                   <SelectTrigger>
                     <SelectValue placeholder="Choose Label" />
                   </SelectTrigger>

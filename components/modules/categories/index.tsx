@@ -37,9 +37,8 @@ const CategoryList = dynamic(
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-
-  const data = useCategoryStore(state => state.data);
-  const labels = useLabelStore(state => state.data);
+  const { data, setData } = useCategoryStore();
+  const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -48,16 +47,13 @@ function Categories() {
     children: <></>,
   });
 
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
-  const [isPending, startTransition] = useTransition();
-
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedData = useMemo(() => {
+    return data?.length
+      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [optimisicData]);
+  }, [data]);
 
   const columns: ColumnDef<OptimisicDataType>[] = useMemo(
     () => [
@@ -130,10 +126,7 @@ function Categories() {
           const item: OptimisicDataType = row.original;
           return (
             <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
-              {
-                sortedOptimisicData.find((cat) => cat.uuid === item.parent)
-                  ?.name
-              }
+              {sortedData.find((cat) => cat.uuid === item.parent)?.name}
             </span>
           );
         },
@@ -165,7 +158,12 @@ function Categories() {
           const item: OptimisicDataType = row.original;
 
           return (
-            <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
+            <span
+              className={cn(
+                `${item.isPending ? " opacity-50" : ""}`,
+                "dark:border-border"
+              )}
+            >
               <Switch
                 checked={item.additional}
                 onCheckedChange={async () => {
@@ -174,15 +172,12 @@ function Categories() {
                   const optimisticObj: OptimisicDataType = {
                     ...rest,
                     additional: !additional,
-                    isPending: !isPending,
+                    isPending: true,
                   };
-
-                  startTransition(() => {
-                    addOptimisticData((prev: Category[]) => [
-                      ...prev.filter((sub) => sub.id !== item.id),
-                      optimisticObj,
-                    ]);
-                  });
+                  setData([
+                    ...data.filter((sub) => sub.id !== item.id),
+                    optimisticObj,
+                  ]);
 
                   const res: ActionResponse = await editCategory({
                     id: item.id,
@@ -214,11 +209,7 @@ function Categories() {
                     description:
                       "Update Category here. Click Update when you'are done.",
                     children: (
-                      <EditCategory
-                        item={item}
-                        setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
-                      />
+                      <EditCategory item={item} setModalOpen={setModalOpen} />
                     ),
                   });
                 }}
@@ -240,7 +231,6 @@ function Categories() {
                       <DeleteCategory
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
                       />
                     ),
                   });
@@ -251,7 +241,7 @@ function Categories() {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData, labels]
+    [setModalOpen, setModal, data, labels]
   );
 
   return (
@@ -265,11 +255,10 @@ function Categories() {
           />
         </div>
         <CategoryList
-          data={sortedOptimisicData}
+          data={sortedData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          addOptimisticData={addOptimisticData}
         />
       </div>
       <Modal
