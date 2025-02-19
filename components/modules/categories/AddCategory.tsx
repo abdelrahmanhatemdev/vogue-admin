@@ -30,8 +30,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { useDataStore } from "@/store/useDataStore";
 import useCategoryStore from "@/store/useCategoryStore";
+import useLabelStore from "@/store/useLabelStore";
 
 function AddCategory({
   setModalOpen,
@@ -58,7 +58,7 @@ function AddCategory({
   const [isPending, startTransition] = useTransition();
 
   const categories  =  useCategoryStore(state => state.data);
-  const labels  = useDataStore(state => state.labels);
+  const labels  = useLabelStore(state => state.data);
 
   const refresh = useCategoryStore(state => state.fetchData)
   

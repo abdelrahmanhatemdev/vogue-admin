@@ -18,7 +18,6 @@ import { CategorySchema } from "@/lib/validation/categorySchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import useData, { useRefresh } from "@/hooks/useData";
 import {
   Select,
   SelectContent,
@@ -29,6 +28,7 @@ import {
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import useCategoryStore from "@/store/useCategoryStore";
+import useLabelStore from "@/store/useLabelStore";
 
 function EditCategory({
   item,
@@ -57,7 +57,8 @@ function EditCategory({
   const refresh = useCategoryStore(state => state.fetchData)
 
   const categories  = useCategoryStore(state => state.data);
-  const { data: labels } = useData("labels");
+  const labels  = useLabelStore(state => state.data);
+
 
   const parentCats = categories.filter((cat) => !cat.parent);
 

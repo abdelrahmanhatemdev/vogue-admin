@@ -18,7 +18,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
-import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import {
@@ -31,6 +30,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { OptimisicDataType } from ".";
 import { Switch } from "@/components/ui/switch";
+import useCategoryStore from "@/store/useCategoryStore";
+import useBrandStore from "@/store/useBrandStore";
 
 function EditProduct({
   item,
@@ -43,10 +44,8 @@ function EditProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
-
-
+  const categories = useCategoryStore(state => state.data);
+  const brands = useBrandStore(state => state.data);
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),

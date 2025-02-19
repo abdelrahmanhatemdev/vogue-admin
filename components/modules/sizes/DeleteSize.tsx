@@ -4,7 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
+import useSizeStore from "@/store/useSizeStore";
 
 function DeleteSize({
   itemId,
@@ -20,7 +20,7 @@ function DeleteSize({
   const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useSizeStore(state => state.fetchData)
 
   async function onSubmit() {
     setModalOpen(false);

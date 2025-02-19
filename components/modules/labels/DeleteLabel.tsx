@@ -4,7 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteLabel } from "@/actions/Label";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
+import useLabelStore from "@/store/useLabelStore";
 
 function DeleteLabel({
   itemId,
@@ -20,7 +20,7 @@ function DeleteLabel({
   const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useLabelStore(state => state.fetchData)
 
   async function onSubmit() {
     setModalOpen(false);

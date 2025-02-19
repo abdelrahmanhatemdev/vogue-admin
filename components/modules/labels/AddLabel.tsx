@@ -21,8 +21,8 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addLabel } from "@/actions/Label";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { useRefresh } from "@/hooks/useData";
 import type { OptimisicDataType } from ".";
+import useLabelStore from "@/store/useLabelStore";
 
 function AddLabel({
   setModalOpen,
@@ -44,7 +44,7 @@ function AddLabel({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useLabelStore(state => state.fetchData)
 
   async function onSubmit(values: z.infer<typeof LabelSchema>) {
     setModalOpen(false);

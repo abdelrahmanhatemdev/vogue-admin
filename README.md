@@ -170,9 +170,13 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
     📄 ThemeContext.tsx  
 
 └───📂 hooks  
-    📄 useData.ts  
     📄 useTheme.ts  
     📄 use-mobile.ts  
+
+└───📂 store  
+    📄 useLabelStore.ts  
+    📄 useColorStore.ts
+    ...
 
 └───📂 lib  
     └───📂 validation  

@@ -5,15 +5,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import useData from "@/hooks/useData";
 import { cn, notify } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { editCategory } from "@/actions/Category";
-import { useDataStore } from "@/store/useDataStore";
 import useCategoryStore from "@/store/useCategoryStore";
+import useLabelStore from "@/store/useLabelStore";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -41,7 +39,7 @@ export type OptimisicDataType = Category & { isPending?: boolean };
 function Categories() {
 
   const data = useCategoryStore(state => state.data);
-  const labels = useDataStore(state => state.labels);
+  const labels = useLabelStore(state => state.data);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({

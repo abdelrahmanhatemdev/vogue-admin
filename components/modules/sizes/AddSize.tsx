@@ -26,8 +26,8 @@ import {
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import useData, { useRefresh } from "@/hooks/useData";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import useSizeStore from "@/store/useSizeStore";
 
 function AddSize({
   setModalOpen,
@@ -48,10 +48,11 @@ function AddSize({
     mode: "onChange",
   });
 
-  const {data: sizes} = useData("sizes")
+
+  const sizes = useSizeStore(state => state.data);
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useSizeStore(state => state.fetchData)
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);

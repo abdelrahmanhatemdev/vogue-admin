@@ -7,10 +7,11 @@ import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import useData from "@/hooks/useData";
 import { cn, notify } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { editProduct } from "@/actions/Product";
+import useCategoryStore from "@/store/useCategoryStore";
+import useBrandStore from "@/store/useBrandStore";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -49,8 +50,8 @@ function Products({ data }: { data: Product[] }) {
     children: <></>,
   });
 
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
+  const categories = useCategoryStore(state => state.data);
+  const brands = useBrandStore(state => state.data);
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [isPending, startTransition] = useTransition();

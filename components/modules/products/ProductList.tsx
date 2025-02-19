@@ -51,7 +51,6 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 import { PiPlusCircle } from "react-icons/pi";
-import useData from "@/hooks/useData";
 import {
   Popover,
   PopoverTrigger,
@@ -60,6 +59,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
+import useBrandStore from "@/store/useBrandStore";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Product>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -97,8 +97,9 @@ function ProductList({
   setModalOpen,
   addOptimisticData,
 }: ProductListProps<Product>) {
-  // const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
+  
+
+  const brands = useBrandStore(state => state.data);
 
   const visibleColumns = useMemo(() => {
     return columns?.length > 0

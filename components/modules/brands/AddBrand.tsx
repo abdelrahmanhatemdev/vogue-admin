@@ -20,8 +20,8 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { useRefresh } from "@/hooks/useData";
 import type { OptimisicDataType } from ".";
+import useBrandStore from "@/store/useBrandStore";
 
 function AddBrand({
   setModalOpen,
@@ -43,7 +43,7 @@ function AddBrand({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useBrandStore(state => state.fetchData)
 
   async function onSubmit(values: z.infer<typeof BrandSchema>) {
     setModalOpen(false);

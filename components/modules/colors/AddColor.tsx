@@ -21,8 +21,8 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { useRefresh } from "@/hooks/useData";
 import type { OptimisicDataType } from ".";
+import useColorStore from "@/store/useColorStore";
 
 function AddColor({
   setModalOpen,
@@ -44,7 +44,7 @@ function AddColor({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useColorStore(state => state.fetchData)
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);

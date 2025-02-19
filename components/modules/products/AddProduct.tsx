@@ -26,13 +26,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuidv4 } from "uuid";
 import type { OptimisicDataType } from ".";
 import { Switch } from "@/components/ui/switch";
+import useCategoryStore from "@/store/useCategoryStore";
+import useBrandStore from "@/store/useBrandStore";
 
 function AddProduct({
   setModalOpen,
@@ -43,8 +44,8 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const { data: categories } = useData("categories");
-  const { data: brands } = useData("brands");
+  const categories  = useCategoryStore(state => state.data);
+  const brands  = useBrandStore(state => state.data);
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
