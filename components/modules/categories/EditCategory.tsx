@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
+import useCategoryStore from "@/store/useCategoryStore";
 
 function EditCategory({
   item,
@@ -53,9 +54,9 @@ function EditCategory({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh();
+  const refresh = useCategoryStore(state => state.fetchData)
 
-  const { data: categories } = useData("categories");
+  const categories  = useCategoryStore(state => state.data);
   const { data: labels } = useData("labels");
 
   const parentCats = categories.filter((cat) => !cat.parent);

@@ -1,68 +1,58 @@
 "use client";
-import { getBrands } from "@/actions/Brand";
+import { useEffect } from "react";
 import { getCategories } from "@/actions/Category";
 import { getColors } from "@/actions/Color";
-import { getLabels } from "@/actions/Label";
+import { getBrands } from "@/actions/Brand";
 import { getSizes } from "@/actions/Size";
-import DataContext from "@/context/DataContext";
-import { ReactNode, useEffect, useState } from "react";
+import { getLabels } from "@/actions/Label";
+import { useDataStore } from "@/store/useDataStore";
+import useCategoryStore from "@/store/useCategoryStore";
 
-const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [categories, setCategories] = useState([]);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const [colors, setColors] = useState([]);
-  const [colorsLoading, setColorsLoading] = useState(true);
-  const [brands, setBrands] = useState([]);
-  const [brandsLoading, setbrandsLoading] = useState(true);
-  const [sizes, setSizes] = useState([]);
-  const [sizesLoading, setSizesLoading] = useState(true);
-  const [labels, setLabels] = useState([]);
-  const [labelsLoading, setLabelsLoading] = useState(true);
+const DataProvider = ({ children }: { children: React.ReactNode }) => {
+  const setCategories = useCategoryStore((state) => state.setData);
+  const setCategoriesLoading  = useCategoryStore(state => state.setLoading)
+  const setColors = useDataStore((state) => state.setColors);
+  const setBrands = useDataStore((state) => state.setBrands);
+  const setSizes = useDataStore((state) => state.setSizes);
+  const setLabels = useDataStore((state) => state.setLabels);
+  const setLoadingState = useDataStore((state) => state.setLoadingState);
 
   const fetchData = async () => {
-    getCategories().then((res) => {
-      setCategories(res);
+    try {
+      setCategoriesLoading(true);
+      const categories = await getCategories();
+      setCategories(categories);
       setCategoriesLoading(false);
-    });
-    getColors().then((res) => {
-      setColors(res);
-      setColorsLoading(false);
-    });
-    getBrands().then((res) => {
-      setBrands(res);
-      setbrandsLoading(false);
-    });
-    getSizes().then((res) => {
-      setSizes(res);
-      setSizesLoading(false);
-    });
-    getLabels().then((res) => {
-      setLabels(res);
-      setLabelsLoading(false);
-    });
+
+      setLoadingState("colors", true);
+      const colors = await getColors();
+      setColors(colors);
+      setLoadingState("colors", false);
+
+      setLoadingState("brands", true);
+      const brands = await getBrands();
+      setBrands(brands);
+      setLoadingState("brands", false);
+
+      setLoadingState("sizes", true);
+      const sizes = await getSizes();
+      setSizes(sizes);
+      setLoadingState("sizes", false);
+
+      setLoadingState("labels", true);
+      const labels = await getLabels();
+      setLabels(labels);
+      setLoadingState("labels", false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const refresh = async () => {
-    await fetchData()
-  }
-
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
-  return (
-    <DataContext.Provider
-      value={{
-        categories: { data: categories, loading: categoriesLoading },
-        brands: { data: brands, loading: brandsLoading },
-        colors: { data: colors, loading: colorsLoading },
-        sizes: { data: sizes, loading: sizesLoading },
-        labels: { data: labels, loading: labelsLoading },
-        refresh 
-      }}
-    >
-      {children}
-    </DataContext.Provider>
-  );
+  return <>{children}</>;
 };
+
 export default DataProvider;

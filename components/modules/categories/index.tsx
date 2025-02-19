@@ -12,6 +12,8 @@ import useData from "@/hooks/useData";
 import { cn, notify } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { editCategory } from "@/actions/Category";
+import { useDataStore } from "@/store/useDataStore";
+import useCategoryStore from "@/store/useCategoryStore";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -36,15 +38,17 @@ const CategoryList = dynamic(
 
 export type OptimisicDataType = Category & { isPending?: boolean };
 
-function Categories({ data }: { data: Category[] }) {
+function Categories() {
+
+  const data = useCategoryStore(state => state.data);
+  const labels = useDataStore(state => state.labels);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
     description: "",
     children: <></>,
   });
-
-  const { data: labels } = useData("labels");
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
   const [isPending, startTransition] = useTransition();

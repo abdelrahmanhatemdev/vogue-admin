@@ -21,7 +21,6 @@ import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import useData, { useRefresh } from "@/hooks/useData";
 import type { OptimisicDataType } from ".";
 import {
   Select,
@@ -31,6 +30,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import { useDataStore } from "@/store/useDataStore";
+import useCategoryStore from "@/store/useCategoryStore";
 
 function AddCategory({
   setModalOpen,
@@ -55,11 +56,12 @@ function AddCategory({
   });
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh();
 
-  const { data: categories } = useData("categories");
-  const { data: labels } = useData("labels");
+  const categories  =  useCategoryStore(state => state.data);
+  const labels  = useDataStore(state => state.labels);
 
+  const refresh = useCategoryStore(state => state.fetchData)
+  
   const parentCats = categories.filter((cat) => !cat.parent);
 
   async function onSubmit(values: z.infer<typeof CategorySchema>) {
@@ -80,13 +82,15 @@ function AddCategory({
       label: values.label ?? "",
     };
 
+
+
     startTransition(() => {
       addOptimisticData((prev: Category[]) => [...prev, optimisticObj]);
     });
     const res: ActionResponse = await addCategory(data);
     notify(res);
     if (res?.status === "success") {
-      refresh();
+      refresh()
     }
   }
 

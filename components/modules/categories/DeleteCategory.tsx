@@ -4,7 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import { useRefresh } from "@/hooks/useData";
+import useCategoryStore from "@/store/useCategoryStore";
 
 function DeleteCategory({
   itemId,
@@ -20,7 +20,7 @@ function DeleteCategory({
   const data = { id: itemId };
 
   const [isPending, startTransition] = useTransition();
-  const refresh = useRefresh()
+  const refresh = useCategoryStore(state => state.fetchData)
 
   async function onSubmit() {
     setModalOpen(false);

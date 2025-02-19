@@ -12,7 +12,6 @@ export const getCategories = async () => {
 
     if (res?.ok) {
       const { data } = await res.json();
-
       if (data) {
         return data.sort((a: Category, b: Category) =>
           b.updatedAt.localeCompare(a.updatedAt)

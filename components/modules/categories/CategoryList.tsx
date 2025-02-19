@@ -47,6 +47,7 @@ import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
+import useCategoryStore from "@/store/useCategoryStore";
 
 const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
@@ -107,6 +108,8 @@ function CategoryList({
   const selectedRows = Object.keys(rowSelection);
 
   const isData = data?.length > 0 ? true : false;
+
+  const refresh = useCategoryStore(state => state.fetchData)
 
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
@@ -184,6 +187,9 @@ function CategoryList({
                 const data = { id: row };
                 const res: ActionResponse = await deleteCategory(data);
                 notify(res);
+                if (res?.status === "success") {
+                  refresh()
+                }
               }
             }}
           >
