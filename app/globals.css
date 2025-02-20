@@ -127,7 +127,7 @@ body {
   }
 
   & input:-webkit-autofill {
-    box-shadow: 0 0 0px 1000px #292929 inset !important; 
+    box-shadow: 0 0 0px 1000px #3b3b3b inset !important; 
     -webkit-text-fill-color: #eee !important;
   }
 }

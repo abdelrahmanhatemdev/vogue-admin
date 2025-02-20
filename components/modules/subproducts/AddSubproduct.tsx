@@ -12,13 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
-import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
@@ -33,6 +31,8 @@ import {
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
 import type { OptimisicDataType } from "@/components/modules/products/Product";
 import { currencies } from "@/constants/currencies";
+import useColorStore from "@/store/useColorStore";
+import useSizeStore from "@/store/useSizeStore";
 
 function AddSubproduct({
   setModalOpen,
@@ -47,8 +47,8 @@ function AddSubproduct({
 }) {
   
   
-  const { data: colors } = useData("colors");
-  const { data: sizes } = useData("sizes");
+  const { data: colors } = useColorStore();
+  const { data: sizes } = useSizeStore();
 
   const form = useForm<z.infer<typeof SubproductSchema>>({
     resolver: zodResolver(SubproductSchema),

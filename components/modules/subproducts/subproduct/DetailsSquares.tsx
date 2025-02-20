@@ -2,7 +2,7 @@ import { editSubproduct } from "@/actions/Subproduct";
 import { Switch } from "@/components/ui/switch";
 import { discountPrice } from "@/lib/productService";
 import { notify } from "@/lib/utils";
-import { memo } from "react";
+import { memo, useOptimistic, useTransition } from "react";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import { RiWaterPercentFill } from "react-icons/ri";
 
@@ -25,6 +25,10 @@ const DetailsSquares = ({
   inStock: boolean;
   id: string;
 }) => {
+  const [optimisticFeatured, addOptimisticFeatured] = useOptimistic(featured);
+  const [optimisticInStock, addOptimisticInStock] = useOptimistic(inStock);
+  const [isPending, startTransition] = useTransition();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[calc(50%-.5rem)_calc(50%-.5rem)] gap-4">
       <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
@@ -59,7 +63,9 @@ const DetailsSquares = ({
             <ImArrowDown size={10} />
             <span>1.13%</span>
           </div>
-          <span className="text-neutral-500 dark:text-neutral-00">Since Last Month</span>
+          <span className="text-neutral-500 dark:text-neutral-00">
+            Since Last Month
+          </span>
         </div>
       </div>
       <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
@@ -72,20 +78,33 @@ const DetailsSquares = ({
             <ImArrowUp size={10} title="Discount" />
             <span>3.73%</span>
           </div>
-          <span className="text-neutral-500 dark:text-neutral-00">Since Last Month</span>
+          <span className="text-neutral-500 dark:text-neutral-00">
+            Since Last Month
+          </span>
         </div>
       </div>
       <div className="dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg flex flex-col gap-3 shadow-md">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <span className="font-extralight">Featured</span>
-            <span className="text-neutral-500 text-xs"><span className={`${featured ? "text-green-400" : "text-red-600"}`}> {featured ? "" : "Not"} Featured</span>  Product</span>
+            <span className="text-neutral-500 text-xs">
+              <span
+                className={`${featured ? "text-green-400" : "text-red-600"}`}
+              >
+                {" "}
+                {featured ? "" : "Not"} Featured
+              </span>{" "}
+              Product
+            </span>
           </div>
           <p className="font-bold">
             <strong>
               <Switch
-                checked={featured}
+                checked={optimisticFeatured}
                 onCheckedChange={async () => {
+                  startTransition(() => {
+                    addOptimisticFeatured(!optimisticFeatured);
+                  });
                   const res: ActionResponse = await editSubproduct({
                     id: id,
                     property: "featured",
@@ -101,13 +120,25 @@ const DetailsSquares = ({
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <span className="font-extralight">In stock</span>
-            <span className="text-neutral-500 text-xs"><span className={`${inStock ? "text-green-400" : "text-red-600"}`}> {inStock ? "" : "Not"} Available </span> in stock</span>
+            <span className="text-neutral-500 text-xs">
+              <span
+                className={`${inStock ? "text-green-400" : "text-red-600"}`}
+              >
+                {" "}
+                {inStock ? "" : "Not"} Available{" "}
+              </span>{" "}
+              in stock
+            </span>
           </div>
           <p className="font-bold">
             <strong>
               <Switch
-                checked={inStock}
+                checked={optimisticInStock}
                 onCheckedChange={async () => {
+                  startTransition(() => {
+                    addOptimisticInStock(!optimisticInStock);
+                  });
+
                   const res: ActionResponse = await editSubproduct({
                     id: id,
                     property: "inStock",

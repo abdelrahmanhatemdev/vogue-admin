@@ -18,7 +18,6 @@ import { SubproductSchema } from "@/lib/validation/subproductSchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
-import useData from "@/hooks/useData";
 import { MultiSelect } from "@/components/ui/multiselect";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
@@ -31,6 +30,8 @@ import {
 } from "@/components/ui/select";
 import type { OptimisicDataType } from "@/components/modules/products/Product";
 import { currencies } from "@/constants/currencies";
+import useColorStore from "@/store/useColorStore";
+import useSizeStore from "@/store/useSizeStore";
 
 function EditSubproduct({
   item,
@@ -43,8 +44,8 @@ function EditSubproduct({
     action: Subproduct[] | ((pendingState: Subproduct[]) => Subproduct[])
   ) => void;
 }) {
-  const { data: colors } = useData("colors");
-  const { data: sizes } = useData("sizes");
+  const { data: colors } = useColorStore();
+  const { data: sizes } = useSizeStore();
 
 
 
