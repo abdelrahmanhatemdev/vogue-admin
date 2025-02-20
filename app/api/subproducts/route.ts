@@ -1,5 +1,6 @@
 import { SubproductSchema } from "@/lib/validation/subproductSchema";
-import { NextResponse } from "next/server";import { adminDB } from "@/database/firebase-admin"; 
+import { NextResponse } from "next/server";
+import { adminDB } from "@/database/firebase-admin";
 
 export const collectionName = "subproducts";
 export const collectionRef = adminDB.collection(collectionName);
@@ -11,11 +12,14 @@ export async function GET() {
     const data = snapShot.empty
       ? []
       : snapShot.docs
-          .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            } as Subproduct)) 
-          .filter((doc) => !doc.deletedAt)
+          .map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as Subproduct)
+          )
+          .filter((doc) => !doc.deletedAt);
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -57,34 +61,27 @@ export async function POST(request: Request) {
     });
 
     const q = collectionRef.where("sku", "==", sku);
-    const snapShot = await q.get();
-    const existedItems = snapShot.empty
-      ? []
-      : snapShot.docs
-          .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            } as Subproduct))
-          .filter((doc) => !doc.deletedAt)
 
-    if (existedItems.length > 0) {
+    const snapShot = await q.get();
+
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some((doc) => !doc.data().deletedAt);
+
+    if (existed) {
       return NextResponse.json(
         { error: `${sku} sku is already used!` },
         { status: 400 }
       );
     }
 
-    const nonEmptyColors = colors.filter(
-      (cat: string) => cat.trim() !== ""
-    );
+    const nonEmptyColors = colors.filter((cat: string) => cat.trim() !== "");
 
     if (nonEmptyColors.length === 0) {
       throw new Error("Choose at least one Color");
     }
 
-    const nonEmptySizes = sizes.filter(
-      (cat: string) => cat.trim() !== ""
-    );
+    const nonEmptySizes = sizes.filter((cat: string) => cat.trim() !== "");
 
     if (nonEmptySizes.length === 0) {
       throw new Error("Choose at least one Size");
@@ -126,7 +123,6 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-
   const reqData = await request.json();
 
   if (reqData?.property) {
@@ -178,32 +174,27 @@ export async function PUT(request: Request) {
       sizes,
     });
 
-    const list = (await collectionRef.get()).docs.filter(
-      (doc) => doc.id !== id && doc.data().sku === sku
-    );
+    const q = collectionRef.where("sku", "==", sku);
+    const snapShot = await q.get();
 
-    const existedItems =
-      list.length > 0
-        ? list.filter((doc) => doc.id === id && doc.data().sku !== sku)
-        : [];
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some((doc) => doc.id !== id && doc.data().sku === sku);
 
-    if (existedItems.length > 0) {
+    if (existed) {
       return NextResponse.json(
         { error: `${sku} sku is already used!` },
         { status: 400 }
       );
     }
-    const nonEmptyColors = colors.filter(
-      (cat: string) => cat.trim() !== ""
-    );
+
+    const nonEmptyColors = colors.filter((cat: string) => cat.trim() !== "");
 
     if (nonEmptyColors.length === 0) {
       throw new Error("Choose at least one Color");
     }
 
-    const nonEmptySizes = sizes.filter(
-      (cat: string) => cat.trim() !== ""
-    );
+    const nonEmptySizes = sizes.filter((cat: string) => cat.trim() !== "");
 
     if (nonEmptySizes.length === 0) {
       throw new Error("Choose at least one Size");
@@ -246,7 +237,7 @@ export async function DELETE(request: Request) {
     await docRef.update({ deletedAt: new Date().toISOString() });
 
     return NextResponse.json(
-      { message: "Subproduct Deleted"},
+      { message: "Subproduct Deleted" },
       { status: 200 }
     );
   } catch (error) {
@@ -254,4 +245,3 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

@@ -77,11 +77,17 @@ export async function PUT(request: Request) {
       (doc) => doc.id !== id && doc.data().slug === slug
     );
 
-    const existedItems =
-      list.length > 0
-        ? list.filter((doc) => doc.id === id && doc.data().slug !== slug)
-        : [];
-    if (existedItems.length > 0) {
+    const q = collectionRef.where("slug", "==", slug);
+    const snapShot = await q.get();
+
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some(
+          (doc) =>
+            doc.id !== id && doc.data().slug === slug 
+        );
+
+    if (existed) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }

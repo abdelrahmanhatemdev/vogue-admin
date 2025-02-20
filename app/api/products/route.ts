@@ -144,21 +144,20 @@ export async function PUT(request: Request) {
       trending,
     });
 
-    const list = (await collectionRef.get()).docs.filter(
-      (doc) => doc.id !== id && doc.data().slug === slug
-    );
+    const q = collectionRef.where("slug", "==", slug);
+    const snapShot = await q.get();
 
-    const existedItems =
-      list.length > 0
-        ? list.filter((doc) => doc.id === id && doc.data().slug !== slug)
-        : [];
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some((doc) => doc.id !== id && doc.data().slug === slug);
 
-    if (existedItems.length > 0) {
+    if (existed) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }
       );
     }
+
     const nonEmptyCategories = categories.filter(
       (cat: string) => cat.trim() !== ""
     );
@@ -200,7 +199,7 @@ export async function DELETE(request: Request) {
     }
 
     const productData = productDoc.data() as Product;
-    const productUUID = productData.uuid; 
+    const productUUID = productData.uuid;
 
     const subproductsSnap = await adminDB
       .collection("subproducts")

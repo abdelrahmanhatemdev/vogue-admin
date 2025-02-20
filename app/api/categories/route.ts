@@ -123,10 +123,7 @@ export async function PUT(request: Request) {
 
     const existed = snapShot.empty
       ? false
-      : snapShot.docs.some(
-          (doc) =>
-            doc.id !== id && doc.data().slug === slug && !doc.data().deletedAt
-        );
+      : snapShot.docs.some((doc) => doc.id !== id && doc.data().slug === slug);
 
     if (existed) {
       return NextResponse.json(
