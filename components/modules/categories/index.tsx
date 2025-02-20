@@ -37,7 +37,7 @@ const CategoryList = dynamic(
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-  const { data, setData } = useCategoryStore();
+  const { data, setData, fetchData: refresh } = useCategoryStore();
   const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -186,6 +186,9 @@ function Categories() {
                   });
 
                   notify(res);
+                  if (res?.status === "success") {
+                    refresh()
+                  }
                 }}
               />
             </span>

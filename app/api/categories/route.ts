@@ -8,9 +8,8 @@ export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-
     // const cached = (await redis.get(collectionName)) as string;
-    
+
     // if (cached) {
     //   return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
     // }
@@ -25,11 +24,6 @@ export async function GET() {
           })
           .filter((doc) => !doc.deletedAt);
 
-      
-        
-
-      
-
     // await redis.set(collectionName, JSON.stringify(data), { ex: 60*60});
 
     return NextResponse.json({ data }, { status: 200 });
@@ -41,9 +35,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { uuid, name, slug, additional, parent, label, 
-      createdAt,
-      updatedAt, } =
+    const { uuid, name, slug, additional, parent, label } =
       await request.json();
 
     await CategorySchema.parseAsync({
@@ -84,8 +76,7 @@ export async function POST(request: Request) {
     const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
-
-      await redis.del(collectionName)
+      await redis.del(collectionName);
       return NextResponse.json({ message: "Category added" }, { status: 200 });
     }
 
@@ -127,11 +118,17 @@ export async function PUT(request: Request) {
       label,
     });
 
-    const list = (await collectionRef.get()).docs.filter(
-      (doc) => doc.id !== id && doc.data().slug === slug
-    );
+    const q = collectionRef.where("slug", "==", slug);
+    const snapShot = await q.get();
 
-    if (list.length > 0) {
+    const existed = snapShot.empty
+      ? false
+      : snapShot.docs.some(
+          (doc) =>
+            doc.id !== id && doc.data().slug === slug && !doc.data().deletedAt
+        );
+
+    if (existed) {
       return NextResponse.json(
         { error: `${slug} slug is already used!` },
         { status: 400 }
