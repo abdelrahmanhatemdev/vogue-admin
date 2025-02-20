@@ -34,10 +34,9 @@ const BrandList = dynamic(
   { loading: Loading }
 );
 
-export type OptimisicDataType = Brand & {isPending?: boolean}
+export type OptimisicDataType = Brand & { isPending?: boolean };
 
 function Brands() {
-
   const { data } = useBrandStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,12 +111,7 @@ function Brands() {
         cell: ({ row }) => {
           const item: OptimisicDataType = row.original;
           return (
-            <span
-              className={
-                "p-2" +
-                (item.isPending ? " opacity-50" : "")
-              }
-            >
+            <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
               {item.slug ? "/" + item.slug : ""}
             </span>
           );
@@ -140,10 +134,7 @@ function Brands() {
                     description:
                       "Update Brand here. Click Update when you'are done.",
                     children: (
-                      <EditBrand
-                        item={item}
-                        setModalOpen={setModalOpen}
-                      />
+                      <EditBrand item={item} setModalOpen={setModalOpen} />
                     ),
                   });
                 }}
@@ -163,7 +154,7 @@ function Brands() {
                     ),
                     children: (
                       <DeleteBrand
-                      itemId={item.id}
+                        itemId={item.id}
                         setModalOpen={setModalOpen}
                       />
                     ),
@@ -186,12 +177,16 @@ function Brands() {
           <Heading title="Brands" description="Here's a list of your Brands!" />
         </div>
 
-        <BrandList
-          data={sortedData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-        />
+        {data?.length > 0 ? (
+          <BrandList
+            data={sortedData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <Modal
         title={modal.title}

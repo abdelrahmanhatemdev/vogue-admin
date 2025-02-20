@@ -34,10 +34,9 @@ const ColorList = dynamic(
   { loading: Loading }
 );
 
-export type OptimisicDataType = Color & {isPending?: boolean}
+export type OptimisicDataType = Color & { isPending?: boolean };
 
 function Colors() {
-
   const { data } = useColorStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,8 +45,6 @@ function Colors() {
     description: "",
     children: <></>,
   });
-
-
 
   const sortedData = useMemo(() => {
     return data?.length
@@ -93,11 +90,11 @@ function Colors() {
         header: "Name",
         cell: ({ row }) => {
           const item: OptimisicDataType = row.original;
-          return <div
-          className={
-            (item.isPending ? " opacity-50" : "")
-          }
-        >{item.name}</div>;
+          return (
+            <div className={item.isPending ? " opacity-50" : ""}>
+              {item.name}
+            </div>
+          );
         },
       },
       {
@@ -140,11 +137,7 @@ function Colors() {
                     description:
                       "Update Color here. Click Update when you'are done.",
                     children: (
-                      <EditColor
-                        item={item}
-                        setModalOpen={setModalOpen}
-                        
-                      />
+                      <EditColor item={item} setModalOpen={setModalOpen} />
                     ),
                   });
                 }}
@@ -166,7 +159,6 @@ function Colors() {
                       <DeleteColor
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        
                       />
                     ),
                   });
@@ -187,13 +179,16 @@ function Colors() {
         <div className="flex justify-between items-center">
           <Heading title="Colors" description="Here's a list of your Colors!" />
         </div>
-
-        <ColorList
-          data={sortedData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-        />
+        {data?.length > 0 ? (
+          <ColorList
+            data={sortedData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <Modal
         title={modal.title}

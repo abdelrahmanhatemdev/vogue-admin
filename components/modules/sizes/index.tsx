@@ -35,7 +35,7 @@ const SizeList = dynamic(() => import("@/components/modules/sizes/SizeList"), {
 export type OptimisicDataType = Size & { isPending?: boolean };
 
 function Sizes() {
-  const { data } = useSizeStore();
+  const { data, loading } = useSizeStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -168,13 +168,16 @@ function Sizes() {
         <div className="flex justify-between items-center">
           <Heading title="Sizes" description="Here's a list of your Sizes!" />
         </div>
-
-        <SizeList
-          data={sortedData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-        />
+        {data?.length > 0 ? (
+          <SizeList
+            data={sortedData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <Modal
         title={modal.title}

@@ -34,10 +34,9 @@ const LabelList = dynamic(
   { loading: Loading }
 );
 
-export type OptimisicDataType = Label & {isPending?: boolean}
+export type OptimisicDataType = Label & { isPending?: boolean };
 
 function Labels() {
-
   const { data } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,7 +45,7 @@ function Labels() {
     description: "",
     children: <></>,
   });
-  
+
   const sortedData = useMemo(() => {
     return data?.length
       ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
@@ -91,11 +90,11 @@ function Labels() {
         header: "Title",
         cell: ({ row }) => {
           const item: OptimisicDataType = row.original;
-          return <div
-          className={
-            (item.isPending ? " opacity-50" : "")
-          }
-        >{item.title}</div>;;
+          return (
+            <div className={item.isPending ? " opacity-50" : ""}>
+              {item.title}
+            </div>
+          );
         },
       },
       {
@@ -138,11 +137,7 @@ function Labels() {
                     description:
                       "Update Label here. Click Update when you'are done.",
                     children: (
-                      <EditLabel
-                        item={item}
-                        setModalOpen={setModalOpen}
-                        
-                      />
+                      <EditLabel item={item} setModalOpen={setModalOpen} />
                     ),
                   });
                 }}
@@ -164,7 +159,6 @@ function Labels() {
                       <DeleteLabel
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        
                       />
                     ),
                   });
@@ -185,14 +179,16 @@ function Labels() {
         <div className="flex justify-between items-center">
           <Heading title="Labels" description="Here's a list of your Labels!" />
         </div>
-
-        <LabelList
-          data={sortedData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-          
-        />
+        {data?.length > 0 ? (
+          <LabelList
+            data={sortedData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <Modal
         title={modal.title}

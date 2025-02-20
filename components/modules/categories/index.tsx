@@ -254,12 +254,17 @@ function Categories() {
             description="Here's a list of your categories!"
           />
         </div>
-        <CategoryList
-          data={sortedData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-        />
+
+        {data?.length > 0 ? (
+          <CategoryList
+            data={sortedData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <Modal
         title={modal.title}
