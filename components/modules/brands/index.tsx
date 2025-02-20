@@ -5,10 +5,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
+import useBrandStore from "@/store/useBrandStore";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -36,7 +36,10 @@ const BrandList = dynamic(
 
 export type OptimisicDataType = Brand & {isPending?: boolean}
 
-function Brands({ data }: { data: Brand[] }) {
+function Brands() {
+
+  const { data } = useBrandStore();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",

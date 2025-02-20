@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useColorStore from "@/store/useColorStore";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -35,7 +36,10 @@ const ColorList = dynamic(
 
 export type OptimisicDataType = Color & {isPending?: boolean}
 
-function Colors({ data }: { data: Color[] }) {
+function Colors() {
+
+  const { data } = useColorStore();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",

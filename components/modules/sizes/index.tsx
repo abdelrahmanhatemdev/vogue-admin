@@ -19,26 +19,23 @@ const AdminBreadcrumb = dynamic(
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
   loading: Loading,
 });
-const EditSize = dynamic(
-  () => import("@/components/modules/sizes/EditSize"),
-  { loading: Loading }
-);
+const EditSize = dynamic(() => import("@/components/modules/sizes/EditSize"), {
+  loading: Loading,
+});
 const DeleteSize = dynamic(
   () => import("@/components/modules/sizes/DeleteSize"),
   {
     loading: Loading,
   }
 );
-const SizeList = dynamic(
-  () => import("@/components/modules/sizes/SizeList"),
-  { loading: Loading }
-);
+const SizeList = dynamic(() => import("@/components/modules/sizes/SizeList"), {
+  loading: Loading,
+});
 
-export type OptimisicDataType = Size & {isPending?: boolean}
+export type OptimisicDataType = Size & { isPending?: boolean };
 
 function Sizes() {
-
-  const { data, setData, fetchData: refresh } = useSizeStore();
+  const { data } = useSizeStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -47,8 +44,6 @@ function Sizes() {
     children: <></>,
   });
 
-
-
   const sortedData = useMemo(() => {
     return data?.length
       ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
@@ -56,7 +51,7 @@ function Sizes() {
         )
       : [];
   }, [data]);
-  
+
   const columns: ColumnDef<Size>[] = useMemo(
     () => [
       {
@@ -131,11 +126,7 @@ function Sizes() {
                     description:
                       "Update Size here. Click Update when you'are done.",
                     children: (
-                      <EditSize
-                        item={item}
-                        setModalOpen={setModalOpen}
-                        
-                      />
+                      <EditSize item={item} setModalOpen={setModalOpen} />
                     ),
                   });
                 }}
@@ -157,7 +148,6 @@ function Sizes() {
                       <DeleteSize
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        
                       />
                     ),
                   });
@@ -184,7 +174,6 @@ function Sizes() {
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          
         />
       </div>
       <Modal

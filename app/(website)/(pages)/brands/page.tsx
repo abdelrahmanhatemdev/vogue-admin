@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { getBrands } from "@/actions/Brand";
 import { Metadata } from "next";
 
 const BrandsModule = dynamic(() => import("@/components/modules/brands"));
@@ -11,6 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Brands() {
-  const data: Brand[] = await getBrands();
-  return <BrandsModule data={data} />;
+  return <BrandsModule />;
 }

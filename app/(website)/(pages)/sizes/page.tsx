@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { getSizes } from "@/actions/Size";
 import { Metadata } from "next";
 
 const SizesModule = dynamic(() => import("@/components/modules/sizes"));
@@ -11,6 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Sizes() {
-  const data: Size[] = await getSizes();
-  return <SizesModule data={data} />;
+  return <SizesModule />;
 }

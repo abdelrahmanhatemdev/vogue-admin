@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { getLabels } from "@/actions/Label";
 import { Metadata } from "next";
 
 const LabelsModule = dynamic(
@@ -13,6 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Labels() {
-  const data: Label[] = await getLabels();
-  return <LabelsModule data={data} />;
+  return <LabelsModule />;
 }

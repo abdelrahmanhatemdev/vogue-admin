@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { getColors } from "@/actions/Color";
 import { Metadata } from "next";
 
 const ColorsModule = dynamic(
@@ -13,6 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Colors() {
-  const data: Color[] = await getColors();
-  return <ColorsModule data={data} />;
+  return <ColorsModule/>;
 }

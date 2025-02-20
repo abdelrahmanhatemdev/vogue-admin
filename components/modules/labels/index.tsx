@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useLabelStore from "@/store/useLabelStore";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -35,7 +36,10 @@ const LabelList = dynamic(
 
 export type OptimisicDataType = Label & {isPending?: boolean}
 
-function Labels({ data }: { data: Label[] }) {
+function Labels() {
+
+  const { data } = useLabelStore();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
