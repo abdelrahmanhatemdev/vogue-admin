@@ -1,6 +1,4 @@
-
-import useColorStore from "@/store/useColorStore";
-import useSizeStore from "@/store/useSizeStore";
+import useData from "@/hooks/useData";
 import { memo } from "react";
 
 const ColorsAndSizes = ({
@@ -10,8 +8,8 @@ const ColorsAndSizes = ({
   itemColors: string[];
   itemSizes: string[];
 }) => {
-  const colors = useColorStore(state => state.data);
-  const sizes = useSizeStore(state => state.data);
+  const { data: colors } = useData("colors");
+  const { data: sizes } = useData("sizes");
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[calc(50%-.5rem)_calc(50%-.5rem)] gap-4">

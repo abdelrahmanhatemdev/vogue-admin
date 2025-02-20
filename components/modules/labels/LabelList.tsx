@@ -41,17 +41,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-const NoResults = dynamic(
-  () => import("@/components/custom/NoResults"),
-  { loading: Loading }
-);
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteLabel } from "@/actions/Label";
 import { notify } from "@/lib/utils";
+import useLabelStore from "@/store/useLabelStore";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Label>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -61,16 +60,15 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddLabel = dynamic(() => import("@/components/modules/labels/AddLabel"), { loading: Loading });
+const AddLabel = dynamic(() => import("@/components/modules/labels/AddLabel"), {
+  loading: Loading,
+});
 
 interface LabelListProps<TData> {
   data: TData[];
   columns: ColumnDef<Label>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
-  addOptimisticData: (
-    action: Label[] | ((pendingState: Label[]) => Label[])
-  ) => void;
 }
 
 interface RowSelectionType {
@@ -82,8 +80,9 @@ function LabelList({
   columns,
   setModal,
   setModalOpen,
-  addOptimisticData,
 }: LabelListProps<Label>) {
+  const { data: labels, setData, fetchData: refresh } = useLabelStore();
+
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -97,7 +96,8 @@ function LabelList({
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>(visibleColumns);
 
   const selectedRows = Object.keys(rowSelection);
 
@@ -105,7 +105,6 @@ function LabelList({
 
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -141,53 +140,56 @@ function LabelList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-    function deleteMultiple() {
-      setModalOpen(true);
-      setModal({
-        title: `Delete Labels`,
-        description: (
-          <p className="font-medium">
-            Are you sure to
-            {selectedRows.length === 1 ? (
-              " delete the Label "
-            ) : (
-              <strong> delete all Labels </strong>
-            )}
-            permenantly ?
-          </p>
-        ),
-        children: (
-          <DialogFooter>
-            <Button
-              type="submit"
-              variant="destructive"
-              onClick={async () => {
-                setModalOpen(false);
-                setShowDeleteAll(false);
-                startTransition(() => {
-                  addOptimisticData((prev: Label[]) => [
-                    ...prev.map((item) => {
-                      if (selectedRows.includes(item.id)) {
-                        const pendingItem = { ...item, isPending: !isPending };
-                        return pendingItem;
-                      }
-                      return item;
-                    }),
-                  ]);
-                });
-                for (const row of selectedRows) {
-                  const data = { id: row };
-                  const res: ActionResponse = await deleteLabel(data);
-                  notify(res);
+  function deleteMultiple() {
+    setModalOpen(true);
+    setModal({
+      title: `Delete Labels`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the Label "
+          ) : (
+            <strong> delete all Labels </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              setShowDeleteAll(false);
+
+              setData([
+                ...labels.map((item) => {
+                  if (selectedRows.includes(item.id)) {
+                    const pendingItem = { ...item, isPending: true };
+                    return pendingItem;
+                  }
+                  return item;
+                }),
+              ]);
+
+              for (const row of selectedRows) {
+                const data = { id: row };
+                const res: ActionResponse = await deleteLabel(data);
+                notify(res);
+                if (res?.status === "success") {
+                  refresh();
                 }
-              }}
-            >
-              Delete All
-            </Button>
-          </DialogFooter>
-        ),
-      });
-    }
+              }
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -206,11 +208,7 @@ function LabelList({
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button
-              variant="destructive"
-              onClick={deleteMultiple}
-              size="sm"
-            >
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
               Delete Selected
             </Button>
           )}
@@ -221,12 +219,7 @@ function LabelList({
               setModal({
                 title: "Add Label",
                 description: "Add new Label here. Click Add when you'are done.",
-                children: (
-                  <AddLabel
-                    setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticData}
-                  />
-                ),
+                children: <AddLabel setModalOpen={setModalOpen} />,
               });
             }}
           >
@@ -237,7 +230,7 @@ function LabelList({
             <ToggleColumnView
               columns={table.getAllColumns()}
               setColumnVisibility={setColumnVisibility}
-              columnVisibility= {columnVisibility}
+              columnVisibility={columnVisibility}
             />
           )}
         </div>
@@ -270,7 +263,7 @@ function LabelList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">

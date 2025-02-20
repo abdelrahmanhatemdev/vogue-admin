@@ -9,37 +9,31 @@ import useLabelStore from "@/store/useLabelStore";
 function DeleteLabel({
   itemId,
   setModalOpen,
-  addOptimisticData,
 }: {
   itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Label[] | ((pendingState: Label[]) => Label[])
-  ) => void;
 }) {
   const data = { id: itemId };
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useLabelStore(state => state.fetchData)
+  const { data: labels, setData, fetchData: refresh } = useLabelStore();
 
   async function onSubmit() {
     setModalOpen(false);
-    startTransition(() => {
-      addOptimisticData((prev: Label[]) => [
-        ...prev.map((item) => {
-          if (item.id === data.id) {
-            const pendingItem = { ...item, isPending: !isPending };
-            return pendingItem;
-          }
-          return item;
-        }),
-      ]);
-    });
+
+    setData([
+      ...labels.map((item) => {
+        if (item.id === data.id) {
+          const pendingItem = { ...item, isPending: true };
+          return pendingItem;
+        }
+        return item;
+      }),
+    ]);
 
     const res: ActionResponse = await deleteLabel(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -50,6 +44,6 @@ function DeleteLabel({
       </Button>
     </DialogFooter>
   );
-};
+}
 
 export default memo(DeleteLabel);

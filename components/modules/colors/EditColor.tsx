@@ -23,14 +23,11 @@ import useColorStore from "@/store/useColorStore";
 
 function EditColor({
   item,
-  setModalOpen,
-  addOptimisticData,
+  setModalOpen
 }: {
   item: Color;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Color[] | ((pendingState: Color[]) => Color[])
-  ) => void;
+  
 }) {
   const form = useForm<z.infer<typeof ColorSchema>>({
     resolver: zodResolver(ColorSchema),
@@ -41,8 +38,8 @@ function EditColor({
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useColorStore(state => state.fetchData)
+  
+  const {data: colors, setData, fetchData: refresh}  =  useColorStore();
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);
@@ -51,15 +48,14 @@ function EditColor({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(async () => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
+    
+    setData( [
+        ...colors.filter((item) => item.id !== data.id),
         data,
       ]);
-    });
 
     const res: ActionResponse = await editColor(data);
     notify(res);

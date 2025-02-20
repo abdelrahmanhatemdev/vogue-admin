@@ -30,13 +30,9 @@ import useSizeStore from "@/store/useSizeStore";
 function EditSize({
   item,
   setModalOpen,
-  addOptimisticData,
 }: {
   item: Size;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Size[] | ((pendingState: Size[]) => Size[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof SizeSchema>>({
     resolver: zodResolver(SizeSchema),
@@ -48,10 +44,7 @@ function EditSize({
     },
   });
 
-  const sizes = useSizeStore((state) => state.data);
-
-  const [isPending, startTransition] = useTransition();
-  const refresh = useSizeStore((state) => state.fetchData);
+  const { data: sizes, setData, fetchData: refresh } = useSizeStore();
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);
@@ -60,15 +53,10 @@ function EditSize({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(async () => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.uuid !== data.uuid),
-        data,
-      ]);
-    });
+    setData([...sizes.filter((item) => item.uuid !== data.uuid), data]);
 
     const res: ActionResponse = await editSize(data);
     notify(res);

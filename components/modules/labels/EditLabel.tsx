@@ -24,13 +24,9 @@ import useLabelStore from "@/store/useLabelStore";
 function EditLabel({
   item,
   setModalOpen,
-  addOptimisticData,
 }: {
   item: Label;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Label[] | ((pendingState: Label[]) => Label[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof LabelSchema>>({
     resolver: zodResolver(LabelSchema),
@@ -41,8 +37,7 @@ function EditLabel({
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useLabelStore(state => state.fetchData)
+  const { data: labels, setData, fetchData: refresh } = useLabelStore();
 
   async function onSubmit(values: z.infer<typeof LabelSchema>) {
     setModalOpen(false);
@@ -51,20 +46,15 @@ function EditLabel({
       createdAt: item.createdAt,
       updatedAt: new Date().toISOString(),
       ...values,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(async () => {
-      addOptimisticData((prev) => [
-        ...prev.filter((item) => item.id !== data.id),
-        data,
-      ]);
-    });
+    setData([...labels.filter((item) => item.id !== data.id), data]);
 
     const res: ActionResponse = await editLabel(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 

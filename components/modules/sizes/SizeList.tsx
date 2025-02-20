@@ -43,14 +43,14 @@ import { TiArrowUnsorted } from "react-icons/ti";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-const NoResults = dynamic(
-  () => import("@/components/custom/NoResults"),
-  { loading: Loading }
-);
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { notify } from "@/lib/utils";
 import { deleteSize } from "@/actions/Size";
+import useSizeStore from "@/store/useSizeStore";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Size>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -67,9 +67,6 @@ interface SizeListProps<TData> {
   columns: ColumnDef<Size>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
-  addOptimisticData: (
-    action: Size[] | ((pendingState: Size[]) => Size[])
-  ) => void;
 }
 
 interface RowSelectionType {
@@ -81,9 +78,9 @@ function SizeList({
   columns,
   setModal,
   setModalOpen,
-  addOptimisticData,
 }: SizeListProps<Size>) {
-  
+  const { data: sizes, setData, fetchData: refresh } = useSizeStore();
+
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -96,7 +93,8 @@ function SizeList({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>(visibleColumns);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const selectedRows = Object.keys(rowSelection);
@@ -105,7 +103,6 @@ function SizeList({
 
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -141,53 +138,56 @@ function SizeList({
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-    function deleteMultiple() {
-      setModalOpen(true);
-      setModal({
-        title: `Delete Sizes`,
-        description: (
-          <p className="font-medium">
-            Are you sure to
-            {selectedRows.length === 1 ? (
-              " delete the size "
-            ) : (
-              <strong> delete all sizes </strong>
-            )}
-            permenantly ?
-          </p>
-        ),
-        children: (
-          <DialogFooter>
-            <Button
-              type="submit"
-              variant="destructive"
-              onClick={async () => {
-                setModalOpen(false);
-                setShowDeleteAll(false);
-                startTransition(() => {
-                  addOptimisticData((prev: Size[]) => [
-                    ...prev.map((item) => {
-                      if (selectedRows.includes(item.id)) {
-                        const pendingItem = { ...item, isPending: !isPending };
-                        return pendingItem;
-                      }
-                      return item;
-                    }),
-                  ]);
-                });
-                for (const row of selectedRows) {
-                  const data = { id: row };
-                  const res: ActionResponse = await deleteSize(data);
-                  notify(res);
+  function deleteMultiple() {
+    setModalOpen(true);
+    setModal({
+      title: `Delete Sizes`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the size "
+          ) : (
+            <strong> delete all sizes </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              setShowDeleteAll(false);
+
+              setData([
+                ...sizes.map((item) => {
+                  if (selectedRows.includes(item.id)) {
+                    const pendingItem = { ...item, isPending: true };
+                    return pendingItem;
+                  }
+                  return item;
+                }),
+              ]);
+
+              for (const row of selectedRows) {
+                const data = { id: row };
+                const res: ActionResponse = await deleteSize(data);
+                notify(res);
+                if (res?.status === "success") {
+                  refresh();
                 }
-              }}
-            >
-              Delete All
-            </Button>
-          </DialogFooter>
-        ),
-      });
-    }
+              }
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -206,11 +206,7 @@ function SizeList({
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button
-              variant="destructive"
-              onClick={deleteMultiple}
-              size="sm"
-            >
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
               Delete Selected
             </Button>
           )}
@@ -221,12 +217,7 @@ function SizeList({
               setModal({
                 title: "Add Size",
                 description: "Add new Size here. Click Add when you'are done.",
-                children: (
-                  <AddSize
-                    setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticData}
-                  />
-                ),
+                children: <AddSize setModalOpen={setModalOpen} />,
               });
             }}
           >
@@ -270,7 +261,7 @@ function SizeList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">

@@ -43,7 +43,7 @@ function Colors({ data }: { data: Color[] }) {
     children: <></>,
   });
 
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
+
 
   const sortedData = useMemo(() => {
     return data?.length
@@ -139,7 +139,7 @@ function Colors({ data }: { data: Color[] }) {
                       <EditColor
                         item={item}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -162,7 +162,7 @@ function Colors({ data }: { data: Color[] }) {
                       <DeleteColor
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -173,7 +173,7 @@ function Colors({ data }: { data: Color[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, sortedData]
   );
 
   return (
@@ -189,7 +189,6 @@ function Colors({ data }: { data: Color[] }) {
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          addOptimisticData={addOptimisticData}
         />
       </div>
       <Modal

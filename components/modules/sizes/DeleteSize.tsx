@@ -9,37 +9,31 @@ import useSizeStore from "@/store/useSizeStore";
 function DeleteSize({
   itemId,
   setModalOpen,
-  addOptimisticData,
 }: {
   itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Size[] | ((pendingState: Size[]) => Size[])
-  ) => void;
 }) {
   const data = { id: itemId };
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useSizeStore(state => state.fetchData)
+  const { data: sizes, setData, fetchData: refresh } = useSizeStore();
 
   async function onSubmit() {
     setModalOpen(false);
-    startTransition(() => {
-      addOptimisticData((prev: Size[]) => [
-        ...prev.map((item) => {
-          if (item.id === data.id) {
-            const pendingItem = { ...item, isPending: !isPending };
-            return pendingItem;
-          }
-          return item;
-        }),
-      ]);
-    });
+
+    setData([
+      ...sizes.map((item) => {
+        if (item.id === data.id) {
+          const pendingItem = { ...item, isPending: true };
+          return pendingItem;
+        }
+        return item;
+      }),
+    ]);
 
     const res: ActionResponse = await deleteSize(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -50,6 +44,6 @@ function DeleteSize({
       </Button>
     </DialogFooter>
   );
-};
+}
 
 export default memo(DeleteSize);

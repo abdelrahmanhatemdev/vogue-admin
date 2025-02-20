@@ -9,37 +9,31 @@ import useBrandStore from "@/store/useBrandStore";
 function DeleteBrand({
   itemId,
   setModalOpen,
-  addOptimisticData,
 }: {
   itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Brand[] | ((pendingState: Brand[]) => Brand[])
-  ) => void;
 }) {
   const data = { id: itemId };
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useBrandStore(state => state.fetchData)
+  const { fetchData: refresh, data: brands, setData } = useBrandStore();
 
   async function onSubmit() {
     setModalOpen(false);
-    startTransition(() => {
-      addOptimisticData((prev: Brand[]) => [
-        ...prev.map((item) => {
-          if (item.id === data.id) {
-            const pendingItem = { ...item, isPending: !isPending };
-            return pendingItem;
-          }
-          return item;
-        }),
-      ]);
-    });
+
+    setData([
+      ...brands.map((item) => {
+        if (item.id === data.id) {
+          const pendingItem = { ...item, isPending: true };
+          return pendingItem;
+        }
+        return item;
+      }),
+    ]);
 
     const res: ActionResponse = await deleteBrand(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -50,6 +44,6 @@ function DeleteBrand({
       </Button>
     </DialogFooter>
   );
-};
+}
 
 export default memo(DeleteBrand);

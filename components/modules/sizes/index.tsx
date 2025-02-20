@@ -8,6 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useSizeStore from "@/store/useSizeStore";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -35,7 +36,10 @@ const SizeList = dynamic(
 
 export type OptimisicDataType = Size & {isPending?: boolean}
 
-function Sizes({ data }: { data: Size[] }) {
+function Sizes() {
+
+  const { data, setData, fetchData: refresh } = useSizeStore();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -43,7 +47,7 @@ function Sizes({ data }: { data: Size[] }) {
     children: <></>,
   });
 
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
+
 
   const sortedData = useMemo(() => {
     return data?.length
@@ -130,7 +134,7 @@ function Sizes({ data }: { data: Size[] }) {
                       <EditSize
                         item={item}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -153,7 +157,7 @@ function Sizes({ data }: { data: Size[] }) {
                       <DeleteSize
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -164,7 +168,7 @@ function Sizes({ data }: { data: Size[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, sortedData]
   );
 
   return (
@@ -180,7 +184,7 @@ function Sizes({ data }: { data: Size[] }) {
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          addOptimisticData={addOptimisticData}
+          
         />
       </div>
       <Modal

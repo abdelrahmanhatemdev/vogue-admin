@@ -76,13 +76,13 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
     children: <></>,
   });
 
-  const sortedData = useMemo(() => {
-    return data?.length
-      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedOptimisicData = useMemo(() => {
+    return optimisicData?.length
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [data]);
+  }, [optimisicData]);
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
@@ -124,8 +124,8 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
       </Collapsible>
 
       <div className="flex flex-col gap-2 py-4">
-        {sortedData.length > 0 ? (
-          sortedData.map((item) => {
+        {sortedOptimisicData.length > 0 ? (
+          sortedOptimisicData.map((item) => {
             return (
               <Collapsible
                 open={openStates[item.uuid] || false} // Default to false if not set

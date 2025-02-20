@@ -9,37 +9,31 @@ import useColorStore from "@/store/useColorStore";
 function DeleteColor({
   itemId,
   setModalOpen,
-  addOptimisticData,
 }: {
   itemId: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Color[] | ((pendingState: Color[]) => Color[])
-  ) => void;
 }) {
   const data = { id: itemId };
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useColorStore(state => state.fetchData)
+  const { data: colors, setData, fetchData: refresh } = useColorStore();
 
   async function onSubmit() {
     setModalOpen(false);
-    startTransition(() => {
-      addOptimisticData((prev: Color[]) => [
-        ...prev.map((item) => {
-          if (item.id === data.id) {
-            const pendingItem = { ...item, isPending: !isPending };
-            return pendingItem;
-          }
-          return item;
-        }),
-      ]);
-    });
+
+    setData([
+      ...colors.map((item) => {
+        if (item.id === data.id) {
+          const pendingItem = { ...item, isPending: true };
+          return pendingItem;
+        }
+        return item;
+      }),
+    ]);
 
     const res: ActionResponse = await deleteColor(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
@@ -50,6 +44,6 @@ function DeleteColor({
       </Button>
     </DialogFooter>
   );
-};
+}
 
 export default memo(DeleteColor);

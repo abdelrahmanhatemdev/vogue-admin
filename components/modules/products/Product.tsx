@@ -7,12 +7,11 @@ import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useData from "@/hooks/useData";
 import { cn, notify } from "@/lib/utils";
 import { discountPrice, currencyPrice } from "@/lib/productService";
 import { editSubproduct } from "@/actions/Subproduct";
 import { Switch } from "@/components/ui/switch";
-import useColorStore from "@/store/useColorStore";
-import useSizeStore from "@/store/useSizeStore";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -58,20 +57,19 @@ function Product({
     children: <></>,
   });
 
-  const colors = useColorStore(state => state.data);
-  const sizes = useSizeStore(state => state.data);
-
+  const { data: colors } = useData("colors");
+  const { data: sizes } = useData("sizes");
 
   const [optimisicData, addOptimisticData] = useOptimistic(subproducts);
   const [isPending, startTransition] = useTransition();
 
-  const sortedData = useMemo(() => {
-    return data?.length
-      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedOptimisicData = useMemo(() => {
+    return optimisicData?.length
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [data]);
+  }, [optimisicData]);
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -313,6 +311,7 @@ function Product({
                         item={item}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
+                        productId={product.uuid as string}
                       />
                     ),
                   });
@@ -364,7 +363,7 @@ function Product({
           />
         </div>
         <SubproductList
-          data={sortedData}
+          data={sortedOptimisicData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

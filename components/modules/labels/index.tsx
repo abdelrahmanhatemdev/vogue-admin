@@ -42,9 +42,7 @@ function Labels({ data }: { data: Label[] }) {
     description: "",
     children: <></>,
   });
-
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
-
+  
   const sortedData = useMemo(() => {
     return data?.length
       ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
@@ -139,7 +137,7 @@ function Labels({ data }: { data: Label[] }) {
                       <EditLabel
                         item={item}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -162,7 +160,7 @@ function Labels({ data }: { data: Label[] }) {
                       <DeleteLabel
                         itemId={item.id}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
+                        
                       />
                     ),
                   });
@@ -173,7 +171,7 @@ function Labels({ data }: { data: Label[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, sortedData]
   );
 
   return (
@@ -189,7 +187,7 @@ function Labels({ data }: { data: Label[] }) {
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          addOptimisticData={addOptimisticData}
+          
         />
       </div>
       <Modal

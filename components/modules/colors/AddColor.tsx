@@ -25,13 +25,10 @@ import type { OptimisicDataType } from ".";
 import useColorStore from "@/store/useColorStore";
 
 function AddColor({
-  setModalOpen,
-  addOptimisticData,
+  setModalOpen
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Color[] | ((pendingState: Color[]) => Color[])
-  ) => void;
+  
 }) {
   const form = useForm<z.infer<typeof ColorSchema>>({
     resolver: zodResolver(ColorSchema),
@@ -43,8 +40,8 @@ function AddColor({
     mode: "onChange",
   });
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useColorStore(state => state.fetchData)
+
+  const {data: colors, setData, fetchData: refresh}  =  useColorStore();
 
   async function onSubmit(values: z.infer<typeof ColorSchema>) {
     setModalOpen(false);
@@ -58,12 +55,12 @@ function AddColor({
     const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.hex}-${data.updatedAt}`,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(() => {
-      addOptimisticData((prev: Color[]) => [...prev, optimisticObj]);
-    });
+   
+    setData( [...colors, optimisticObj]);
+    
     const res: ActionResponse = await addColor(data);
     notify(res);
     if (res?.status === "success") {

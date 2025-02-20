@@ -49,7 +49,7 @@ function EditCategory({
     },
   });
 
-  const [isPending, startTransition] = useTransition();
+  
 
   const { data: categories, fetchData: refresh, setData } = useCategoryStore();
   const { data: labels } = useLabelStore();
@@ -66,7 +66,7 @@ function EditCategory({
       label: values.label ?? "",
       parent: values.parent === " " ? "" : values.parent ?? "",
       additional: values.additional ? true : false,
-      isPending: !isPending,
+      isPending: true,
     };
 
     setData([...categories.filter((item) => item.uuid !== data.uuid), data]);

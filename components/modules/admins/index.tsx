@@ -45,13 +45,13 @@ function Admins({ data }: { data: Admin[] }) {
 
   const [optimisicData, addOptimisticData] = useOptimistic(data);
 
-  const sortedData = useMemo(() => {
-    return data?.length
-      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedOptimisicData = useMemo(() => {
+    return optimisicData?.length
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [data]);
+  }, [optimisicData]);
 
   const columns: ColumnDef<Admin>[] = useMemo(
     () => [
@@ -168,7 +168,7 @@ function Admins({ data }: { data: Admin[] }) {
         </div>
 
         <AdminList
-          data={sortedData}
+          data={sortedOptimisicData}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

@@ -24,7 +24,6 @@ import {
   useState,
   Dispatch,
   SetStateAction,
-  useTransition,
   memo,
   useMemo,
 } from "react";
@@ -41,17 +40,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-const NoResults = dynamic(
-  () => import("@/components/custom/NoResults"),
-  { loading: Loading }
-);
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
+import useColorStore from "@/store/useColorStore";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Color>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -61,16 +59,15 @@ const TablePagination = dynamic(
   () => import("@/components/custom/TablePagination"),
   { loading: Loading }
 );
-const AddColor = dynamic(() => import("@/components/modules/colors/AddColor"), { loading: Loading });
+const AddColor = dynamic(() => import("@/components/modules/colors/AddColor"), {
+  loading: Loading,
+});
 
 interface ColorListProps<TData> {
   data: TData[];
   columns: ColumnDef<Color>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
-  addOptimisticData: (
-    action: Color[] | ((pendingState: Color[]) => Color[])
-  ) => void;
 }
 
 interface RowSelectionType {
@@ -82,8 +79,9 @@ function ColorList({
   columns,
   setModal,
   setModalOpen,
-  addOptimisticData,
 }: ColorListProps<Color>) {
+  const { data: colors, setData, fetchData: refresh } = useColorStore();
+
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -97,7 +95,8 @@ function ColorList({
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibleColumns);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>(visibleColumns);
 
   const selectedRows = Object.keys(rowSelection);
 
@@ -105,7 +104,6 @@ function ColorList({
 
   const totalRows = data?.length ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -134,60 +132,63 @@ function ColorList({
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    getRowId: (row) => row.uuid,
+    getRowId: (row) => row.id,
   });
 
   const currentPage = pagination.pageIndex + 1;
   const totalPages =
     data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
 
-    function deleteMultiple() {
-      setModalOpen(true);
-      setModal({
-        title: `Delete Colors`,
-        description: (
-          <p className="font-medium">
-            Are you sure to
-            {selectedRows.length === 1 ? (
-              " delete the color "
-            ) : (
-              <strong> delete all colors </strong>
-            )}
-            permenantly ?
-          </p>
-        ),
-        children: (
-          <DialogFooter>
-            <Button
-              type="submit"
-              variant="destructive"
-              onClick={async () => {
-                setModalOpen(false);
-                setShowDeleteAll(false);
-                startTransition(() => {
-                  addOptimisticData((prev: Color[]) => [
-                    ...prev.map((item) => {
-                      if (selectedRows.includes(item.id)) {
-                        const pendingItem = { ...item, isPending: !isPending };
-                        return pendingItem;
-                      }
-                      return item;
-                    }),
-                  ]);
-                });
-                for (const row of selectedRows) {
-                  const data = { id: row };
-                  const res: ActionResponse = await deleteColor(data);
-                  notify(res);
+  function deleteMultiple() {
+    setModalOpen(true);
+    setModal({
+      title: `Delete Colors`,
+      description: (
+        <p className="font-medium">
+          Are you sure to
+          {selectedRows.length === 1 ? (
+            " delete the color "
+          ) : (
+            <strong> delete all colors </strong>
+          )}
+          permenantly ?
+        </p>
+      ),
+      children: (
+        <DialogFooter>
+          <Button
+            type="submit"
+            variant="destructive"
+            onClick={async () => {
+              setModalOpen(false);
+              setShowDeleteAll(false);
+
+              setData([
+                ...colors.map((item) => {
+                  if (selectedRows.includes(item.id)) {
+                    const pendingItem = { ...item, isPending: true };
+                    return pendingItem;
+                  }
+                  return item;
+                }),
+              ]);
+
+              for (const row of selectedRows) {
+                const data = { id: row };
+                const res: ActionResponse = await deleteColor(data);
+                notify(res);
+                if (res?.status === "success") {
+                  refresh();
                 }
-              }}
-            >
-              Delete All
-            </Button>
-          </DialogFooter>
-        ),
-      });
-    }
+              }
+            }}
+          >
+            Delete All
+          </Button>
+        </DialogFooter>
+      ),
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -206,11 +207,7 @@ function ColorList({
         </div>
         <div className="flex items-center justify-end gap-2">
           {selectedRows.length > 0 && showDeleteAll && (
-            <Button
-              variant="destructive"
-              onClick={deleteMultiple}
-              size="sm"
-            >
+            <Button variant="destructive" onClick={deleteMultiple} size="sm">
               Delete Selected
             </Button>
           )}
@@ -221,12 +218,7 @@ function ColorList({
               setModal({
                 title: "Add Color",
                 description: "Add new Color here. Click Add when you'are done.",
-                children: (
-                  <AddColor
-                    setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticData}
-                  />
-                ),
+                children: <AddColor setModalOpen={setModalOpen} />,
               });
             }}
           >
@@ -237,7 +229,7 @@ function ColorList({
             <ToggleColumnView
               columns={table.getAllColumns()}
               setColumnVisibility={setColumnVisibility}
-              columnVisibility= {columnVisibility}
+              columnVisibility={columnVisibility}
             />
           )}
         </div>
@@ -270,7 +262,7 @@ function ColorList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">

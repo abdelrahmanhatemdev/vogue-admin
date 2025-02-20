@@ -14,46 +14,39 @@ import {
 } from "@/components/ui/form";
 import type { OptimisicDataType } from ".";
 
-import z from "zod"
+import z from "zod";
 import { SizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Dispatch,
-  memo,
-  SetStateAction,
-  useTransition,
-} from "react";
+import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import useSizeStore from "@/store/useSizeStore";
 
 function AddSize({
   setModalOpen,
-  addOptimisticData,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Size[] | ((pendingState: Size[]) => Size[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof SizeSchema>>({
     resolver: zodResolver(SizeSchema),
     defaultValues: {
-      uuid: uuidv4(), 
+      uuid: uuidv4(),
       name: "",
-      symbol: "", 
-      sortOrder: 0
+      symbol: "",
+      sortOrder: 0,
     },
     mode: "onChange",
   });
 
-
-  const sizes = useSizeStore(state => state.data);
-
-  const [isPending, startTransition] = useTransition();
-  const refresh = useSizeStore(state => state.fetchData)
+  const { data: sizes, setData, fetchData: refresh } = useSizeStore();
 
   async function onSubmit(values: z.infer<typeof SizeSchema>) {
     setModalOpen(false);
@@ -66,22 +59,24 @@ function AddSize({
     const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(() => {
-      addOptimisticData((prev: Size[]) => [...prev, optimisticObj]);
-    });
+    setData([...sizes, optimisticObj]);
+
     const res: ActionResponse = await addSize(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:gap-0">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-0"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -117,9 +112,10 @@ function AddSize({
             <FormItem>
               <FormLabel>Order</FormLabel>
               <FormControl>
-                <Select 
-                value={field.value?.toString() ?? "0"} 
-                onValueChange={field.onChange}>
+                <Select
+                  value={field.value?.toString() ?? "0"}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className="bg-neutral-200 dark:bg-neutral-800 rounded-md">
                     <SelectValue
                       placeholder="Select Currency"
@@ -129,7 +125,10 @@ function AddSize({
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {Array.from({ length: sizes.length > 0 ? sizes.length + 1 : 1  }, (_, i) => i).map((option) => (
+                    {Array.from(
+                      { length: sizes.length > 0 ? sizes.length + 1 : 1 },
+                      (_, i) => i
+                    ).map((option) => (
                       <SelectItem
                         value={`${option}`}
                         title={`${option}`}
@@ -153,6 +152,6 @@ function AddSize({
       </form>
     </Form>
   );
-};
+}
 
 export default memo(AddSize);

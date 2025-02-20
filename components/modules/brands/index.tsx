@@ -44,8 +44,6 @@ function Brands({ data }: { data: Brand[] }) {
     children: <></>,
   });
 
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
-
   const sortedData = useMemo(() => {
     return data?.length
       ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
@@ -142,7 +140,6 @@ function Brands({ data }: { data: Brand[] }) {
                       <EditBrand
                         item={item}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
                       />
                     ),
                   });
@@ -165,7 +162,6 @@ function Brands({ data }: { data: Brand[] }) {
                       <DeleteBrand
                       itemId={item.id}
                         setModalOpen={setModalOpen}
-                        addOptimisticData={addOptimisticData}
                       />
                     ),
                   });
@@ -176,7 +172,7 @@ function Brands({ data }: { data: Brand[] }) {
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData]
+    [setModalOpen, setModal, data]
   );
 
   return (
@@ -192,7 +188,6 @@ function Brands({ data }: { data: Brand[] }) {
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}
-          addOptimisticData={addOptimisticData}
         />
       </div>
       <Modal

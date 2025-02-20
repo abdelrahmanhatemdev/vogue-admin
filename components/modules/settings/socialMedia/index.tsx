@@ -68,15 +68,15 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
     children: <></>,
   });
 
-  const sortedData = useMemo(() => {
-    return data?.length
-      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  const sortedOptimisicData = useMemo(() => {
+    return optimisicData?.length
+      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
           b.updatedAt.localeCompare(a.updatedAt)
         )
       : [];
-  }, [data]);
+  }, [optimisicData]);
 
-  const followersArray = sortedData.map((item) => item.followers);
+  const followersArray = sortedOptimisicData.map((item) => item.followers);
   const totalFollowers = followersArray.length > 0 ? followersArray.reduce(
     (accumulator, currentValue) => accumulator + currentValue
   ) : 0;
@@ -121,8 +121,8 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
       </Collapsible>
 
       <div className="flex flex-col gap-2 py-4">
-        {sortedData.length > 0 ? (
-          sortedData.map((item) => {
+        {sortedOptimisicData.length > 0 ? (
+          sortedOptimisicData.map((item) => {
             const social = socialMediaList.find(
               (s) => s.value === item.platform
             );

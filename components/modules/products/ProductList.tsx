@@ -97,9 +97,7 @@ function ProductList({
   setModalOpen,
   addOptimisticData,
 }: ProductListProps<Product>) {
-  
-
-  const brands = useBrandStore(state => state.data);
+  const { data: brands } = useBrandStore();
 
   const visibleColumns = useMemo(() => {
     return columns?.length > 0

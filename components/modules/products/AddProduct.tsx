@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import z from "zod";
 import { ProductSchema } from "@/lib/validation/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,8 +43,8 @@ function AddProduct({
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const categories  = useCategoryStore(state => state.data);
-  const brands  = useBrandStore(state => state.data);
+  const { data: categories } = useCategoryStore();
+  const { data: brands } = useBrandStore();
 
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),

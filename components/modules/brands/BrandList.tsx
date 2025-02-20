@@ -51,6 +51,7 @@ import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
+import useBrandStore from "@/store/useBrandStore";
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Brand>>(
   () => import("@/components/custom/ToggleColumnView"),
@@ -67,9 +68,6 @@ interface BrandListProps<TData> {
   columns: ColumnDef<Brand>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
-  addOptimisticData: (
-    action: Brand[] | ((pendingState: Brand[]) => Brand[])
-  ) => void;
 }
 
 interface RowSelectionType {
@@ -81,13 +79,14 @@ function BrandList({
   columns,
   setModal,
   setModalOpen,
-  addOptimisticData,
 }: BrandListProps<Brand>) {
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
       : {};
   }, [columns]);
+
+  const { fetchData: refresh, setData } = useBrandStore();
 
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -105,7 +104,6 @@ function BrandList({
 
   const totalRows = isData ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const table = useReactTable({
     data,
@@ -163,21 +161,24 @@ function BrandList({
             onClick={async () => {
               setModalOpen(false);
               setShowDeleteAll(false);
-              startTransition(() => {
-                addOptimisticData((prev: Brand[]) => [
-                  ...prev.map((item) => {
+              
+              setData( [
+                  ...data.map((item) => {
                     if (selectedRows.includes(item.id)) {
-                      const pendingItem = { ...item, isPending: !isPending };
+                      const pendingItem = { ...item, isPending: true };
                       return pendingItem;
                     }
                     return item;
                   }),
                 ]);
-              });
+             
               for (const row of selectedRows) {
                 const data = { id: row };
                 const res: ActionResponse = await deleteBrand(data);
                 notify(res);
+                if (res?.status === "success") {
+                  refresh();
+                }
               }
             }}
           >
@@ -219,7 +220,6 @@ function BrandList({
                 children: (
                   <AddBrand
                     setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticData}
                   />
                 ),
               });

@@ -25,12 +25,8 @@ import useBrandStore from "@/store/useBrandStore";
 
 function AddBrand({
   setModalOpen,
-  addOptimisticData,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Brand[] | ((pendingState: Brand[]) => Brand[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof BrandSchema>>({
     resolver: zodResolver(BrandSchema),
@@ -42,8 +38,7 @@ function AddBrand({
     mode: "onChange",
   });
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useBrandStore(state => state.fetchData)
+  const { fetchData: refresh, data: brands, setData } = useBrandStore();
 
   async function onSubmit(values: z.infer<typeof BrandSchema>) {
     setModalOpen(false);
@@ -56,16 +51,15 @@ function AddBrand({
     const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.name}-${data.updatedAt}`,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(() => {
-      addOptimisticData((prev: Brand[]) => [...prev, optimisticObj]);
-    });
+    setData([...brands, optimisticObj]);
+
     const res: ActionResponse = await addBrand(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 

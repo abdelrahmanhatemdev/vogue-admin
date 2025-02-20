@@ -26,12 +26,8 @@ import useLabelStore from "@/store/useLabelStore";
 
 function AddLabel({
   setModalOpen,
-  addOptimisticData,
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  addOptimisticData: (
-    action: Label[] | ((pendingState: Label[]) => Label[])
-  ) => void;
 }) {
   const form = useForm<z.infer<typeof LabelSchema>>({
     resolver: zodResolver(LabelSchema),
@@ -43,8 +39,7 @@ function AddLabel({
     mode: "onChange",
   });
 
-  const [isPending, startTransition] = useTransition();
-  const refresh = useLabelStore(state => state.fetchData)
+  const { data: labels, setData, fetchData: refresh } = useLabelStore();
 
   async function onSubmit(values: z.infer<typeof LabelSchema>) {
     setModalOpen(false);
@@ -58,16 +53,15 @@ function AddLabel({
     const optimisticObj: OptimisicDataType = {
       ...data,
       id: `optimisticID-${data.hex}-${data.updatedAt}`,
-      isPending: !isPending,
+      isPending: true,
     };
 
-    startTransition(() => {
-      addOptimisticData((prev: Label[]) => [...prev, optimisticObj]);
-    });
+    setData([...labels, optimisticObj]);
+
     const res: ActionResponse = await addLabel(data);
     notify(res);
     if (res?.status === "success") {
-      refresh()
+      refresh();
     }
   }
 
