@@ -17,7 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import z from "zod";
 import { CategorySchema } from "@/lib/validation/categorySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { addCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";

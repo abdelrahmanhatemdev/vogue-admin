@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -168,16 +168,13 @@ function Sizes() {
         <div className="flex justify-between items-center">
           <Heading title="Sizes" description="Here's a list of your Sizes!" />
         </div>
-        {data?.length > 0 ? (
-          <SizeList
-            data={sortedData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-          />
-        ) : (
-          <Loading />
-        )}
+        {loading && <Loading />}
+        <SizeList
+          data={sortedData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+        />
       </div>
       <Modal
         title={modal.title}

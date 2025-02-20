@@ -15,7 +15,7 @@ import {
 import { z } from "zod";
 import { BrandSchema } from "@/lib/validation/brandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { editBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
 import useBrandStore from "@/store/useBrandStore";

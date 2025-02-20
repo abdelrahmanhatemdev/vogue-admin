@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { deleteColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import useColorStore from "@/store/useColorStore";

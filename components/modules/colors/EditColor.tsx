@@ -15,7 +15,7 @@ import {
 import { z } from "zod";
 import { ColorSchema } from "@/lib/validation/colorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { editColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { Sketch } from "@uiw/react-color";

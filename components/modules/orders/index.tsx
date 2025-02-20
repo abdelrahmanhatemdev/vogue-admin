@@ -2,8 +2,6 @@
 import { memo } from "react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import Image from "next/image";
-import useTheme from "@/hooks/useTheme";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -23,7 +21,6 @@ function Orders() {
         <div className="flex justify-between items-center">
           <Heading title="Orders" description="Here's a list of your Orders!" />
         </div>
-
         <WorkingOnArea />
       </div>
     </div>

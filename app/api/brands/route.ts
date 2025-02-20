@@ -73,10 +73,6 @@ export async function PUT(request: Request) {
 
     await BrandSchema.parseAsync({ uuid, name, slug });
 
-   const list = (await collectionRef.get()).docs.filter(
-      (doc) => doc.id !== id && doc.data().slug === slug
-    );
-
     const q = collectionRef.where("slug", "==", slug);
     const snapShot = await q.get();
 

@@ -17,7 +17,7 @@ import {
 import z from "zod";
 import { ColorSchema } from "@/lib/validation/colorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { addColor } from "@/actions/Color";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";

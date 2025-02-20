@@ -17,7 +17,7 @@ import {
 import z from "zod";
 import { LabelSchema } from "@/lib/validation/labelSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { addLabel } from "@/actions/Label";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";

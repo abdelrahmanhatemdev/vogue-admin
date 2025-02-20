@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { deleteLabel } from "@/actions/Label";
 import { notify } from "@/lib/utils";
 import useLabelStore from "@/store/useLabelStore";

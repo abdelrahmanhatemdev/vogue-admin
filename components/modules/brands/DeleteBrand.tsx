@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { deleteBrand } from "@/actions/Brand";
 import { notify } from "@/lib/utils";
 import useBrandStore from "@/store/useBrandStore";

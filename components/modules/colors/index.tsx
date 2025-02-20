@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +37,7 @@ const ColorList = dynamic(
 export type OptimisicDataType = Color & { isPending?: boolean };
 
 function Colors() {
-  const { data } = useColorStore();
+  const { data, loading } = useColorStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -179,16 +179,13 @@ function Colors() {
         <div className="flex justify-between items-center">
           <Heading title="Colors" description="Here's a list of your Colors!" />
         </div>
-        {data?.length > 0 ? (
-          <ColorList
-            data={sortedData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-          />
-        ) : (
-          <Loading />
-        )}
+        {loading && <Loading />}
+        <ColorList
+          data={sortedData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+        />
       </div>
       <Modal
         title={modal.title}

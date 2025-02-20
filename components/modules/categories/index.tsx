@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
+import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +37,7 @@ const CategoryList = dynamic(
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-  const { data, setData, fetchData: refresh } = useCategoryStore();
+  const { data, setData, fetchData: refresh, loading } = useCategoryStore();
   const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -187,7 +187,7 @@ function Categories() {
 
                   notify(res);
                   if (res?.status === "success") {
-                    refresh()
+                    refresh();
                   }
                 }}
               />
@@ -258,16 +258,13 @@ function Categories() {
           />
         </div>
 
-        {data?.length > 0 ? (
-          <CategoryList
-            data={sortedData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-          />
-        ) : (
-          <Loading />
-        )}
+        {loading && <Loading />}
+        <CategoryList
+          data={sortedData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+        />
       </div>
       <Modal
         title={modal.title}

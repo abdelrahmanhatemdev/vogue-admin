@@ -2,7 +2,6 @@
 import { memo } from "react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import useTheme from "@/hooks/useTheme";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -26,7 +25,6 @@ function Payments() {
             description="Here's a list of your Payments!"
           />
         </div>
-
         <WorkingOnArea />
       </div>
     </div>

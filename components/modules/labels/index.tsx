@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +37,7 @@ const LabelList = dynamic(
 export type OptimisicDataType = Label & { isPending?: boolean };
 
 function Labels() {
-  const { data } = useLabelStore();
+  const { data, loading } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -179,16 +179,13 @@ function Labels() {
         <div className="flex justify-between items-center">
           <Heading title="Labels" description="Here's a list of your Labels!" />
         </div>
-        {data?.length > 0 ? (
+        {loading && <Loading />}
           <LabelList
             data={sortedData}
             columns={columns}
             setModalOpen={setModalOpen}
             setModal={setModal}
           />
-        ) : (
-          <Loading />
-        )}
       </div>
       <Modal
         title={modal.title}

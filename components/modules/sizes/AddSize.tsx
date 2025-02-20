@@ -17,7 +17,7 @@ import type { OptimisicDataType } from ".";
 import z from "zod";
 import { SizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { addSize } from "@/actions/Size";
 import { notify } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";

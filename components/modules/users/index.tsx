@@ -2,8 +2,6 @@
 import { memo } from "react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import Image from "next/image";
-import useTheme from "@/hooks/useTheme";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -25,7 +23,6 @@ function Users() {
         <div className="flex justify-between items-center">
           <Heading title="Users" description="Here's a list of your Users!" />
         </div>
-
         <WorkingOnArea />
       </div>
     </div>

@@ -15,7 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { CategorySchema } from "@/lib/validation/categorySchema";
-import { Dispatch, memo, SetStateAction, useTransition } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { editCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import {

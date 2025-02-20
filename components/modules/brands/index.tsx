@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useOptimistic, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +37,7 @@ const BrandList = dynamic(
 export type OptimisicDataType = Brand & { isPending?: boolean };
 
 function Brands() {
-  const { data } = useBrandStore();
+  const { data, loading } = useBrandStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -177,16 +177,13 @@ function Brands() {
           <Heading title="Brands" description="Here's a list of your Brands!" />
         </div>
 
-        {data?.length > 0 ? (
-          <BrandList
-            data={sortedData}
-            columns={columns}
-            setModalOpen={setModalOpen}
-            setModal={setModal}
-          />
-        ) : (
-          <Loading />
-        )}
+        {loading && <Loading />}
+        <BrandList
+          data={sortedData}
+          columns={columns}
+          setModalOpen={setModalOpen}
+          setModal={setModal}
+        />
       </div>
       <Modal
         title={modal.title}
