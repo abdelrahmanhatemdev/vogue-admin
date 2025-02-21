@@ -12,7 +12,7 @@ export const getLabels = async () => {
     if (res?.ok) {
       const { data } = await res.json();
 
-      if (data) {
+      if (data?.length > 0 ) {
 
         return data.sort((a: Label, b: Label) =>
           b.updatedAt.localeCompare(a.updatedAt)

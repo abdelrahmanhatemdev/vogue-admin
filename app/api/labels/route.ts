@@ -1,23 +1,32 @@
 import { LabelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
+import redis from "@/lib/redis";
 
 export const collectionName = "labels";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = await collectionRef.get();
+    // const cached = (await redis.get(collectionName)) as string;
 
-    const data = snapShot.empty
-      ? []
-      : snapShot.docs
-          .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            } as Label))
-          .filter((doc) => !doc.deletedAt)
-        
+    // if (cached) {
+    //   return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
+    // }
+
+    const snapShot = await collectionRef.where("deletedAt", "==", "").get();
+
+    console.log("snapShot", snapShot);
+
+    const data = snapShot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    console.log("data", data);
+    
+
+    // await redis.set(collectionName, JSON.stringify(data), { ex: 60 * 60 * 6 }); // 6 hrs
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

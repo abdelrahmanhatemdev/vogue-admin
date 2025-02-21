@@ -13,7 +13,7 @@ export const getSizes = async () => {
     if (res?.ok) {
       const { data } = await res.json();
 
-      if (data) {
+      if (data?.length > 0) {
         return data.sort((a: Size, b: Size) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );

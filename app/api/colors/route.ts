@@ -1,26 +1,31 @@
 import { ColorSchema } from "@/lib/validation/colorSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
+import redis from "@/lib/redis";
 
 export const collectionName = "colors";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    const snapShot = await collectionRef.get();
+    const cached = (await redis.get(collectionName)) as string;
 
-    const data = snapShot.empty
-      ? []
-      : snapShot.docs
-          .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            } as Color ))
-          .filter((doc) => !doc.deletedAt)
-       
+    if (cached) {
+      return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
+    }
+
+    const snapShot = await collectionRef.where("deletedAt", "==", "").get();
+
+    const data = snapShot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    await redis.set(collectionName, JSON.stringify(data), { ex: 60 * 60 * 6 }); // 6 hrs
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -86,10 +91,7 @@ export async function DELETE(request: Request) {
 
     await docRef.update({ deletedAt: new Date().toISOString() });
 
-    return NextResponse.json(
-      { message: "Color Deleted"},
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Color Deleted" }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

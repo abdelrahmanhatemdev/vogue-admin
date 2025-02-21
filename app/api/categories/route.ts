@@ -8,23 +8,20 @@ export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
   try {
-    // const cached = (await redis.get(collectionName)) as string;
+    const cached = (await redis.get(collectionName)) as string;
 
-    // if (cached) {
-    //   return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
-    // }
+    if (cached) {
+      return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
+    }
 
-    const snapShot = await collectionRef.get();
+    const snapShot = await collectionRef.where("deletedAt", "==", "").get();
 
-    const data = snapShot.empty
-      ? []
-      : snapShot.docs
-          .map((doc) => {
-            return { id: doc.id, ...doc.data() } as Category;
-          })
-          .filter((doc) => !doc.deletedAt);
+    const data = snapShot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-    // await redis.set(collectionName, JSON.stringify(data), { ex: 60*60});
+    await redis.set(collectionName, JSON.stringify(data), { ex: 60 * 60 * 6 }); // 6 hrs
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -71,6 +68,7 @@ export async function POST(request: Request) {
       label,
       createdAt: date,
       updatedAt: date,
+      deletedAt: "",
     };
 
     const docRef = await collectionRef.add(data);

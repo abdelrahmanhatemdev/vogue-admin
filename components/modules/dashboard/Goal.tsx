@@ -4,6 +4,7 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Bar, BarChart, Tooltip, TooltipProps } from "recharts";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
+import useCategoryStore from "@/store/useCategoryStore";
 
 const chartData = [
   { month: "January", thisMonth: 186, average: 80 },
@@ -64,6 +65,9 @@ const CustomTooltip = ({
 
 const Gaol = () => {
   const [goal, setGoal] = useState(250);
+  const categories = useCategoryStore(state => state.data)
+
+  console.log("categories", categories);
   return (
     <div className="flex flex-col justify-between gap-2 dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg shadow-md">
       <div className="flex flex-col">

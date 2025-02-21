@@ -13,19 +13,19 @@ import useLabelStore from "@/store/useLabelStore";
 
 const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const setCategories = useCategoryStore((state) => state.setData);
-  const setCategoriesLoading  = useCategoryStore(state => state.setLoading)
+  const setCategoriesLoading = useCategoryStore((state) => state.setLoading);
 
-  const setColors  = useColorStore((state) => state.setData);
-  const setColorsLoading  = useColorStore(state => state.setLoading)
+  const setColors = useColorStore((state) => state.setData);
+  const setColorsLoading = useColorStore((state) => state.setLoading);
 
-  const setBrands  = useBrandStore((state) => state.setData);
-  const setBrandsLoading  = useBrandStore(state => state.setLoading)
+  const setBrands = useBrandStore((state) => state.setData);
+  const setBrandsLoading = useBrandStore((state) => state.setLoading);
 
-  const setSizes  = useSizeStore((state) => state.setData);
-  const setSizesLoading  = useSizeStore(state => state.setLoading)
+  const setSizes = useSizeStore((state) => state.setData);
+  const setSizesLoading = useSizeStore((state) => state.setLoading);
 
-  const setLabels  = useLabelStore((state) => state.setData);
-  const setLabelsLoading  = useLabelStore(state => state.setLoading)
+  const setLabels = useLabelStore((state) => state.setData);
+  const setLabelsLoading = useLabelStore((state) => state.setLoading);
 
   const fetchData = async () => {
     try {
@@ -53,7 +53,6 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const labels = await getLabels();
       setLabels(labels);
       setLabelsLoading(false);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }

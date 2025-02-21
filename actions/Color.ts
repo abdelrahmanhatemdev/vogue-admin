@@ -9,10 +9,11 @@ const tag: string = "colors";
 export const getColors = async () => {
   try {
     const res = await fetchWithAuth({ url: apiURL, tag });
+
     if (res?.ok) {
       const { data } = await res.json();
 
-      if (data) {
+      if (data?.length > 0) {
         return data.sort((a: Color, b: Color) =>
           b.updatedAt.localeCompare(a.updatedAt)
         );
