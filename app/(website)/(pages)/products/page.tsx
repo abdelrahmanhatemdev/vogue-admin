@@ -13,15 +13,23 @@ export const metadata: Metadata = {
 export default async function Products() {
   const data: Product[] = await getProducts();
 
-  const products = await Promise.all(
-    data.map(async (product) => {
-      const subProducts: Subproduct[] = await getProducSubproducts(
-        product.slug
-      );
+  let products: Product[] = [];
 
-      return { ...product, subproducts: subProducts.length } as Product;
-    })
-  );
+  console.log("page data", data);
+  
+
+
+
+    products = await Promise.all(
+      data.map(async (product) => {
+        const subProducts: Subproduct[] = await getProducSubproducts(
+          product.slug
+        );
+
+        return { ...product, subproducts: subProducts.length } as Product;
+      })
+    );
+
 
   return <ProductsModule data={products} />;
 }

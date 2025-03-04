@@ -38,7 +38,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >
@@ -47,7 +46,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >
@@ -70,7 +68,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >
@@ -79,7 +76,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >
@@ -102,7 +98,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >
@@ -111,7 +106,6 @@ function AuthSwiper() {
             <motion.p
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.8 }}
               variants={paragraphVariants}
               className="z-10 text-neutral-50  lg:text-2xl 2xl:text-3xl font-extralight"
             >

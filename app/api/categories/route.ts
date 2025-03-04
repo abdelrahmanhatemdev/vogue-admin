@@ -2,32 +2,13 @@ import { CategorySchema } from "@/lib/validation/categorySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin"; // Use Firebase Admin SDK
 import redis from "@/lib/redis";
+import { fetchAllActive } from "@/lib/api/fetchData";
 
 export const collectionName = "categories";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  try {
-    const cached = (await redis.get(collectionName)) as string;
-
-    if (cached) {
-      return NextResponse.json({ data: JSON.parse(cached) }, { status: 200 });
-    }
-
-    const snapShot = await collectionRef.where("deletedAt", "==", "").get();
-
-    const data = snapShot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    await redis.set(collectionName, JSON.stringify(data), { ex: 60 * 60 * 6 }); // 6 hrs
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return fetchAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {
@@ -74,7 +55,7 @@ export async function POST(request: Request) {
     const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
-      await redis.del(collectionName);
+      // await redis.del(collectionName);
       return NextResponse.json({ message: "Category added" }, { status: 200 });
     }
 

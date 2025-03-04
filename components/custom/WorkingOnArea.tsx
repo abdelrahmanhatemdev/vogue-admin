@@ -11,7 +11,7 @@ const WorkingOnArea = () => {
       <div className="border border-dashed rounded-md">
         <Image
           src={`/assets/images/working-on${isLight ? "-light" : ""}.png`}
-          alt="Working ON"
+          alt="Working Area"
           className="rounded-lg"
           sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
           priority={true}
@@ -19,7 +19,7 @@ const WorkingOnArea = () => {
           height={200}
         />
       </div>
-      <h2>Working On Area</h2>
+      <h2>Working Area</h2>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
+import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -11,6 +11,9 @@ export const getProducts = async () => {
     const res = await fetchWithAuth({ url: apiURL, tag });
     if (res?.ok) {
       const { data } = await res.json();
+
+      console.log("action data", data);
+      
 
       if (data) {
         return data.sort((a: Product, b: Product) =>

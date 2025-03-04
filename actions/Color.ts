@@ -1,5 +1,5 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
+import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 

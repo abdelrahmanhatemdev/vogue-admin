@@ -1,5 +1,5 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
+import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
@@ -9,6 +9,9 @@ const tag: string = "categories";
 export const getCategories = async () => {
   try {
     const res = await fetchWithAuth({ url: apiURL, tag });
+
+    console.log("cats", res);
+    
 
     if (res?.ok) {
       const { data } = await res.json();
