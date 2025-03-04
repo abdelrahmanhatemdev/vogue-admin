@@ -43,18 +43,20 @@ export async function fetchAllActive<T extends Record<string, any>>({
 }: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
 }) {
-  try {
-    const snapShot = await collectionRef.get();
-
-    const data = snapShot.empty
+ 
+     try {
+        const snapShot = await collectionRef.get();
+    
+        const data = snapShot.empty
       ? []
       : snapShot.docs
           .map((doc) => ({ id: doc.id, ...(doc.data() as T) }))
           .filter((doc) => !doc.deletedAt);
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something went wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+    
+        return NextResponse.json({ data }, { status: 200 });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Something Wrong";
+        return NextResponse.json({ error: message }, { status: 500 });
+      }
+   
 }

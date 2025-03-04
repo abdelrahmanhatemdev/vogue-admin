@@ -9,10 +9,7 @@ const tag: string = "categories";
 export const getCategories = async () => {
   try {
     const res = await fetchWithAuth({ url: apiURL, tag });
-
-    console.log("cats", res);
     
-
     if (res?.ok) {
       const { data } = await res.json();
       if (data) {

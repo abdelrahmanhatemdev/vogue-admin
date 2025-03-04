@@ -12,9 +12,6 @@ export const getProducts = async () => {
     if (res?.ok) {
       const { data } = await res.json();
 
-      console.log("action data", data);
-      
-
       if (data) {
         return data.sort((a: Product, b: Product) =>
           b.updatedAt.localeCompare(a.updatedAt)

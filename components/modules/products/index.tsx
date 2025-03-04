@@ -288,6 +288,7 @@ function Products({ data }: { data: Product[] }) {
     [setModalOpen, setModal, addOptimisticData, brands, categories]
   );
 
+
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Products" />

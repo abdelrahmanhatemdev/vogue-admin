@@ -15,10 +15,6 @@ export default async function Products() {
 
   let products: Product[] = [];
 
-  console.log("page data", data);
-  
-
-
 
     products = await Promise.all(
       data.map(async (product) => {
