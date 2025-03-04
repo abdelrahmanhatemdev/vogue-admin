@@ -2,7 +2,7 @@ import { LabelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 import { fetchAllActive } from "@/lib/api/fetchData";
-// import redis from "@/lib/redis";
+// // import redis from "@/lib/redis";
 
 export const collectionName = "labels";
 export const collectionRef = adminDB.collection(collectionName);

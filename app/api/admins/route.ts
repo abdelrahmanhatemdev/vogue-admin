@@ -1,7 +1,7 @@
 import { AdminAddSchema, AdminEditSchema } from "@/lib/validation/adminSchema";
 import { NextResponse } from "next/server";import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
-import redis from "@/lib/redis";
+// import redis from "@/lib/redis";
 import { fetchAllActive } from "@/lib/api/fetchData";
 
 export const collectionName = "admins";

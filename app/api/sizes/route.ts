@@ -1,7 +1,7 @@
 import { SizeSchema } from "@/lib/validation/sizeSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import redis from "@/lib/redis";
+// import redis from "@/lib/redis";
 import { fetchAllActive } from "@/lib/api/fetchData";
 
 export const collectionName = "sizes";

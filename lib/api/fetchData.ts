@@ -38,7 +38,7 @@ export async function fetchWithAuth({
   });
 }
 
-export async function fetchAllActive<T extends Record<string, any>>({
+export async function fetchAllActive<T extends Record<string, string>>({
   collectionRef,
 }: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;

@@ -1,60 +1,14 @@
 import { ProductSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import redis from "@/lib/redis";
+// import redis from "@/lib/redis";
 import { fetchAllActive } from "@/lib/api/fetchData";
 
 export const collectionName = "products";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  console.log("Get Productttt");
   return fetchAllActive({collectionRef})
-  // try {
-  //   const snapShot = await collectionRef.get();
-
-  //   const data = snapShot.empty
-  //     ? []
-  //     : snapShot.docs
-  //         .map(
-  //           (doc) =>
-  //             ({
-  //               id: doc.id,
-  //               ...doc.data(),
-  //             } as Product)
-  //         )
-  //         .filter((doc) => !doc.deletedAt || doc.deletedAt === "");
-
-  //         console.log("route data", data);
-          
-
-  //   return NextResponse.json({ data }, { status: 200 });
-  // } catch (error) {
-  //   const message = error instanceof Error ? error.message : "Something Wrong";
-  //   return NextResponse.json({ error: message }, { status: 500 });
-  // }
-  // try {
-  //   const snapShot = await collectionRef.get();
-
-  //   const data = snapShot.empty
-  //     ? []
-  //     : snapShot.docs
-  //         .map(
-  //           (doc) =>
-  //             ({
-  //               id: doc.id,
-  //               ...doc.data(),
-  //             } as Product)
-  //         )
-  //         .filter((doc) => !doc.deletedAt);
-
-  //   return NextResponse.json({ data }, { status: 200 });
-  // } catch (error) {
-  //   const message = error instanceof Error ? error.message : "Something Wrong";
-  //   return NextResponse.json({ error: message }, { status: 500 });
-  // }
-  
-  
 }
 
 export async function POST(request: Request) {
