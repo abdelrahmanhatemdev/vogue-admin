@@ -129,124 +129,128 @@ function AdminSidebar() {
   if (!state) return;
 
   return (
-    <Sidebar
-      collapsible="icon"
-      className="
+    <aside className="p-4">
+      <Sidebar
+        collapsible="icon"
+        className="
       absolute 
-      h-[calc(100%-5vh)] top-[2.5vh]
+      inset-0
+      h-[calc(100%-5vh)] 
       start-[1rem] 
       rounded-lg 
       border-transparent overflow-hidden"
-    >
-      <SidebarHeader className="hidden md:block p-4">
-        {state === "expanded" ? (
-          <Logo />
-        ) : (
-          <Logo className="w-5 h-5 mx-auto" small={true} />
-        )}
-      </SidebarHeader>
-      <SidebarContent className="scrollbar-hide overflow-hidden">
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-foreground">
-            Vogue Admin
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {SidebarLinks.map((link) => {
-                const isActive =
-                  link.link === "/"
-                    ? currentPath === "/"
-                    : currentPath.startsWith(link.link);
+      >
+        <SidebarHeader className="hidden md:block p-4">
+          {state === "expanded" ? (
+            <Logo />
+          ) : (
+            <Logo className="w-5 h-5 mx-auto" small={true} />
+          )}
+        </SidebarHeader>
+        <SidebarContent className="scrollbar-hide overflow-hidden">
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-foreground">
+              Vogue Admin
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {SidebarLinks.map((link) => {
+                  const isActive =
+                    link.link === "/"
+                      ? currentPath === "/"
+                      : currentPath.startsWith(link.link);
 
-                return (
-                  <SidebarMenuItem key={link.title}>
-                    <SidebarMenuButton asChild isActive={isActive}>
-                      <Link
-                        href={`${link.link}`}
-                        className="w-6 h-6 text-foreground"
-                      >
-                        <link.icon />
-                        <span
-                          className={isActive ? "font-bold" : "font-medium"}
+                  return (
+                    <SidebarMenuItem key={link.title}>
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <Link
+                          href={`${link.link}`}
+                          className="w-6 h-6 text-foreground"
                         >
-                          {link.title}
-                        </span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="p-4">
-        {user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              className="focus:ring-0 focus:bg-transparent data-[state=open]:bg-transparent
+                          <link.icon />
+                          <span
+                            className={isActive ? "font-bold" : "font-medium"}
+                          >
+                            {link.title}
+                          </span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter className="p-4">
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="focus:ring-0 focus:bg-transparent data-[state=open]:bg-transparent
             "
-            >
-              <Link
-                href="/account"
-                aria-label={`Sidebar Account Dropdown`}
-                className="w-full flex gap-2"
               >
-                <div
-                  className={cn(
-                    "flex items-center justify-center rounded-md transition-all",
-                    state === "expanded"
-                      && "bg-neutral-700 dark:bg-neutral-300 p-2"
-                      
-                  )}
+                <Link
+                  href="/account"
+                  aria-label={`Sidebar Account Dropdown`}
+                  className="w-full flex gap-2"
                 >
-                  <User
-                    className={
-                      `${state === "expanded"
-                        ? "text-neutral-50 dark:text-neutral-800"
-                        : "dark:text-neutral-50 text-neutral-800"}`
-                    }
-                    size={15}
-                  />
-                </div>
-                {state === "expanded" ? (
-                  <div className="flex flex-col items-start text-xs">
-                    <div className="font-bold truncate">
-                      {user.displayName}
-                      </div>
-                    <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
-                      {user.email}
-                    </div>
+                  <div
+                    className={cn(
+                      "flex items-center justify-center rounded-md transition-all",
+                      state === "expanded" &&
+                        "bg-neutral-700 dark:bg-neutral-300 p-2"
+                    )}
+                  >
+                    <User
+                      className={`${
+                        state === "expanded"
+                          ? "text-neutral-50 dark:text-neutral-800"
+                          : "dark:text-neutral-50 text-neutral-800"
+                      }`}
+                      size={15}
+                    />
                   </div>
-                ) : (
-                  <></>
-                )}
-              </Link>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel className="bg-neutral-100 dark:bg-neutral-700">My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem className="flex gap-2 cursor-pointer">
-                  <IoSettingsOutline />
-                  <span>Setting</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  className="flex gap-2 cursor-pointer"
-                  onClick={handleLogOut}
-                >
-                  <CiLogout />
-                  <div>Logout</div>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
-      </SidebarFooter>
-    </Sidebar>
+                  {state === "expanded" ? (
+                    <div className="flex flex-col items-start text-xs">
+                      <div className="font-bold truncate">
+                        {user.displayName}
+                      </div>
+                      <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
+                        {user.email}
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </Link>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel className="bg-neutral-100 dark:bg-neutral-700">
+                  My Account
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="flex gap-2 cursor-pointer">
+                    <IoSettingsOutline />
+                    <span>Setting</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    className="flex gap-2 cursor-pointer"
+                    onClick={handleLogOut}
+                  >
+                    <CiLogout />
+                    <div>Logout</div>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </SidebarFooter>
+      </Sidebar>
+    </aside>
   );
 }
 export default memo(AdminSidebar);
