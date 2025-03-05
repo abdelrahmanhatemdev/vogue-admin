@@ -36,7 +36,7 @@ export default async function layout({
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
   const user = await getUser();
-  const isAdminUser = user ? user.admin : null
+  const isAdminUser = user ? user.admin : null;
 
   if (!isAdminUser) redirect("/login");
 
@@ -46,18 +46,18 @@ export default async function layout({
         defaultOpen={defaultOpen}
         className="
       md:h-full md:min-h-full
-      overflow-auto scrollbar-hide"
+      overflow-auto scrollbar-hide p-4"
       >
-        <Header />
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <AdminSidebar />
-        </motion.div>
+          <Header />
+          <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <AdminSidebar />
+          </motion.div>
 
-        <main className="grow w-[50%] md:h-[90.25vh] md:mt-[2.375vh]">
+        <main className="grow w-[50%] md:h-[90.25vh]">
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

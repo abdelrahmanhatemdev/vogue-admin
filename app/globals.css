@@ -126,8 +126,6 @@
     box-shadow: 0 0 0px 1000px #3b3b3b inset !important;
     -webkit-text-fill-color: #eee !important;
   }
-
-  --sidebar: hsl(240 5.9% 10%)
 }
 
 .mySwiper .swiper-pagination-fraction,
