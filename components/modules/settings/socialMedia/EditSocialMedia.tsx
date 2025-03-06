@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SocialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
+import { socialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/socialMedia";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
@@ -40,8 +40,8 @@ const EditSocialMedia = ({
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SocialMediaSchema>>({
-    resolver: zodResolver(SocialMediaSchema),
+  const form = useForm<z.infer<typeof socialMediaSchema>>({
+    resolver: zodResolver(socialMediaSchema),
     defaultValues: {
       uuid: item.uuid,
       link: item.link,
@@ -51,7 +51,7 @@ const EditSocialMedia = ({
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof SocialMediaSchema>) {
+  async function onSubmit(values: z.infer<typeof socialMediaSchema>) {
     setOpenStates({})
     const date = new Date().toISOString();
     const data = {

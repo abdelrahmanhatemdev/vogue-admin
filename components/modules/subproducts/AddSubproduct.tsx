@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SubproductSchema } from "@/lib/validation/subproductSchema";
+import { subproductSchema } from "@/lib/validation/subproductSchema";
 import type { OptimisicDataType } from "@/components/modules/products/Product";
 import { currencies } from "@/constants/currencies";
 import useColorStore from "@/store/useColorStore";
@@ -50,8 +50,8 @@ function AddSubproduct({
   const { data: colors } = useColorStore();
   const { data: sizes } = useSizeStore();
 
-  const form = useForm<z.infer<typeof SubproductSchema>>({
-    resolver: zodResolver(SubproductSchema),
+  const form = useForm<z.infer<typeof subproductSchema>>({
+    resolver: zodResolver(subproductSchema),
     defaultValues: {
       uuid: uuidv4(),
       productId: productId,
@@ -71,7 +71,7 @@ function AddSubproduct({
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof SubproductSchema>) {
+  async function onSubmit(values: z.infer<typeof subproductSchema>) {
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {

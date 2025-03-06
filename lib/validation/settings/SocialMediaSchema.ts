@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const SocialMediaSchema = z.object({
+export const socialMediaSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   link: z
     .string()

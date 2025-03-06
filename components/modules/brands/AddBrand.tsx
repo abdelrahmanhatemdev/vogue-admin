@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
-import { BrandSchema } from "@/lib/validation/brandSchema";
+import { brandSchema } from "@/lib/validation/brandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { addBrand } from "@/actions/Brand";
@@ -28,8 +28,8 @@ function AddBrand({
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof BrandSchema>>({
-    resolver: zodResolver(BrandSchema),
+  const form = useForm<z.infer<typeof brandSchema>>({
+    resolver: zodResolver(brandSchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -40,7 +40,7 @@ function AddBrand({
 
   const { fetchData: refresh, data: brands, setData } = useBrandStore();
 
-  async function onSubmit(values: z.infer<typeof BrandSchema>) {
+  async function onSubmit(values: z.infer<typeof brandSchema>) {
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {

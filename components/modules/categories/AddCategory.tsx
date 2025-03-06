@@ -15,7 +15,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 
 import z from "zod";
-import { CategorySchema } from "@/lib/validation/categorySchema";
+import { categorySchema } from "@/lib/validation/categorySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { addCategory } from "@/actions/Category";
@@ -39,8 +39,8 @@ function AddCategory({
   setModalOpen: Dispatch<SetStateAction<boolean>>;
  
 }) {
-  const form = useForm<z.infer<typeof CategorySchema>>({
-    resolver: zodResolver(CategorySchema),
+  const form = useForm<z.infer<typeof categorySchema>>({
+    resolver: zodResolver(categorySchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -59,7 +59,7 @@ function AddCategory({
   
   const parentCats = categories.filter((cat) => !cat.parent);
 
-  async function onSubmit(values: z.infer<typeof CategorySchema>) {
+  async function onSubmit(values: z.infer<typeof categorySchema>) {
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {

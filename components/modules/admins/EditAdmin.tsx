@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { AdminEditSchema as AdminSchema } from "@/lib/validation/adminSchema";
+import { adminEditSchema as AdminSchema } from "@/lib/validation/adminSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editAdmin } from "@/actions/Admin";

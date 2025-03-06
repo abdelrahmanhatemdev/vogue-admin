@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const SettingSchema = z.object({
+export const settingSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   key: z
     .string()

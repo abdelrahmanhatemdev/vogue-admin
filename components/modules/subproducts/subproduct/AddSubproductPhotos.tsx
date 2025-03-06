@@ -17,7 +17,7 @@ import { Dispatch, memo, SetStateAction, useState, useTransition } from "react";
 import { cn, notify } from "@/lib/utils";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { SubproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
+import { subproductPhotosSchema } from "@/lib/validation/subproductPhotosSchema";
 import { Separator } from "@/components/ui/separator";
 import type { OptimisicImagesType } from "@/components/modules/subproducts/Subproduct";
 import { addProductImage } from "@/actions/Image";
@@ -47,8 +47,8 @@ function AddSubproductPhotos({
   const [images, setImages] = useState<PreviewType[]>([]);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SubproductPhotosSchema>>({
-    resolver: zodResolver(SubproductPhotosSchema),
+  const form = useForm<z.infer<typeof subproductPhotosSchema>>({
+    resolver: zodResolver(subproductPhotosSchema),
     defaultValues: {
       subproductId: subproductId,
       images: {
@@ -69,7 +69,7 @@ function AddSubproductPhotos({
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof SubproductPhotosSchema>) {
+  async function onSubmit(values: z.infer<typeof subproductPhotosSchema>) {
     setModalOpen(false);
 
     if (values?.images) {

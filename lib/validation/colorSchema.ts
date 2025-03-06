@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const ColorSchema = z.object({
+export const colorSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   name: z
     .string()

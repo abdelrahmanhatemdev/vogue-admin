@@ -1,7 +1,7 @@
 import z from "zod";
 import { isValidSlug } from "@/lib/isValid";
 
-export const CategorySchema = z
+export const categorySchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
     name: z

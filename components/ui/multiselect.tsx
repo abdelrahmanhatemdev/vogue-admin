@@ -240,7 +240,7 @@ export const MultiSelect = React.forwardRef<
                             event.stopPropagation();
                             toggleOption(value);
                           }}
-                          variant={"nostyle"}
+                          variant={"noStyle"}
                           className="p-0 bg-none hovre:bg-none h-auto"
                         >
                           <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
@@ -263,7 +263,7 @@ export const MultiSelect = React.forwardRef<
                           event.stopPropagation();
                           clearExtraOptions();
                         }}
-                        variant={"nostyle"}
+                        variant={"noStyle"}
                         className="p-0 bg-none hovre:bg-none h-auto"
                       >
                         <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
@@ -277,7 +277,7 @@ export const MultiSelect = React.forwardRef<
                       event.stopPropagation();
                       handleClear();
                     }}
-                    variant={"nostyle"}
+                    variant={"noStyle"}
                     className="p-0 bg-none hovre:bg-none h-auto"
                   >
                     <XIcon className="h-4 mx-2 cursor-pointer text-muted-foreground" />

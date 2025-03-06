@@ -4,7 +4,7 @@ import { isValidCurrencyCode } from "@/lib/isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
-export const CurrencySchema = z
+export const currencySchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
     code: z.enum(validCurrencies, { message: "Invalid currency" }),

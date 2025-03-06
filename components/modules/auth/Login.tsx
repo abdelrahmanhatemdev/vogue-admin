@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AdminLoginSchema } from "@/lib/validation/auth/adminLoginSchema";
+import { adminLoginSchema } from "@/lib/validation/auth/adminLoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -18,8 +18,8 @@ import { memo } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {
-  const form = useForm<z.infer<typeof AdminLoginSchema>>({
-    resolver: zodResolver(AdminLoginSchema),
+  const form = useForm<z.infer<typeof adminLoginSchema>>({
+    resolver: zodResolver(adminLoginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -30,7 +30,7 @@ const Login = () => {
 
   const { login } = useAuth();
 
-  async function onSubmit(values: z.infer<typeof AdminLoginSchema>) {
+  async function onSubmit(values: z.infer<typeof adminLoginSchema>) {
     const { email, password } = values;
 
     const res = await login(email, password);
@@ -84,7 +84,7 @@ const Login = () => {
 
           <Button
             className="w-full mt-4 p-6 bg-neutral-800 text-neutral-50  hover:bg-neutral-900 dark:hover:outline dark:hover:outline-1 dark:hover:outline-neutral-800"
-            variant={"nostyle"}
+            variant={"noStyle"}
             type="submit"
           >
             Login

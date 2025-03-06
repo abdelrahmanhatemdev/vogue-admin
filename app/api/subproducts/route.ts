@@ -1,4 +1,4 @@
-import { SubproductSchema } from "@/lib/validation/subproductSchema";
+import { subproductSchema } from "@/lib/validation/subproductSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       sizes,
     } = await request.json();
 
-    await SubproductSchema.parseAsync({
+    await subproductSchema.parseAsync({
       uuid,
       productId,
       sku,
@@ -142,7 +142,7 @@ export async function PUT(request: Request) {
       sizes,
     } = reqData;
 
-    await SubproductSchema.parseAsync({
+    await subproductSchema.parseAsync({
       uuid,
       productId,
       sku,

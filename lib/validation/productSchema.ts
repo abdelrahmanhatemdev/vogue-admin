@@ -1,7 +1,7 @@
 import z from "zod";
 import { isValidSlug } from "@/lib/isValid";
 
-export const ProductSchema = z.object({
+export const productSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   name: z
     .string()

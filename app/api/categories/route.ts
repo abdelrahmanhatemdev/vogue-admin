@@ -1,4 +1,4 @@
-import { CategorySchema } from "@/lib/validation/categorySchema";
+import { categorySchema } from "@/lib/validation/categorySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin"; // Use Firebase Admin SDK
 // import redis from "@/lib/redis";
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const { uuid, name, slug, additional, parent, label } =
       await request.json();
 
-    await CategorySchema.parseAsync({
+    await categorySchema.parseAsync({
       uuid,
       name,
       slug,
@@ -88,7 +88,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, name, slug, additional, parent, label } = reqData;
 
-    await CategorySchema.parseAsync({
+    await categorySchema.parseAsync({
       uuid,
       name,
       slug,

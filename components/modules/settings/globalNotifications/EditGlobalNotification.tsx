@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { GlobalNotificationSchema } from "@/lib/validation/settings/globalNotificationSchema";
+import { globalNotificationSchema } from "@/lib/validation/settings/globalNotificationSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/globalNotifications";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
@@ -32,8 +32,8 @@ const EditGlobalNotification = ({
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof GlobalNotificationSchema>>({
-    resolver: zodResolver(GlobalNotificationSchema),
+  const form = useForm<z.infer<typeof globalNotificationSchema>>({
+    resolver: zodResolver(globalNotificationSchema),
     defaultValues: {
       uuid: item.uuid,
       text: item.text,
@@ -43,7 +43,7 @@ const EditGlobalNotification = ({
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof GlobalNotificationSchema>) {
+  async function onSubmit(values: z.infer<typeof globalNotificationSchema>) {
     setOpenStates({})
     const date = new Date().toISOString();
     const data = {

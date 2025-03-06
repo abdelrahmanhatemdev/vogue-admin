@@ -1,4 +1,4 @@
-import { BrandSchema } from "@/lib/validation/brandSchema";
+import { brandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 import { fetchAllActive } from "@/lib/api/fetchData";
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, name, slug } = await request.json();
 
-    await BrandSchema.parseAsync({ uuid, name, slug });
+    await brandSchema.parseAsync({ uuid, name, slug });
 
     const q = collectionRef.where("slug", "==", slug);
 
@@ -57,7 +57,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, name, slug } = await request.json();
 
-    await BrandSchema.parseAsync({ uuid, name, slug });
+    await brandSchema.parseAsync({ uuid, name, slug });
 
     const q = collectionRef.where("slug", "==", slug);
     const snapShot = await q.get();

@@ -1,7 +1,7 @@
 import z from "zod";
 import { isValidEmail } from "@/lib/isValid";
 
-export const AdminAddSchema = z
+export const adminAddSchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
     uid: z.string().optional(),
@@ -50,7 +50,7 @@ export const AdminAddSchema = z
     }
   });
 
-export const AdminEditSchema = z
+export const adminEditSchema = z
   .object({
     uuid: z.string().uuid(),
     uid: z.string().optional(),

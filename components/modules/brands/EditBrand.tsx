@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { BrandSchema } from "@/lib/validation/brandSchema";
+import { brandSchema } from "@/lib/validation/brandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { editBrand } from "@/actions/Brand";
@@ -27,8 +27,8 @@ function EditBrand({
   item: Brand;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof BrandSchema>>({
-    resolver: zodResolver(BrandSchema),
+  const form = useForm<z.infer<typeof brandSchema>>({
+    resolver: zodResolver(brandSchema),
     defaultValues: {
       name: item.name,
       slug: item.slug,
@@ -38,7 +38,7 @@ function EditBrand({
 
   const { fetchData: refresh, data: brands, setData } = useBrandStore();
 
-  async function onSubmit(values: z.infer<typeof BrandSchema>) {
+  async function onSubmit(values: z.infer<typeof brandSchema>) {
     setModalOpen(false);
     const data = {
       id: item.id,

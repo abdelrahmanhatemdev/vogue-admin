@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { SizeSchema } from "@/lib/validation/sizeSchema";
+import { sizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { editSize } from "@/actions/Size";
@@ -34,8 +34,8 @@ function EditSize({
   item: Size;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof SizeSchema>>({
-    resolver: zodResolver(SizeSchema),
+  const form = useForm<z.infer<typeof sizeSchema>>({
+    resolver: zodResolver(sizeSchema),
     defaultValues: {
       uuid: item.uuid,
       name: item.name,
@@ -46,7 +46,7 @@ function EditSize({
 
   const { data: sizes, setData, fetchData: refresh } = useSizeStore();
 
-  async function onSubmit(values: z.infer<typeof SizeSchema>) {
+  async function onSubmit(values: z.infer<typeof sizeSchema>) {
     setModalOpen(false);
     const data = {
       id: item.id,

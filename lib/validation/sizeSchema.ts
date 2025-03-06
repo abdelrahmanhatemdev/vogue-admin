@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const SizeSchema = z.object({
+export const sizeSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   name: z
     .string()

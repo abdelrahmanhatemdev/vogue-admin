@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 
 import z from "zod";
-import { LabelSchema } from "@/lib/validation/labelSchema";
+import { labelSchema } from "@/lib/validation/labelSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { addLabel } from "@/actions/Label";
@@ -29,8 +29,8 @@ function AddLabel({
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof LabelSchema>>({
-    resolver: zodResolver(LabelSchema),
+  const form = useForm<z.infer<typeof labelSchema>>({
+    resolver: zodResolver(labelSchema),
     defaultValues: {
       uuid: uuidv4(),
       title: "",
@@ -41,7 +41,7 @@ function AddLabel({
 
   const { data: labels, setData, fetchData: refresh } = useLabelStore();
 
-  async function onSubmit(values: z.infer<typeof LabelSchema>) {
+  async function onSubmit(values: z.infer<typeof labelSchema>) {
     setModalOpen(false);
 
     const date = new Date().toISOString();

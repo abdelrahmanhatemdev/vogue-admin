@@ -1,4 +1,4 @@
-import { CurrencySchema } from "@/lib/validation/settings/currencySchema";
+import { currencySchema } from "@/lib/validation/settings/currencySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, code} = await request.json();
 
-    await CurrencySchema.parseAsync({ uuid, code});
+    await currencySchema.parseAsync({ uuid, code});
 
     const date = new Date().toISOString();
 
@@ -43,7 +43,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, code} = await request.json();
 
-    await CurrencySchema.parseAsync({ uuid, code});
+    await currencySchema.parseAsync({ uuid, code});
 
     const docRef = collectionRef.doc(id);
 

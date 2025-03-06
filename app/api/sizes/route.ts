@@ -1,4 +1,4 @@
-import { SizeSchema } from "@/lib/validation/sizeSchema";
+import { sizeSchema } from "@/lib/validation/sizeSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, name, symbol, sortOrder } = await request.json();
 
-    await SizeSchema.parseAsync({ uuid, name, symbol, sortOrder });
+    await sizeSchema.parseAsync({ uuid, name, symbol, sortOrder });
 
     const date = new Date().toISOString();
 
@@ -45,7 +45,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, name, symbol, sortOrder } = await request.json();
 
-    await SizeSchema.parseAsync({ uuid, name, symbol, sortOrder });
+    await sizeSchema.parseAsync({ uuid, name, symbol, sortOrder });
 
     const docRef = collectionRef.doc(id);
 

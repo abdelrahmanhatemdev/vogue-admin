@@ -4,7 +4,7 @@ import { isValidSku } from "../isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
-export const SubproductSchema = z
+export const subproductSchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
     productId: z.string().uuid({ message: "Invalid UUID format." }),

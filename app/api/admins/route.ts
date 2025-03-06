@@ -1,4 +1,4 @@
-import { AdminAddSchema, AdminEditSchema } from "@/lib/validation/adminSchema";
+import { adminAddSchema, adminEditSchema } from "@/lib/validation/adminSchema";
 import { NextResponse } from "next/server";import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, name, email, password } = await request.json();
 
-    await AdminAddSchema.parseAsync({ uuid, name, email, password });
+    await adminAddSchema.parseAsync({ uuid, name, email, password });
 
     const user = await adminAuth.createUser({
       email,
@@ -55,7 +55,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, uid, name, email, password } = await request.json();
 
-    await AdminEditSchema.parseAsync({ uuid, name, email, password });
+    await adminEditSchema.parseAsync({ uuid, name, email, password });
 
     await adminAuth.updateUser(uid, { email, password, displayName: name });
 

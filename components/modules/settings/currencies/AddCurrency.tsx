@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CurrencySchema } from "@/lib/validation/settings/currencySchema";
+import { currencySchema } from "@/lib/validation/settings/currencySchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/currencies";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
@@ -37,8 +37,8 @@ const AddCurrency = ({
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof CurrencySchema>>({
-    resolver: zodResolver(CurrencySchema),
+  const form = useForm<z.infer<typeof currencySchema>>({
+    resolver: zodResolver(currencySchema),
     defaultValues: {
       uuid: uuidv4(),
       code: "",
@@ -46,7 +46,7 @@ const AddCurrency = ({
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof CurrencySchema>) {
+  async function onSubmit(values: z.infer<typeof currencySchema>) {
     setIsAddOpen(false);
     const date = new Date().toISOString();
     const data = {

@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const LabelSchema = z.object({
+export const labelSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   title: z
     .string()

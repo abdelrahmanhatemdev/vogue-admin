@@ -1,4 +1,4 @@
-import { SocialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
+import { socialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, platform, link, followers} = await request.json();
 
-    await SocialMediaSchema.parseAsync({ uuid, platform, link, followers});
+    await socialMediaSchema.parseAsync({ uuid, platform, link, followers});
 
     const date = new Date().toISOString();
 
@@ -43,7 +43,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, platform, link, followers} = await request.json();
 
-    await SocialMediaSchema.parseAsync({ uuid, platform, link, followers});
+    await socialMediaSchema.parseAsync({ uuid, platform, link, followers});
 
     const docRef = collectionRef.doc(id);
 

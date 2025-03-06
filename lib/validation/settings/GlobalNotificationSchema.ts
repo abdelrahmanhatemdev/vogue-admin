@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const GlobalNotificationSchema = z.object({
+export const globalNotificationSchema = z.object({
   uuid: z.string().uuid({ message: "Invalid UUID format." }),
   text: z
     .string()

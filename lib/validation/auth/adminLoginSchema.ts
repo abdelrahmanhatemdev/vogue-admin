@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const AdminLoginSchema = z.object({
+export const adminLoginSchema = z.object({
   email: z
     .string()
     .min(1, {

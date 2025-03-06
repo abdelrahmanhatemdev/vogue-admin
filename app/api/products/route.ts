@@ -1,4 +1,4 @@
-import { ProductSchema } from "@/lib/validation/productSchema";
+import { productSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       trending,
     } = await request.json();
 
-    await ProductSchema.parseAsync({
+    await productSchema.parseAsync({
       uuid,
       name,
       slug,
@@ -116,7 +116,7 @@ export async function PUT(request: Request) {
       trending,
     } = reqData;
 
-    await ProductSchema.parseAsync({
+    await productSchema.parseAsync({
       uuid,
       name,
       slug,

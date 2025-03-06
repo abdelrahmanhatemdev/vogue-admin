@@ -1,4 +1,4 @@
-import { ColorSchema } from "@/lib/validation/colorSchema";
+import { colorSchema } from "@/lib/validation/colorSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, name, hex } = await request.json();
 
-    await ColorSchema.parseAsync({ uuid, name, hex });
+    await colorSchema.parseAsync({ uuid, name, hex });
 
     const date = new Date().toISOString();
 
@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, name, hex } = await request.json();
 
-    await ColorSchema.parseAsync({ uuid, name, hex });
+    await colorSchema.parseAsync({ uuid, name, hex });
 
     const docRef = collectionRef.doc(id);
 

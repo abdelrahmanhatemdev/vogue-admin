@@ -103,7 +103,7 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
             </div>
             <CollapsibleTrigger asChild>
               <Button
-                variant="nostyle"
+                variant="noStyle"
                 size="sm"
                 className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4"
               >

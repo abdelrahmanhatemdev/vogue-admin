@@ -1,4 +1,4 @@
-import { SettingSchema } from "@/lib/validation/settings/settingSchema";
+import { settingSchema } from "@/lib/validation/settings/settingSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, key, value} = await request.json();
 
-    await SettingSchema.parseAsync({ uuid, key, value});
+    await settingSchema.parseAsync({ uuid, key, value});
 
     const date = new Date().toISOString();
 
@@ -43,7 +43,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, key, value} = await request.json();
 
-    await SettingSchema.parseAsync({ uuid, key, value});
+    await settingSchema.parseAsync({ uuid, key, value});
 
     const docRef = collectionRef.doc(id);
 

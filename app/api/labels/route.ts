@@ -1,4 +1,4 @@
-import { LabelSchema } from "@/lib/validation/labelSchema";
+import { labelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 import { fetchAllActive } from "@/lib/api/fetchData";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, title, hex } = await request.json();
 
-    await LabelSchema.parseAsync({ uuid, title, hex });
+    await labelSchema.parseAsync({ uuid, title, hex });
 
     const date = new Date().toISOString();
 
@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, title, hex } = await request.json();
 
-    await LabelSchema.parseAsync({ uuid, title, hex });
+    await labelSchema.parseAsync({ uuid, title, hex });
 
     const docRef = collectionRef.doc(id);
 

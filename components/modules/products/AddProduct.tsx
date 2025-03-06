@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import z from "zod";
-import { ProductSchema } from "@/lib/validation/productSchema";
+import { productSchema } from "@/lib/validation/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { addProduct } from "@/actions/Product";
@@ -46,8 +46,8 @@ function AddProduct({
   const { data: categories } = useCategoryStore();
   const { data: brands } = useBrandStore();
 
-  const form = useForm<z.infer<typeof ProductSchema>>({
-    resolver: zodResolver(ProductSchema),
+  const form = useForm<z.infer<typeof productSchema>>({
+    resolver: zodResolver(productSchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -63,7 +63,7 @@ function AddProduct({
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof ProductSchema>) {
+  async function onSubmit(values: z.infer<typeof productSchema>) {
     setModalOpen(false);
 
     const date = new Date().toISOString();

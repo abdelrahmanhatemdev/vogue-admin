@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { ColorSchema } from "@/lib/validation/colorSchema";
+import { colorSchema } from "@/lib/validation/colorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { editColor } from "@/actions/Color";
@@ -29,8 +29,8 @@ function EditColor({
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   
 }) {
-  const form = useForm<z.infer<typeof ColorSchema>>({
-    resolver: zodResolver(ColorSchema),
+  const form = useForm<z.infer<typeof colorSchema>>({
+    resolver: zodResolver(colorSchema),
     defaultValues: {
       name: item.name,
       uuid: item.uuid,
@@ -41,7 +41,7 @@ function EditColor({
   
   const {data: colors, setData, fetchData: refresh}  =  useColorStore();
 
-  async function onSubmit(values: z.infer<typeof ColorSchema>) {
+  async function onSubmit(values: z.infer<typeof colorSchema>) {
     setModalOpen(false);
     const data = {
       id: item.id,

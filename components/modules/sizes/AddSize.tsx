@@ -15,7 +15,7 @@ import {
 import type { OptimisicDataType } from ".";
 
 import z from "zod";
-import { SizeSchema } from "@/lib/validation/sizeSchema";
+import { sizeSchema } from "@/lib/validation/sizeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { addSize } from "@/actions/Size";
@@ -35,8 +35,8 @@ function AddSize({
 }: {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof SizeSchema>>({
-    resolver: zodResolver(SizeSchema),
+  const form = useForm<z.infer<typeof sizeSchema>>({
+    resolver: zodResolver(sizeSchema),
     defaultValues: {
       uuid: uuidv4(),
       name: "",
@@ -48,7 +48,7 @@ function AddSize({
 
   const { data: sizes, setData, fetchData: refresh } = useSizeStore();
 
-  async function onSubmit(values: z.infer<typeof SizeSchema>) {
+  async function onSubmit(values: z.infer<typeof sizeSchema>) {
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {

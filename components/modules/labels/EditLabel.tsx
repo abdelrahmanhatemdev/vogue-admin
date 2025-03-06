@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { LabelSchema } from "@/lib/validation/labelSchema";
+import { labelSchema } from "@/lib/validation/labelSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, memo, SetStateAction } from "react";
 import { editLabel } from "@/actions/Label";
@@ -28,8 +28,8 @@ function EditLabel({
   item: Label;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const form = useForm<z.infer<typeof LabelSchema>>({
-    resolver: zodResolver(LabelSchema),
+  const form = useForm<z.infer<typeof labelSchema>>({
+    resolver: zodResolver(labelSchema),
     defaultValues: {
       title: item.title,
       uuid: item.uuid,
@@ -39,7 +39,7 @@ function EditLabel({
 
   const { data: labels, setData, fetchData: refresh } = useLabelStore();
 
-  async function onSubmit(values: z.infer<typeof LabelSchema>) {
+  async function onSubmit(values: z.infer<typeof labelSchema>) {
     setModalOpen(false);
     const data = {
       id: item.id,

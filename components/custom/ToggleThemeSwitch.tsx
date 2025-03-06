@@ -19,7 +19,7 @@ function ToggleThemeSwitch() {
       <Button
         onClick={toggleTheme}
         className="flex justify-center items-center p-0 w-8 h-8"
-        variant={"nostyle"}
+        variant={"noStyle"}
         aria-label="Theme Switch"
         title="Switch Theme"
       >

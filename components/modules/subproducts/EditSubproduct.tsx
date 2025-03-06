@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubproductSchema } from "@/lib/validation/subproductSchema";
+import { subproductSchema } from "@/lib/validation/subproductSchema";
 import { Dispatch, memo, SetStateAction, useTransition } from "react";
 import { editSubproduct } from "@/actions/Subproduct";
 import { notify } from "@/lib/utils";
@@ -49,8 +49,8 @@ function EditSubproduct({
 
 
 
-  const form = useForm<z.infer<typeof SubproductSchema>>({
-    resolver: zodResolver(SubproductSchema),
+  const form = useForm<z.infer<typeof subproductSchema>>({
+    resolver: zodResolver(subproductSchema),
     defaultValues: {
       uuid: item.uuid,
       sku: item.sku,
@@ -70,7 +70,7 @@ function EditSubproduct({
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit(values: z.infer<typeof SubproductSchema>) {
+  async function onSubmit(values: z.infer<typeof subproductSchema>) {
     setModalOpen(false);
     const date = new Date().toISOString();
     const data = {

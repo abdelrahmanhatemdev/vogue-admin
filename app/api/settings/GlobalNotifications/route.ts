@@ -1,4 +1,4 @@
-import { GlobalNotificationSchema } from "@/lib/validation/settings/globalNotificationSchema";
+import { globalNotificationSchema } from "@/lib/validation/settings/globalNotificationSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const { uuid, text, anchorText, anchorLink} = await request.json();
 
-    await GlobalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
+    await globalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
 
     const date = new Date().toISOString();
 
@@ -43,7 +43,7 @@ export async function PUT(request: Request) {
   try {
     const { id, uuid, text, anchorText, anchorLink} = await request.json();
 
-    await GlobalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
+    await globalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
 
     const docRef = collectionRef.doc(id);
 

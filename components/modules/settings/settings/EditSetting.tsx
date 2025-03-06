@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SettingSchema } from "@/lib/validation/settings/settingSchema";
+import { settingSchema } from "@/lib/validation/settings/settingSchema";
 import { z } from "zod";
 import { OptimisicDataType } from "@/components/modules/settings/settings";
 import { memo, useTransition } from "react";
@@ -30,8 +30,8 @@ const EditSetting = ({
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SettingSchema>>({
-    resolver: zodResolver(SettingSchema),
+  const form = useForm<z.infer<typeof settingSchema>>({
+    resolver: zodResolver(settingSchema),
     defaultValues: {
       uuid: item.uuid,
       key: item.key,
@@ -40,7 +40,7 @@ const EditSetting = ({
     mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof SettingSchema>) {
+  async function onSubmit(values: z.infer<typeof settingSchema>) {
     const date = new Date().toISOString();
     const data = {
       ...values,
