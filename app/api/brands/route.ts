@@ -7,7 +7,7 @@ export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  fetchAllActive<Brand>({collectionRef})
+  return fetchAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {
