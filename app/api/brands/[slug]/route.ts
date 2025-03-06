@@ -46,5 +46,5 @@ export async function GET(
 export async function generateStaticParams() {
   const list: Brand[] = await getBrands();
 
-  return list.map(({ slug }: { slug: string }) => ({ slug }));
+  return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
 }

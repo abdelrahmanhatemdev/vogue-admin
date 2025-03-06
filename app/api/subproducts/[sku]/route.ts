@@ -48,5 +48,5 @@ export async function GET(
 export async function generateStaticParams() {
   const list: Subproduct[] = await getSubproducts();
 
-  return list.map(({ sku }: { sku: string }) => ({ sku }));
+  return list?.length > 0 ? list.map(({ sku }: { sku: string }) => ({ sku })) : [];
 }

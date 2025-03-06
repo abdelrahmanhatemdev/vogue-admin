@@ -36,5 +36,5 @@ export async function GET(
 
 export async function generateStaticParams() {
   const list: Subproduct[] = await getSubproducts();
-  return list.map(({ uuid }: { uuid: string }) => ({ uuid }));
+  return list?.length > 0 ? list.map(({ uuid }: { uuid: string }) => ({ uuid })) : [];
 }
