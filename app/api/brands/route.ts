@@ -10,6 +10,7 @@ export async function GET() {
   return fetchAllActive({collectionRef})
 }
 
+
 export async function POST(request: Request) {
   try {
     const { uuid, name, slug } = await request.json();
