@@ -19,8 +19,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/shadcn.webp" alt="Shadcn" title="Shadcn">](https://shadcn.dev/) &ensp; 
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/firebase.webp" alt="Firebase" title="Firebase">](https://firebase.google.com/) &ensp; 
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/eslint.webp" alt="ESLint" title="ESLint">](https://eslint.org/) &ensp; 
-[<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/hostinger.webp" alt="Hostinger" title="Hostinger">](https://www.hostinger.com/) 
-
+[<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/vercel.webp" alt="vercel" title="vercel">](https://www.vercel.com/) 
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/react-icons.webp" alt="React Icons" title="React Icons">](https://react-icons.github.io/react-icons/) &ensp; 
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/framer.webp" alt="Framer Motion" title="Framer Motion">](https://www.framer.com/motion/) &ensp; 
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/zod.webp" alt="Zod" title="Zod">](https://zod.dev/) &ensp; 
