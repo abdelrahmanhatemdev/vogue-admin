@@ -76,6 +76,14 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #bbb;
   }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
 }
 
 .dark {
@@ -124,14 +132,6 @@
   & input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px #3b3b3b inset !important;
     -webkit-text-fill-color: #eee !important;
-  }
-
-  .scrollbar-hide {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
   }
 }
 
