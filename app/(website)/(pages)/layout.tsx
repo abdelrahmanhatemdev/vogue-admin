@@ -33,7 +33,7 @@ export default async function layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "false" ? false : true;
 
   const user = await getUser();
   const isAdminUser = user ? user.admin : null;
