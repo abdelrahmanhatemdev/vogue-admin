@@ -137,6 +137,7 @@ function AdminSidebar() {
       w-(15rem)
       h-[calc(100vsh-1rem)]
       rounded-lg 
+      bg-background
       border-transparent overflow-hidden"
     >
       <SidebarHeader className="hidden md:block p-4">
