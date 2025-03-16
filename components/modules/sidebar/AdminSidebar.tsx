@@ -134,6 +134,7 @@ function AdminSidebar() {
       className="
       absolute 
       inset-4
+      w-(15rem)
       h-[calc(100vsh-1rem)]
       rounded-lg 
       border-transparent overflow-hidden"

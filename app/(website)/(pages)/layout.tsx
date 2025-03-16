@@ -46,7 +46,7 @@ export default async function layout({
         defaultOpen={defaultOpen}
         className="
       md:h-full md:min-h-full
-      overflow-auto scrollbar-hide p-4"
+      overflow-auto scrollbar-hide p-4 pe-0"
       >
           <Header />
           <motion.div

@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @custom-variant dark (&:is(.dark *));
 
 @layer utilities {
@@ -126,6 +125,14 @@
     box-shadow: 0 0 0px 1000px #3b3b3b inset !important;
     -webkit-text-fill-color: #eee !important;
   }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
 }
 
 .mySwiper .swiper-pagination-fraction,
@@ -189,11 +196,6 @@
   --screen-xl: 1280px;
   --screen-2xl: 1536px;
 }
-
-/* @plugin "tailwindcss-animate"
-@plugin "tailwind-scrollbar-hide" */
-
-
 
 @theme inline {
   --color-sidebar: hsl(var(--sidebar-background));
