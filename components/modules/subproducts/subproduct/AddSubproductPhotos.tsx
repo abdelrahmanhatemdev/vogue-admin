@@ -192,7 +192,7 @@ function AddSubproductPhotos({
             height={100}
             width={200}
           />
-          <div className="absolute inset-0 z-10 bg-black bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full">
+          <div className="absolute inset-0 z-10 bg-black/50 flex flex-col items-center justify-center text-sm w-full h-full">
             {preview.size < 300 * 1024 ? (
               <span className="text-green-700 text-center">
                 Size:{Math.ceil(preview.size / 1024)}kb

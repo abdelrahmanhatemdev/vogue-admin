@@ -247,7 +247,7 @@ const SubproductImages = ({
                       width={200}
                     />
                   </>
-                  <div className="group absolute inset-0 z-10 transition-colors bg-opacity-10 bg-black hover:bg-opacity-80 flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
+                  <div className="group absolute inset-0 z-10 transition-colors flex flex-col items-center justify-center text-sm w-full h-full cursor-grab">
                     <X
                       className="absolute end-2 top-2 text-neutral-300 hover:text-neutral-800 dark:text-neutral-950 dark:hover:text-neutral-400 transition-colors text-[.5rem] cursor-pointer"
                       size={15}
