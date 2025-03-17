@@ -355,7 +355,7 @@ function Product({
         page={product.name}
         between={[{ link: "/products", title: "Products" }]}
       />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
             title={`${product.name}`}

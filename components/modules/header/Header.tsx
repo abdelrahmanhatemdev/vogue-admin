@@ -17,10 +17,10 @@ function Header() {
       className="
     p-4 
     md:hidden
-    fixed inset-0 bg-neutral-100 dark:bg-neutral-900  z-50
+    fixed inset-0 dark:bg-neutral-800 dark:md:bg-neutral-900 bg-neutral-100 z-50
     h-16 top-[2.5vh]
-    w-[95vw] xs:w-[90vw]
-    start-[2.5vw] xs:start-[5vw] rounded-lg"
+    w-[90%] start-[5%] md:w-[95vw] xs:w-[90vw]
+    md:start-[2.5vw] xs:start-[5vw] rounded-lg"
     >
       <ContentContainer>
         <div className="flex justify-between lg:justify-end items-center">

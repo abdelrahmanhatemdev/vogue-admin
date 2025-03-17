@@ -46,7 +46,7 @@ export default async function layout({
         defaultOpen={defaultOpen}
         className="
       md:h-full md:min-h-full
-      overflow-auto scrollbar-hide p-4 pe-0"
+      overflow-auto scrollbar-hide md:p-4 md:pe-0"
       >
           <Header />
           <motion.div
@@ -57,7 +57,7 @@ export default async function layout({
             <AdminSidebar />
           </motion.div>
 
-        <main className="grow w-[50%] md:h-[90.25vh]">
+        <main className="grow w-[50%] md:h-[90.25vh] pt-4 md:pt-0">
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

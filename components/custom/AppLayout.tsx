@@ -13,10 +13,10 @@ function AppLayout({
         transition={{ duration: 1 }}
       >
         <div className="
-        w-[95vw] xs:w-[90vw] xl:w-[70vw] 
-        start-[2.5vw] xs:start-[5vw] xl:start-[15vw] 
+        w-[90%] md:w-[95vw] xl:w-[70vw] 
+        start-[5%] xs:start-[5vw] xl:start-[15vw] 
         fixed h-[95vh] top-[2.5vh]
-        rounded-lg bg-neutral-100 dark:bg-neutral-900 mx-auto 
+        rounded-lg bg-transparent md:bg-neutral-100 md:dark:bg-neutral-900 mx-auto 
         overflow-y-auto scrollbar-hide pt-16 md:pt-0">
            {children}
         </div>

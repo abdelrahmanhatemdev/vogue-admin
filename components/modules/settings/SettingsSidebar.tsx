@@ -62,7 +62,7 @@ const SettingsSidebar = () => {
                 href={`${link.link}`}
                 className={cn(
                   "rounded-lg dark:hover:bg-neutral-700 transition-colors p-2 w-full flex gap-2 items-center font-medium",
-                  isActive ? "dark:bg-neutral-700 bg-neutral-200" : ""
+                  isActive ? "dark:bg-neutral-700 bg-neutral-100" : ""
                 )}
               >
                 <link.icon />

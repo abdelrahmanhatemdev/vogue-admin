@@ -164,7 +164,7 @@ function Sizes() {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Sizes" />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading title="Sizes" description="Here's a list of your Sizes!" />
         </div>

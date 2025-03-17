@@ -13,7 +13,7 @@ function Brand({ data }: { data: Brand }) {
         page={`${data.name}`}
         between={[{ link: "/brands", title: "Brands" }]}
       />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div>ID : {data.id}</div>
         <div>Name : {data.name}</div>
         <div>Slug : {data.slug}</div>

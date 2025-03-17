@@ -17,7 +17,7 @@ function Orders() {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Orders" />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading title="Orders" description="Here's a list of your Orders!" />
         </div>

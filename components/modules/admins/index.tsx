@@ -162,7 +162,7 @@ function Admins({ data }: { data: Admin[] }) {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Admins" />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading title="Admins" description="Here's a list of your Admins!" />
         </div>

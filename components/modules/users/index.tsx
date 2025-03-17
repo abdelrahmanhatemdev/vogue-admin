@@ -19,7 +19,7 @@ function Users() {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Users" />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading title="Users" description="Here's a list of your Users!" />
         </div>

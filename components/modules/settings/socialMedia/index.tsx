@@ -1,10 +1,5 @@
 "use client";
-import {
-  memo,
-  useMemo,
-  useOptimistic,
-  useState,
-} from "react";
+import { memo, useMemo, useOptimistic, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
@@ -77,9 +72,12 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
   }, [optimisicData]);
 
   const followersArray = sortedOptimisicData.map((item) => item.followers);
-  const totalFollowers = followersArray.length > 0 ? followersArray.reduce(
-    (accumulator, currentValue) => accumulator + currentValue
-  ) : 0;
+  const totalFollowers =
+    followersArray.length > 0
+      ? followersArray.reduce(
+          (accumulator, currentValue) => accumulator + currentValue
+        )
+      : 0;
 
   return (
     <div className="flex flex-col rounded-lg bg-background">
@@ -89,7 +87,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
         className="space-y-2"
       >
         <div className="flex flex-col gap-4">
-          <div className="border-b border-neutral-700 pb-4 flex flex-col xs:flex-row justify-between xs:items-center w-full gap-4">
+          <div className="border-b border-neutral-700 pb-4 flex flex-col sm:flex-row justify-between sm:items-center w-full gap-4">
             <div>
               <h2 className="capitalize text-xl font-semibold text-neutral-900 dark:text-neutral-50">
                 Social Media
@@ -98,17 +96,17 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                 Manage your social media accounts!
               </p>
             </div>
-            <CollapsibleTrigger asChild>
-              <Button
-                variant="noStyle"
-                size="sm"
-                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4"
-              >
-                <h4 className="text-sm font-semibold text-center w-full">
+            <div>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="noStyle"
+                  size="sm"
+                  className="dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4 text-sm font-semibold text-center"
+                >
                   Add New
-                </h4>
-              </Button>
-            </CollapsibleTrigger>
+                </Button>
+              </CollapsibleTrigger>
+            </div>
           </div>
 
           <CollapsibleContent className="space-y-2">
@@ -192,8 +190,10 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
       </div>
 
       <div className="border-t border-neutral-700 pt-4 flex gap-2 items-center">
-        <h5 className="text-neutral-300">Total Followers:</h5>
-        <span className="text-xl font-semibold">{totalFollowers ? `${totalFollowers}k` : 0 }</span>
+        <h5 className="dark:text-neutral-300">Total Followers:</h5>
+        <span className="text-xl font-semibold">
+          {totalFollowers ? `${totalFollowers}k` : 0}
+        </span>
       </div>
 
       <Modal

@@ -51,7 +51,7 @@ const CustomTooltip = ({
     return null;
 
   return (
-    <div className="rounded-md dark:bg-neutral-900 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
+    <div className="rounded-md dark:bg-neutral-900 md:dark:bg-neutral-800 bg-neutral-100 border border-neutral-200 dark:border-neutral-950 p-2 shadow-md">
       <p className="text-sm dark:text-white text-black font-bold">Average</p>
       {payload.map((item, index) => {
         const dataName =

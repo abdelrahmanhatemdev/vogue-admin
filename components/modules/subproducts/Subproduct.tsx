@@ -120,7 +120,7 @@ function Subproduct({
           },
         ]}
       />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex flex-col gap-4 sm:flex-row justify-between sm:items-center">
           <Heading
             title={`${sku}`}

@@ -29,7 +29,7 @@ interface AdminBreadcrumbProps {
 
 function AdminBreadcrumb({ page, between = [] }: AdminBreadcrumbProps) {
   return (
-    <div className="flex justify-between items-center w-full bg-background p-4 rounded-lg">
+    <div className="flex justify-between items-center w-full dark:bg-neutral-800 md:dark:bg-background bg-neutral-100 md:bg-white px-4 py-2 md:p-4 rounded-lg">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">

@@ -39,10 +39,9 @@ const DeleteCurrency = dynamic(
 
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
-const NoResults = dynamic(
-  () => import("@/components/custom/NoResults"),
-  { loading: Loading }
-);
+const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
+  loading: Loading,
+});
 
 export type OptimisicDataType = Currency & { isPending?: boolean };
 
@@ -79,7 +78,7 @@ function Currency({ data }: { data: Currency[] }) {
         className="space-y-2"
       >
         <div className="flex flex-col gap-4">
-          <div className="border-b border-neutral-700 pb-4 flex flex-col xs:flex-row justify-between xs:items-center w-full gap-4">
+          <div className="border-b border-neutral-700 pb-4 flex flex-col sm:flex-row justify-between sm:items-center w-full gap-4">
             <div>
               <h2 className="capitalize text-xl font-semibold text-neutral-900 dark:text-neutral-50">
                 currency
@@ -88,17 +87,17 @@ function Currency({ data }: { data: Currency[] }) {
                 Manage your currency details!
               </p>
             </div>
-            <CollapsibleTrigger asChild>
-              <Button
-                variant="noStyle"
-                size="sm"
-                className="flex items-center justify-between space-x-4 dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4"
-              >
-                <h4 className="text-sm font-semibold text-center w-full">
+            <div>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="noStyle"
+                  size="sm"
+                  className="dark:hover:bg-neutral-700 hover:bg-neutral-200 p-4 rounded-lg xs:-me-4 xs:-ms-4 text-sm font-semibold text-center"
+                >
                   Add New
-                </h4>
-              </Button>
-            </CollapsibleTrigger>
+                </Button>
+              </CollapsibleTrigger>
+            </div>
           </div>
 
           <CollapsibleContent className="space-y-2">

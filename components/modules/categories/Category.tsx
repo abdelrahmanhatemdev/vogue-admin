@@ -12,7 +12,7 @@ function Category({ data }: { data: Category }) {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page={`${data.name}`} between={[{link:"/categories", title:"Categories"}]}/>
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div>ID : {data.id}</div>
         <div>Name : {data.name}</div>
         <div>Created At : {data.createdAt}</div>

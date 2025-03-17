@@ -292,7 +292,7 @@ function Products({ data }: { data: Product[] }) {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="Products" />
-      <div className="flex flex-col gap-4 rounded-lg p-8 bg-background">
+      <div className="flex flex-col gap-4 rounded-lg md:p-8 bg-background">
         <div className="flex justify-between items-center">
           <Heading
             title="Products"

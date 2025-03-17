@@ -33,7 +33,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb page="" />
-      <div className="rounded-lg p-8 bg-background space-y-4">
+      <div className="md:rounded-lg md:p-8 bg-background space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
           <StatsSquares />
           <Goal />
