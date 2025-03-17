@@ -30,35 +30,41 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchData = async () => {
     try {
       setCategoriesLoading(true);
-      const categories = await getCategories();
-      setCategories(categories);
-      setCategoriesLoading(false);
-
       setColorsLoading(true);
-      const colors = await getColors();
-      setColors(colors);
-      setColorsLoading(false);
-
       setBrandsLoading(true);
-      const brands = await getBrands();
-      setBrands(brands);
-      setBrandsLoading(false);
-
       setSizesLoading(true);
-      const sizes = await getSizes();
-      setSizes(sizes);
-      setSizesLoading(false);
-
       setLabelsLoading(true);
-      const labels = await getLabels();
+  
+      const [categories, colors, brands, sizes, labels] = await Promise.all([
+        getCategories(),
+        getColors(),
+        getBrands(),
+        getSizes(),
+        getLabels(),
+      ]);
+
+      console.log(categories, colors, brands, sizes, labels);
+      
+  
+      setCategories(categories);
+      setColors(colors);
+      setBrands(brands);
+      setSizes(sizes);
       setLabels(labels);
+  
+      setCategoriesLoading(false);
+      setColorsLoading(false);
+      setBrandsLoading(false);
+      setSizesLoading(false);
       setLabelsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
 
   useEffect(() => {
+    console.log("🔥 DataProvider Mounted: Fetching Data...");
     fetchData();
   }, []);
 

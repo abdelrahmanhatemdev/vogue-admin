@@ -8,7 +8,7 @@ export const collectionName = "labels";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return fetchAllActive({collectionRef})
+  return await fetchAllActive({collectionRef, collectionName})
 }
 
 export async function POST(request: Request) {

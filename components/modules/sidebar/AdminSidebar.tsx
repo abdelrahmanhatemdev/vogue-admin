@@ -134,11 +134,12 @@ function AdminSidebar() {
       className="
       absolute 
       inset-4
-      w-(15rem)
+      w-(10vw)
       h-[calc(100vsh-1rem)]
       rounded-lg 
       bg-neutral-100 md:bg-white dark:bg-neutral-800 dark:md:bg-neutral-800
-      border-transparent overflow-hidden"
+      border-transparent overflow-hidden "
+
     >
       <SidebarHeader className="hidden md:block p-4">
         {state === "expanded" ? (
@@ -149,7 +150,7 @@ function AdminSidebar() {
       </SidebarHeader>
       <SidebarContent className="scrollbar-hide overflow-hidden">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-foreground">
+          <SidebarGroupLabel className="text-foreground lg:text-[1vw]">
             Vogue Admin
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -165,7 +166,7 @@ function AdminSidebar() {
                     <SidebarMenuButton asChild isActive={isActive}>
                       <Link
                         href={`${link.link}`}
-                        className="w-6 h-6 text-foreground"
+                        className="w-6 h-6 text-foreground lg:text-[0.8vw]"
                       >
                         <link.icon />
                         <span

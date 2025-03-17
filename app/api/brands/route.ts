@@ -7,7 +7,7 @@ export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return fetchAllActive({collectionRef})
+  return await fetchAllActive({collectionRef, collectionName})
 }
 
 
