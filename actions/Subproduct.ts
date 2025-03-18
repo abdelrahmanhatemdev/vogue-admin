@@ -7,25 +7,6 @@ const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 const productTag = "products";
 
-export const getSubproducts = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: Subproduct, b: Subproduct) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
-};
-
 export async function getSubproductBySku(sku: string) {
   try {
     const res = await fetchWithAuth({ url: `${apiURL}/${sku}`, tag });

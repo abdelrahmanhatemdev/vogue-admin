@@ -7,10 +7,6 @@ import { fetchAllActive } from "@/lib/api/fetchData";
 export const collectionName = "subproducts";
 export const collectionRef = adminDB.collection(collectionName);
 
-export async function GET() {
-  return await fetchAllActive({collectionRef, collectionName})
-}
-
 export async function POST(request: Request) {
   try {
     const {
