@@ -41,6 +41,7 @@ interface Admin {
   updatedAt: string;
   provider_id?: string;
   deletedAt?: string;
+  isProtected?: boolean;
 }
 
 interface Size {

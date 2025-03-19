@@ -46,16 +46,16 @@ export async function fetchAllActive<T extends Record<string, string>>({
   collectionName: string;
 }) {
   try {
-    console.log(`Fetching ${collectionName} from Redis...`);
+    // console.log(`Fetching ${collectionName} from Redis...`);
 
-    const cachedData = (await redis.get(`${collectionName}`)) as string;
-    if (cachedData) {
-      console.log("Cache hit:", collectionName);
-      return NextResponse.json(
-        { data: JSON.parse(cachedData) },
-        { status: 200 }
-      );
-    }
+    // const cachedData = (await redis.get(`${collectionName}`)) as string;
+    // if (cachedData) {
+    //   console.log("Cache hit:", collectionName);
+    //   return NextResponse.json(
+    //     { data: JSON.parse(cachedData) },
+    //     { status: 200 }
+    //   );
+    // }
 
     const snapShot = await collectionRef.get();
 
@@ -65,8 +65,8 @@ export async function fetchAllActive<T extends Record<string, string>>({
           .map((doc) => ({ id: doc.id, ...(doc.data() as T) }))
           .filter((doc) => !doc.deletedAt);
 
-    console.log(`Saving ${collectionName} to Redis with expiry...`);
-    await redis.set(collectionName, JSON.stringify(data), { ex: 3600 });
+    // console.log(`Saving ${collectionName} to Redis with expiry...`);
+    // await redis.set(collectionName, JSON.stringify(data), { ex: 3600 });
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

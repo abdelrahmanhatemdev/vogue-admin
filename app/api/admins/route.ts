@@ -82,6 +82,12 @@ export async function DELETE(request: Request) {
 
     const docRef = collectionRef.doc(id);
 
+    const isProtected = await (await docRef?.get()).data()?.isProtected
+    
+    if (isProtected) {
+      throw new Error("Admin is Protected")
+    }
+
     const data = { deletedAt: new Date().toISOString() };
 
     await docRef.update(data);

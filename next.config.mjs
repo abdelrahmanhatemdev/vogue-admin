@@ -53,6 +53,7 @@ const nextConfig = {
       static: 180,
     },
     // dynamicIO: true,
-  }};
+  }, 
+};
 
 export default nextConfig;
