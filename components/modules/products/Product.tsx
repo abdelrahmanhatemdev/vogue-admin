@@ -110,7 +110,7 @@ function Product({
           const item: OptimisicDataType = row.original;
           return (
             <Link
-              href={`/products/${product.slug}/${item.sku}`}
+              href={`/subproducts/${item.sku}`}
               className={
                 "hover:bg-neutral-300 p-2 rounded-lg bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-800 transition-colors" +
                 (item.isPending ? " opacity-50" : "")

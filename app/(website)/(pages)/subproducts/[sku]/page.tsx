@@ -20,6 +20,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { sku } = await params;
 
+  
+  
+
   if (sku) {
     const data = await getSubproductBySku(sku);
 
@@ -35,24 +38,29 @@ export async function generateMetadata({
 }
 
 export default async function SubproductPage(props: {
-  params: Promise<{ sku: string; slug: string }>;
+  params: Promise<{ sku: string}>;
 }) {
   const params = await props.params;
 
-  const { sku, slug } = await params;
+  const { sku } = await params;
   const subproduct = await getSubproductBySku(sku);
+
+  console.log("sub", subproduct);
+  
 
   if (!subproduct?.uuid) {
     notFound();
   }
 
-  const productObj = await getProductBySlug(slug);
+  const productObj = {}
+  // await getProductBySlug(slug);
 
-  const product = {
-    id: productObj?.uuid,
-    name: productObj?.name,
-    slug: productObj?.slug,
-  };
+  const product = {}
+  // {
+  //   id: productObj?.uuid,
+  //   name: productObj?.name,
+  //   slug: productObj?.slug,
+  // };
 
   const images = await getSubproductImages(subproduct.uuid)
 
