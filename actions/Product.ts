@@ -26,7 +26,25 @@ export const getProducts = async () => {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${slug}/product`, tag });
+    const res = await fetchWithAuth({ url: `${apiURL}/slug/${slug}/product`, tag });
+    
+
+    if (res?.ok) {
+      const { data } = await res.json();
+
+      if (data) {
+        return data
+      }
+    }
+    return [];
+  } catch (error) {
+    return console.log(error);
+  }
+}
+
+export async function getProductById(id: string) {
+  try {
+    const res = await fetchWithAuth({ url: `${apiURL}/id/${id}`, tag });
     
 
     if (res?.ok) {
@@ -45,7 +63,7 @@ export async function getProductBySlug(slug: string) {
 export async function getProducSubproducts(slug: string) {
   try {
   
-    const res = await fetchWithAuth({ url: `${apiURL}/${slug}/subproducts`, tag });
+    const res = await fetchWithAuth({ url: `${apiURL}/slug/${slug}/subproducts`, tag });
 
     if (res?.ok) {
       const { data } = await res.json();

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { getProductBySlug } from "@/actions/Product";
+import { getProductById } from "@/actions/Product";
 import { getSubproductImages } from "@/actions/Image";
 const Subproduct = dynamic(
   () => import("@/components/modules/subproducts/Subproduct"),
@@ -19,9 +19,6 @@ export async function generateMetadata({
   params: { sku: string };
 }): Promise<Metadata> {
   const { sku } = await params;
-
-  
-  
 
   if (sku) {
     const data = await getSubproductBySku(sku);
@@ -52,15 +49,13 @@ export default async function SubproductPage(props: {
     notFound();
   }
 
-  const productObj = {}
-  // await getProductBySlug(slug);
+  const productObj = await getProductById(subproduct.productId);
 
-  const product = {}
-  // {
-  //   id: productObj?.uuid,
-  //   name: productObj?.name,
-  //   slug: productObj?.slug,
-  // };
+  const product = {
+    id: productObj?.uuid,
+    name: productObj?.name,
+    slug: productObj?.slug,
+  };
 
   const images = await getSubproductImages(subproduct.uuid)
 

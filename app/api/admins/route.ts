@@ -82,7 +82,9 @@ export async function DELETE(request: Request) {
 
     const docRef = collectionRef.doc(id);
 
-    const isProtected = await (await docRef?.get()).data()?.isProtected
+    const docData = await (await docRef?.get())
+
+    const isProtected = docData.exists ? docData.data()?.isProtected : true
     
     if (isProtected) {
       throw new Error("Admin is Protected")
