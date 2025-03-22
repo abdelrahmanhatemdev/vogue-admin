@@ -71,6 +71,7 @@ function Product({
         )
       : [];
   }, [optimisicData]);
+  
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
     () => [
@@ -231,10 +232,12 @@ function Product({
                   };
 
                   startTransition(() => {
-                    addOptimisticData((prev: Subproduct[]) => [
-                      ...prev.filter((sub) => sub.id !== item.id),
-                      optimisticObj,
-                    ]);
+                    addOptimisticData(prev => {
+                      return [
+                        ...prev.filter((sub) => sub.id !== item.id),
+                        optimisticObj,
+                      ];
+                    });
                   });
 
                   const res: ActionResponse = await editSubproduct({
@@ -244,6 +247,9 @@ function Product({
                   });
 
                   notify(res);
+
+                  console.log("featured", item.featured);
+                  
                 }}
               />
             </span>
@@ -271,10 +277,12 @@ function Product({
                   };
 
                   startTransition(() => {
-                    addOptimisticData((prev: Subproduct[]) => [
-                      ...prev.filter((sub) => sub.id !== item.id),
-                      optimisticObj,
-                    ]);
+                    addOptimisticData(prev => {
+                      return [
+                        ...prev.filter((sub) => sub.id !== item.id),
+                        optimisticObj,
+                      ];
+                    });
                   });
 
                   const res: ActionResponse = await editSubproduct({
@@ -282,6 +290,8 @@ function Product({
                     property: "inStock",
                     value: !item.inStock,
                   });
+
+                  
 
                   notify(res);
                 }}

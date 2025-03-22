@@ -42,9 +42,6 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         getSizes(),
         getLabels(),
       ]);
-
-      console.log(categories, colors, brands, sizes, labels);
-      
   
       setCategories(categories);
       setColors(colors);
