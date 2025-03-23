@@ -126,7 +126,7 @@ function EditCategory({
               <FormLabel>Label</FormLabel>
               {labels ? (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose Label" />
                   </SelectTrigger>
                   <SelectContent>
@@ -167,7 +167,7 @@ function EditCategory({
                 <FormLabel>Parent</FormLabel>
 
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose Parent" />
                   </SelectTrigger>
                   <SelectContent>

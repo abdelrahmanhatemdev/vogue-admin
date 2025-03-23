@@ -169,7 +169,7 @@ function AddProduct({
               <FormLabel>Brand</FormLabel>
               {brands ? (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose brand" />
                   </SelectTrigger>
                   <SelectContent>

@@ -133,7 +133,7 @@ function AddCategory({
               <FormLabel>Label</FormLabel>
               {labels ? (
                 <Select onValueChange={field.onChange} value={field.value?.toString() ?? "0"}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose Label" />
                   </SelectTrigger>
                   <SelectContent>
@@ -171,7 +171,7 @@ function AddCategory({
                 <FormLabel>Parent</FormLabel>
 
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose Parent" />
                   </SelectTrigger>
                   <SelectContent>

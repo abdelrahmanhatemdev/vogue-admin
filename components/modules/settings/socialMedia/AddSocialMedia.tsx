@@ -101,7 +101,7 @@ const AddSocialMedia = ({
                 <FormLabel>Platform</FormLabel>
 
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose Platform" />
                   </SelectTrigger>
                   <SelectContent>

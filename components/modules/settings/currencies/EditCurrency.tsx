@@ -87,7 +87,7 @@ const EditCurrency = ({
               <FormLabel>Code</FormLabel>
 
               <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Choose Code" />
                 </SelectTrigger>
                 <SelectContent>
