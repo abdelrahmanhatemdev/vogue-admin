@@ -2,13 +2,13 @@ import { currencySchema } from "@/lib/validation/settings/currencySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/fetchData";
+import { fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "Currencies";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return await fetchAllActive({collectionRef, collectionName})
+    return await fetchAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {

@@ -1,10 +1,15 @@
 import { subproductSchema } from "@/lib/validation/subproductSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
+import { fetchAllActive } from "@/lib/api/handlers";
 // import redis from "@/lib/redis";
 
 export const collectionName = "subproducts";
 export const collectionRef = adminDB.collection(collectionName);
+
+export async function GET() {
+    return await fetchAllActive({collectionRef})
+}
 
 export async function POST(request: Request) {
   try {

@@ -2,13 +2,13 @@ import { adminAddSchema, adminEditSchema } from "@/lib/validation/adminSchema";
 import { NextResponse } from "next/server";import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/fetchData";
+import { fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return await fetchAllActive({collectionRef, collectionName})
+    return await fetchAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {

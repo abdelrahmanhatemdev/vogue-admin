@@ -1,7 +1,7 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
@@ -70,8 +70,11 @@ export async function editSubproduct(
     .put(apiURL, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
+        const {productId} = data
         revalidateTag(tag);
         revalidateTag(productTag);
+        revalidatePath('/products');
+        revalidatePath(`/products/${productId}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {

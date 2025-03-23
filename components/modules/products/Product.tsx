@@ -71,6 +71,8 @@ function Product({
         )
       : [];
   }, [optimisicData]);
+
+
   
 
   const columns: ColumnDef<Subproduct>[] = useMemo(
@@ -247,9 +249,6 @@ function Product({
                   });
 
                   notify(res);
-
-                  console.log("featured", item.featured);
-                  
                 }}
               />
             </span>
@@ -355,9 +354,10 @@ function Product({
         },
       },
     ],
-    [setModalOpen, setModal, addOptimisticData, sizes, colors]
+    [setModalOpen, setModal, addOptimisticData, sizes, colors, isPending]
   );
   
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -372,6 +372,10 @@ function Product({
             description={`Here's a subproduct list of ${product.name}!`}
           />
         </div>
+        {/* <div>
+          <p>Featured: {subproducts[0].featured ? "true" : "false"}</p>
+          <p>optimisicData Featured: {optimisicData[0].featured ? "true" : "false"}</p>
+        </div> */}
         <SubproductList
           data={sortedOptimisicData}
           columns={columns}
