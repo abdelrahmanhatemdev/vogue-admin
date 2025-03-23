@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
 import useBrandStore from "@/store/useBrandStore";
+import { notify } from "@/lib/utils";
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -38,6 +39,9 @@ export type OptimisicDataType = Brand & { isPending?: boolean };
 
 function Brands() {
   const { data, loading } = useBrandStore();
+
+  console.log("data", data);
+  
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -122,6 +126,9 @@ function Brands() {
         cell: ({ row }) => {
           const item: Brand = row.original;
 
+          
+          
+
           return (
             <div className="flex items-center gap-2 justify-end">
               <TbEdit
@@ -144,21 +151,24 @@ function Brands() {
                 color="#dc2626"
                 className="cursor-pointer"
                 onClick={() => {
-                  setModalOpen(true);
-                  setModal({
-                    title: `Delete Brand`,
-                    description: (
-                      <p className="font-medium">
-                        Are you sure To delete the Brand permenantly ?
-                      </p>
-                    ),
-                    children: (
-                      <DeleteBrand
-                        itemId={item.id}
-                        setModalOpen={setModalOpen}
-                      />
-                    ),
-                  });
+                  console.log("item", item);
+                  console.log("item.isProtected", item.isProtected);
+                  if (item.isProtected) return notify({status: "500", message: "Item is protected"})
+                  // setModalOpen(true);
+                  // setModal({
+                  //   title: `Delete Brand`,
+                  //   description: (
+                  //     <p className="font-medium">
+                  //       Are you sure To delete the Brand permenantly ?
+                  //     </p>
+                  //   ),
+                  //   children: (
+                  //     <DeleteBrand
+                  //       itemId={item.id}
+                  //       setModalOpen={setModalOpen}
+                  //     />
+                  //   ),
+                  // });
                 }}
               />
             </div>

@@ -11,7 +11,10 @@ export const getBrands = async () => {
     const res = await fetchWithAuth({ url: apiURL, tag });
     if (res?.ok) {
       const { data } = await res.json();
+
       
+
+      console.log("data", data);
 
       if (data?.length > 0) {
         return data.sort((a: Brand, b: Brand) =>

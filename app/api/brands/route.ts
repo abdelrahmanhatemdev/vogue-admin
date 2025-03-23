@@ -1,15 +1,37 @@
 import { brandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
-}
+    // return await fetchAllActive({collectionRef})
+    const snapShot = await collectionRef.where("isActive", "==", true).get();
 
+    const data = snapShot.empty
+      ? []
+      : snapShot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Brand) }));
+
+      console.log("data", data);
+      
+      
+
+    // const batch = collectionRef.firestore.batch();
+
+    // data.forEach((item) => {
+    //   const docRef = collectionRef.doc(item.id);
+    //   batch.update(docRef, { isActive: true });
+    // });
+
+    // await batch.commit();
+
+    // console.log(`Saving ${collectionName} to Redis with expiry...`);
+    // await redis.set(collectionName, JSON.stringify(data), { ex: 3600 });
+
+    return NextResponse.json({ data }, { status: 200 });
+}
 
 export async function POST(request: Request) {
   try {
@@ -92,16 +114,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { id } = await request.json();
-
-    const docRef = collectionRef.doc(id);
-
-    await docRef.update({ deletedAt: new Date().toISOString() });
-
-    return NextResponse.json({ message: "Brand Deleted" }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return deleteInactive({request, collectionRef, modelName: "Brand"})
 }

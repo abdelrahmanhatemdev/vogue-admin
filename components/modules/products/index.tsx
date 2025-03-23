@@ -261,6 +261,9 @@ function Products({ data }: { data: Product[] }) {
                 color="#dc2626"
                 className="cursor-pointer"
                 onClick={() => {
+                  console.log("item.isPotected", item.isProtected);
+                  
+                  if (item.isProtected) return notify({status: "500", message: "Item is protected"})
                   setModalOpen(true);
                   setModal({
                     title: `Delete Product`,
