@@ -126,10 +126,7 @@ function AddSubproduct({
                   options={colors.map((item) => ({
                     value: item.uuid,
                     color: item.hex,
-                    label:
-                      item.name?.length > 5
-                        ? item.name.slice(0, 5) + ".."
-                        : item.name,
+                    label: item.name,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Colors"
@@ -159,10 +156,7 @@ function AddSubproduct({
                 <MultiSelect
                   options={sizes.map((item) => ({
                     value: item.uuid,
-                    label:
-                      item.name?.length > 5
-                        ? item.name.slice(0, 5) + ".."
-                        : item.name,
+                    label: item.name,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select sizes"

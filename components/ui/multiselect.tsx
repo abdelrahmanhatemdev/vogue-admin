@@ -309,7 +309,7 @@ export const MultiSelect = React.forwardRef<
               placeholder="Search..."
               onKeyDown={handleInputKeyDown}
             />
-            <CommandList>
+            <CommandList className="max-h-[250px] overflow-auto"  onWheel={(e) => e.stopPropagation()}>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 <CommandItem

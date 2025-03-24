@@ -138,10 +138,7 @@ function AddProduct({
                 <MultiSelect
                   options={categories.map((item) => ({
                     value: item.uuid,
-                    label:
-                      item.name?.length > 5
-                        ? item.name.slice(0, 5) + ".."
-                        : item.name,
+                    label: item.name,
                   }))}
                   onValueChange={field.onChange}
                   placeholder="Select Categories"
