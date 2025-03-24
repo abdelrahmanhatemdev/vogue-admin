@@ -1,15 +1,17 @@
 "use client";
 import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
+import { TbTrashOff } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
 import useBrandStore from "@/store/useBrandStore";
 import { notify } from "@/lib/utils";
+
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
@@ -35,13 +37,14 @@ const BrandList = dynamic(
   { loading: Loading }
 );
 
+const SelectAllCheckbox = dynamic<{ table: Table<Brand> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
+
 export type OptimisicDataType = Brand & { isPending?: boolean };
 
 function Brands() {
   const { data, loading } = useBrandStore();
-
-  console.log("data", data);
-  
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -63,17 +66,7 @@ function Brands() {
       {
         id: "select",
         header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value: boolean) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            onChange={table.getToggleAllRowsSelectedHandler()}
-            aria-label="Select all"
-          />
+          <SelectAllCheckbox table={table}/>
         ),
         cell: ({ row }) => (
           <Checkbox
@@ -146,6 +139,29 @@ function Brands() {
                   });
                 }}
               />
+              <TbTrashOff
+                size={20}
+                color="#dc2626"
+                className="cursor-pointer"
+                onClick={() => {
+                  if (item.isProtected) return notify({status: "500", message: "Item is protected"})
+                  setModalOpen(true);
+                  setModal({
+                    title: `Delete Brand`,
+                    description: (
+                      <p className="font-medium">
+                        Are you sure To delete the Brand permenantly ?
+                      </p>
+                    ),
+                    children: (
+                      <DeleteBrand
+                        itemId={item.id}
+                        setModalOpen={setModalOpen}
+                      />
+                    ),
+                  });
+                }}
+              />
               <Trash2Icon
                 size={20}
                 color="#dc2626"
@@ -154,21 +170,21 @@ function Brands() {
                   console.log("item", item);
                   console.log("item.isProtected", item.isProtected);
                   if (item.isProtected) return notify({status: "500", message: "Item is protected"})
-                  // setModalOpen(true);
-                  // setModal({
-                  //   title: `Delete Brand`,
-                  //   description: (
-                  //     <p className="font-medium">
-                  //       Are you sure To delete the Brand permenantly ?
-                  //     </p>
-                  //   ),
-                  //   children: (
-                  //     <DeleteBrand
-                  //       itemId={item.id}
-                  //       setModalOpen={setModalOpen}
-                  //     />
-                  //   ),
-                  // });
+                  setModalOpen(true);
+                  setModal({
+                    title: `Delete Brand`,
+                    description: (
+                      <p className="font-medium">
+                        Are you sure To delete the Brand permenantly ?
+                      </p>
+                    ),
+                    children: (
+                      <DeleteBrand
+                        itemId={item.id}
+                        setModalOpen={setModalOpen}
+                      />
+                    ),
+                  });
                 }}
               />
             </div>

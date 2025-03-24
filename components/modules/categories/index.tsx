@@ -1,9 +1,10 @@
 "use client";
 import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
+import { TbTrashOff } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
@@ -33,6 +34,9 @@ const CategoryList = dynamic(
   () => import("@/components/modules/categories/CategoryList"),
   { loading: Loading }
 );
+const SelectAllCheckbox = dynamic<{ table: Table<Category> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
 
 export type OptimisicDataType = Category & { isPending?: boolean };
 
@@ -60,17 +64,7 @@ function Categories() {
       {
         id: "select",
         header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value: boolean) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            onChange={table.getToggleAllRowsSelectedHandler()}
-            aria-label="Select all"
-          />
+          <SelectAllCheckbox table={table}/>
         ),
         cell: ({ row }) => (
           <Checkbox

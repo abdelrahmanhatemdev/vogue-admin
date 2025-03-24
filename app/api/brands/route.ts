@@ -7,30 +7,7 @@ export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    // return await fetchAllActive({collectionRef})
-    const snapShot = await collectionRef.where("isActive", "==", true).get();
-
-    const data = snapShot.empty
-      ? []
-      : snapShot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Brand) }));
-
-      console.log("data", data);
-      
-      
-
-    // const batch = collectionRef.firestore.batch();
-
-    // data.forEach((item) => {
-    //   const docRef = collectionRef.doc(item.id);
-    //   batch.update(docRef, { isActive: true });
-    // });
-
-    // await batch.commit();
-
-    // console.log(`Saving ${collectionName} to Redis with expiry...`);
-    // await redis.set(collectionName, JSON.stringify(data), { ex: 3600 });
-
-    return NextResponse.json({ data }, { status: 200 });
+    return await fetchAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {

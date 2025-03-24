@@ -9,6 +9,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
+import { TbTrashOff } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import { socialMedia as socialMediaList } from "@/constants/socialMedia";
 

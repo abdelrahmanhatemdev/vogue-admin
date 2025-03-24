@@ -12,10 +12,6 @@ export const getBrands = async () => {
     if (res?.ok) {
       const { data } = await res.json();
 
-      
-
-      console.log("data", data);
-
       if (data?.length > 0) {
         return data.sort((a: Brand, b: Brand) =>
           b.updatedAt.localeCompare(a.updatedAt)

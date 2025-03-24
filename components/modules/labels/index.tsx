@@ -1,9 +1,10 @@
 "use client";
 import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TbEdit } from "react-icons/tb";
+import { TbTrashOff } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 
 import dynamic from "next/dynamic";
@@ -34,6 +35,10 @@ const LabelList = dynamic(
   { loading: Loading }
 );
 
+const SelectAllCheckbox = dynamic<{ table: Table<Label> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
+
 export type OptimisicDataType = Label & { isPending?: boolean };
 
 function Labels() {
@@ -59,17 +64,7 @@ function Labels() {
       {
         id: "select",
         header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value: boolean) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            onChange={table.getToggleAllRowsSelectedHandler()}
-            aria-label="Select all"
-          />
+          <SelectAllCheckbox table={table}/>
         ),
         cell: ({ row }) => (
           <Checkbox

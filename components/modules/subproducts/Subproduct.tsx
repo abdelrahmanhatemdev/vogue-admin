@@ -4,6 +4,7 @@ import type { ModalState } from "@/components/custom/Modal";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { TbEdit } from "react-icons/tb";
+import { TbTrashOff } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
