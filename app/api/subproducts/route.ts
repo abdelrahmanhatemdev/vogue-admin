@@ -1,14 +1,14 @@
 import { subproductSchema } from "@/lib/validation/subproductSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
 // import redis from "@/lib/redis";
 
 export const collectionName = "subproducts";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -214,19 +214,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { id } = await request.json();
-
-    const docRef = collectionRef.doc(id);
-
-    await docRef.update({ deletedAt: new Date().toISOString() });
-
-    return NextResponse.json(
-      { message: "Subproduct Deleted" },
-      { status: 200 }
-    );
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return deleteInactive({ request, collectionRef, modelName: "Subproduct" });
 }

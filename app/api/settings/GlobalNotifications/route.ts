@@ -2,7 +2,7 @@ import { globalNotificationSchema } from "@/lib/validation/settings/globalNotifi
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "globalNotifications";
 export const collectionRef = adminDB.collection(collectionName);
@@ -64,19 +64,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { id } = await request.json();
-
-    const docRef = collectionRef.doc(id);
-
-    await docRef.update({ deletedAt: new Date().toISOString() });
-
-    return NextResponse.json(
-      { message: "GlobalNotification Deleted"},
-      { status: 200 }
-    );
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return deleteInactive({request, collectionRef, modelName: "Global Notification"})
 }
