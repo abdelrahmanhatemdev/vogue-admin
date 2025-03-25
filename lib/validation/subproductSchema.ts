@@ -17,7 +17,8 @@ export const subproductSchema = z
         message: "Sku should not have more than 24 charachters.",
       }),
     currency: z.enum(validCurrencies, { message: "Invalid currency" }),
-    price: z.coerce
+    price: z
+    .coerce
       .number({ message: "Price is required" })
       .nonnegative("Price must be 0 or positive"),
     discount: z.coerce
@@ -42,8 +43,6 @@ export const subproductSchema = z
     sizes: z.array(z.string()).nonempty({
       message: "Choose at least one size",
     }),
-    isProtected: z.boolean({ message: "Item protection state is required." }),
-    isActive: z.boolean({ message: "Item activity state is required." }),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, sku } = obj;

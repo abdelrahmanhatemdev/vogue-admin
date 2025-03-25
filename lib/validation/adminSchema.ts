@@ -29,9 +29,7 @@ export const adminAddSchema = z
       })
       .min(6, {
         message: "Password must be at least 6 characters long",
-      }),
-    isProtected: z.boolean({ message: "Item protection state is required." }),
-    isActive: z.boolean({ message: "Item activity state is required." }),
+      })
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, email } = obj;
@@ -40,6 +38,7 @@ export const adminAddSchema = z
       uuid,
       collection: "admins",
     });
+
 
     if (exists) {
       ctx.addIssue({
@@ -76,10 +75,8 @@ export const adminEditSchema = z
       .string()
       .min(6, {
         message: "Password must be at least 6 characters long",
-      })
-      .optional(),
-    isProtected: z.boolean({ message: "Item protection state is required." }),
-    isActive: z.boolean({ message: "Item activity state is required." }),
+      }).optional()
+      ,
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, email } = obj;

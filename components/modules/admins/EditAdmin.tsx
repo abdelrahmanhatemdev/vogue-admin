@@ -36,7 +36,7 @@ function EditAdmin({
       name: item.name,
       email: item.email,
       uuid: item.uuid,
-      uid: item.uid
+      uid: item.uid, 
     },
   });
 

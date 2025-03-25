@@ -13,6 +13,4 @@ export const colorSchema = z.object({
   hex: z.string().min(1, {
     message: "Hex code is required",
   }),
-  isProtected: z.boolean({ message: "Item protection state is required." }),
-  isActive: z.boolean({ message: "Item activity state is required." }),
 });

@@ -23,11 +23,7 @@ export const categorySchema = z
       .max(50, { message: "Slug cannot exceed 50 characters" }),
     parent: z.string().optional(),
     label: z.string().optional(),
-    additional: z
-      .boolean({ message: "Additional field is required." })
-      .optional(),
-    isProtected: z.boolean({ message: "Item protection state is required." }),
-    isActive: z.boolean({ message: "Item activity state is required." }),
+    additional: z.boolean({ message: "Additional field is required." }).optional(),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, slug } = obj;

@@ -56,7 +56,7 @@ function AddProduct({
       brandId: "",
       descriptionBrief: "",
       descriptionDetails: "",
-      trending: false
+      trending: false, 
     },
     mode: "onChange",
   });
