@@ -42,13 +42,19 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
 });
 
-const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
-  loading: Loading,
-});
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton"),
+  {
+    loading: Loading,
+  }
+);
 
-const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
-  loading: Loading,
-});
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton"),
+  {
+    loading: Loading,
+  }
+);
 
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
@@ -133,6 +139,7 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
             const social = socialMediaList.find(
               (s) => s.value === item.platform
             );
+            
             return (
               <Collapsible
                 open={openStates[item.uuid] || false} // Default to false if not set
@@ -153,14 +160,16 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                     </span>
                   </a>
                   <div className="flex items-center gap-2 justify-end">
-                    <CollapsibleTrigger>
-                      <TbEdit size={20} className="cursor-pointer" />
-                    </CollapsibleTrigger>
+                    {item.isProtected ? (
+                      <TbEdit size={18} className="cursor-pointer opacity-60" />
+                    ) : (
+                      <CollapsibleTrigger>
+                        <TbEdit size={18} className="cursor-pointer" />
+                      </CollapsibleTrigger>
+                    )}
 
-                    <Trash2Icon
-                      size={20}
-                      color="#dc2626"
-                      className="cursor-pointer"
+                    <DeleteButton
+                      isProtected={item.isProtected}
                       onClick={() => {
                         setModalOpen(true);
                         setModal({
@@ -183,13 +192,15 @@ function SocialMedia({ data }: { data: SocialMedia[] }) {
                     />
                   </div>
                 </div>
-                <CollapsibleContent>
-                  <EditSocialMedia
-                    item={item}
-                    addOptimisticData={addOptimisticData}
-                    setOpenStates={setOpenStates}
-                  />
-                </CollapsibleContent>
+                {!item.isProtected ? (
+                  <CollapsibleContent>
+                    <EditSocialMedia
+                      item={item}
+                      addOptimisticData={addOptimisticData}
+                      setOpenStates={setOpenStates}
+                    />
+                  </CollapsibleContent>
+                ) : null}
               </Collapsible>
             );
           })

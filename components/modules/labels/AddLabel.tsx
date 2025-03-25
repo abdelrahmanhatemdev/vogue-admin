@@ -71,7 +71,7 @@ function AddLabel({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
-        <div className="flex flex-col lg:flex-row gap-2 lg:justify-between">
+        <div className="flex flex-col lg:flex-row gap-2 items-start">
           <FormField
             control={form.control}
             name="title"

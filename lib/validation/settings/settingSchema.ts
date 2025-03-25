@@ -18,6 +18,4 @@ export const settingSchema = z.object({
     .max(100, {
       message: "Value should not have more than 100 charachters",
     }),
-  isProtected: z.boolean({ message: "Item protection state is required." }),
-  isActive: z.boolean({ message: "Item activity state is required." }),
 });

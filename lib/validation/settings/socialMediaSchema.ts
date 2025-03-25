@@ -19,6 +19,4 @@ export const socialMediaSchema = z.object({
     .number({ message: "Followers is required" })
     .int({ message: "Followers must be an integer." })
     .min(0, { message: "Followers cannot be negative." }),
-  isProtected: z.boolean({ message: "Item protection state is required." }),
-  isActive: z.boolean({ message: "Item activity state is required." }),
 });

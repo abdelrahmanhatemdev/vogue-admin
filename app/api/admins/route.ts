@@ -96,7 +96,7 @@ export async function DELETE(request: Request) {
       throw new Error("Admin is Protected");
     }
 
-    const data = { deletedAt: new Date().toISOString() };
+    const data = { deletedAt: new Date().toISOString(), isActive: false };
 
     await docRef.update(data);
 

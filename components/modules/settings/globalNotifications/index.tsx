@@ -52,13 +52,19 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
 });
 
-const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
-  loading: Loading,
-});
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton"),
+  {
+    loading: Loading,
+  }
+);
 
-const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
-  loading: Loading,
-});
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton"),
+  {
+    loading: Loading,
+  }
+);
 
 export type OptimisicDataType = GlobalNotification & { isPending?: boolean };
 
@@ -149,14 +155,16 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
                     </a>
                   </p>
                   <div className="flex items-center gap-2 justify-end">
-                    <CollapsibleTrigger>
-                      <TbEdit size={20} className="cursor-pointer" />
-                    </CollapsibleTrigger>
+                    {item.isProtected ? (
+                      <TbEdit size={18} className="cursor-pointer opacity-60" />
+                    ) : (
+                      <CollapsibleTrigger>
+                        <TbEdit size={18} className="cursor-pointer" />
+                      </CollapsibleTrigger>
+                    )}
 
-                    <Trash2Icon
-                      size={20}
-                      color="#dc2626"
-                      className="cursor-pointer"
+                    <DeleteButton
+                      isProtected={item.isProtected}
                       onClick={() => {
                         setModalOpen(true);
                         setModal({
@@ -179,13 +187,15 @@ function GlobalNotification({ data }: { data: GlobalNotification[] }) {
                     />
                   </div>
                 </div>
-                <CollapsibleContent>
-                  <EditGlobalNotification
-                    item={item}
-                    addOptimisticData={addOptimisticData}
-                    setOpenStates={setOpenStates}
-                  />
-                </CollapsibleContent>
+                {!item.isProtected ? (
+                  <CollapsibleContent>
+                    <EditGlobalNotification
+                      item={item}
+                      addOptimisticData={addOptimisticData}
+                      setOpenStates={setOpenStates}
+                    />
+                  </CollapsibleContent>
+                ) : null}
               </Collapsible>
             );
           })

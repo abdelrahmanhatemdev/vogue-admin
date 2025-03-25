@@ -26,6 +26,4 @@ export const globalNotificationSchema = z.object({
     .max(60, {
       message: "Anchor link should not have more than 60 charachters",
     }),
-  isProtected: z.boolean({ message: "Item protection state is required." }),
-  isActive: z.boolean({ message: "Item activity state is required." }),
 });

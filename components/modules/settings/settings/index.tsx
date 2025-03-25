@@ -2,6 +2,7 @@
 import { memo, useOptimistic } from "react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import { Input } from "@/components/ui/input";
 
 const EditSetting = dynamic(
   () => import("@/components/modules/settings/settings/EditSetting"),
@@ -31,11 +32,23 @@ function Setting({ data }: { data: Setting[] }) {
       </div>
 
       <div className="flex flex-col gap-2 py-4">
-        {optimisicData.map((item) => (
-          <div key={item.id}>
-            <EditSetting item={item} addOptimisticData={addOptimisticData} />
-          </div>
-        ))}
+        {optimisicData.map((item) =>
+          item.isProtected ? (
+            <div className="group grid gap-2" key={item.id}>
+              <Input defaultValue={item.value} disabled />
+              <div className="flex gap-2 text-sm">
+                <p className="text-muted-foreground">
+                  {item.key} Value
+                </p>
+                <div className="text-destructive-foreground opacity-0 group-hover:opacity-100 transition-colors">Protected</div>
+              </div>
+            </div>
+          ) : (
+            <div key={item.id}>
+              <EditSetting item={item} addOptimisticData={addOptimisticData} />
+            </div>
+          )
+        )}
       </div>
     </div>
   );
