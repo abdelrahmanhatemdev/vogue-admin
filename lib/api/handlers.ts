@@ -61,7 +61,7 @@ export async function deleteInactive<T extends Record<string, string>>({
 
     const docRef = collectionRef.doc(id);
 
-    const docData = await await docRef?.get();
+    const docData = await docRef?.get();
 
     const isProtected = docData.exists ? docData.data()?.isProtected : true;
 
@@ -69,7 +69,7 @@ export async function deleteInactive<T extends Record<string, string>>({
       throw new Error("Admin is Protected");
     }
 
-    await docRef.update({ deletedAt: new Date().toISOString() });
+    await docRef.update({ deletedAt: new Date().toISOString(), isActive: false });
 
     return NextResponse.json(
       { message: `${modelName} Deleted` },

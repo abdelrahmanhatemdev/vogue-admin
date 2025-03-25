@@ -8,6 +8,8 @@ export const currencySchema = z
   .object({
     uuid: z.string().uuid({ message: "Invalid UUID format." }),
     code: z.enum(validCurrencies, { message: "Invalid currency" }),
+    isProtected: z.boolean({ message: "Item protection state is required." }),
+    isActive: z.boolean({ message: "Item activity state is required." }),
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, code } = obj;

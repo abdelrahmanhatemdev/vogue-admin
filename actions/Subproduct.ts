@@ -28,10 +28,7 @@ export const getSubproducts = async () => {
 export async function getSubproductBySku(sku: string) {
   try {
     const res = await fetchWithAuth({ url: `${apiURL}/${sku}`, tag });
-
-    
     const { data } = await res.json();
-    console.log("data", data);
     return data;
   } catch (error) {
     return console.log(error);

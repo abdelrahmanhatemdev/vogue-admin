@@ -18,10 +18,14 @@ export const globalNotificationSchema = z.object({
     .max(20, {
       message: "Anchor text should not have more than 20 charachters",
     }),
-  anchorLink: z.string().min(1, {
-    message: "Anchor link is required",
-  })
-  .max(60, {
-    message: "Anchor link should not have more than 60 charachters",
-  }),
+  anchorLink: z
+    .string()
+    .min(1, {
+      message: "Anchor link is required",
+    })
+    .max(60, {
+      message: "Anchor link should not have more than 60 charachters",
+    }),
+  isProtected: z.boolean({ message: "Item protection state is required." }),
+  isActive: z.boolean({ message: "Item activity state is required." }),
 });

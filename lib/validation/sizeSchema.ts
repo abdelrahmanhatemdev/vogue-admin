@@ -24,4 +24,6 @@ export const sizeSchema = z.object({
     .max(100, {
       message: "Order cannot be more than 100",
     }),
+  isProtected: z.boolean({ message: "Item protection state is required." }),
+  isActive: z.boolean({ message: "Item activity state is required." }),
 });

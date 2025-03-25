@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-type OptimisicDataType = Admin & {isPending?: boolean}
+type OptimisicDataType = Admin & { isPending?: boolean };
 
 function AddAdmin({
   setModalOpen,
@@ -37,7 +37,9 @@ function AddAdmin({
       uuid: uuidv4(),
       name: "",
       email: "",
-      password: ""
+      password: "",
+      isActive: true,
+      isProtected: false,
     },
     mode: "onChange",
   });
