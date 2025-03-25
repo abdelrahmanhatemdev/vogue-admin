@@ -2,7 +2,7 @@ import { currencySchema } from "@/lib/validation/settings/currencySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "Currencies";
 export const collectionRef = adminDB.collection(collectionName);
@@ -64,5 +64,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return deleteInactive({request, collectionRef, modelName: "Currency"})
+  return softDelete({request, collectionRef, modelName: "Currency"})
 }

@@ -47,7 +47,7 @@ export async function fetchAllActive<T extends Record<string, string>>({
   }
 }
 
-export async function deleteInactive<T extends Record<string, string>>({
+export async function softDelete<T extends Record<string, string>>({
   request,
   collectionRef,
   modelName,

@@ -2,7 +2,7 @@ import { globalNotificationSchema } from "@/lib/validation/settings/globalNotifi
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "globalNotifications";
 export const collectionRef = adminDB.collection(collectionName);
@@ -64,5 +64,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return deleteInactive({request, collectionRef, modelName: "Global Notification"})
+  return softDelete({request, collectionRef, modelName: "Global Notification"})
 }

@@ -2,7 +2,7 @@ import { sizeSchema } from "@/lib/validation/sizeSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive } from "@/lib/api/handlers";
 
 export const collectionName = "sizes";
 export const collectionRef = adminDB.collection(collectionName);
@@ -68,5 +68,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return deleteInactive({request, collectionRef, modelName: "Size"})
+  return softDelete({request, collectionRef, modelName: "Size"})
 }

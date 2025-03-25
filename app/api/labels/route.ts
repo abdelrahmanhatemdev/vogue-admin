@@ -1,7 +1,7 @@
 import { labelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { deleteInactive, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive } from "@/lib/api/handlers";
 // // import redis from "@/lib/redis";
 
 export const collectionName = "labels";
@@ -66,5 +66,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return deleteInactive({request, collectionRef, modelName: "Label"})
+  return softDelete({request, collectionRef, modelName: "Label"})
 }
