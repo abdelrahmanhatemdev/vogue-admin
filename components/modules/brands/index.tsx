@@ -11,8 +11,6 @@ import Loading from "@/components/custom/Loading";
 import Link from "next/link";
 import useBrandStore from "@/store/useBrandStore";
 import { notify } from "@/lib/utils";
-import DeleteButton from "@/components/custom/table/DeleteButton";
-import EditButton from "@/components/custom/table/EditButton";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -45,6 +43,14 @@ const SelectAllCheckbox = dynamic<{ table: Table<Brand> }>(
     loading: Loading,
   }
 );
+
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
+  loading: Loading,
+});
 
 export type OptimisicDataType = Brand & { isPending?: boolean };
 

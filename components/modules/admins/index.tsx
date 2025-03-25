@@ -3,10 +3,6 @@ import { memo, useMemo, useOptimistic, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 
@@ -35,13 +31,28 @@ const AdminList = dynamic(
   { loading: Loading }
 );
 
-const SelectAllCheckbox = dynamic<{ table: Table<Admin> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
-  loading: Loading,
-});
+const SelectAllCheckbox = dynamic<{ table: Table<Admin> }>(
+  () => import("@/components/custom/table/SelectAllCheckbox"),
+  {
+    loading: Loading,
+  }
+);
 
-export type OptimisicDataType = Admin & {isPending?: boolean}
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton"),
+  {
+    loading: Loading,
+  }
+);
 
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton"),
+  {
+    loading: Loading,
+  }
+);
 
+export type OptimisicDataType = Admin & { isPending?: boolean };
 
 function Admins({ data }: { data: Admin[] }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -65,9 +76,7 @@ function Admins({ data }: { data: Admin[] }) {
     () => [
       {
         id: "select",
-        header: ({ table }) => (
-          <SelectAllCheckbox table={table}/>
-        ),
+        header: ({ table }) => <SelectAllCheckbox table={table} />,
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
@@ -106,10 +115,9 @@ function Admins({ data }: { data: Admin[] }) {
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              <TbEdit
-                size={20}
-                className="cursor-pointer"
-                onClick={() => {
+              <EditButton
+                isProtected={item.isProtected}
+                onClick={() => () => {
                   setModalOpen(true);
                   setModal({
                     title: `Edit Admin`,
@@ -125,10 +133,8 @@ function Admins({ data }: { data: Admin[] }) {
                   });
                 }}
               />
-              <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
+              <DeleteButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({

@@ -3,9 +3,6 @@ import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { cn, notify } from "@/lib/utils";
@@ -42,6 +39,14 @@ const ProductList = dynamic(
 );
 
 const SelectAllCheckbox = dynamic<{ table: Table<Product> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
+
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
   loading: Loading,
 });
 
@@ -232,9 +237,8 @@ function Products({ data }: { data: Product[] }) {
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              <TbEdit
-                size={20}
-                className="cursor-pointer"
+              <EditButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
@@ -251,10 +255,8 @@ function Products({ data }: { data: Product[] }) {
                   });
                 }}
               />
-              <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
+              <DeleteButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   console.log("item.isPotected", item.isProtected);
                   

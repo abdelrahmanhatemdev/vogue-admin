@@ -3,10 +3,6 @@ import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import useColorStore from "@/store/useColorStore";
@@ -35,6 +31,14 @@ const ColorList = dynamic(
   { loading: Loading }
 );
 const SelectAllCheckbox = dynamic<{ table: Table<Color> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
+
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
   loading: Loading,
 });
 
@@ -121,9 +125,8 @@ function Colors() {
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              <TbEdit
-                size={20}
-                className="cursor-pointer"
+              <EditButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
@@ -136,10 +139,8 @@ function Colors() {
                   });
                 }}
               />
-              <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
+              <DeleteButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({

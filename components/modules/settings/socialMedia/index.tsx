@@ -42,6 +42,14 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
 });
 
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
+  loading: Loading,
+});
+
 import { TbEdit } from "react-icons/tb";
 import type { ModalState } from "@/components/custom/Modal";
 

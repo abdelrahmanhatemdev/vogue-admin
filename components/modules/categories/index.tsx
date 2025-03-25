@@ -3,9 +3,6 @@ import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { cn, notify } from "@/lib/utils";
@@ -35,6 +32,14 @@ const CategoryList = dynamic(
   { loading: Loading }
 );
 const SelectAllCheckbox = dynamic<{ table: Table<Category> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
+  loading: Loading,
+});
+
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
   loading: Loading,
 });
 
@@ -135,7 +140,7 @@ function Categories() {
           return (
             <span className={"p-1" + (item.isPending ? " opacity-50" : "")}>
               <span
-                className="p-1 rounded-md text-xs text-neutral-100"
+                className="p-1 rounded-sm text-xs text-neutral-100"
                 style={{ background: label?.hex }}
               >
                 {label?.title}
@@ -196,9 +201,8 @@ function Categories() {
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              <TbEdit
-                size={20}
-                className="cursor-pointer"
+              <EditButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
@@ -211,10 +215,8 @@ function Categories() {
                   });
                 }}
               />
-              <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
+              <DeleteButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({

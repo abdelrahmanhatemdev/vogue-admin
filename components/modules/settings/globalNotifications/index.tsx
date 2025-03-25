@@ -52,6 +52,14 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
 });
 
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
+  loading: Loading,
+});
+
 export type OptimisicDataType = GlobalNotification & { isPending?: boolean };
 
 function GlobalNotification({ data }: { data: GlobalNotification[] }) {

@@ -3,9 +3,6 @@ import { memo, useMemo, useOptimistic, useState, useTransition } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { cn, notify } from "@/lib/utils";
@@ -14,6 +11,7 @@ import { editSubproduct } from "@/actions/Subproduct";
 import { Switch } from "@/components/ui/switch";
 import useColorStore from "@/store/useColorStore";
 import useSizeStore from "@/store/useSizeStore";
+import SelectAllCheckbox from "@/components/custom/table/SelectAllCheckbox";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -41,6 +39,14 @@ const SubproductList = dynamic(
   () => import("@/components/modules/subproducts/SubproductList"),
   { loading: Loading }
 );
+
+const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
+  loading: Loading,
+});
+
+const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
+  loading: Loading,
+});
 
 export type OptimisicDataType = Subproduct & { isPending?: boolean };
 
@@ -298,9 +304,8 @@ function Product({
 
           return (
             <div className="flex items-center gap-2 justify-end">
-              <TbEdit
-                size={20}
-                className="cursor-pointer"
+              <EditButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
@@ -317,10 +322,8 @@ function Product({
                   });
                 }}
               />
-              <Trash2Icon
-                size={20}
-                color="#dc2626"
-                className="cursor-pointer"
+              <DeleteButton
+                isProtected={item.isProtected}
                 onClick={() => {
                   setModalOpen(true);
                   setModal({
