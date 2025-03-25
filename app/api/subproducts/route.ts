@@ -85,6 +85,8 @@ export async function POST(request: Request) {
       inStock,
       colors,
       sizes,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
     };

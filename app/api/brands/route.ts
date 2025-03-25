@@ -36,6 +36,8 @@ export async function POST(request: Request) {
       uuid,
       name,
       slug,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
     };

@@ -22,6 +22,8 @@ export async function POST(request: Request) {
     const data = {
       uuid,
       code,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
     };

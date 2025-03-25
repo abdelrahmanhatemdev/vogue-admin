@@ -24,6 +24,8 @@ export async function POST(request: Request) {
       name,
       symbol,
       sortOrder,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
     };

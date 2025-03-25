@@ -47,9 +47,10 @@ export async function POST(request: Request) {
       additional,
       parent,
       label,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
-      deletedAt: "",
     };
 
     const docRef = await collectionRef.add(data);

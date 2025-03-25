@@ -23,6 +23,8 @@ export async function POST(request: Request) {
       uuid,
       name,
       hex,
+      isActive: true,
+      isProtected: false,
       createdAt: date,
       updatedAt: date,
     };

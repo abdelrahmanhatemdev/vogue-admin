@@ -1,5 +1,6 @@
 import { adminAddSchema, adminEditSchema } from "@/lib/validation/adminSchema";
-import { NextResponse } from "next/server";import { adminAuth } from "@/database/firebase-admin";
+import { NextResponse } from "next/server";
+import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
 import { fetchAllActive } from "@/lib/api/handlers";
@@ -8,7 +9,7 @@ export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -22,10 +23,13 @@ export async function POST(request: Request) {
       password,
       emailVerified: true,
       disabled: false,
-      displayName: name
+      displayName: name,
     });
 
-    await adminAuth.setCustomUserClaims(user.uid, { admin: true, role: "admin"});
+    await adminAuth.setCustomUserClaims(user.uid, {
+      admin: true,
+      role: "admin",
+    });
 
     if (user.uid) {
       const date = new Date().toISOString();
@@ -37,6 +41,8 @@ export async function POST(request: Request) {
         email,
         createdAt: date,
         updatedAt: date,
+        isActive: true,
+        isProtected: false,
       };
 
       await collectionRef.add(data);
@@ -82,12 +88,12 @@ export async function DELETE(request: Request) {
 
     const docRef = collectionRef.doc(id);
 
-    const docData = await (await docRef?.get())
+    const docData = await await docRef?.get();
 
-    const isProtected = docData.exists ? docData.data()?.isProtected : true
-    
+    const isProtected = docData.exists ? docData.data()?.isProtected : true;
+
     if (isProtected) {
-      throw new Error("Admin is Protected")
+      throw new Error("Admin is Protected");
     }
 
     const data = { deletedAt: new Date().toISOString() };
@@ -95,11 +101,8 @@ export async function DELETE(request: Request) {
     await docRef.update(data);
 
     await adminAuth.deleteUser(uid);
-    
-    return NextResponse.json(
-      { message: "Admin Deleted" },
-      { status: 200 }
-    );
+
+    return NextResponse.json({ message: "Admin Deleted" }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
