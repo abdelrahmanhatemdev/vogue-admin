@@ -100,6 +100,7 @@ export async function DELETE(request: Request) {
 
     await docRef.update(data);
 
+    
     await adminAuth.deleteUser(uid);
 
     return NextResponse.json({ message: "Admin Deleted" }, { status: 200 });
