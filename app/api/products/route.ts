@@ -2,7 +2,7 @@ import { productSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { fetchAllActive, softDelete } from "@/lib/api/handlers";
 
 export const collectionName = "products";
 export const collectionRef = adminDB.collection(collectionName);
@@ -174,41 +174,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { id } = await request.json();
-
-    const productDoc = await adminDB.collection("products").doc(id).get();
-
-    if (!productDoc.exists) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
-    }
-
-    const productData = productDoc.data() as Product;
-    const productUUID = productData.uuid;
-
-    const subproductsSnap = await adminDB
-      .collection("subproducts")
-      .where("productId", "==", productUUID)
-      .get();
-
-    const deletedAt = new Date().toISOString();
-    const batch = adminDB.batch();
-
-    subproductsSnap.forEach((subproductDoc) => {
-      batch.update(subproductDoc.ref, { deletedAt });
-    });
-
-    batch.update(adminDB.collection("products").doc(id), { deletedAt });
-
-    await batch.commit();
-
-    return NextResponse.json(
-      { message: "Product and related subproducts are deleted" },
-      { status: 200 }
-    );
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Something went wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+ return softDelete({request, collectionRef, modelName: "Product", isProduct: true})
 }

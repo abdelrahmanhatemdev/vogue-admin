@@ -1,3 +1,4 @@
+import { adminAuth, adminDB } from "@/database/firebase-admin";
 import { NextResponse } from "next/server";
 
 export async function fetchAllActive<T extends Record<string, string>>({
@@ -24,7 +25,6 @@ export async function fetchAllActive<T extends Record<string, string>>({
     const data = snapShot.empty
       ? []
       : snapShot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as T) }));
-      
 
     // const batch = collectionRef.firestore.batch();
 
@@ -51,13 +51,19 @@ export async function softDelete<T extends Record<string, string>>({
   request,
   collectionRef,
   modelName,
+  isAdmin,
+  isProduct,
 }: {
   request: Request;
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
   modelName: string;
+  isAdmin?: boolean;
+  isProduct?: boolean;
 }) {
   try {
-    const { id } = await request.json();
+    const params = await request.json();
+
+    const { id } = params;
 
     const docRef = collectionRef.doc(id);
 
@@ -66,15 +72,47 @@ export async function softDelete<T extends Record<string, string>>({
     const isProtected = docData.exists ? docData.data()?.isProtected : true;
 
     if (isProtected) {
-      throw new Error("Admin is Protected");
+      throw new Error(`${modelName} is Protected`);
     }
 
-    await docRef.update({ deletedAt: new Date().toISOString(), isActive: false });
+    let message = `${modelName} Deleted`;
 
-    return NextResponse.json(
-      { message: `${modelName} Deleted` },
-      { status: 200 }
-    );
+    const deletedAt = new Date().toISOString();
+
+    if (isAdmin) {
+      const { uid } = params;
+      await adminAuth.deleteUser(uid);
+    }
+
+    if (isProduct) {
+      const { uuid } = params;
+      const subproductsSnap = await adminDB
+        .collection("subproducts")
+        .where("productId", "==", uuid)
+        .get();
+
+      const batch = adminDB.batch();
+
+      const data = { deletedAt, isActive: false }
+
+      subproductsSnap.forEach((subproductDoc) => {
+        batch.update(subproductDoc.ref, data);
+      });
+
+      batch.update(adminDB.collection("products").doc(id), data);
+
+      await batch.commit();
+      message = "Product and related subproducts are deleted";
+    }
+
+    if (!isProduct) {
+      await docRef.update({
+        deletedAt,
+        isActive: false,
+      });
+    }
+
+    return NextResponse.json({ message }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });

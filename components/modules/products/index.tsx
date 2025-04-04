@@ -272,7 +272,7 @@ function Products({ data }: { data: Product[] }) {
                     ),
                     children: (
                       <DeleteProduct
-                        itemId={item.id}
+                        params={{id: item.id, uuid: item.uuid}}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />

@@ -124,7 +124,7 @@ export async function editProduct(
     });
 }
 
-export async function deleteProduct(data: { id: string }) {
+export async function deleteProduct(data: { id: string, uuid: string }) {
   return api
     .delete(apiURL, { data })
     .then((res) => {

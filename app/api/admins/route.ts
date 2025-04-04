@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { fetchAllActive, softDelete } from "@/lib/api/handlers";
 
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
@@ -83,29 +83,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { id, uid } = await request.json();
-
-    const docRef = collectionRef.doc(id);
-
-    const docData = await await docRef?.get();
-
-    const isProtected = docData.exists ? docData.data()?.isProtected : true;
-
-    if (isProtected) {
-      throw new Error("Admin is Protected");
-    }
-
-    const data = { deletedAt: new Date().toISOString(), isActive: false };
-
-    await docRef.update(data);
-
-    
-    await adminAuth.deleteUser(uid);
-
-    return NextResponse.json({ message: "Admin Deleted" }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return softDelete({request, collectionRef, modelName: "Admin", isAdmin: true})
 }

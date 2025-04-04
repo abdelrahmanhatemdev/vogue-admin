@@ -6,17 +6,17 @@ import { deleteProduct } from "@/actions/Product";
 import { notify } from "@/lib/utils";
 
 function DeleteProduct({
-  itemId,
+  params,
   setModalOpen,
   addOptimisticData,
 }: {
-  itemId: string;
+  params: {id: string; uuid: string};
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   addOptimisticData: (
     action: Product[] | ((pendingState: Product[]) => Product[])
   ) => void;
 }) {
-  const data = { id: itemId };
+  const data = params;
 
   const [isPending, startTransition] = useTransition();
 

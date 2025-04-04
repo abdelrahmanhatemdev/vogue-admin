@@ -200,8 +200,9 @@ function ProductList({
                 ]);
               });
               for (const row of selectedRows) {
-                const data = { id: row };
-                const res: ActionResponse = await deleteProduct(data);
+                const product = data.find(item => item.id === row) as Product
+                const params = { id: row, uuid: product.uuid };
+                const res: ActionResponse = await deleteProduct(params);
                 notify(res);
               }
             }}
