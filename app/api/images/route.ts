@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { adminDB } from "@/database/firebase-admin";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { fetchAllActive, softDelete } from "@/lib/api/handlers";
 
 export const collectionName = "images";
 export const collectionRef = adminDB.collection(collectionName);
@@ -22,6 +22,8 @@ export async function POST(request: Request) {
         url,
         sortOrder: 0,
         uuid: uuidv4(),
+        isActive: true,
+        isProtected: false,
         createdAt: date,
         updatedAt: date,
       };
@@ -41,10 +43,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(request: Request) {
   try {
     
-    const orderArray = await req.json();
+    const orderArray = await request.json();
 
     const updatedOrder = orderArray.map(async (id: string, index: number) => {
       const docRef = collectionRef.doc(id);
@@ -66,17 +68,6 @@ export async function PUT(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
-  try {
-    const { id } = await req.json();
-
-    const docRef = collectionRef.doc(id);
-
-    await docRef.delete();
-
-    return NextResponse.json({ message: "Photo Deleted" }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+export async function DELETE(request: Request) {
+  return softDelete({ request, collectionRef, modelName: "Photo" });
 }

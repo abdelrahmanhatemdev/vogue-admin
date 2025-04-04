@@ -92,6 +92,7 @@ function Subproduct({
     inStock,
     colors,
     sizes,
+    isProtected
   } = subproduct;
 
   const {name: productName, slug: product_slug} = product
@@ -195,7 +196,7 @@ function Subproduct({
             <ColorsChart/>
           </div>
           <ColorsAndSizes itemColors={colors as string[]} itemSizes={sizes as string[]}/>
-          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid} images={images}/>
+          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid} images={images} isProtected={isProtected}/>
           <div className="flex flex-wrap gap-4 rounded-lg">
             <PaymentChart
               title="Sold Orders"

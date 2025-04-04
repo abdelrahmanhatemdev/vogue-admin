@@ -75,7 +75,6 @@ export async function editProductImage(data: string[]) {
   return api
     .put(apiURL, data)
     .then((res) => {
-      console.log(res);
       
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

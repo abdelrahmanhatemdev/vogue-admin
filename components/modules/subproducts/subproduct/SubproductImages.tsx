@@ -40,15 +40,31 @@ const PhotoViewer = dynamic(
   { loading: Loading }
 );
 
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton"),
+  {
+    loading: Loading,
+  }
+);
+
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton"),
+  {
+    loading: Loading,
+  }
+);
+
 const SubproductImages = ({
   setModal,
   setModalOpen,
   uuid,
+  isProtected,
   images,
 }: {
   setModal: Dispatch<SetStateAction<ModalState>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   uuid: string;
+  isProtected: boolean;
   images: ProductImage[];
 }) => {
   const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
@@ -75,8 +91,6 @@ const SubproductImages = ({
     await deleteObject(fileRef);
   }
 
-  
-
   async function deleteImage(id: string, url: string) {
     setModalOpen(false);
 
@@ -92,7 +106,7 @@ const SubproductImages = ({
       ]);
     });
 
-    await deleteStorageFile(url)
+    await deleteStorageFile(url);
 
     const res = await deleteProductImage({ id });
     notify(res);
@@ -135,7 +149,7 @@ const SubproductImages = ({
                   url: selectedImage?.url ? selectedImage.url : "",
                 };
                 if (data.url) {
-                  await deleteStorageFile(data.url)
+                  await deleteStorageFile(data.url);
                 }
                 const res: ActionResponse = await deleteProductImage(data);
                 notify(res);
@@ -163,7 +177,13 @@ const SubproductImages = ({
               variant={"destructive"}
               size={"sm"}
               className="flex items-center gap-2 group"
-              onClick={deleteMultipleImages}
+              onClick={
+                isProtected
+                  ? () => {
+                      notify({ status: "500", message: "Protected items" });
+                    }
+                  : deleteMultipleImages
+              }
             >
               <span>Delete Selected</span>
               <Trash2Icon size={20} className="cursor-pointer" />
@@ -230,7 +250,7 @@ const SubproductImages = ({
                       className:
                         "bg-transparent border-none lg:py-14 bg-[hsl(0,0%,0%,0.5)]",
                       onPointerDownOutsideClose: true,
-                      showHeader: false
+                      showHeader: false,
                     });
                   }}
                 >
