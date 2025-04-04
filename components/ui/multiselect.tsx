@@ -241,9 +241,9 @@ export const MultiSelect = React.forwardRef<
                             toggleOption(value);
                           }}
                           variant={"noStyle"}
-                          className="p-0 bg-none hovre:bg-none h-auto"
+                          className="p-0 bg-none hovre:bg-none h-auto ml-1 has-[>svg]:px-0"
                         >
-                          <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
+                          <XCircle className="h-4 w-4 cursor-pointer" />
                         </Button>
                       </Badge>
                     );
