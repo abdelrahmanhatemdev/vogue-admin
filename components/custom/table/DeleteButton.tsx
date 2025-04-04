@@ -5,7 +5,7 @@ const DeleteButton = ({
   isProtected,
   onClick,
 }: {
-  isProtected: boolean;
+  isProtected?: boolean;
   onClick: () => void;
 }) => {
   return isProtected ? (

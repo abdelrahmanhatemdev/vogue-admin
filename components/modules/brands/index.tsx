@@ -3,14 +3,10 @@ import { memo, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TbEdit } from "react-icons/tb";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import Link from "next/link";
 import useBrandStore from "@/store/useBrandStore";
-import { notify } from "@/lib/utils";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,

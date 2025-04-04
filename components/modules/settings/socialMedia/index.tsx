@@ -1,6 +1,5 @@
 "use client";
 import { memo, useMemo, useOptimistic, useState } from "react";
-
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import {
@@ -9,8 +8,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import { socialMedia as socialMediaList } from "@/constants/socialMedia";
 
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
@@ -44,13 +41,6 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
 
 const DeleteButton = dynamic(
   () => import("@/components/custom/table/DeleteButton"),
-  {
-    loading: Loading,
-  }
-);
-
-const EditButton = dynamic(
-  () => import("@/components/custom/table/EditButton"),
   {
     loading: Loading,
   }

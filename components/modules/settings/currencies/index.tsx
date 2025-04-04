@@ -9,8 +9,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { TbTrashOff } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
 import { currencies as currencyList } from "@/constants/currencies";
 
 const Modal = dynamic(() => import("@/components/custom/Modal"), {
@@ -46,13 +44,6 @@ const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
 
 const DeleteButton = dynamic(
   () => import("@/components/custom/table/DeleteButton"),
-  {
-    loading: Loading,
-  }
-);
-
-const EditButton = dynamic(
-  () => import("@/components/custom/table/EditButton"),
   {
     loading: Loading,
   }

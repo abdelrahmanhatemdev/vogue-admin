@@ -45,7 +45,7 @@ export async function fetchAllActive<T extends Record<string, string>>({
   }
 }
 
-export async function isProtected<T extends Record<string, string>>({
+export async function isProtected({
   reqData,
   collectionRef,
   modelName,
@@ -68,7 +68,7 @@ export async function isProtected<T extends Record<string, string>>({
   }
 }
 
-export async function softDelete<T extends Record<string, string>>({
+export async function softDelete({
   request,
   collectionRef,
   modelName,

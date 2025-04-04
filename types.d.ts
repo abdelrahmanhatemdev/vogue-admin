@@ -14,8 +14,8 @@ interface Category {
   parent: string;
   additional: boolean;
   label: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -26,8 +26,8 @@ interface Brand {
   uuid: string;
   name: string;
   slug: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -36,14 +36,14 @@ interface Brand {
 interface Admin {
   id: string;
   uuid: string;
-  uid: string;
+  uid?: string;
   name: string;
   email: string;
   password?: string;
   provider: string;
   provider_id?: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -55,8 +55,8 @@ interface Size {
   name: string;
   symbol: string;
   sortOrder: number;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -67,8 +67,8 @@ interface Color {
   uuid: string;
   name: string;
   hex: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -79,8 +79,8 @@ interface Label {
   uuid: string;
   title: string;
   hex: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -96,8 +96,8 @@ interface Product {
   descriptionBrief: string;
   descriptionDetails: string;
   trending: boolean;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -120,8 +120,8 @@ interface Subproduct {
   colors: Color[] | string[] | string;
   sizes: Size[] | string[] | string;
   images?: ProductImage[] | string[] | string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -157,8 +157,8 @@ interface SocialMedia {
   platform: string;
   link: string;
   followers: number;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -170,8 +170,8 @@ interface GlobalNotification {
   text: string;
   anchorText: string;
   anchorLink: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -181,8 +181,8 @@ interface Currency {
   id: string;
   uuid: string;
   code: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -193,8 +193,8 @@ interface Setting {
   uuid: string;
   key: string;
   value: string;
-  isProtected: boolean;
-  isActive: boolean;
+  isProtected?: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

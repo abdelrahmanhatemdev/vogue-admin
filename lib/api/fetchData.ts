@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { NextResponse } from "next/server";
 // import redis from "@/lib/redis";
 export async function fetchWithAuth({
   url,

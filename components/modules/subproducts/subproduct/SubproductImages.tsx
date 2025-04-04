@@ -40,20 +40,6 @@ const PhotoViewer = dynamic(
   { loading: Loading }
 );
 
-const DeleteButton = dynamic(
-  () => import("@/components/custom/table/DeleteButton"),
-  {
-    loading: Loading,
-  }
-);
-
-const EditButton = dynamic(
-  () => import("@/components/custom/table/EditButton"),
-  {
-    loading: Loading,
-  }
-);
-
 const SubproductImages = ({
   setModal,
   setModalOpen,
@@ -64,7 +50,7 @@ const SubproductImages = ({
   setModal: Dispatch<SetStateAction<ModalState>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   uuid: string;
-  isProtected: boolean;
+  isProtected?: boolean;
   images: ProductImage[];
 }) => {
   const [imageList, setImageList] = useState<OptimisicImagesType[]>(images);
