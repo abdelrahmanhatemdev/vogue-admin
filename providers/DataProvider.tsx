@@ -61,7 +61,6 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
   
 
   useEffect(() => {
-    console.log("🔥 DataProvider Mounted: Fetching Data...");
     fetchData();
   }, []);
 

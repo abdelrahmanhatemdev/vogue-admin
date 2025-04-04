@@ -2,13 +2,13 @@ import { colorSchema } from "@/lib/validation/colorSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "colors";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -44,7 +44,11 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, name, hex } = await request.json();
+    const reqData = await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Color" });
+
+    const { id, uuid, name, hex } = reqData;
 
     await colorSchema.parseAsync({ uuid, name, hex });
 
@@ -66,5 +70,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Color"})
+  return softDelete({ request, collectionRef, modelName: "Color" });
 }

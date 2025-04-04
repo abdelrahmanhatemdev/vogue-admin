@@ -2,7 +2,7 @@ import { settingSchema } from "@/lib/validation/settings/settingSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive } from "@/lib/api/handlers";
+import { fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "settings";
 export const collectionRef = adminDB.collection(collectionName);
@@ -13,7 +13,11 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, key, value} = await request.json();
+    const reqData = await request.json();
+    
+    await isProtected({ reqData, collectionRef, modelName: "Setting item" });
+
+    const { id, uuid, key, value} = reqData;
 
     await settingSchema.parseAsync({ uuid, key, value});
 

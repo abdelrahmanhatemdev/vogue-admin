@@ -40,10 +40,31 @@ export async function fetchAllActive<T extends Record<string, string>>({
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
-    console.log("err", error);
-
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function isProtected<T extends Record<string, string>>({
+  reqData,
+  collectionRef,
+  modelName,
+}: {
+  reqData: { id: string };
+  collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
+  modelName: string;
+}) {
+  const { id } = reqData;
+
+  const docRef = collectionRef.doc(id);
+  const docSnap = await docRef.get();
+
+  if (!docSnap.exists) {
+    throw new Error(`${modelName} not found`);
+  }
+
+  if (docSnap.data()?.isProtected) {
+    throw new Error(`${modelName} is protected`);
   }
 }
 
@@ -93,7 +114,7 @@ export async function softDelete<T extends Record<string, string>>({
 
       const batch = adminDB.batch();
 
-      const data = { deletedAt, isActive: false }
+      const data = { deletedAt, isActive: false };
 
       subproductsSnap.forEach((subproductDoc) => {
         batch.update(subproductDoc.ref, data);

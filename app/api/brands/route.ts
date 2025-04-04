@@ -1,13 +1,13 @@
 import { brandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -57,7 +57,11 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, name, slug } = await request.json();
+    const reqData = await request.json();
+    
+    await isProtected({ reqData, collectionRef, modelName: "Brand" });
+
+    const { id, uuid, name, slug } = reqData;
 
     await brandSchema.parseAsync({ uuid, name, slug });
 
@@ -93,5 +97,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Brand"})
+  return softDelete({ request, collectionRef, modelName: "Brand" });
 }

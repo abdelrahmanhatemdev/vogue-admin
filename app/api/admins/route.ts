@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive, softDelete } from "@/lib/api/handlers";
+import { fetchAllActive, isProtected, softDelete } from "@/lib/api/handlers";
 
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
@@ -59,7 +59,12 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, uid, name, email, password } = await request.json();
+
+    const reqData= await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Admin" });
+    
+    const { id, uuid, uid, name, email, password } = reqData;
 
     await adminEditSchema.parseAsync({ uuid, name, email, password });
 

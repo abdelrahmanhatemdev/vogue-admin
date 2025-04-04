@@ -117,7 +117,7 @@ function Admins({ data }: { data: Admin[] }) {
             <div className="flex items-center gap-2 justify-end">
               <EditButton
                 isProtected={item.isProtected}
-                onClick={() => () => {
+                onClick={() => {
                   setModalOpen(true);
                   setModal({
                     title: `Edit Admin`,

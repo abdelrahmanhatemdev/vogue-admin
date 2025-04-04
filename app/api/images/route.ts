@@ -43,6 +43,7 @@ export async function POST(request: Request) {
 
 export async function PUT(req: Request) {
   try {
+    
     const orderArray = await req.json();
 
     const updatedOrder = orderArray.map(async (id: string, index: number) => {

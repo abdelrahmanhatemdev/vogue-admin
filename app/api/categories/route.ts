@@ -2,13 +2,13 @@ import { categorySchema } from "@/lib/validation/categorySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin"; // Use Firebase Admin SDK
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "categories";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -68,25 +68,28 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const reqData = await request.json();
-  if (reqData?.property) {
-    const { property, id, value } = reqData;
-    const docRef = collectionRef.doc(id);
-
-    if (docRef?.id) {
-      await docRef.update({
-        [property]: value,
-        updatedAt: new Date().toISOString(),
-      });
-
-      return NextResponse.json(
-        { message: "Category updated" },
-        { status: 200 }
-      );
-    }
-  }
-
   try {
+    const reqData = await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Category" });
+
+    if (reqData?.property) {
+      const { property, id, value } = reqData;
+      const docRef = collectionRef.doc(id);
+
+      if (docRef?.id) {
+        await docRef.update({
+          [property]: value,
+          updatedAt: new Date().toISOString(),
+        });
+
+        return NextResponse.json(
+          { message: "Category updated" },
+          { status: 200 }
+        );
+      }
+    }
+
     const { id, uuid, name, slug, additional, parent, label } = reqData;
 
     await categorySchema.parseAsync({
@@ -131,5 +134,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Category"})
+  return softDelete({ request, collectionRef, modelName: "Category" });
 }

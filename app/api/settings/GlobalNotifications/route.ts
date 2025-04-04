@@ -2,26 +2,33 @@ import { globalNotificationSchema } from "@/lib/validation/settings/globalNotifi
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "globalNotifications";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
   try {
-    const { uuid, text, anchorText, anchorLink} = await request.json();
+    const { uuid, text, anchorText, anchorLink } = await request.json();
 
-    await globalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
+    await globalNotificationSchema.parseAsync({
+      uuid,
+      text,
+      anchorText,
+      anchorLink,
+    });
 
     const date = new Date().toISOString();
 
     const data = {
       uuid,
-      text, anchorText, anchorLink,
+      text,
+      anchorText,
+      anchorLink,
       isActive: true,
       isProtected: false,
       createdAt: date,
@@ -31,7 +38,10 @@ export async function POST(request: Request) {
     const docRef = await collectionRef.add(data);
 
     if (docRef.id) {
-      return NextResponse.json({ message: "GlobalNotification added" }, { status: 200 });
+      return NextResponse.json(
+        { message: "GlobalNotification added" },
+        { status: 200 }
+      );
     }
 
     return new Error("Something Wrong");
@@ -43,18 +53,32 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, text, anchorText, anchorLink} = await request.json();
+    const reqData = await request.json();
 
-    await globalNotificationSchema.parseAsync({ uuid, text, anchorText, anchorLink});
+    await isProtected({ reqData, collectionRef, modelName: "Currency" });
+
+    const { id, uuid, text, anchorText, anchorLink } = reqData;
+
+    await globalNotificationSchema.parseAsync({
+      uuid,
+      text,
+      anchorText,
+      anchorLink,
+    });
 
     const docRef = collectionRef.doc(id);
 
     if (docRef?.id) {
       await docRef.update({
-        text, anchorText, anchorLink,
+        text,
+        anchorText,
+        anchorLink,
         updatedAt: new Date().toISOString(),
       });
-      return NextResponse.json({ message: "GlobalNotification Updated" }, { status: 200 });
+      return NextResponse.json(
+        { message: "GlobalNotification Updated" },
+        { status: 200 }
+      );
     }
     return new Error("Something Wrong");
   } catch (error) {
@@ -64,5 +88,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Global Notification"})
+  return softDelete({
+    request,
+    collectionRef,
+    modelName: "Global Notification",
+  });
 }

@@ -14,7 +14,7 @@ const EditButton = ({
       size={18}
       className="cursor-pointer opacity-60"
       onClick={() => {
-        notify({status: "500", message: "Item is protected"})}}
+        notify({status: "500", message: "Protected item"})}}
     />
   ) : (
     <TbEdit size={18} className="cursor-pointer" onClick={onClick}/>

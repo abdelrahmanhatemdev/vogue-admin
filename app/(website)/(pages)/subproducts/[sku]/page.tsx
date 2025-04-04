@@ -42,9 +42,6 @@ export default async function SubproductPage(props: {
   const { sku } = await params;
   const subproduct = await getSubproductBySku(sku);
 
-  console.log("sub", subproduct);
-  
-
   if (!subproduct?.uuid) {
     notFound();
   }

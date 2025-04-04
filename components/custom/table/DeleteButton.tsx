@@ -14,7 +14,7 @@ const DeleteButton = ({
       color="#dc2626"
       className="cursor-pointer opacity-60"
       onClick={() => {
-        notify({status: "500", message: "Item is protected"})}}
+        notify({status: "500", message: "Protected item"})}}
     />
   ) : (
     <TbTrash size={18} color="#dc2626" className="cursor-pointer" onClick={onClick}/>

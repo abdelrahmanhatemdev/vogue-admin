@@ -258,9 +258,7 @@ function Products({ data }: { data: Product[] }) {
               <DeleteButton
                 isProtected={item.isProtected}
                 onClick={() => {
-                  console.log("item.isPotected", item.isProtected);
-                  
-                  if (item.isProtected) return notify({status: "500", message: "Item is protected"})
+                  if (item.isProtected) return notify({status: "500", message: "Protected item"})
                   setModalOpen(true);
                   setModal({
                     title: `Delete Product`,

@@ -1,7 +1,7 @@
 import { subproductSchema } from "@/lib/validation/subproductSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 // import redis from "@/lib/redis";
 
 export const collectionName = "subproducts";
@@ -108,26 +108,28 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const reqData = await request.json();
-
-  if (reqData?.property) {
-    const { property, id, value } = reqData;
-    const docRef = collectionRef.doc(id);
-
-    if (docRef?.id) {
-      await docRef.update({
-        [property]: value,
-        updatedAt: new Date().toISOString(),
-      });
-
-      return NextResponse.json(
-        { message: "Subproduct updated" },
-        { status: 200 }
-      );
-    }
-  }
-
   try {
+    const reqData = await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Subproduct" });
+
+    if (reqData?.property) {
+      const { property, id, value } = reqData;
+      const docRef = collectionRef.doc(id);
+
+      if (docRef?.id) {
+        await docRef.update({
+          [property]: value,
+          updatedAt: new Date().toISOString(),
+        });
+
+        return NextResponse.json(
+          { message: "Subproduct updated" },
+          { status: 200 }
+        );
+      }
+    }
+
     const {
       id,
       uuid,

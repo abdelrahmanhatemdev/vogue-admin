@@ -1,7 +1,7 @@
 import { labelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 // // import redis from "@/lib/redis";
 
 export const collectionName = "labels";
@@ -44,7 +44,11 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, title, hex } = await request.json();
+    const reqData = await request.json();
+    
+    await isProtected({ reqData, collectionRef, modelName: "Label" });
+
+    const { id, uuid, title, hex } = reqData;
 
     await labelSchema.parseAsync({ uuid, title, hex });
 

@@ -2,13 +2,13 @@ import { sizeSchema } from "@/lib/validation/sizeSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "sizes";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -45,7 +45,11 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, name, symbol, sortOrder } = await request.json();
+    const reqData = await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Size" });
+
+    const { id, uuid, name, symbol, sortOrder } = reqData;
 
     await sizeSchema.parseAsync({ uuid, name, symbol, sortOrder });
 
@@ -68,5 +72,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Size"})
+  return softDelete({ request, collectionRef, modelName: "Size" });
 }

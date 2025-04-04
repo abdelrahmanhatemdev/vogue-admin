@@ -2,20 +2,20 @@ import { currencySchema } from "@/lib/validation/settings/currencySchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
 
 export const collectionName = "Currencies";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
   try {
-    const { uuid, code} = await request.json();
+    const { uuid, code } = await request.json();
 
-    await currencySchema.parseAsync({ uuid, code});
+    await currencySchema.parseAsync({ uuid, code });
 
     const date = new Date().toISOString();
 
@@ -43,9 +43,13 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, uuid, code} = await request.json();
+    const reqData = await request.json();
 
-    await currencySchema.parseAsync({ uuid, code});
+    await isProtected({ reqData, collectionRef, modelName: "Currency" });
+
+    const { id, uuid, code } = reqData;
+
+    await currencySchema.parseAsync({ uuid, code });
 
     const docRef = collectionRef.doc(id);
 
@@ -54,7 +58,10 @@ export async function PUT(request: Request) {
         code,
         updatedAt: new Date().toISOString(),
       });
-      return NextResponse.json({ message: "Currency Updated" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Currency Updated" },
+        { status: 200 }
+      );
     }
     return new Error("Something Wrong");
   } catch (error) {
@@ -64,5 +71,5 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({request, collectionRef, modelName: "Currency"})
+  return softDelete({ request, collectionRef, modelName: "Currency" });
 }

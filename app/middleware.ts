@@ -12,8 +12,6 @@ export async function middleware(req: NextRequest) {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
   });
-
-  console.log("verifyRes", verifyRes);
   
 
   if (!verifyRes.ok) {

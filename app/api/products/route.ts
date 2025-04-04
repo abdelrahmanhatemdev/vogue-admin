@@ -2,13 +2,13 @@ import { productSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive, softDelete } from "@/lib/api/handlers";
+import { fetchAllActive, isProtected, softDelete } from "@/lib/api/handlers";
 
 export const collectionName = "products";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+  return await fetchAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
@@ -89,23 +89,28 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const reqData = await request.json();
-
-  if (reqData?.property) {
-    const { property, id, value } = reqData;
-    const docRef = collectionRef.doc(id);
-
-    if (docRef?.id) {
-      await docRef.update({
-        [property]: value,
-        updatedAt: new Date().toISOString(),
-      });
-
-      return NextResponse.json({ message: "Product updated" }, { status: 200 });
-    }
-  }
-
   try {
+    const reqData = await request.json();
+
+    await isProtected({ reqData, collectionRef, modelName: "Product" });
+
+    if (reqData?.property) {
+      const { property, id, value } = reqData;
+      const docRef = collectionRef.doc(id);
+
+      if (docRef?.id) {
+        await docRef.update({
+          [property]: value,
+          updatedAt: new Date().toISOString(),
+        });
+
+        return NextResponse.json(
+          { message: "Product updated" },
+          { status: 200 }
+        );
+      }
+    }
+
     const {
       id,
       uuid,
@@ -174,5 +179,10 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
- return softDelete({request, collectionRef, modelName: "Product", isProduct: true})
+  return softDelete({
+    request,
+    collectionRef,
+    modelName: "Product",
+    isProduct: true,
+  });
 }
