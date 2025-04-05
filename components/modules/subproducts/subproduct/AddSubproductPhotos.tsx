@@ -265,7 +265,7 @@ function AddSubproductPhotos({
             </Form>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-start gap-4 w-full max-h-[55vh] overflow-y-auto scrollbar-hide">
+        <div className="flex flex-wrap items-center justify-start gap-4 w-full max-h-[55vh] overflow-y-auto scrollbar-hidden">
           {imagesContent}
         </div>
       </div>

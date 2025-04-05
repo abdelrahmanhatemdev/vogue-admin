@@ -52,7 +52,7 @@ const SettingsSidebar = () => {
           description="Manage your account settings and info!"
         />
       </div>
-      <ul className="lg:w-full flex lg:flex-col gap-1 overflow-auto scrollbar-hide w-full">
+      <ul className="lg:w-full flex lg:flex-col gap-1 overflow-auto scrollbar-hidden w-full">
         {sidebarLinks.map((link, index) => {
           const isActive = currentPath.startsWith(link.link);
 
