@@ -3,47 +3,51 @@ import { NextResponse } from "next/server";
 
 export async function fetchAllActive<T extends Record<string, string>>({
   collectionRef,
-}: // collectionName,
-{
+  limit = 10,
+  cursor,
+}: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
-  // collectionName: string;
+  limit?: number;
+  cursor?: string;
 }) {
   try {
-    // console.log(`Fetching ${collectionName} from Redis...`);
+    let query = collectionRef
+      .where("isActive", "==", true)
+      .orderBy("updatedAt", "desc")
+      .limit(limit);
 
-    // const cachedData = (await redis.get(`${collectionName}`)) as string;
-    // if (cachedData) {
-    //   console.log("Cache hit:", collectionName);
-    //   return NextResponse.json(
-    //     { data: JSON.parse(cachedData) },
-    //     { status: 200 }
-    //   );
-    // }
 
-    const snapShot = await collectionRef.where("isActive", "==", true).get();
 
-    const data = snapShot.empty
-      ? []
-      : snapShot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as T) }));
+    if (cursor) {
+      const cursorDoc = await collectionRef.doc(cursor).get();
+      if (!cursorDoc.exists) {
+        return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
+      }
+      query = query.startAfter(cursorDoc);
+    }
 
-    // const batch = collectionRef.firestore.batch();
+    const snapshot = await query.get();
 
-    // data.forEach((item) => {
-    //   const docRef = collectionRef.doc(item.id);
-    //   batch.update(docRef, { isActive: true });
-    // });
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as T),
+    }));
 
-    // await batch.commit();
+    const nextCursor = snapshot.docs.length
+      ? snapshot.docs[snapshot.docs.length - 1].id
+      : null;
 
-    // console.log(`Saving ${collectionName} to Redis with expiry...`);
-    // await redis.set(collectionName, JSON.stringify(data), { ex: 3600 });
-
-    return NextResponse.json({ data }, { status: 200 });
+    return NextResponse.json(
+      { data, nextCursor, limit },
+      { status: 200 }
+    );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
+    console.log("error", error );
+    const message = error instanceof Error ? error.message : "Something went wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+
 
 export async function isProtected({
   reqData,
