@@ -43,3 +43,5 @@ export async function generateStaticParams() {
 
   return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
 }
+
+
