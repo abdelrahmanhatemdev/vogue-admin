@@ -4,30 +4,31 @@ import Loading from "@/components/custom/Loading";
 
 const AdminBreadcrumb = dynamic(
   () => import("@/components/custom/AdminBreadcrumb"),
-  { loading: Loading }
+  { loading: Loading, ssr: false }
 );
-
-
 
 const StatsSquares = dynamic(
   () => import("@/components/modules/dashboard/StatsSquares"),
-  { loading: Loading }
+  { loading: Loading, ssr: false }
 );
 
 const Goal = dynamic(() => import("@/components/modules/dashboard/Goal"), {
   loading: Loading,
+  ssr: false,
 });
 
 const PaymentChart = dynamic(
   () => import("@/components/modules/dashboard/PaymentChart"),
-  { loading: Loading }
+  { loading: Loading, ssr: false }
 );
 
-const GoalCalender = dynamic(() => import("@/components/modules/dashboard/GoalCalender"), {
-  loading: Loading,
-});
-
-
+const GoalCalender = dynamic(
+  () => import("@/components/modules/dashboard/GoalCalender"),
+  {
+    loading: Loading,
+    ssr: false,
+  }
+);
 
 function Dashboard() {
   return (
@@ -39,8 +40,11 @@ function Dashboard() {
           <Goal />
         </div>
         <div className="flex flex-wrap gap-4 rounded-lg">
-          <PaymentChart title="Total Sold Orders" description="Your Marketing target are ahead of where you normally are."/>
-          <GoalCalender/>
+          <PaymentChart
+            title="Total Sold Orders"
+            description="Your Marketing target are ahead of where you normally are."
+          />
+          <GoalCalender />
         </div>
       </div>
     </div>
