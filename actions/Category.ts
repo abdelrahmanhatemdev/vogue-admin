@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction  } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
 export const getCategories= async () => {
-  return getAll <Category>({url, tag})
+  return getAllAction <Category>({url, tag})
 };
 
 export async function getCategoryBySlug(slug: string) {
@@ -68,5 +68,5 @@ export async function editCategory(
 }
 
 export async function deleteCategory(data: { id: string }) {
-  return deleteOne({url, tag, data})
+  return deleteOneAction({url, tag, data})
 }

@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction  } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
 
 export const getPaginatedProducts = async () => {
- return getAll <Product>({url, tag})
+ return getAllAction <Product>({url, tag})
 };
 
 export async function getProductBySlug(slug: string) {
@@ -113,5 +113,5 @@ export async function editProduct(
 }
 
 export async function deleteProduct(data: { id: string, uuid: string }) {
-  return deleteOne({url, tag, data})
+  return deleteOneAction({url, tag, data})
 }

@@ -2,13 +2,13 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
+import { getAllAction  } from "@/lib/actions/getAllAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/setting`;
 const tag: string = "Settings";
 
 export const getSetting = async () => {
-  return getAll <Setting>({url, tag})
+  return getAllAction <Setting>({url, tag})
 };
 
 export async function editSetting(data: Partial<Setting>) {

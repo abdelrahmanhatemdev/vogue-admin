@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction  } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/socialMedia`;
 const tag: string = "SocialMedias";
 
 export const getSocialMedia = async () => {
-  return getAll <SocialMedia>({url, tag})
+  return getAllAction <SocialMedia>({url, tag})
 };
 
 export async function getSocialMediaById(id: string) {
@@ -60,5 +60,5 @@ export async function editSocialMedia(data: Partial<SocialMedia>) {
 }
 
 export async function deleteSocialMedia(data: { id: string }) {
-  return deleteOne({url, tag, data})
+  return deleteOneAction({url, tag, data})
 }

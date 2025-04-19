@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction  } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  return getAll <Brand>({url, tag})
+  return getAllAction <Brand>({url, tag})
 };
 
 export async function getBrandBySlug(slug: string) {
@@ -60,5 +60,5 @@ export async function editBrand(data: Partial<Brand>) {
 }
 
 export async function deleteBrand(data: { id: string }) {
-  return deleteOne({url, tag, data})
+  return deleteOneAction({url, tag, data})
 }

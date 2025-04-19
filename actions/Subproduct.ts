@@ -2,15 +2,15 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 const productTag = "products";
 
 export const getSubproducts = async () => {
-  return getAll<Subproduct>({ url, tag });
+  return getAllAction<Subproduct>({ url, tag });
 };
 
 export async function getSubproductBySku(sku: string) {
@@ -71,5 +71,5 @@ export async function editSubproduct(
 }
 
 export async function deleteSubproduct(data: { id: string }) {
-  return deleteOne({ url, tag, data, secondTag: productTag });
+  return deleteOneAction({ url, tag, data, secondTag: productTag });
 }

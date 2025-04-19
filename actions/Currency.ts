@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
-import { deleteOne } from "@/lib/actions/deleteOne";
+import { getAllAction  } from "@/lib/actions/getAllAction";
+import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/currencies`;
 const tag: string = "currency";
 
 export const getCurrencies = async () => {
-  return getAll <Currency>({url, tag})
+  return getAllAction <Currency>({url, tag})
 };
 
 export async function getCurrenciesById(id: string) {
@@ -60,5 +60,5 @@ export async function editCurrency(data: Partial<Currency>) {
 }
 
 export async function deleteCurrency(data: { id: string }) {
-  return deleteOne({url, tag, data})
+  return deleteOneAction({url, tag, data})
 }

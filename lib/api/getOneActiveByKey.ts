@@ -12,7 +12,7 @@ export async function getOneActiveByKey<T extends Record<string, any>>({
   try {
 
     if (!value) {
-      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+      return NextResponse.json({ error: `${key === "slug" ? "Slug" : "SKU"} is required` }, { status: 400 });
     }
 
     const query = collectionRef

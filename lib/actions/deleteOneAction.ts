@@ -1,7 +1,7 @@
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
-interface DeleteOneOptions {
+interface deleteOneActionOptions {
   url: string;
   data: { id: string };
   tag: string;
@@ -13,12 +13,12 @@ interface DeleteResponse {
   message: string;
 }
 
-export async function deleteOne({
+export async function deleteOneAction({
   url,
   data,
   tag,
   secondTag
-}: DeleteOneOptions): Promise<DeleteResponse> {
+}: deleteOneActionOptions): Promise<DeleteResponse> {
   try {
     const res = await api.delete(url, { data });
 

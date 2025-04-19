@@ -6,7 +6,7 @@ interface GetAllOptions<T> {
   sortKey?: string;
 }
 
-export async function getAll<T>({ url, tag, sortKey= "updatedAt" }: GetAllOptions<T>): Promise<T[]> {
+export async function getAllAction<T>({ url, tag, sortKey= "updatedAt" }: GetAllOptions<T>): Promise<T[]> {
   try {
     const res = await fetchWithAuth({ url, tag });
     if (res?.ok) {
