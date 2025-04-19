@@ -2,7 +2,8 @@ import { settingSchema } from "@/lib/validation/settings/settingSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive, isProtected } from "@/lib/api/isProtected";
+import { isProtected } from "@/lib/api/isProtected";
+import { fetchAllActive } from "@/lib/api/fetchAllActive";
 
 export const collectionName = "settings";
 export const collectionRef = adminDB.collection(collectionName);

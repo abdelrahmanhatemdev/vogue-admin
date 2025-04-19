@@ -2,7 +2,9 @@ import { productSchema } from "@/lib/validation/productSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { fetchAllActive, isProtected, softDelete } from "@/lib/api/isProtected";
+import { isProtected } from "@/lib/api/isProtected";
+import { fetchAllActive } from "@/lib/api/fetchAllActive";
+import { softDelete } from "@/lib/api/softDelete";
 
 export const collectionName = "products";
 export const collectionRef = adminDB.collection(collectionName);

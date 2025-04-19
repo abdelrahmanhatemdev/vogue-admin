@@ -1,7 +1,9 @@
 import { brandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { softDelete, fetchAllActive, isProtected } from "@/lib/api/isProtected";
+import { isProtected } from "@/lib/api/isProtected";
+import { fetchAllActive } from "@/lib/api/fetchAllActive";
+import { softDelete } from "@/lib/api/softDelete";
 
 export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);
@@ -58,7 +60,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const reqData = await request.json();
-    
+
     await isProtected({ reqData, collectionRef, modelName: "Brand" });
 
     const { id, uuid, name, slug } = reqData;

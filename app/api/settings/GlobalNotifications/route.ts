@@ -2,7 +2,9 @@ import { globalNotificationSchema } from "@/lib/validation/settings/globalNotifi
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive, isProtected } from "@/lib/api/isProtected";
+import { isProtected } from "@/lib/api/isProtected";
+import { fetchAllActive } from "@/lib/api/fetchAllActive";
+import { softDelete } from "@/lib/api/softDelete";
 
 export const collectionName = "globalNotifications";
 export const collectionRef = adminDB.collection(collectionName);
