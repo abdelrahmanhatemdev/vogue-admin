@@ -2,13 +2,13 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/globalNotifications`;
 const tag: string = "GlobalNotifications";
 
 export const getGlobalNotification = async () => {
-  return getAll<GlobalNotification>({url, tag})
+  return getAll <GlobalNotification>({url, tag})
 };
 
 export async function getGlobalNotificationById(id: string) {

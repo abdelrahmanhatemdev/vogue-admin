@@ -1,4 +1,4 @@
-import { getProducSubproducts, getProductBySlug } from "@/actions/Product";
+import { getProducSubproducts, getProductBySlug, getProducts } from "@/actions/Product";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
@@ -52,4 +52,10 @@ export default async function ProductPage(props: {
   const subproducts = await getProducSubproducts(slug);
 
   return <Product subproducts={subproducts} product={product} />;
+}
+
+export async function generateStaticParams() {
+  const list: Product[] = await getProducts();
+
+  return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
 }

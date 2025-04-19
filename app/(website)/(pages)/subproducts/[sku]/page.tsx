@@ -1,4 +1,4 @@
-import { getSubproductBySku } from "@/actions/Subproduct";
+import { getSubproductBySku, getSubproducts } from "@/actions/Subproduct";
 import dynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
@@ -57,4 +57,11 @@ export default async function SubproductPage(props: {
   const images = await getSubproductImages(subproduct.uuid)
 
   return <Subproduct subproduct={subproduct} product={product} images= {images}/>;
+}
+
+
+export async function generateStaticParams() {
+  const list: Subproduct[] = await getSubproducts();
+
+  return list?.length > 0 ? list.map(({ sku }: { sku: string }) => ({ sku })) : [];
 }

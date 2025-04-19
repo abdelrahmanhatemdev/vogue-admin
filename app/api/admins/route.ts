@@ -4,14 +4,14 @@ import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
 import { isProtected } from "@/lib/api/isProtected";
-import { getAllActive } from "@/lib/api/getAllActive";
+import { getAllActivePaginated } from "@/lib/api/getAllActivePaginated";
 import { softDelete } from "@/lib/api/softDelete";
 
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return await getAllActive({ collectionRef });
+  return await getAllActivePaginated({ collectionRef });
 }
 
 export async function POST(request: Request) {

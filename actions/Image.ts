@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/images`;
 const tag = "productImages";
 const subproductTag = "subproducts";
 
 export const getProductImages = async () => {
-  return getAll<ProductImage>({url, tag})
+  return getAll <ProductImage>({url, tag})
 };
 
 export async function getSubproductImages(id: string) {

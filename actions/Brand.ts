@@ -2,13 +2,13 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  return getAll<Brand>({url, tag})
+  return getAll <Brand>({url, tag})
 };
 
 export async function getBrandBySlug(slug: string) {

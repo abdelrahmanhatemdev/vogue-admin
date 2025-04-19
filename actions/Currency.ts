@@ -2,16 +2,16 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/currencies`;
 const tag: string = "currency";
 
-export const getCurrency = async () => {
-  return getAll<Currency>({url, tag})
+export const getCurrencies = async () => {
+  return getAll <Currency>({url, tag})
 };
 
-export async function getCurrencyById(id: string) {
+export async function getCurrenciesById(id: string) {
   try {
     const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
 

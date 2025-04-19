@@ -1,4 +1,4 @@
-import { getBrandBySlug } from "@/actions/Brand";
+import { getBrandBySlug, getBrands } from "@/actions/Brand";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
@@ -47,4 +47,12 @@ export default async function CatergoryPage(props: {
     }
 
   return <Brand data={data} />;
+}
+
+export async function generateStaticParams() {
+  const list: Brand[] = await getBrands();
+
+  return list?.length > 0
+    ? list.map(({ slug }: { slug: string }) => ({ slug }))
+    : [];
 }

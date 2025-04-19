@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import { title } from "@/app/(website)/(pages)/settings/layout";
-import { getCurrency } from "@/actions/Currency";
+import { getCurrencies } from "@/actions/Currency";
 import Loading from "@/components/custom/Loading";
 const Currency = dynamic(
   () => import("@/components/modules/settings/currencies"),
@@ -17,6 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Settings() {
-  const data: Currency[] = await getCurrency();
+  const data: Currency[] = await getCurrencies();
   return <Currency data={data} />;
 }

@@ -2,13 +2,13 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/sizes`;
 const tag: string = "sizes";
 
 export const getSizes = async () => {
-  return getAll<Size>({url, tag})
+  return getAll <Size>({url, tag})
 };
 
 export async function getSizeById(id: string) {

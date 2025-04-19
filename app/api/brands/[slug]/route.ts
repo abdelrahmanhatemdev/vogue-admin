@@ -1,25 +1,11 @@
-import { NextResponse } from "next/server";
-import { getBrands } from "@/actions/Brand";
 import { collectionRef } from "@/app/api/brands/route";
-import { getOneActiveBySlug } from "@/lib/api/getOneActiveBySlug";
+import { getOneActiveByKey } from "@/lib/api/getOneActiveByKey";
 
 export const dynamic = "force-static";
 
-export async function GET(
-  req: Request,
-  props: { params: Promise<{ slug: string }> }
-) {
-  const params = await props.params;
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const slug = url.pathname.split("/").pop();
 
-  const { slug } = await params;
-
-  return getOneActiveBySlug<Brand>({collectionRef, slug});
-}
-
-export async function generateStaticParams() {
-  const list: Brand[] = await getBrands();
-
-  return list?.length > 0
-    ? list.map(({ slug }: { slug: string }) => ({ slug }))
-    : [];
+  return getOneActiveByKey<Brand>({ collectionRef, value: slug });
 }

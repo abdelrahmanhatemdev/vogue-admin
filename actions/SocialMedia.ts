@@ -2,13 +2,13 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/socialMedia`;
 const tag: string = "SocialMedias";
 
 export const getSocialMedia = async () => {
-  return getAll<SocialMedia>({url, tag})
+  return getAll <SocialMedia>({url, tag})
 };
 
 export async function getSocialMediaById(id: string) {

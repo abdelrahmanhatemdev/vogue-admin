@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 const productTag = "products";
 
 export const getSubproducts = async () => {
-  return getAll<Subproduct>({url, tag})
+  return getAll <Subproduct>({url, tag})
 };
 
 export async function getSubproductBySku(sku: string) {

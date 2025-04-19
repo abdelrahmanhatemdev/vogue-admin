@@ -1,4 +1,4 @@
-import { getCategoryBySlug } from "@/actions/Category";
+import { getCategories, getCategoryBySlug } from "@/actions/Category";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -46,4 +46,13 @@ export default async function CatergoryPage(props: {
   }
 
   return <Category data={data} />;
+}
+
+
+export async function generateStaticParams() {
+  const list: Category[] = await getCategories();
+
+  return list?.length > 0
+    ? list.map(({ slug }: { slug: string }) => ({ slug }))
+    : [];
 }

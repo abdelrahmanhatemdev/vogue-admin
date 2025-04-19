@@ -2,14 +2,14 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAll } from "@/lib/actions/getAll";
+import { getAll  } from "@/lib/actions/getAll";
 import { deleteOne } from "@/lib/actions/deleteOne";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
 export const getCategories= async () => {
-  return getAll<Category>({url, tag})
+  return getAll <Category>({url, tag})
 };
 
 export async function getCategoryBySlug(slug: string) {
