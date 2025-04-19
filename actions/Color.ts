@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/colors`;
 const tag: string = "colors";
 
 export const getColors = async () => {
-  return getAll({url, tag})
+  return getAll<Color>({url, tag})
 };
 
 export async function getColorById(id: string) {

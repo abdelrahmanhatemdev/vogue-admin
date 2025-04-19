@@ -1,5 +1,6 @@
 import { adminAuth, adminDB } from "@/database/firebase-admin";
 import { NextResponse } from "next/server";
+
 export async function softDelete({
   request,
   collectionRef,

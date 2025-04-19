@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/labels`;
 const tag: string = "labels";
 
 export const getLabels = async () => {
-  return getAll({url, tag})
+  return getAll<Label>({url, tag})
 };
 
 export async function getLabelById(id: string) {

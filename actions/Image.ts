@@ -9,7 +9,7 @@ const tag = "productImages";
 const subproductTag = "subproducts";
 
 export const getProductImages = async () => {
-  return getAll({url, tag})
+  return getAll<ProductImage>({url, tag})
 };
 
 export async function getSubproductImages(id: string) {

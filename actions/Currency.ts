@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/currencies`;
 const tag: string = "currency";
 
 export const getCurrency = async () => {
-  return getAll({url, tag})
+  return getAll<Currency>({url, tag})
 };
 
 export async function getCurrencyById(id: string) {

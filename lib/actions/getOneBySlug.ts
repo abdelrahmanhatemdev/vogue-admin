@@ -1,3 +1,6 @@
+import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
+import { getOneActiveBySlug } from "../api/getOneActiveBySlug";
+
 
 interface GetOneBySlugOptions<T> {
     url: string;
@@ -10,7 +13,7 @@ interface GetOneBySlugOptions<T> {
 
 export async function getOneBySlug<T>({url, tag, slug}:GetOneBySlugOptions) {
   try {
-    const res = await fetchWithAuth({ url: `${url}/${slug}`, tag });
+    const res = await getOneActiveBySlug({ url: `${url}/${slug}`, tag });
 
     const { data } = await res.json();
     return data;

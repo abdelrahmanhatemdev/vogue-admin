@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/globalNotifications`;
 const tag: string = "GlobalNotifications";
 
 export const getGlobalNotification = async () => {
-  return getAll({url, tag})
+  return getAll<GlobalNotification>({url, tag})
 };
 
 export async function getGlobalNotificationById(id: string) {

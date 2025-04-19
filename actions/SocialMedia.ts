@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/socialMedia`;
 const tag: string = "SocialMedias";
 
 export const getSocialMedia = async () => {
-  return getAll({url, tag})
+  return getAll<SocialMedia>({url, tag})
 };
 
 export async function getSocialMediaById(id: string) {

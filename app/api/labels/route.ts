@@ -2,7 +2,7 @@ import { labelSchema } from "@/lib/validation/labelSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 import { isProtected } from "@/lib/api/isProtected";
-import { fetchAllActive } from "@/lib/api/fetchAllActive";
+import { getAllActive } from "@/lib/api/getAllActive";
 import { softDelete } from "@/lib/api/softDelete";
 // // import redis from "@/lib/redis";
 
@@ -10,7 +10,7 @@ export const collectionName = "labels";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await fetchAllActive({collectionRef})
+    return await getAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function fetchAllActive<T extends Record<string, string>>({
+export async function getAllActive<T extends Record<string, string>>({
   collectionRef,
   limit = 10,
   cursor,
@@ -14,8 +14,6 @@ export async function fetchAllActive<T extends Record<string, string>>({
       .where("isActive", "==", true)
       .orderBy("updatedAt", "desc")
       .limit(limit);
-
-
 
     if (cursor) {
       const cursorDoc = await collectionRef.doc(cursor).get();

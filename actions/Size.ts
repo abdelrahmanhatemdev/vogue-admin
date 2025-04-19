@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/sizes`;
 const tag: string = "sizes";
 
 export const getSizes = async () => {
-  return getAll({url, tag})
+  return getAll<Size>({url, tag})
 };
 
 export async function getSizeById(id: string) {

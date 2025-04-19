@@ -9,7 +9,7 @@ const tag: string = "subproducts";
 const productTag = "products";
 
 export const getSubproducts = async () => {
-  return getAll({url, tag})
+  return getAll<Subproduct>({url, tag})
 };
 
 export async function getSubproductBySku(sku: string) {

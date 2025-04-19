@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/setting`;
 const tag: string = "Settings";
 
 export const getSetting = async () => {
-  return getAll({url, tag})
+  return getAll<Setting>({url, tag})
 };
 
 export async function editSetting(data: Partial<Setting>) {

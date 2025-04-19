@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  return getAll({url, tag})
+  return getAll<Brand>({url, tag})
 };
 
 export async function getBrandBySlug(slug: string) {

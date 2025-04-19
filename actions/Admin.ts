@@ -8,7 +8,7 @@ const url = `${process.env.NEXT_PUBLIC_APP_API}/admins`;
 const tag: string = "admins";
 
 export const getAdmins = async () => {
-  return getAll({url, tag})
+  return getAll<Admin>({url, tag})
 };
 
 export async function getAdminById(uuid: string) {
