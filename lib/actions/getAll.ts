@@ -1,4 +1,4 @@
-import { fetchWithAuth } from '@/lib/api/fetchData';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface GetAllOptions<T> {
   url: string;
