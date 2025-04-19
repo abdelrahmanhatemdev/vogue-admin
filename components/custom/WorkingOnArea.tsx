@@ -14,7 +14,6 @@ const WorkingOnArea = () => {
           alt="Working Area"
           className="rounded-lg"
           sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
-          priority={true}
           width={400}
           height={200}
         />

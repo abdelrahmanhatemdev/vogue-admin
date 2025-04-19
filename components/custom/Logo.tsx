@@ -31,7 +31,6 @@ function Logo({
         alt="Vogue Logo"
         height={small ? 20 : 36}
         width={small ? 20 : 96}
-        priority={true}
       />): (<></>)}
       
     </Link>
