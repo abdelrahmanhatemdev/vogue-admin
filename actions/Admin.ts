@@ -3,6 +3,7 @@ import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 import { getAll  } from "@/lib/actions/getAll";
+import { deleteOne } from "@/lib/actions/deleteOne";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/admins`;
 const tag: string = "admins";
@@ -59,19 +60,5 @@ export async function editAdmin(data: Partial<Admin>) {
 }
 
 export async function deleteAdmin(data: { id: string; uid: string; }) {
-  return api
-    .delete(url, { data })
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return deleteOne({url, tag, data})
 }

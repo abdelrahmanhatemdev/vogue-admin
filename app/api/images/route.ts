@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { adminDB } from "@/database/firebase-admin";
-import { getAllActivePaginated } from "@/lib/api/getAllActivePaginated";
+import { getAllActive } from "@/lib/api/getAllActive";
 import { softDelete } from "@/lib/api/softDelete";
 
 export const collectionName = "images";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return await getAllActivePaginated({collectionRef})
+  return await getAllActive({collectionRef})
 }
 
 export async function POST(request: Request) {

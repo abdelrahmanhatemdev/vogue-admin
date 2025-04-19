@@ -3,8 +3,9 @@ import { revalidateTag } from "next/cache";
 
 interface DeleteOneOptions {
   url: string;
-  tag: string;
   data: { id: string };
+  tag: string;
+  secondTag?: string
 }
 
 interface DeleteResponse {
@@ -14,14 +15,18 @@ interface DeleteResponse {
 
 export async function deleteOne({
   url,
-  tag,
   data,
+  tag,
+  secondTag
 }: DeleteOneOptions): Promise<DeleteResponse> {
   try {
     const res = await api.delete(url, { data });
 
     if (res?.statusText === "OK" && res?.data?.message) {
       revalidateTag(tag);
+      if (secondTag) {
+        revalidateTag(secondTag);
+      }
       return { status: "success", message: res.data.message };
     }
 

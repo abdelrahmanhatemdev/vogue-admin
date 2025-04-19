@@ -1,15 +1,16 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { getAll  } from "@/lib/actions/getAll";
+import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
+import { deleteOne } from "@/lib/actions/deleteOne";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 const productTag = "products";
 
 export const getSubproducts = async () => {
-  return getAll <Subproduct>({url, tag})
+  return getAll<Subproduct>({ url, tag });
 };
 
 export async function getSubproductBySku(sku: string) {
@@ -54,11 +55,9 @@ export async function editSubproduct(
     .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
-        const {productId} = data
+        const { productId } = data;
         revalidateTag(tag);
         revalidateTag(productTag);
-        revalidatePath('/products');
-        revalidatePath(`/products/${productId}`);
         return { status: "success", message: res.data.message };
       }
       if (res?.data?.error) {
@@ -72,20 +71,5 @@ export async function editSubproduct(
 }
 
 export async function deleteSubproduct(data: { id: string }) {
-  return api
-    .delete(url, { data })
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        revalidateTag(`${productTag}`);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return deleteOne({ url, tag, data, secondTag: productTag });
 }

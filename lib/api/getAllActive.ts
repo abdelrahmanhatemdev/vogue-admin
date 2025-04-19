@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function getAllActivePaginated<T extends Record<string, string>>({
+export async function getAllActive<T extends Record<string, string>>({
   collectionRef,
   limit = 10,
   cursor,

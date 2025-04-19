@@ -3,13 +3,13 @@ import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
 import { isProtected } from "@/lib/api/isProtected";
-import { getAllActivePaginated } from "@/lib/api/getAllActivePaginated";
+import { getAllActive } from "@/lib/api/getAllActive";
 
 export const collectionName = "settings";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-    return await getAllActivePaginated({collectionRef})
+    return await getAllActive({collectionRef})
 }
 
 export async function PUT(request: Request) {
