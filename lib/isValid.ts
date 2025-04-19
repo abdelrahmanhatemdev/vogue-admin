@@ -1,6 +1,6 @@
 import api from "./api/axiosClient";
 
-const apiURL = process.env.NEXT_PUBLIC_APP_API;
+const url = process.env.NEXT_PUBLIC_APP_API;
 
 export const isValidSlug = async ({
   slug,
@@ -12,7 +12,7 @@ export const isValidSlug = async ({
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${url}/${collection}`);
 
     if (res) {
       const {
@@ -45,7 +45,7 @@ export const isValidSku = async ({
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${url}/${collection}`);
 
     if (res) {
       const {
@@ -80,12 +80,15 @@ export const isValidEmail = async ({
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${url}/${collection}`);
 
     if (res) {
       const {
         data: { data },
       } = res;
+
+      console.log("data", data);
+      
 
       const check = data.some((item: { uuid: string; email: string }) => {
         if (item.uuid === uuid) {
@@ -113,7 +116,7 @@ export const isValidCurrencyCode = async ({
   uuid?: string;
 }) => {
   try {
-    const res = await api(`${apiURL}/${collection}`);
+    const res = await api(`${url}/${collection}`);
 
     if (res) {
       const {

@@ -2,32 +2,18 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/labels`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/labels`;
 const tag: string = "labels";
 
 export const getLabels = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data?.length > 0 ) {
-
-        return data.sort((a: Label, b: Label) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getAll({url, tag})
 };
 
 export async function getLabelById(id: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${id}`, tag });
+    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
     
     const { data } = await res.json();
     return data;
@@ -38,7 +24,7 @@ export async function getLabelById(id: string) {
 
 export async function addLabel(data: Partial<Label>) {
   return api
-    .post(apiURL, data)
+    .post(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -56,7 +42,7 @@ export async function addLabel(data: Partial<Label>) {
 
 export async function editLabel(data: Partial<Label>) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -74,7 +60,7 @@ export async function editLabel(data: Partial<Label>) {
 
 export async function deleteLabel(data: { id: string }) {
   return api
-    .delete(apiURL, { data })
+    .delete(url, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

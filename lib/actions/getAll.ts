@@ -1,0 +1,25 @@
+import { fetchWithAuth } from '@/lib/api/fetchData';
+
+interface GetAllOptions<T> {
+  url: string;
+  tag: string;
+  sortKey?: string;
+}
+
+export async function getAll<T>({ url, tag, sortKey= "updatedAt" }: GetAllOptions<T>): Promise<T[]> {
+  try {
+    const res = await fetchWithAuth({ url, tag });
+    if (res?.ok) {
+      const { data } = await res.json();
+      if (data) {
+        return sortKey
+          ? [...data].sort((a, b) => String(b[sortKey]).localeCompare(String(a[sortKey])))
+          : data;
+      }
+    }
+    return [];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}

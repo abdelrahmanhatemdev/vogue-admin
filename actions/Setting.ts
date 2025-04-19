@@ -2,32 +2,18 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/settings/setting`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/setting`;
 const tag: string = "Settings";
 
 export const getSetting = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-
-        return data.sort((a: Setting, b: Setting) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getAll({url, tag})
 };
 
 export async function editSetting(data: Partial<Setting>) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

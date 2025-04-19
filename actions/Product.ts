@@ -2,31 +2,18 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/products`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
 
 export const getProducts = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: Product, b: Product) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+ return getAll({url, tag})
 };
 
 export async function getProductBySlug(slug: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/slug/${slug}/product`, tag });
+    const res = await fetchWithAuth({ url: `${url}/slug/${slug}/product`, tag });
     
 
     if (res?.ok) {
@@ -44,7 +31,7 @@ export async function getProductBySlug(slug: string) {
 
 export async function getProductById(id: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/id/${id}`, tag });
+    const res = await fetchWithAuth({ url: `${url}/id/${id}`, tag });
     
 
     if (res?.ok) {
@@ -63,7 +50,7 @@ export async function getProductById(id: string) {
 export async function getProducSubproducts(slug: string) {
   try {
   
-    const res = await fetchWithAuth({ url: `${apiURL}/slug/${slug}/subproducts`, tag });
+    const res = await fetchWithAuth({ url: `${url}/slug/${slug}/subproducts`, tag });
 
     if (res?.ok) {
       const { data } = await res.json();
@@ -82,7 +69,7 @@ export async function getProducSubproducts(slug: string) {
 
 export async function addProduct(data: Partial<Product>) {
   return api
-    .post(apiURL, data)
+    .post(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -108,7 +95,7 @@ export async function editProduct(
   >
 ) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -126,7 +113,7 @@ export async function editProduct(
 
 export async function deleteProduct(data: { id: string, uuid: string }) {
   return api
-    .delete(apiURL, { data })
+    .delete(url, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

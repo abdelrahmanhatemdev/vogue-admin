@@ -199,8 +199,3 @@ interface Setting {
   updatedAt: string;
   deletedAt?: string;
 }
-
-type Currency = {
-  name: string;
-  code: string;
-};

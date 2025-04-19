@@ -10,7 +10,7 @@ export async function GET(
   props: { params: { slug: string } }
 ) {
   try {
-    const { slug } = props.params;
+    const { slug } = await props.params;
 
     const snapShot = await adminDB
       .collection(collectionName)

@@ -2,32 +2,19 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
 const productTag = "products";
 
 export const getSubproducts = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: Product, b: Product) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getAll({url, tag})
 };
 
 export async function getSubproductBySku(sku: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${sku}`, tag });
+    const res = await fetchWithAuth({ url: `${url}/${sku}`, tag });
     const { data } = await res.json();
     return data;
   } catch (error) {
@@ -37,7 +24,7 @@ export async function getSubproductBySku(sku: string) {
 
 export async function addSubproduct(data: Partial<Subproduct>) {
   return api
-    .post(apiURL, data)
+    .post(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -64,7 +51,7 @@ export async function editSubproduct(
   >
 ) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         const {productId} = data
@@ -86,7 +73,7 @@ export async function editSubproduct(
 
 export async function deleteSubproduct(data: { id: string }) {
   return api
-    .delete(apiURL, { data })
+    .delete(url, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

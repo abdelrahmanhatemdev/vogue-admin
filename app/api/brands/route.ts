@@ -1,7 +1,7 @@
 import { brandSchema } from "@/lib/validation/brandSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
-import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/isProtected";
 
 export const collectionName = "brands";
 export const collectionRef = adminDB.collection(collectionName);

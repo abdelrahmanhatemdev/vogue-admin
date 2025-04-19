@@ -2,31 +2,18 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/settings/globalNotifications`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/settings/globalNotifications`;
 const tag: string = "GlobalNotifications";
 
 export const getGlobalNotification = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: GlobalNotification, b: GlobalNotification) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getAll({url, tag})
 };
 
 export async function getGlobalNotificationById(id: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${id}`, tag });
+    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
 
     const { data } = await res.json();
     return data;
@@ -37,7 +24,7 @@ export async function getGlobalNotificationById(id: string) {
 
 export async function addGlobalNotification(data: Partial<GlobalNotification>) {
   return api
-    .post(apiURL, data)
+    .post(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -57,7 +44,7 @@ export async function editGlobalNotification(
   data: Partial<GlobalNotification>
 ) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -75,7 +62,7 @@ export async function editGlobalNotification(
 
 export async function deleteGlobalNotification(data: { id: string }) {
   return api
-    .delete(apiURL, { data })
+    .delete(url, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

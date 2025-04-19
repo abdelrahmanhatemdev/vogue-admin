@@ -2,31 +2,18 @@
 import { fetchWithAuth } from "@/lib/api/fetchData";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
+import { getAll } from "@/lib/actions/getAll";
 
-const apiURL = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
+const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
 export const getBrands = async () => {
-  try {
-    const res = await fetchWithAuth({ url: apiURL, tag });
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data?.length > 0) {
-        return data.sort((a: Brand, b: Brand) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getAll({url, tag})
 };
 
 export async function getBrandBySlug(slug: string) {
   try {
-    const res = await fetchWithAuth({ url: `${apiURL}/${slug}`, tag });
+    const res = await fetchWithAuth({ url: `${url}/${slug}`, tag });
 
     const { data } = await res.json();
     return data;
@@ -37,7 +24,7 @@ export async function getBrandBySlug(slug: string) {
 
 export async function addBrand(data: Partial<Brand>) {
   return api
-    .post(apiURL, data)
+    .post(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -55,7 +42,7 @@ export async function addBrand(data: Partial<Brand>) {
 
 export async function editBrand(data: Partial<Brand>) {
   return api
-    .put(apiURL, data)
+    .put(url, data)
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);
@@ -73,7 +60,7 @@ export async function editBrand(data: Partial<Brand>) {
 
 export async function deleteBrand(data: { id: string }) {
   return api
-    .delete(apiURL, { data })
+    .delete(url, { data })
     .then((res) => {
       if (res?.statusText === "OK" && res?.data?.message) {
         revalidateTag(tag);

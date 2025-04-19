@@ -2,7 +2,7 @@ import { socialMediaSchema } from "@/lib/validation/settings/socialMediaSchema";
 import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
-import { softDelete, fetchAllActive, isProtected } from "@/lib/api/handlers";
+import { softDelete, fetchAllActive, isProtected } from "@/lib/api/isProtected";
 
 export const collectionName = "socialMedia";
 export const collectionRef = adminDB.collection(collectionName);
