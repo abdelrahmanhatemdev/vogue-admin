@@ -12,17 +12,6 @@ export const getLabels = async () => {
   return getAllAction <Label>({url, tag})
 };
 
-export async function getLabelById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-    
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addLabel(data: Partial<Label>) {
   return api
     .post(url, data)

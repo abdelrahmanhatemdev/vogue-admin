@@ -4,6 +4,7 @@ import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 import { getAllAction } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
+import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/subproducts`;
 const tag: string = "subproducts";
@@ -14,13 +15,7 @@ export const getSubproducts = async () => {
 };
 
 export async function getSubproductBySku(sku: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${sku}`, tag });
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
+  return getOneByKeyAction({ url: `${url}/${sku}`, tag})
 }
 
 export async function addSubproduct(data: Partial<Subproduct>) {

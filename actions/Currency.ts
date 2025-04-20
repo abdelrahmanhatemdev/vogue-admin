@@ -12,17 +12,6 @@ export const getCurrencies = async () => {
   return getAllAction <Currency>({url, tag})
 };
 
-export async function getCurrenciesById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addCurrency(data: Partial<Currency>) {
   return api
     .post(url, data)

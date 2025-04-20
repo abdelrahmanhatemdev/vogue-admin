@@ -12,17 +12,6 @@ export const getColors = async () => {
   return getAllAction <Color>({url, tag})
 };
 
-export async function getColorById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addColor(data: Partial<Color>) {
   return api
     .post(url, data)

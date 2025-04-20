@@ -4,6 +4,7 @@ import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 import { getAllAction  } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
+import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
@@ -13,14 +14,7 @@ export const getBrands = async () => {
 };
 
 export async function getBrandBySlug(slug: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${slug}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
+  return getOneByKeyAction({ url: `${url}/${slug}`, tag})
 }
 
 export async function addBrand(data: Partial<Brand>) {

@@ -12,17 +12,6 @@ export const getSizes = async () => {
   return getAllAction <Size>({url, tag})
 };
 
-export async function getSizeById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addSize(data: Partial<Size>) {
   return api
     .post(url, data)

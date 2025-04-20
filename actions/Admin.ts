@@ -2,25 +2,19 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
-import { getAllAction  } from "@/lib/actions/getAllAction";
+import { getAllAction } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
+import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/admins`;
 const tag: string = "admins";
 
 export const getAdmins = async () => {
-  return getAllAction <Admin>({url, tag})
+  return getAllAction<Admin>({ url, tag });
 };
 
 export async function getAdminById(uuid: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${uuid}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
+  return getOneByKeyAction({ url: `${url}/${uuid}`, tag})
 }
 
 export async function addAdmin(data: Partial<Admin>) {
@@ -59,6 +53,6 @@ export async function editAdmin(data: Partial<Admin>) {
     });
 }
 
-export async function deleteAdmin(data: { id: string; uid: string; }) {
-  return deleteOneAction({url, tag, data})
+export async function deleteAdmin(data: { id: string; uid: string }) {
+  return deleteOneAction({ url, tag, data });
 }

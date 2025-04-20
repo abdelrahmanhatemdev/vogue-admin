@@ -4,6 +4,7 @@ import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 import { getAllAction  } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
+import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
@@ -13,21 +14,7 @@ export const getPaginatedProducts = async () => {
 };
 
 export async function getProductBySlug(slug: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/slug/${slug}/product`, tag });
-    
-
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getOneByKeyAction({ url: `${url}/slug/${slug}/product`, tag})
 }
 
 export async function getProductById(id: string) {

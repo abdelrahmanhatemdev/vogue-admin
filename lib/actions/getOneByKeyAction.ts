@@ -3,19 +3,18 @@ import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 interface GetOneByKeyOptions<T> {
   url: string;
   tag: string;
-  key: "slug" | "sku";
 }
 
 export async function getOneByKeyAction<T>({
   url,
   tag,
-  key = "slug",
-}: GetOneByKeyOptions<T>) {
+}: GetOneByKeyOptions<T>): Promise<T | null> {
   try {
-    const res = await fetchWithAuth({ url: `${url}/${key}`, tag });
-    const { data } = await res.json();
+    const res = await fetchWithAuth({ url, tag });
+    const { data } : {data: T} = await res.json();
     return data;
   } catch (error) {
-    return console.log(error);
+    console.log(error);
+    return null;
   }
 }

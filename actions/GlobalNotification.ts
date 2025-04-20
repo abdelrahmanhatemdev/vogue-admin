@@ -12,17 +12,6 @@ export const getGlobalNotification = async () => {
   return getAllAction <GlobalNotification>({url, tag})
 };
 
-export async function getGlobalNotificationById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addGlobalNotification(data: Partial<GlobalNotification>) {
   return api
     .post(url, data)

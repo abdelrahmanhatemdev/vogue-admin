@@ -12,17 +12,6 @@ export const getSocialMedia = async () => {
   return getAllAction <SocialMedia>({url, tag})
 };
 
-export async function getSocialMediaById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/${id}`, tag });
-
-    const { data } = await res.json();
-    return data;
-  } catch (error) {
-    return console.log(error);
-  }
-}
-
 export async function addSocialMedia(data: Partial<SocialMedia>) {
   return api
     .post(url, data)
