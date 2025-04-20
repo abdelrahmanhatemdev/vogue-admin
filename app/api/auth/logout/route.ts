@@ -2,19 +2,16 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST() {
-  (await cookies()).set("session", "", {
+  const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
+    sameSite: "strict" as const,
     path: "/",
     expires: new Date(0),
-  });
-  (await cookies()).set("token", "", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-    expires: new Date(0),
-  });
+  };
+
+  (await cookies()).set("session", "", options);
+  (await cookies()).set("token", "", options);
+
   return NextResponse.json({ success: true });
 }
