@@ -1,9 +1,8 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
-import api from "@/lib/api/axiosClient";
-import { revalidateTag } from "next/cache";
 import { getAllAction  } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
+import { addOneAction } from "@/lib/actions/addOneAction";
+import { EditOneAction } from "@/lib/actions/EditOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/sizes`;
 const tag: string = "sizes";
@@ -13,39 +12,11 @@ export const getSizes = async () => {
 };
 
 export async function addSize(data: Partial<Size>) {
-  return api
-    .post(url, data)
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return addOneAction<Size>({ url, tag, data });
 }
 
 export async function editSize(data: Partial<Size>) {
-  return api
-    .put(url, data)
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return EditOneAction<Size>({ url, tag, data });
 }
 
 export async function deleteSize(data: { id: string }) {

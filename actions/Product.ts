@@ -1,44 +1,35 @@
 "use server";
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
-import api from "@/lib/api/axiosClient";
-import { revalidateTag } from "next/cache";
-import { getAllAction  } from "@/lib/actions/getAllAction";
+import { getAllAction } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
+import { addOneAction } from "@/lib/actions/addOneAction";
+import { EditOneAction } from "@/lib/actions/EditOneAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
 
 export const getProducts = async () => {
- return getAllAction<Product>({url, tag})
+  return getAllAction<Product>({ url, tag });
 };
 
 export async function getProductBySlug(slug: string) {
-  return getOneByKeyAction<Product>({ url: `${url}/slug/${slug}/product`, tag})
+  return getOneByKeyAction<Product>({
+    url: `${url}/slug/${slug}/product`,
+    tag,
+  });
 }
 
 export async function getProductById(id: string) {
-  try {
-    const res = await fetchWithAuth({ url: `${url}/id/${id}`, tag });
-    
-
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getOneByKeyAction<Product>({ url: `${url}/id/${id}`, tag });
 }
 
 export async function getProducSubproducts(slug: string) {
   try {
-  
-    const res = await fetchWithAuth({ url: `${url}/slug/${slug}/subproducts`, tag });
+    const res = await fetchWithAuth({
+      url: `${url}/slug/${slug}/subproducts`,
+      tag,
+    });
 
     if (res?.ok) {
       const { data } = await res.json();
@@ -56,21 +47,7 @@ export async function getProducSubproducts(slug: string) {
 }
 
 export async function addProduct(data: Partial<Product>) {
-  return api
-    .post(url, data)
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return addOneAction<Product>({ url, tag, data });
 }
 
 export async function editProduct(
@@ -82,23 +59,15 @@ export async function editProduct(
     }
   >
 ) {
-  return api
-    .put(url, data)
-    .then((res) => {
-      if (res?.statusText === "OK" && res?.data?.message) {
-        revalidateTag(tag);
-        return { status: "success", message: res.data.message };
-      }
-      if (res?.data?.error) {
-        return { status: "error", message: res.data.error };
-      }
-    })
-    .catch((error) => {
-      const message = error?.response?.data?.error || "Something Wrong";
-      return { status: "error", message };
-    });
+  return EditOneAction<
+    Product & {
+      uuid: string;
+      property: string;
+      value: string | boolean | number | string[];
+    }
+  >({ url, tag, data });
 }
 
-export async function deleteProduct(data: { id: string, uuid: string }) {
-  return deleteOneAction({url, tag, data})
+export async function deleteProduct(data: { id: string; uuid: string }) {
+  return deleteOneAction({ url, tag, data });
 }

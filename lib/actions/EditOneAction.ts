@@ -1,26 +1,26 @@
 import api from "@/lib/api/axiosClient";
 import { revalidateTag } from "next/cache";
 
-interface deleteOneActionOptions {
+interface EditOneActionOptions<T> {
   url: string;
-  data: { id: string };
+  data: Partial<T>;
   tag: string;
   secondTag?: string;
 }
 
-interface DeleteResponse {
+interface EditResponse {
   status: "success" | "error";
   message: string;
 }
 
-export async function deleteOneAction({
+export async function EditOneAction<T>({
   url,
   data,
   tag,
   secondTag,
-}: deleteOneActionOptions): Promise<DeleteResponse> {
+}: EditOneActionOptions<T>): Promise<EditResponse> {
   try {
-    const res = await api.delete(url, { data });
+    const res = await api.put(url, data);
 
     if (res?.statusText === "OK" && res?.data?.message) {
       revalidateTag(tag);
@@ -35,9 +35,7 @@ export async function deleteOneAction({
       message: res?.data?.error || "Something went wrong",
     };
   } catch (error: any) {
-    return {
-      status: "error",
-      message: error?.response?.data?.error || "Something went wrong",
-    };
+    const message = error?.response?.data?.error || "Something went wrong";
+    return { status: "error", message };
   }
 }
