@@ -1,10 +1,10 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import { getAllAction } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 import { addOneAction } from "@/lib/actions/addOneAction";
 import { EditOneAction } from "@/lib/actions/EditOneAction";
+import { getManyByKeyAction } from "@/lib/actions/getManyByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
@@ -25,25 +25,7 @@ export async function getProductById(id: string) {
 }
 
 export async function getProducSubproducts(slug: string) {
-  try {
-    const res = await fetchWithAuth({
-      url: `${url}/slug/${slug}/subproducts`,
-      tag,
-    });
-
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: Product, b: Product) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        );
-      }
-    }
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getManyByKeyAction<Subproduct>({url: `${url}/slug/${slug}/subproducts`, tag})
 }
 
 export async function addProduct(data: Partial<Product>) {

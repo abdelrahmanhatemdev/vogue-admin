@@ -1,9 +1,9 @@
 "use server";
-import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 import { getAllAction  } from "@/lib/actions/getAllAction";
 import { deleteOneAction } from "@/lib/actions/deleteOneAction";
 import { addOneAction } from "@/lib/actions/addOneAction";
 import { EditOneAction } from "@/lib/actions/EditOneAction";
+import { getManyByKeyAction } from "@/lib/actions/getManyByKeyAction";
 
 const url = `${process.env.NEXT_PUBLIC_APP_API}/images`;
 const tag = "productImages";
@@ -14,29 +14,7 @@ export const getProductImages = async () => {
 };
 
 export async function getSubproductImages(id: string) {
-  try {
-    const res = await fetchWithAuth({
-      url: `${url}/productImages/${id}`,
-      tag,
-    });
-
-    if (res?.ok) {
-      const { data } = await res.json();
-
-      if (data) {
-        return data.sort((a: ProductImage, b: ProductImage) => {
-          if (a.sortOrder === b.sortOrder) {
-            return b.updatedAt.localeCompare(a.updatedAt);
-          }
-          return a.sortOrder - b.sortOrder;
-        });
-      }
-    }
-
-    return [];
-  } catch (error) {
-    return console.log(error);
-  }
+  return getManyByKeyAction<ProductImage>({url: `${url}/productImages/${id}`, tag})
 }
 
 export async function addProductImage(data: {subproductId: string; urls:string[]}) {

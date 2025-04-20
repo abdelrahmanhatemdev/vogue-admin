@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProducts } from "@/actions/Product";
-import { adminDB } from "@/database/firebase-admin"; // ✅ Firestore Admin SDK
+import { adminDB } from "@/database/firebase-admin";
 
 export const dynamic = "force-static";
 
@@ -9,54 +8,41 @@ export async function GET(
   props: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const params = await props.params;
-    const { slug } = await params;
-
+    const { slug } = await props.params;
+    
     const productSnap = await adminDB
       .collection("products")
       .where("slug", "==", slug)
+      .where("isActive", "==", true)
+      .limit(1)
       .get();
 
     if (productSnap.empty) {
-      throw new Error("No Product Found!");
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    const product = productSnap.docs
-      .map(
-        (doc) =>
-          ({
-            id: doc.id,
-            ...doc.data(),
-          } as Product)
-      )
-      .filter((doc) => !doc.deletedAt)[0];
+    const productDoc = productSnap.docs[0];
+    const product = { id: productDoc.id, ...productDoc.data() } as Product;
 
-    if (!product || !product.uuid) {
-      throw new Error("Invalid Product Data!");
+    if (!product.uuid) {
+      return NextResponse.json({ error: "Invalid product data" }, { status: 400 });
     }
 
+    // Fetch subproducts for this product
     const subproductsSnap = await adminDB
       .collection("subproducts")
       .where("productId", "==", product.uuid)
+      .where("isActive", "==", true)
       .get();
 
-    const subproducts = subproductsSnap.empty
-      ? []
-      : (subproductsSnap.docs
-          .map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          } as Subproduct))
-          .filter((doc) => !doc.deletedAt));
+    const subproducts: Subproduct[] = subproductsSnap.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Subproduct[];
 
     return NextResponse.json({ data: subproducts }, { status: 200 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
+    const message = error instanceof Error ? error.message : "Something went wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
-}
-
-export async function generateStaticParams() {
-  const list: Product[] = await getProducts();
-  return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
 }
