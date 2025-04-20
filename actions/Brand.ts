@@ -14,7 +14,7 @@ export const getBrands = async () => {
 };
 
 export async function getBrandBySlug(slug: string) {
-  return getOneByKeyAction({ url: `${url}/${slug}`, tag})
+  return getOneByKeyAction<Brand>({ url: `${url}/${slug}`, tag})
 }
 
 export async function addBrand(data: Partial<Brand>) {

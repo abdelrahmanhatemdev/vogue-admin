@@ -15,7 +15,7 @@ export const getSubproducts = async () => {
 };
 
 export async function getSubproductBySku(sku: string) {
-  return getOneByKeyAction({ url: `${url}/${sku}`, tag})
+  return getOneByKeyAction<Subproduct>({ url: `${url}/${sku}`, tag})
 }
 
 export async function addSubproduct(data: Partial<Subproduct>) {

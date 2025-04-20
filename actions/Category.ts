@@ -14,7 +14,7 @@ export const getCategories= async () => {
 };
 
 export async function getCategoryBySlug(slug: string) {
-  return getOneByKeyAction({ url: `${url}/${slug}`, tag});
+  return getOneByKeyAction<Category>({ url: `${url}/${slug}`, tag});
 }
 
 export async function addCategory(data: Partial<Category>) {

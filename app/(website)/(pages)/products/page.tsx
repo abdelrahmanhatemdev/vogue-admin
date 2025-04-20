@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { getProducSubproducts, getPaginatedProducts } from "@/actions/Product";
+import { getProducSubproducts, getProducts } from "@/actions/Product";
 import { Metadata } from "next";
 
 const ProductsModule = dynamic(() => import("@/components/modules/products"));
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Products() {
-  const data: Product[] = await getPaginatedProducts();
+  const data: Product[] = await getProducts();
 
   let products: Product[] = [];
 

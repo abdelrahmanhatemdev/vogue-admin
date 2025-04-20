@@ -14,7 +14,7 @@ export const getAdmins = async () => {
 };
 
 export async function getAdminById(uuid: string) {
-  return getOneByKeyAction({ url: `${url}/${uuid}`, tag})
+  return getOneByKeyAction<Admin>({ url: `${url}/${uuid}`, tag})
 }
 
 export async function addAdmin(data: Partial<Admin>) {

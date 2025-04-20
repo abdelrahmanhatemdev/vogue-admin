@@ -9,12 +9,12 @@ import { getOneByKeyAction } from "@/lib/actions/getOneByKeyAction";
 const url = `${process.env.NEXT_PUBLIC_APP_API}/products`;
 const tag: string = "products";
 
-export const getPaginatedProducts = async () => {
- return getAllAction <Product>({url, tag})
+export const getProducts = async () => {
+ return getAllAction<Product>({url, tag})
 };
 
 export async function getProductBySlug(slug: string) {
-  return getOneByKeyAction({ url: `${url}/slug/${slug}/product`, tag})
+  return getOneByKeyAction<Product>({ url: `${url}/slug/${slug}/product`, tag})
 }
 
 export async function getProductById(id: string) {
