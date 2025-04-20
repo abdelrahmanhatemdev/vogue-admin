@@ -1,5 +1,5 @@
 import { collectionRef } from "@/app/api/products/route";
-import { getOneActiveByKey } from "@/lib/api/getOneActiveByKey";
+import { getOneActiveByKey } from "@/lib/api/routes/getOneActiveByKey";
 
 
 export const dynamic = "force-static";
@@ -12,7 +12,7 @@ export async function GET(
 
   const slug = segments[segments.length-2]
 
-  return getOneActiveByKey<Brand>({ collectionRef, value: slug });
+  return getOneActiveByKey<Product>({ collectionRef, value: slug });
 }
 
 

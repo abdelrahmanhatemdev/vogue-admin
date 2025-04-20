@@ -2,17 +2,19 @@ import { NextResponse } from "next/server";
 
 export async function getOneActiveByKey<T extends Record<string, any>>({
   collectionRef,
-  key = "slug", 
+  key = "slug",
   value,
 }: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
-  key?: "slug" | "sku"
+  key?: "slug" | "sku";
   value: string | undefined;
 }) {
   try {
-
     if (!value) {
-      return NextResponse.json({ error: `${key === "slug" ? "Slug" : "SKU"} is required` }, { status: 400 });
+      return NextResponse.json(
+        { error: `${key === "slug" ? "Slug" : "SKU"} is required` },
+        { status: 400 }
+      );
     }
 
     const query = collectionRef
@@ -20,9 +22,6 @@ export async function getOneActiveByKey<T extends Record<string, any>>({
       .where(key, "==", value);
 
     const snapshot = await query.get();
-
-    console.log("value", value);
-    
 
     if (snapshot.empty) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

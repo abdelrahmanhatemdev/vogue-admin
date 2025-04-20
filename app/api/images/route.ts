@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { adminDB } from "@/database/firebase-admin";
-import { getAllActive } from "@/lib/api/getAllActive";
-import { softDelete } from "@/lib/api/softDelete";
+import { getAllActive } from "@/lib/api/routes/getAllActive";
+import { softDelete } from "@/lib/api/routes/softDelete";
 
 export const collectionName = "images";
 export const collectionRef = adminDB.collection(collectionName);

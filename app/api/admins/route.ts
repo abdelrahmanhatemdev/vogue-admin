@@ -4,8 +4,8 @@ import { adminAuth } from "@/database/firebase-admin";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
 import { isProtected } from "@/lib/api/isProtected";
-import { getAllActive } from "@/lib/api/getAllActive";
-import { softDelete } from "@/lib/api/softDelete";
+import { getAllActive } from "@/lib/api/routes/getAllActive";
+import { softDelete } from "@/lib/api/routes/softDelete";
 
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);

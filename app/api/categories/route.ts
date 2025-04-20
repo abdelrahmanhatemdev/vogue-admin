@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin"; // Use Firebase Admin SDK
 // import redis from "@/lib/redis";
 import { isProtected } from "@/lib/api/isProtected";
-import { getAllActive } from "@/lib/api/getAllActive";
-import { softDelete } from "@/lib/api/softDelete";
+import { getAllActive } from "@/lib/api/routes/getAllActive";
+import { softDelete } from "@/lib/api/routes/softDelete";
 
 export const collectionName = "categories";
 export const collectionRef = adminDB.collection(collectionName);

@@ -1,5 +1,5 @@
 import { collectionRef } from "@/app/api/brands/route";
-import { getOneActiveByKey } from "@/lib/api/getOneActiveByKey";
+import { getOneActiveByKey } from "@/lib/api/routes/getOneActiveByKey";
 
 export const dynamic = "force-static";
 

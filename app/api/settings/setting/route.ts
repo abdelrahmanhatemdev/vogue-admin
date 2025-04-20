@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { adminDB } from "@/database/firebase-admin";
 // import redis from "@/lib/redis";
 import { isProtected } from "@/lib/api/isProtected";
-import { getAllActive } from "@/lib/api/getAllActive";
+import { getAllActive } from "@/lib/api/routes/getAllActive";
 
 export const collectionName = "settings";
 export const collectionRef = adminDB.collection(collectionName);
