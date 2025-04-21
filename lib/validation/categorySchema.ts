@@ -1,5 +1,5 @@
 import z from "zod";
-import { isValidSlug } from "@/lib/isValid";
+import { isValid } from "@/lib/isValid";
 
 export const categorySchema = z
   .object({
@@ -27,10 +27,9 @@ export const categorySchema = z
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, slug } = obj;
-    const exists = await isValidSlug({
-      slug,
+    const exists = await isValid({
       uuid,
-      collection: "categories",
+      path: `categories/${slug}`,
     });
 
     if (exists) {

@@ -6,7 +6,7 @@ export async function getOneActiveByKey<T extends Record<string, any>>({
   value,
 }: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
-  key?: "slug" | "sku";
+  key?: "slug" | "sku" | "email" | "code";
   value: string | undefined;
 }) {
   try {

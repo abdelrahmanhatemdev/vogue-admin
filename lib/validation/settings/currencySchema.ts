@@ -1,6 +1,6 @@
 import z from "zod";
 import { currencies } from "@/constants/currencies";
-import { isValidCurrencyCode } from "@/lib/isValid";
+import { isValid } from "@/lib/isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
@@ -11,10 +11,10 @@ export const currencySchema = z
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, code } = obj;
-    const exists = await isValidCurrencyCode({
-      code,
+    const exists = await isValid({
       uuid,
-      collection: "settings/currencies",
+      path: `settings/currencies/${code}`,
+      
     });
 
     if (exists) {

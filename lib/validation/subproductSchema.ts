@@ -1,6 +1,6 @@
 import z from "zod";
 import { currencies } from "@/constants/currencies";
-import { isValidSku } from "../isValid";
+import { isValid } from "../isValid";
 
 const validCurrencies = currencies.map((c) => c.code) as [string, ...string[]];
 
@@ -17,8 +17,7 @@ export const subproductSchema = z
         message: "Sku should not have more than 24 charachters.",
       }),
     currency: z.enum(validCurrencies, { message: "Invalid currency" }),
-    price: z
-    .coerce
+    price: z.coerce
       .number({ message: "Price is required" })
       .nonnegative("Price must be 0 or positive"),
     discount: z.coerce
@@ -46,10 +45,9 @@ export const subproductSchema = z
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, sku } = obj;
-    const exists = await isValidSku({
-      sku,
+    const exists = await isValid({
       uuid,
-      collection: "subproducts",
+      path: `subproducts/${sku}`,
     });
 
     if (exists) {

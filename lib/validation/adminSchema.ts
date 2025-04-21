@@ -1,5 +1,5 @@
 import z from "zod";
-import { isValidEmail } from "@/lib/isValid";
+import { isValid } from "@/lib/isValid";
 
 export const adminAddSchema = z
   .object({
@@ -33,10 +33,9 @@ export const adminAddSchema = z
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, email } = obj;
-    const exists = await isValidEmail({
-      email,
+    const exists = await isValid({
       uuid,
-      collection: "admins",
+      path: `admins/${email}`,
     });
 
 
@@ -80,10 +79,9 @@ export const adminEditSchema = z
   })
   .superRefine(async (obj, ctx) => {
     const { uuid, email } = obj;
-    const exists = await isValidEmail({
-      email,
+    const exists = await isValid({
       uuid,
-      collection: "admins",
+      path: `admins/${email}`,
     });
 
     if (exists) {
