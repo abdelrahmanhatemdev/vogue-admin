@@ -12,10 +12,12 @@ export const isValidSlug = async ({
   uuid?: string;
 }): Promise<boolean> => {
   try {
-    const res = await api(`${url}/${collection}/${slug}`);
+
+    const slugPath = collection === "products" ? `slug/` + slug + "/product":slug 
+
+    const res = await api(`${url}/${collection}/${slugPath}`);
 
     const foundUuid = res?.data?.data?.uuid;
-
 
     if (foundUuid && foundUuid !== uuid) {
       return true; 
