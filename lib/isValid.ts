@@ -10,30 +10,24 @@ export const isValidSlug = async ({
   slug: string;
   collection: string;
   uuid?: string;
-}) => {
+}): Promise<boolean> => {
   try {
-    const res = await api(`${url}/${collection}`);
+    const res = await api(`${url}/${collection}/${slug}`);
 
-    if (res) {
-      const {
-        data: { data },
-      } = res;
+    const foundUuid = res?.data?.data?.uuid;
 
-      const check = data.some((item: { uuid: string; slug: string }) => {
-        if (item.uuid === uuid) {
-          return false;
-        }
 
-        return item.slug === slug;
-      });
-
-      return check;
+    if (foundUuid && foundUuid !== uuid) {
+      return true; 
     }
-    return true;
-  } catch {
-    return true;
+
+    return false; 
+  } catch (error) {
+    // console.log("Slug check error:", error);
+    return false;
   }
 };
+
 
 export const isValidSku = async ({
   sku,
@@ -88,7 +82,6 @@ export const isValidEmail = async ({
       } = res;
 
       console.log("data", data);
-      
 
       const check = data.some((item: { uuid: string; email: string }) => {
         if (item.uuid === uuid) {
