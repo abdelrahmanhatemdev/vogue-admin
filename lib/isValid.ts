@@ -19,7 +19,7 @@ export const isValid = async ({
     }
 
     return false;
-  } catch (error) {
+  } catch {
     return false;
   }
 };

@@ -1,6 +1,6 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 
-interface GetOneByKeyOptions<T> {
+interface GetOneByKeyOptions {
   url: string;
   tag: string;
 }
@@ -8,7 +8,7 @@ interface GetOneByKeyOptions<T> {
 export async function getOneByKeyAction<T>({
   url,
   tag,
-}: GetOneByKeyOptions<T>): Promise<T | null> {
+}: GetOneByKeyOptions): Promise<T | null> {
   try {
     const res = await fetchWithAuth({ url, tag });
     const { data } : {data: T} = await res.json();

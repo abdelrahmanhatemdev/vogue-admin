@@ -34,8 +34,9 @@ export async function EditOneAction<T>({
       status: "error",
       message: res?.data?.error || "Something went wrong",
     };
-  } catch (error: any) {
-    const message = error?.response?.data?.error || "Something went wrong";
+  } catch (error) {
+    console.log("error", error);
+    const message = "Something went wrong";
     return { status: "error", message };
   }
 }

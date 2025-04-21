@@ -5,6 +5,8 @@
     "@typescript-eslint/no-empty-object-type": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off", 
-    "no-var": "off"
+    "no-var": "off", 
+    "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_" }]
+    
   }
 }

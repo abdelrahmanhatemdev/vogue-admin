@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function getOneActiveByKey<T extends Record<string, any>>({
+export async function getOneActiveByKey<T extends Record<string, unknown>>({
   collectionRef,
   key = "slug",
   value,

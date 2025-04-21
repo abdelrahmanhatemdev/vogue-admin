@@ -34,10 +34,12 @@ export async function deleteOneAction({
       status: "error",
       message: res?.data?.error || "Something went wrong",
     };
-  } catch (error: any) {
+  } catch (error) {
+    console.log("error", error);
+    const message = "Something went wrong";
     return {
       status: "error",
-      message: error?.response?.data?.error || "Something went wrong",
+      message,
     };
   }
 }

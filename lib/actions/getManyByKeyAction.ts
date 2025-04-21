@@ -1,6 +1,6 @@
 import { fetchWithAuth } from "@/lib/api/fetchWithAuth";
 
-interface GetManyByKeyOptions<T> {
+interface GetManyByKeyOptions {
   url: string;
   tag: string;
   sortKey?: string;
@@ -10,7 +10,7 @@ export async function getManyByKeyAction<T>({
   url,
   tag,
   sortKey = "updatedAt",
-}: GetManyByKeyOptions<T>): Promise<T[]> {
+}: GetManyByKeyOptions): Promise<T[]> {
   try {
     const res = await fetchWithAuth({ url, tag });
     if (res?.ok) {
