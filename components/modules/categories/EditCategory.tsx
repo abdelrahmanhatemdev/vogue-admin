@@ -88,7 +88,7 @@ function EditCategory({
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full lg:w-[calc(50%-.4rem)]">
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} />
@@ -102,7 +102,7 @@ function EditCategory({
           control={form.control}
           name="slug"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full lg:w-[calc(50%-.4rem)]">
               <FormLabel>Slug</FormLabel>
               <div className="relative">
                 <span className="absolute inset-0 text-red text-sm h-full w-4 flex items-center ps-2 text-neutral-700 dark:text-neutral-300">
