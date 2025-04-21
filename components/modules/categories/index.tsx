@@ -46,7 +46,7 @@ const EditButton = dynamic(() => import("@/components/custom/table/EditButton"),
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-  const { data, setData, fetchData: refresh, loading } = useCategoryStore();
+  const { data, setData, fetchData: refresh } = useCategoryStore();
   const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -254,7 +254,7 @@ function Categories() {
           />
         </div>
 
-        {loading && <Loading />}
+        
         <CategoryList
           data={sortedData}
           columns={columns}
