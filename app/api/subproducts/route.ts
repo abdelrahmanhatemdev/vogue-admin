@@ -212,6 +212,8 @@ export async function PUT(request: Request) {
     }
     return new Error("Something Wrong");
   } catch (error) {
+    console.log("Error", error);
+    
     const message = error instanceof Error ? error.message : "Something Wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }

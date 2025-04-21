@@ -1,12 +1,12 @@
 "use client";
-import { memo, useState} from "react";
+import { memo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { TbEdit } from "react-icons/tb";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import BaseButton from "@/components/custom/buttons/BaseButton";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -71,13 +71,13 @@ export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
   subproduct,
-  product, images
+  product,
+  images,
 }: {
   subproduct: SubproductPageType;
   product: Partial<Product>;
-  images: ProductImage[]
+  images: ProductImage[];
 }) {
-  
   const {
     id,
     uuid,
@@ -91,11 +91,10 @@ function Subproduct({
     inStock,
     colors,
     sizes,
-    isProtected
+    isProtected,
   } = subproduct;
 
-  const {name: productName, slug: product_slug} = product
-
+  const { name: productName, slug: product_slug } = product;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -105,7 +104,7 @@ function Subproduct({
   });
 
   const [productSlug] = useState(product_slug);
-  
+
   return (
     <div className="flex flex-col gap-4">
       <AdminBreadcrumb
@@ -128,9 +127,9 @@ function Subproduct({
             description="Here's details of your subproduct!"
           />
           <div className="flex items-center gap-2 justify-start lg:justify-end">
-            <Button
-              size={"sm"}
-              className="flex items-center gap-2 group"
+            <BaseButton
+              isProtected={isProtected}
+              type="edit"
               onClick={() => {
                 setModalOpen(true);
                 setModal({
@@ -145,14 +144,10 @@ function Subproduct({
                   ),
                 });
               }}
-            >
-              <span>Edit</span>
-              <TbEdit size={20} className="cursor-pointer" />
-            </Button>
-            <Button
-              variant={"destructive"}
-              size={"sm"}
-              className="flex items-center gap-2 group"
+            />
+            <BaseButton
+              isProtected={isProtected}
+              type="delete"
               onClick={() => {
                 setModalOpen(true);
                 setModal({
@@ -172,10 +167,7 @@ function Subproduct({
                   ),
                 });
               }}
-            >
-              <span>Delete</span>
-              <Trash2Icon size={20} className="cursor-pointer" />
-            </Button>
+            />
           </div>
         </div>
 
@@ -190,12 +182,22 @@ function Subproduct({
               featured={featured}
               inStock={inStock}
               id={id}
+              isProtected={isProtected}
             />
 
-            <ColorsChart/>
+            <ColorsChart />
           </div>
-          <ColorsAndSizes itemColors={colors as string[]} itemSizes={sizes as string[]}/>
-          <SubproductImages setModal={setModal} setModalOpen={setModalOpen} uuid= {uuid} images={images} isProtected={isProtected}/>
+          <ColorsAndSizes
+            itemColors={colors as string[]}
+            itemSizes={sizes as string[]}
+          />
+          <SubproductImages
+            setModal={setModal}
+            setModalOpen={setModalOpen}
+            uuid={uuid}
+            images={images}
+            isProtected={isProtected}
+          />
           <div className="flex flex-wrap gap-4 rounded-lg">
             <PaymentChart
               title="Sold Orders"

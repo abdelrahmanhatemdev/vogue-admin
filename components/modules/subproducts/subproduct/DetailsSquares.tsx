@@ -1,4 +1,5 @@
 import { editSubproduct } from "@/actions/Subproduct";
+import SwitcherButton from "@/components/custom/table/SwitcherButton";
 import { Switch } from "@/components/ui/switch";
 import { discountPrice } from "@/lib/productService";
 import { cn, notify } from "@/lib/utils";
@@ -15,6 +16,7 @@ const DetailsSquares = ({
   featured,
   inStock,
   id,
+  isProtected,
 }: {
   price: number;
   discount: number;
@@ -24,6 +26,7 @@ const DetailsSquares = ({
   featured: boolean;
   inStock: boolean;
   id: string;
+  isProtected: boolean | undefined;
 }) => {
   const [optimisticFeatured, addOptimisticFeatured] = useOptimistic(featured);
   const [optimisticInStock, addOptimisticInStock] = useOptimistic(inStock);
@@ -105,8 +108,9 @@ const DetailsSquares = ({
           </div>
           <p className="font-bold">
             <strong>
-              <Switch
-                checked={optimisticFeatured}
+            <SwitcherButton
+                checked={optimisticInStock}
+                isProtected={isProtected}
                 onCheckedChange={async () => {
                   startTransitionFeatured(() => {
                     addOptimisticFeatured(!optimisticFeatured);
@@ -123,10 +127,12 @@ const DetailsSquares = ({
             </strong>
           </p>
         </div>
-        <div className={cn(
+        <div
+          className={cn(
             "flex justify-between items-center",
             isInStockPending ? "opacity-50" : ""
-          )}>
+          )}
+        >
           <div className="flex flex-col">
             <span className="font-extralight">In stock</span>
             <span className="text-neutral-500 text-xs">
@@ -141,8 +147,9 @@ const DetailsSquares = ({
           </div>
           <p className="font-bold">
             <strong>
-              <Switch
+              <SwitcherButton
                 checked={optimisticInStock}
+                isProtected={isProtected}
                 onCheckedChange={async () => {
                   startTransitionInStock(() => {
                     addOptimisticInStock(!optimisticInStock);

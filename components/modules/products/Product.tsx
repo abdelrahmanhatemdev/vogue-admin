@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import useColorStore from "@/store/useColorStore";
 import useSizeStore from "@/store/useSizeStore";
 import SelectAllCheckbox from "@/components/custom/table/SelectAllCheckbox";
+import SwitcherButton from "@/components/custom/table/SwitcherButton";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -219,8 +220,9 @@ function Product({
 
           return (
             <span className={cn(`${item.isPending ? " opacity-50" : ""}`, "dark:border-border") }>
-              <Switch
+               <SwitcherButton
                 checked={item.featured}
+                isProtected={item.isProtected}
                 onCheckedChange={async () => {
                   const { featured, ...rest } = item;
 
@@ -261,8 +263,9 @@ function Product({
 
           return (
             <span className={`${item.isPending ? " opacity-50" : ""}`}>
-              <Switch
+              <SwitcherButton
                 checked={item.inStock}
+                isProtected={item.isProtected}
                 onCheckedChange={async () => {
                   const { inStock, ...rest } = item;
 
@@ -286,9 +289,6 @@ function Product({
                     property: "inStock",
                     value: !item.inStock,
                   });
-
-                  
-
                   notify(res);
                 }}
               />

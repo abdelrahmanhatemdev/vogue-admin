@@ -1,23 +1,29 @@
 import { notify } from "@/lib/utils";
-import { TbEdit } from "react-icons/tb";
-import { TbEditOff } from "react-icons/tb";
+import { TbEdit, TbEditOff } from "react-icons/tb";
 
-const EditButton = ({
-  isProtected,
-  onClick,
-}: {
+type EditButtonProps = {
   isProtected?: boolean;
   onClick: () => void;
-}) => {
-  return isProtected ? (
-    <TbEditOff
+};
+
+const EditButton = ({ isProtected = false, onClick }: EditButtonProps) => {
+  const handleClick = () => {
+    if (isProtected) {
+      notify({ status: "500", message: "Protected item" });
+      return;
+    }
+    onClick();
+  };
+
+  const Icon = isProtected ? TbEditOff : TbEdit;
+
+  return (
+    <Icon
       size={18}
-      className="cursor-pointer opacity-60"
-      onClick={() => {
-        notify({status: "500", message: "Protected item"})}}
+      className={`cursor-pointer ${isProtected ? "opacity-60" : ""}`}
+      onClick={handleClick}
     />
-  ) : (
-    <TbEdit size={18} className="cursor-pointer" onClick={onClick}/>
   );
 };
+
 export default EditButton;

@@ -1,23 +1,30 @@
 import { notify } from "@/lib/utils";
 import { TbTrash, TbTrashOff } from "react-icons/tb";
 
-const DeleteButton = ({
-  isProtected,
-  onClick,
-}: {
+type DeleteButtonProps = {
   isProtected?: boolean;
   onClick: () => void;
-}) => {
-  return isProtected ? (
-    <TbTrashOff
+};
+
+const DeleteButton = ({ isProtected = false, onClick }: DeleteButtonProps) => {
+  const handleClick = () => {
+    if (isProtected) {
+      notify({ status: "500", message: "Protected item" });
+      return;
+    }
+    onClick();
+  };
+
+  const Icon = isProtected ? TbTrashOff : TbTrash;
+
+  return (
+    <Icon
       size={18}
       color="#dc2626"
-      className="cursor-pointer opacity-60"
-      onClick={() => {
-        notify({status: "500", message: "Protected item"})}}
+      className={`cursor-pointer ${isProtected ? "opacity-60" : ""}`}
+      onClick={handleClick}
     />
-  ) : (
-    <TbTrash size={18} color="#dc2626" className="cursor-pointer" onClick={onClick}/>
   );
 };
+
 export default DeleteButton;

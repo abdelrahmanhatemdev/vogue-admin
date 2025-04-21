@@ -35,8 +35,7 @@ export async function deleteOneAction({
       message: res?.data?.error || "Something went wrong",
     };
   } catch (error) {
-    console.log("error", error);
-    const message = "Something went wrong";
+    const message = error?.response?.data?.error || "Something went wrong";
     return {
       status: "error",
       message,
