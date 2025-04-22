@@ -42,6 +42,6 @@ export async function editProductImage(data: {
   }>({ url, tag, data, secondTag: subproductTag });
 }
 
-export async function deleteProductImage(data: { id: string }) {
+export async function deleteProductImage(data: { id: string, subproductId: string }) {
   return deleteOneAction({ url, tag, data });
 }

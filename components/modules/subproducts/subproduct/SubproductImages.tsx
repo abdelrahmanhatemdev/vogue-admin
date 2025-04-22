@@ -74,82 +74,93 @@ const SubproductImages = ({
   }
 
   async function deleteStorageFile(url: string) {
-    const path = decodeURIComponent(url.split("/o/")[1].split("?")[0]);
-    const fileRef = ref(storage, path);
-    await deleteObject(fileRef);
+    if (!isProtected) {
+      const path = decodeURIComponent(url.split("/o/")[1].split("?")[0]);
+      const fileRef = ref(storage, path);
+      await deleteObject(fileRef);
+    }
   }
 
   async function deleteImage(id: string, url: string) {
-    setModalOpen(false);
+    if (isProtected) {
+      return notify({ status: "500", message: "Protected Subproduct" });
+    } else {
+      setModalOpen(false);
+      startTransition(() => {
+        addOptimisticImages((prev: ProductImage[]) => [
+          ...prev.map((item) => {
+            if (item.id === id) {
+              const pendingItem = { ...item, isPending: !isPending };
+              return pendingItem;
+            }
+            return item;
+          }),
+        ]);
+      });
 
-    startTransition(() => {
-      addOptimisticImages((prev: ProductImage[]) => [
-        ...prev.map((item) => {
-          if (item.id === id) {
-            const pendingItem = { ...item, isPending: !isPending };
-            return pendingItem;
-          }
-          return item;
-        }),
-      ]);
-    });
+      const res = await deleteProductImage({ id, subproductId: uuid });
+      notify(res);
 
-    await deleteStorageFile(url);
-
-    const res = await deleteProductImage({ id });
-    notify(res);
+      await deleteStorageFile(url);
+    }
   }
 
   function deleteMultipleImages() {
-    setModalOpen(true);
-    setModal({
-      title: `Delete images`,
-      description: (
-        <p className="font-medium">
-          Are you sure to
-          {selectedImages.length === 1 ? (
-            " delete the image "
-          ) : (
-            <strong> delete all images </strong>
-          )}
-          permenantly ?
-        </p>
-      ),
-      children: (
-        <DialogFooter>
-          <Button
-            type="submit"
-            variant="destructive"
-            onClick={async () => {
-              setModalOpen(false);
-              startTransition(() => {
-                addOptimisticImages((prev: OptimisicImagesType[]) => [
-                  ...prev.filter((item) => !selectedImages.includes(item.id)),
-                ]);
-              });
-              for (const selected of selectedImages) {
-                const selectedImage = imageList.find(
-                  (image) => image.id === selected
-                );
+    if (isProtected) {
+      return notify({ status: "500", message: "Protected Subproduct" });
+    } else {
+      setModalOpen(true);
+      setModal({
+        title: `Delete images`,
+        description: (
+          <p className="font-medium">
+            Are you sure to
+            {selectedImages.length === 1 ? (
+              " delete the image "
+            ) : (
+              <strong> delete all images </strong>
+            )}
+            permenantly ?
+          </p>
+        ),
+        children: (
+          <DialogFooter>
+            <Button
+              type="submit"
+              variant="destructive"
+              onClick={async () => {
+                setModalOpen(false);
+                startTransition(() => {
+                  addOptimisticImages((prev: OptimisicImagesType[]) => [
+                    ...prev.filter((item) => !selectedImages.includes(item.id)),
+                  ]);
+                });
+                for (const selected of selectedImages) {
+                  const selectedImage = imageList.find(
+                    (image) => image.id === selected
+                  );
 
-                const data = {
-                  id: selected,
-                  url: selectedImage?.url ? selectedImage.url : "",
-                };
-                if (data.url) {
-                  await deleteStorageFile(data.url);
+                  const data = {
+                    id: selected,
+                    subproductId: uuid,
+                    url: selectedImage?.url ? selectedImage.url : "",
+                  };
+                  const res: ActionResponse = await deleteProductImage(data);
+                  notify(res);
+
+                  if (data.url) {
+                    await deleteStorageFile(data.url);
+                  }
                 }
-                const res: ActionResponse = await deleteProductImage(data);
-                notify(res);
-              }
-              setSelectedImages([]);
-            }}
-          >
-            Delete {selectedImages.length > 1 && "All"}
-          </Button>
-        </DialogFooter>
-      ),
-    });
+                setSelectedImages([]);
+              }}
+            >
+              Delete {selectedImages.length > 1 && "All"}
+            </Button>
+          </DialogFooter>
+        ),
+      });
+    }
   }
 
   return (
@@ -165,13 +176,7 @@ const SubproductImages = ({
               variant={"destructive"}
               size={"sm"}
               className="flex items-center gap-2 group"
-              onClick={
-                isProtected
-                  ? () => {
-                      notify({ status: "500", message: "Protected items" });
-                    }
-                  : deleteMultipleImages
-              }
+              onClick={deleteMultipleImages}
             >
               <span>Delete Selected</span>
               <Trash2Icon size={20} className="cursor-pointer" />
@@ -179,7 +184,7 @@ const SubproductImages = ({
           ) : (
             <></>
           )}
-          {/* <BaseButton
+          <BaseButton
               isProtected={isProtected}
               type="add"
               onClick={() => {
@@ -197,27 +202,7 @@ const SubproductImages = ({
                   ),
                 });
               }}
-            /> */}
-          <Button
-            size="sm"
-            onClick={() => {
-              setModalOpen(true);
-              setModal({
-                title: "Add photos",
-                description:
-                  "Add new photos here. Click Add when you'are done.",
-                children: (
-                  <AddSubproductPhotos
-                    setModalOpen={setModalOpen}
-                    addOptimisticData={addOptimisticImages}
-                    subproductId={uuid}
-                  />
-                ),
-              });
-            }}
-          >
-            Add New
-          </Button>
+            />
         </div>
       </div>
       {optimisticImages.length > 0 ? (

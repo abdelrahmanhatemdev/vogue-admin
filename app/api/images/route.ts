@@ -87,5 +87,24 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return softDelete({ request, collectionRef, modelName: "Photo" });
+  try {
+    const { subproductId} = await request.json();
+    const reqData = { id: subproductId };
+
+    console.log("req", reqData);
+    
+
+    await isProtected({
+      reqData,
+      collectionRef: SubproductCollectionRef,
+      modelName: "Subproduct",
+      uuidKey: true,
+    });
+
+    return softDelete({ request, collectionRef, modelName: "Photo" });
+
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something Wrong";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
