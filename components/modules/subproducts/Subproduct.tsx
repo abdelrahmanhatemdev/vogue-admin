@@ -3,9 +3,6 @@ import { memo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
-import { TbEdit } from "react-icons/tb";
-import { Trash2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import BaseButton from "@/components/custom/buttons/BaseButton";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
@@ -61,12 +58,6 @@ const SubproductImages = dynamic(
   { loading: Loading }
 );
 
-type SubproductPageType = Subproduct & {
-  product_slug: string;
-  product_name: string;
-  productId: string;
-};
-
 export type OptimisicImagesType = ProductImage & { isPending?: boolean };
 
 function Subproduct({
@@ -74,7 +65,7 @@ function Subproduct({
   product,
   images,
 }: {
-  subproduct: SubproductPageType;
+  subproduct: Subproduct;
   product: Partial<Product>;
   images: ProductImage[];
 }) {

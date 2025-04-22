@@ -15,7 +15,7 @@ const icons = {
 };
 
 const labels = {
-  add: "Add",
+  add: "Add New",
   edit: "Edit",
   delete: "Delete",
 };
@@ -37,7 +37,7 @@ const BaseButton = ({
     <Button
       variant={type === "delete" ? "destructive" : "default"}
       size="sm"
-      className="flex items-center gap-2"
+      className="flex items-center gap-2 cursor-pointer"
       onClick={handleClick}
     >
       <span>{labels[type]}</span>

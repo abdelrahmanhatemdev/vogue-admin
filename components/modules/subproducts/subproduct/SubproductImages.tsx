@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "@/database/firebase";
+import BaseButton from "@/components/custom/buttons/BaseButton";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -67,7 +68,8 @@ const SubproductImages = ({
     });
 
     const list: string[] = updatedList.map((image) => image.id);
-    const res = await editProductImage(list);
+    const params = { subproductId: uuid, list };
+    const res = await editProductImage(params);
     notify(res);
   }
 
@@ -177,6 +179,25 @@ const SubproductImages = ({
           ) : (
             <></>
           )}
+          {/* <BaseButton
+              isProtected={isProtected}
+              type="add"
+              onClick={() => {
+                setModalOpen(true);
+                setModal({
+                  title: "Add photos",
+                  description:
+                    "Add new photos here. Click Add when you'are done.",
+                  children: (
+                    <AddSubproductPhotos
+                      setModalOpen={setModalOpen}
+                      addOptimisticData={addOptimisticImages}
+                      subproductId={uuid}
+                    />
+                  ),
+                });
+              }}
+            /> */}
           <Button
             size="sm"
             onClick={() => {
@@ -202,11 +223,18 @@ const SubproductImages = ({
       {optimisticImages.length > 0 ? (
         <ReactSortable
           list={optimisticImages}
-          setList={setImageList}
+          setList={(newState) => {
+            if (!isProtected) {
+              setImageList(newState);
+            }
+          }}
           animation="200"
           easing="ease-out"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
           onEnd={({ oldIndex, newIndex }) => {
+            if (isProtected) {
+              return notify({ status: "500", message: "Protected item" });
+            }
             if (oldIndex === newIndex) return;
             const updatedList = [...optimisticImages];
             const [movedItem] = updatedList.splice(oldIndex, 1);

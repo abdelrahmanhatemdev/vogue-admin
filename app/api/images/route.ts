@@ -3,17 +3,29 @@ import { v4 as uuidv4 } from "uuid";
 import { adminDB } from "@/database/firebase-admin";
 import { getAllActive } from "@/lib/api/routes/getAllActive";
 import { softDelete } from "@/lib/api/routes/softDelete";
+import { isProtected } from "@/lib/api/isProtected";
+
+import { collectionRef as SubproductCollectionRef } from "@/app/api/subproducts/route";
 
 export const collectionName = "images";
 export const collectionRef = adminDB.collection(collectionName);
 
 export async function GET() {
-  return await getAllActive({collectionRef})
+  return await getAllActive({ collectionRef });
 }
 
 export async function POST(request: Request) {
   try {
-    const { subproductId, urls } = await request.json();
+    const requestData = await request.json();
+    const { subproductId, urls } = requestData;
+    const reqData = { id: subproductId };
+
+    await isProtected({
+      reqData,
+      collectionRef: SubproductCollectionRef,
+      modelName: "Subproduct",
+      uuidKey: true,
+    });
 
     const date = new Date().toISOString();
 
@@ -28,11 +40,10 @@ export async function POST(request: Request) {
         createdAt: date,
         updatedAt: date,
       };
-      await collectionRef.add(data); 
+      await collectionRef.add(data);
     });
 
     return NextResponse.json({ message: "Photo added" }, { status: 200 });
-    
   } catch (error) {
     console.error("Upload Error:", error);
     return NextResponse.json(
@@ -46,8 +57,14 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    
-    const orderArray = await request.json();
+    const { subproductId, list: orderArray } = await request.json();
+    const reqData = { id: subproductId };
+    await isProtected({
+      reqData,
+      collectionRef: SubproductCollectionRef,
+      modelName: "Subproduct",
+      uuidKey: true,
+    });
 
     const updatedOrder = orderArray.map(async (id: string, index: number) => {
       const docRef = collectionRef.doc(id);
