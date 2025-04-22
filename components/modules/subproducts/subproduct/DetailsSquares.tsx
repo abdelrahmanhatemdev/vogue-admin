@@ -1,6 +1,5 @@
 import { editSubproduct } from "@/actions/Subproduct";
 import SwitcherButton from "@/components/custom/table/SwitcherButton";
-import { Switch } from "@/components/ui/switch";
 import { discountPrice } from "@/lib/productService";
 import { cn, notify } from "@/lib/utils";
 import { memo, useOptimistic, useTransition } from "react";

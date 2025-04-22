@@ -8,7 +8,6 @@ import Loading from "@/components/custom/Loading";
 import { cn, notify } from "@/lib/utils";
 import { discountPrice, currencyPrice } from "@/lib/productService";
 import { editSubproduct } from "@/actions/Subproduct";
-import { Switch } from "@/components/ui/switch";
 import useColorStore from "@/store/useColorStore";
 import useSizeStore from "@/store/useSizeStore";
 import SelectAllCheckbox from "@/components/custom/table/SelectAllCheckbox";
