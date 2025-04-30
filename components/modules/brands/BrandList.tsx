@@ -73,6 +73,7 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
+
 function BrandList({
   data,
   columns,
