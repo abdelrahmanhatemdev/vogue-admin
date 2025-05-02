@@ -32,7 +32,7 @@ To create a user-friendly tool that empowers e-commerce businesses to thrive via
 [<img src="https://abdelrahmanhatemdev.github.io/images/images/stack_frames/recharts.webp" alt="Recharts" title="Recharts">](https://recharts.org/) &ensp;
 
 
-## <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/modules.webp" alt="Modules" align="center">  Modules
+## <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/modules.png" alt="Modules" align="center">  Modules
 Vogue Admin is specialized in managing various e-commerce operations with the following modules:
 
 1. **Dashboard** : Overview of key metrics and insights.
