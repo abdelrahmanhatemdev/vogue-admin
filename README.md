@@ -2,7 +2,7 @@
 
 Vogue Admin is a modern e-commerce management admin dashboard application.
 
-<img src="https://abdelrahmanhatemdev.github.io/images/images/mega/vogue-admin.webp" alt="Vogue Admin" align="center"> 
+<img src="https://abdelrahmanhatemdev.github.io/images/images/mega/vogue-admin-mega.webp" alt="Vogue Admin" align="center"> 
 
 [Live Vogue Admin](https://vogue-admin.vercel.app/) 
 
