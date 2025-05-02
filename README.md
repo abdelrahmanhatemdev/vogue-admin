@@ -224,16 +224,6 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 ```
 
 
-
-
-
-
-
-
-
- 
-
-
 ##  <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
 It can be installed from Desktop, IOS and Android broswers and working normally as a regular native app.
@@ -243,7 +233,7 @@ Give it a try and install it on your device :
 [Install on IOS](https://www.bitcot.com/how-to-install-a-pwa-to-your-device/#Installing_a_PWA_on_iOS)
 
 ## <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/performance.png" alt="Performance" align="center"> Performance
-<img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance.png" alt="Performance" align="center">
+<img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-1.png" alt="Performance" align="center">
 <img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-2.png" alt="Performance" align="center">
 <img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-3.png" alt="Performance" align="center">
 
