@@ -1,13 +1,18 @@
 import { getProducSubproducts, getProductBySlug, getProducts } from "@/actions/Product";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { title } from "@/app/(website)/(pages)/products/page";
-const Product = dynamic(() => import("@/components/modules/products/Product"), {
+const Product = nextDynamic(() => import("@/components/modules/products/Product"), {
   loading: Loading,
 });
+
+export const dynamic = "force-dynamic";
+export const dynamicMetadata = true;
+export const revalidate = 5;
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -35,9 +40,13 @@ export default async function ProductPage(props: {
 }) {
   const params = await props.params;
 
-  const { slug } = await params;
+  const { slug } = await params;  
+
+  console.log("slug", slug);
   
   const productObj = await getProductBySlug(slug);
+
+  console.log("productObj", productObj);
 
   if (!productObj?.id) {
     notFound();
@@ -49,6 +58,9 @@ export default async function ProductPage(props: {
     slug: productObj?.slug,
   };
 
+
+  console.log("product", product);
+
   const subproducts = await getProducSubproducts(slug);
 
   return <Product subproducts={subproducts} product={product} />;
@@ -59,3 +71,4 @@ export async function generateStaticParams() {
 
   return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
 }
+

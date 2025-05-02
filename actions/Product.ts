@@ -17,6 +17,7 @@ export async function getProductBySlug(slug: string) {
   return getOneByKeyAction<Product>({
     url: `${url}/slug/${slug}/product`,
     tag,
+    revalidate: 10,
   });
 }
 

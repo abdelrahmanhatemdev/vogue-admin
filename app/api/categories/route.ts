@@ -138,3 +138,4 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   return softDelete({ request, collectionRef, modelName: "Category" });
 }
+

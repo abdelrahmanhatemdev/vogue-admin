@@ -8,10 +8,15 @@ interface GetOneByKeyOptions {
 export async function getOneByKeyAction<T>({
   url,
   tag,
-}: GetOneByKeyOptions): Promise<T | null> {
+}: GetOneByKeyOptions & { revalidate?: number | false }): Promise<T | null> {
   try {
-    const res = await fetchWithAuth({ url, tag });
-    const { data } : {data: T} = await res.json();
+    const res = await fetchWithAuth({
+      url,
+      tag,
+    });
+    console.log("url", url);
+    const { data }: { data: T } = await res.json();
+    console.log("data", data);
     return data;
   } catch (error) {
     console.log(error);

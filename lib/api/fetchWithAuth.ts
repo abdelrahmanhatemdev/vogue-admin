@@ -32,7 +32,7 @@ export async function fetchWithAuth({
     ...options,
     headers,
     method: method,
-    next: tag ? { tags: [tag] } : undefined,
+    next: tag ? { tags: [tag], revalidate: 5 } : undefined,
     cache: cache,
   });
 }

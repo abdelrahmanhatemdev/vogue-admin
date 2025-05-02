@@ -90,10 +90,7 @@ export async function DELETE(request: Request) {
   try {
     const { subproductId} = await request.json();
     const reqData = { id: subproductId };
-
-    console.log("req", reqData);
     
-
     await isProtected({
       reqData,
       collectionRef: SubproductCollectionRef,
