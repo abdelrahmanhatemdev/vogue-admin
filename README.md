@@ -222,7 +222,7 @@ Vogue Admin is specialized in managing various e-commerce operations with the fo
 📄 tsconfig.json  
 📄 types.d.ts  
 ```
-
+<!-- 
 
 ##  <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/pwa.png" alt="Progressive Web App" align="center"> Progressive Web Application Feature
 Vogue Admin is PWA which means it has a progressive Web App Features.
@@ -235,7 +235,7 @@ Give it a try and install it on your device :
 ## <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/performance.png" alt="Performance" align="center"> Performance
 <img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-1.png" alt="Performance" align="center">
 <img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-2.png" alt="Performance" align="center">
-<img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-3.png" alt="Performance" align="center">
+<img src="https://abdelrahmanhatemdev.github.io/images/images/wall-clock/performance-3.png" alt="Performance" align="center"> -->
 
 <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/pass.png" alt="Performance Passed" align="center"> Performance \
 <img src="https://abdelrahmanhatemdev.github.io/images/icons/markdown/pass.png" alt="Accessibility Passed" align="center"> Accessibility \
