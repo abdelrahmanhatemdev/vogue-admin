@@ -1,4 +1,6 @@
-import { getProducSubproducts, getProductBySlug, getProducts } from "@/actions/Product";
+import { getProducSubproducts, getProductBySlug
+  // , getProducts 
+} from "@/actions/Product";
 import nextDynamic from "next/dynamic";
 
 import Loading from "@/components/custom/Loading";
@@ -9,9 +11,10 @@ const Product = nextDynamic(() => import("@/components/modules/products/Product"
   loading: Loading,
 });
 
+
+export const revalidate = 0;
 export const dynamic = "force-dynamic";
 export const dynamicMetadata = true;
-export const revalidate = 5;
 export const dynamicParams = true;
 
 export async function generateMetadata({
@@ -66,9 +69,9 @@ export default async function ProductPage(props: {
   return <Product subproducts={subproducts} product={product} />;
 }
 
-export async function generateStaticParams() {
-  const list: Product[] = await getProducts();
+// export async function generateStaticParams() {
+//   const list: Product[] = await getProducts();
 
-  return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
-}
+//   return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
+// }
 

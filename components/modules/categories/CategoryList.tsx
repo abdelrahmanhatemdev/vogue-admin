@@ -6,7 +6,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
-  PaginationState,
   SortingState,
   VisibilityState,
   useReactTable,
@@ -20,13 +19,7 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import {
-  useState,
-  Dispatch,
-  SetStateAction,
-  memo,
-  useMemo,
-} from "react";
+import { useState, Dispatch, SetStateAction, memo, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import type { ModalState } from "@/components/custom/Modal";
 import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
@@ -40,30 +33,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
 import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading";
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteCategory } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import useCategoryStore from "@/store/useCategoryStore";
 
-const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
-  loading: Loading,
-});
+const NoResults = dynamic(() => import("@/components/custom/NoResults"));
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
-  () => import("@/components/custom/ToggleColumnView"),
-  { loading: Loading }
+  () => import("@/components/custom/ToggleColumnView")
 );
 const TablePagination = dynamic(
-  () => import("@/components/custom/TablePagination"),
-  { loading: Loading }
+  () => import("@/components/custom/TablePagination")
 );
 const AddCategory = dynamic(
-  () => import("@/components/modules/categories/AddCategory"),
-  {
-    loading: Loading,
-  }
+  () => import("@/components/modules/categories/AddCategory")
 );
 
 interface CategoryListProps<TData> {
@@ -91,10 +76,6 @@ function CategoryList({
 
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>(visibleColumns);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -103,10 +84,33 @@ function CategoryList({
 
   const isData = data?.length > 0 ? true : false;
 
-  const { fetchData: refresh, setData } = useCategoryStore();
+  const {
+    fetchData,
+    setData,
+    nextCursor,
+    limit,
+    total,
+    pageIndex,
+    pageSize,
+    setPageIndex,
+    setPageSize,
+  } = useCategoryStore();
 
-  const totalRows = data?.length ? data.length : 0;
+  const totalRows = total ? total : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
+
+  // Handle pagination changes separately from the table
+  const handlePageChange = (newPageIndex:number) => {
+    setPageIndex(newPageIndex);
+  };
+
+  const handlePageSizeChange = (newPageSize:number) => {
+    setPageSize(newPageSize);
+  };
+
+  useEffect(() => {
+    fetchData({ pageIndex, pageSize });
+  }, [pageIndex, pageSize, fetchData]);
 
   const table = useReactTable({
     data,
@@ -118,7 +122,7 @@ function CategoryList({
     state: {
       rowSelection,
       sorting,
-      pagination,
+      pagination: { pageIndex, pageSize },
       columnVisibility,
       columnFilters,
     },
@@ -127,7 +131,7 @@ function CategoryList({
       setShowDeleteAll(true);
     },
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    manualPagination: true,
     defaultColumn: {
       size: 50,
       minSize: 5,
@@ -138,9 +142,10 @@ function CategoryList({
     getRowId: (row) => row.id,
   });
 
-  const currentPage = pagination.pageIndex + 1;
-  const totalPages =
-    data.length > 0 ? Math.ceil(data.length / pagination.pageSize) : 1;
+  const currentPage = pageIndex + 1;
+  const totalPages = total
+    ? Math.ceil(total / pageSize)
+    : currentPage + (nextCursor ? 1 : 0);
 
   function deleteMultiple() {
     setModalOpen(true);
@@ -178,10 +183,10 @@ function CategoryList({
 
               for (const row of selectedRows) {
                 const data = { id: row };
-                const res: ActionResponse = await deleteCategory(data);
+                const res = await deleteCategory(data);
                 notify(res);
                 if (res?.status === "success") {
-                  refresh();
+                  fetchData();
                 }
               }
             }}
@@ -364,16 +369,19 @@ function CategoryList({
                 : `${totalRows} total rows`}
             </div>
             <TablePagination
-              canPrevious={table.getCanPreviousPage()}
-              canNext={table.getCanNextPage()}
-              firstPage={() => table.firstPage()}
-              lastPage={() => table.lastPage()}
-              previousPage={() => table.previousPage()}
-              nextPage={() => table.nextPage()}
+              canPrevious={pageIndex > 0}
+              canNext={currentPage < totalPages}
+              firstPage={() => handlePageChange(0)}
+              lastPage={() => handlePageChange(totalPages - 1)}
+              previousPage={() => handlePageChange(pageIndex - 1)}
+              nextPage={() => handlePageChange(pageIndex + 1)}
               currentPage={currentPage}
               totalPages={totalPages}
-              pagination={pagination}
-              setPagination={setPagination}
+              pageIndex={pageIndex}
+              pageSize={pageSize}
+              total={total}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
             />
           </div>
         </>

@@ -8,8 +8,17 @@ import { EditOneAction } from "@/lib/actions/EditOneAction";
 const url = `${process.env.NEXT_PUBLIC_APP_API}/categories`;
 const tag: string = "categories";
 
-export const getCategories = async () => {
-  return getAllAction<Category>({ url, tag });
+export const getCategories = async (params?: {
+  limit?: number;
+  cursor?: string;
+}) => {
+  const query = new URLSearchParams();
+
+  if (params?.limit) query.set("limit", params.limit.toString());
+  if (params?.cursor) query.set("cursor", params.cursor);
+
+  const paramUrl = `${url}?${query.toString()}`;
+  return getAllAction<Category>({ url:paramUrl, tag: "categories" });
 };
 
 export async function getCategoryBySlug(slug: string) {

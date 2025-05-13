@@ -215,7 +215,7 @@ function AdminSidebar() {
                       <div className="font-bold truncate">
                         {user.displayName}
                       </div>
-                      <div className="text-neutral-700 dark:text-neutral-300 capitalize truncate">
+                      <div className="text-neutral-700 dark:text-neutral-300 truncate">
                         {user.email}
                       </div>
                     </div>

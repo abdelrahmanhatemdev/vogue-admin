@@ -13,6 +13,7 @@ export async function getOneByKeyAction<T>({
     const res = await fetchWithAuth({
       url,
       tag,
+      cache: "no-cache"
     });
     console.log("url", url);
     const { data }: { data: T } = await res.json();

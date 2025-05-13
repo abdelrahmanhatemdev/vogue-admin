@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,38 +15,31 @@ const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
 });
 const AdminBreadcrumb = dynamic(
-  () => import("@/components/custom/AdminBreadcrumb"),
-  { loading: Loading }
+  () => import("@/components/custom/AdminBreadcrumb")
 );
-const Modal = dynamic(() => import("@/components/custom/Modal"), {
-  loading: Loading,
-});
-const EditCategory = dynamic(() => import("./EditCategory"), {
-  loading: Loading,
-});
-const DeleteCategory = dynamic(() => import("./DeleteCategory"), {
-  loading: Loading,
-});
+const Modal = dynamic(() => import("@/components/custom/Modal"));
+const EditCategory = dynamic(() => import("./EditCategory"));
+const DeleteCategory = dynamic(() => import("./DeleteCategory"));
 const CategoryList = dynamic(
   () => import("@/components/modules/categories/CategoryList"),
   { loading: Loading }
 );
-const SelectAllCheckbox = dynamic<{ table: Table<Category> }>(() => import("@/components/custom/table/SelectAllCheckbox"), {
-  loading: Loading,
-});
+const SelectAllCheckbox = dynamic<{ table: Table<Category> }>(
+  () => import("@/components/custom/table/SelectAllCheckbox")
+);
 
-const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
-  loading: Loading,
-});
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton")
+);
 
-const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
-  loading: Loading,
-});
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton")
+);
 
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-  const { data, setData, fetchData: refresh } = useCategoryStore();
+  const { data, fetchData, setData, pageIndex, pageSize } = useCategoryStore();
   const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,21 +49,17 @@ function Categories() {
     children: <></>,
   });
 
-  const sortedData = useMemo(() => {
-    return data?.length
-      ? data.sort((a: OptimisicDataType, b: OptimisicDataType) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        )
-      : [];
-  }, [data]);
+  useEffect(() => {
+    // Only fetch data on initial component mount
+    // Pagination changes will be handled by the CategoryList component
+    fetchData({ pageIndex, pageSize });
+  }, []);
 
   const columns: ColumnDef<OptimisicDataType>[] = useMemo(
     () => [
       {
         id: "select",
-        header: ({ table }) => (
-          <SelectAllCheckbox table={table}/>
-        ),
+        header: ({ table }) => <SelectAllCheckbox table={table} />,
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
@@ -125,7 +114,7 @@ function Categories() {
           const item: OptimisicDataType = row.original;
           return (
             <span className={"p-2" + (item.isPending ? " opacity-50" : "")}>
-              {sortedData.find((cat) => cat.uuid === item.parent)?.name}
+              {data.find((cat) => cat.uuid === item.parent)?.name}
             </span>
           );
         },
@@ -178,7 +167,7 @@ function Categories() {
                     optimisticObj,
                   ]);
 
-                  const res: ActionResponse = await editCategory({
+                  const res = await editCategory({
                     id: item.id,
                     property: "additional",
                     value: !item.additional,
@@ -186,7 +175,7 @@ function Categories() {
 
                   notify(res);
                   if (res?.status === "success") {
-                    refresh();
+                    fetchData({ pageIndex, pageSize });
                   }
                 }}
               />
@@ -240,7 +229,7 @@ function Categories() {
         },
       },
     ],
-    [setModalOpen, setModal, data, labels]
+    [setModalOpen, setModal, data, labels, pageIndex, pageSize, fetchData]
   );
 
   return (
@@ -254,9 +243,8 @@ function Categories() {
           />
         </div>
 
-        
         <CategoryList
-          data={sortedData}
+          data={data}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

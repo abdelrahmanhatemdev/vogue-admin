@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function TablePagination ({
+function TablePagination({
   canPrevious,
   canNext,
   firstPage,
@@ -29,8 +29,11 @@ function TablePagination ({
   nextPage,
   currentPage,
   totalPages,
-  pagination,
-  setPagination,
+  pageIndex,
+  pageSize,
+  total,
+  onPageChange,
+  onPageSizeChange,
 }: {
   canPrevious: boolean;
   canNext: boolean;
@@ -38,19 +41,22 @@ function TablePagination ({
   lastPage: () => void;
   previousPage: () => void;
   nextPage: () => void;
-  currentPage?: number;
-  totalPages?: number;
-  pagination: PaginationState;
-  setPagination: Dispatch<SetStateAction<PaginationState>>;
+  currentPage: number;
+  totalPages: number;
+  pageIndex: number;
+  pageSize: number;
+  total: number;
+  onPageChange: (pageIndex: number) => void;
+  onPageSizeChange: (pageSize: number) => void;
 }) {
   let middleButtons: ReactNode = <></>;
 
   if (totalPages && currentPage) {
     const pagesArray = Array.from({ length: totalPages });
 
-    middleButtons = pagesArray.map((page, index) => {
+    middleButtons = pagesArray.map((_, index) => {
       const displayIndex = index + 1;
-      const isActive = currentPage === index + 1;
+      const isActive = currentPage === displayIndex;
 
       const showButton =
         currentPage === 1
@@ -70,13 +76,8 @@ function TablePagination ({
                   : "")
               }
               variant="outline"
-              onClick={() =>
-                setPagination((prev) => ({
-                  pageIndex: index,
-                  pageSize: prev.pageSize,
-                }))
-              }
-              aria-label = {`Paginaion Button ${index}`}
+              onClick={() => onPageChange(index)}
+              aria-label={`Pagination Button ${displayIndex}`}
             >
               {displayIndex}
             </Button>
@@ -86,6 +87,9 @@ function TablePagination ({
     });
   }
 
+  console.log("pageSize", pageSize);
+  
+
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 flex-wrap w-full lg:w-fit">
       <div className="flex gap-4 items-center">
@@ -93,16 +97,11 @@ function TablePagination ({
           Rows Per Page
         </div>
         <Select
-          value={`${pagination.pageSize}`}
-          onValueChange={value =>
-            setPagination(() => ({
-              pageIndex: (currentPage ? currentPage-1: 0),
-              pageSize: Number(value),
-            }))
-          }
+          value={`${pageSize}`} 
+          onValueChange={(value) => onPageSizeChange(Number(value))}
         >
           <SelectTrigger aria-label="Rows Per Page Select">
-            <SelectValue>{pagination.pageSize}</SelectValue>
+            <SelectValue>{pageSize}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="10">10</SelectItem>
@@ -125,7 +124,7 @@ function TablePagination ({
               variant="outline"
               onClick={firstPage}
               disabled={!canPrevious}
-              aria-label = {`First Page`}
+              aria-label={`First Page`}
             >
               <TfiAngleDoubleLeft size={10} />
             </Button>
@@ -136,7 +135,7 @@ function TablePagination ({
               variant="outline"
               onClick={previousPage}
               disabled={!canPrevious}
-              aria-label = {`Previous Page`}
+              aria-label={`Previous Page`}
             >
               <TfiAngleLeft size={10} />
             </Button>
@@ -148,7 +147,7 @@ function TablePagination ({
               variant="outline"
               onClick={nextPage}
               disabled={!canNext}
-              aria-label = {`Next Page`}
+              aria-label={`Next Page`}
             >
               <TfiAngleRight size={10} />
             </Button>
@@ -159,7 +158,7 @@ function TablePagination ({
               variant="outline"
               onClick={lastPage}
               disabled={!canNext}
-              aria-label = {`Last Page`}
+              aria-label={`Last Page`}
             >
               <TfiAngleDoubleRight size={10} />
             </Button>
@@ -168,5 +167,6 @@ function TablePagination ({
       </Pagination>
     </div>
   );
-};
+}
+
 export default memo(TablePagination);

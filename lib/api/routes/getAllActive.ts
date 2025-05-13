@@ -34,13 +34,17 @@ export async function getAllActive<T extends Record<string, string>>({
       ? snapshot.docs[snapshot.docs.length - 1].id
       : null;
 
+    const countSnapshot = await collectionRef.where("isActive", "==", true).count().get();
+    const total = countSnapshot.data().count;
+
     return NextResponse.json(
-      { data, nextCursor, limit },
+      { data, nextCursor, limit, total },
       { status: 200 }
     );
   } catch (error) {
-    console.log("error", error );
-    const message = error instanceof Error ? error.message : "Something went wrong";
+    console.log("error", error);
+    const message =
+      error instanceof Error ? error.message : "Something went wrong";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

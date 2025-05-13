@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
+import { cookies } from "next/headers";
 // import redis from "@/lib/redis";
 export async function fetchWithAuth({
   url,
   tag,
-  cache = "force-cache",
+  cache = "no-store",
   method = "GET",
   options = {},
 }: {
@@ -19,7 +20,18 @@ export async function fetchWithAuth({
     | "reload";
   options?: RequestInit;
 }) {
-  const token = Cookies.get("token");
+  let token: string | undefined;
+  if (typeof window === "undefined") {
+    // Server-side cookies
+    token = (await cookies()).get("token")?.value;
+    console.log("server token", token?.length);
+  } else {
+    // Client-side cookies
+    token = Cookies.get("token");
+    console.log("client token", token?.length);
+  }
+
+  console.log("token", token?.length);
 
   const isFormData = options.body instanceof FormData;
   const headers = {
@@ -32,8 +44,7 @@ export async function fetchWithAuth({
     ...options,
     headers,
     method: method,
-    next: tag ? { tags: [tag], revalidate: 5 } : undefined,
+    next: tag ? { tags: [tag], revalidate: 0 } : undefined,
     cache: cache,
   });
 }
-

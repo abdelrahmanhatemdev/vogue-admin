@@ -10,9 +10,3 @@ export async function GET(request: Request) {
 
   return getOneActiveByKey<Category>({ collectionRef, value: slug });
 }
-
-export async function generateStaticParams() {
-  const list: Category[] = await getCategories();
-
-  return list?.length > 0 ? list.map(({ slug }: { slug: string }) => ({ slug })) : [];
-}
