@@ -1,4 +1,3 @@
-import { getCategories } from "@/actions/Category";
 import { collectionRef } from "@/app/api/categories/route";
 import { getOneActiveByKey } from "@/lib/api/routes/getOneActiveByKey";
 

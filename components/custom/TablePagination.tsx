@@ -1,4 +1,4 @@
-import { Dispatch, memo, ReactNode, SetStateAction } from "react";
+import { memo, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import {
   TfiAngleDoubleLeft,
@@ -6,7 +6,6 @@ import {
   TfiAngleLeft,
   TfiAngleRight,
 } from "react-icons/tfi";
-import { PaginationState } from "@tanstack/react-table";
 import {
   Pagination,
   PaginationContent,
@@ -29,9 +28,9 @@ function TablePagination({
   nextPage,
   currentPage,
   totalPages,
-  pageIndex,
+  // pageIndex,
   pageSize,
-  total,
+  // total,
   onPageChange,
   onPageSizeChange,
 }: {

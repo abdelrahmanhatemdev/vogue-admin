@@ -88,7 +88,7 @@ function CategoryList({
     fetchData,
     setData,
     nextCursor,
-    limit,
+    // limit,
     total,
     pageIndex,
     pageSize,
