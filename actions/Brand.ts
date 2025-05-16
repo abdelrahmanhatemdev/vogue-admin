@@ -8,8 +8,17 @@ import { EditOneAction } from "@/lib/actions/EditOneAction";
 const url = `${process.env.NEXT_PUBLIC_APP_API}/brands`;
 const tag: string = "brands";
 
-export const getBrands = async () => {
-  return getAllAction<Brand>({ url, tag });
+export const getBrands = async (params?: {
+  limit?: number;
+  cursor?: string;
+}) => {
+  const query = new URLSearchParams();
+
+  if (params?.limit) query.set("limit", params.limit.toString());
+  if (params?.cursor) query.set("cursor", params.cursor);
+
+  const paramUrl = `${url}?${query.toString()}`;
+  return getAllAction<Brand>({ url:paramUrl, tag });
 };
 
 export async function getBrandBySlug(slug: string) {

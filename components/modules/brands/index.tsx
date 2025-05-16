@@ -1,5 +1,5 @@
 "use client";
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import type { ModalState } from "@/components/custom/Modal";
 import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,21 +40,24 @@ const SelectAllCheckbox = dynamic<{ table: Table<Brand> }>(
   }
 );
 
-const DeleteButton = dynamic(() => import("@/components/custom/table/DeleteButton"), {
-  loading: Loading,
-});
+const DeleteButton = dynamic(
+  () => import("@/components/custom/table/DeleteButton"),
+  {
+    loading: Loading,
+  }
+);
 
-const EditButton = dynamic(() => import("@/components/custom/table/EditButton"), {
-  loading: Loading,
-});
+const EditButton = dynamic(
+  () => import("@/components/custom/table/EditButton"),
+  {
+    loading: Loading,
+  }
+);
 
 export type OptimisicDataType = Brand & { isPending?: boolean };
 
 function Brands() {
-  const { data, loading } = useBrandStore();
-
-  console.log("data", data);
-  
+  const { data, fetchData, pageIndex, pageSize } = useBrandStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -62,6 +65,10 @@ function Brands() {
     description: "",
     children: <></>,
   });
+
+  useEffect(() => {
+    fetchData({ pageIndex, pageSize });
+  }, []);
 
   const sortedData = useMemo(() => {
     return data?.length
@@ -178,8 +185,7 @@ function Brands() {
         <div className="flex justify-between items-center">
           <Heading title="Brands" description="Here's a list of your Brands!" />
         </div>
-
-        {loading && <Loading />}
+        
         <BrandList
           data={sortedData}
           columns={columns}

@@ -81,8 +81,6 @@ function TablePagination({
       }
     });
   }
-
-  console.log("pageSize", pageSize);
   
 
   return (

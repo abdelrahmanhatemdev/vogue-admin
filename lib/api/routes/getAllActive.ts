@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function getAllActive<T extends Record<string, string>>({
   collectionRef,
-  limit = 10,
+  limit = 1,
   cursor,
 }: {
   collectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;

@@ -18,7 +18,7 @@ export const getCategories = async (params?: {
   if (params?.cursor) query.set("cursor", params.cursor);
 
   const paramUrl = `${url}?${query.toString()}`;
-  return getAllAction<Category>({ url:paramUrl, tag: "categories" });
+  return getAllAction<Category>({ url:paramUrl, tag});
 };
 
 export async function getCategoryBySlug(slug: string) {

@@ -19,7 +19,14 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { useState, Dispatch, SetStateAction, memo, useMemo, useEffect } from "react";
+import {
+  useState,
+  Dispatch,
+  SetStateAction,
+  memo,
+  useMemo,
+  useEffect,
+} from "react";
 import { Button } from "@/components/ui/button";
 import type { ModalState } from "@/components/custom/Modal";
 import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
@@ -97,15 +104,6 @@ function CategoryList({
 
   const totalRows = total ? total : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
-
-  // Handle pagination changes separately from the table
-  const handlePageChange = (newPageIndex:number) => {
-    setPageIndex(newPageIndex);
-  };
-
-  const handlePageSizeChange = (newPageSize:number) => {
-    setPageSize(newPageSize);
-  };
 
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
@@ -370,15 +368,15 @@ function CategoryList({
             <TablePagination
               canPrevious={pageIndex > 0}
               canNext={currentPage < totalPages}
-              firstPage={() => handlePageChange(0)}
-              lastPage={() => handlePageChange(totalPages - 1)}
-              previousPage={() => handlePageChange(pageIndex - 1)}
-              nextPage={() => handlePageChange(pageIndex + 1)}
+              firstPage={() => setPageIndex(0)}
+              lastPage={() => setPageIndex(totalPages - 1)}
+              previousPage={() => setPageIndex(pageIndex - 1)}
+              nextPage={() => setPageIndex(pageIndex + 1)}
               currentPage={currentPage}
               totalPages={totalPages}
               pageSize={pageSize}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
+              onPageChange={setPageIndex}
+              onPageSizeChange={setPageSize}
             />
           </div>
         </>

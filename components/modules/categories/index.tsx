@@ -50,8 +50,6 @@ function Categories() {
   });
 
   useEffect(() => {
-    // Only fetch data on initial component mount
-    // Pagination changes will be handled by the CategoryList component
     fetchData({ pageIndex, pageSize });
   }, []);
 

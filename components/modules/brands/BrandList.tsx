@@ -26,6 +26,7 @@ import {
   SetStateAction,
   memo,
   useMemo,
+  useEffect,
 } from "react";
 import { Button } from "@/components/ui/button";
 import type { ModalState } from "@/components/custom/Modal";
@@ -86,7 +87,16 @@ function BrandList({
       : {};
   }, [columns]);
 
-  const { fetchData: refresh, setData } = useBrandStore();
+  const {
+    fetchData,
+    setData,
+    nextCursor,
+    total,
+    pageIndex,
+    pageSize,
+    setPageIndex,
+    setPageSize,
+  } = useBrandStore();
 
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -104,6 +114,10 @@ function BrandList({
 
   const totalRows = isData ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
+
+  useEffect(() => {
+      fetchData({ pageIndex, pageSize });
+    }, [pageIndex, pageSize, fetchData]);
 
   const table = useReactTable({
     data,
@@ -135,8 +149,10 @@ function BrandList({
     getRowId: (row) => row.id,
   });
 
-  const currentPage = pagination.pageIndex + 1;
-  const totalPages = isData ? Math.ceil(data.length / pagination.pageSize) : 1;
+  const currentPage = pageIndex + 1;
+  const totalPages = total
+    ? Math.ceil(total / pageSize)
+    : currentPage + (nextCursor ? 1 : 0);
 
   function deleteMultiple() {
     setModalOpen(true);
@@ -177,7 +193,7 @@ function BrandList({
                 const res: ActionResponse = await deleteBrand(data);
                 notify(res);
                 if (res?.status === "success") {
-                  refresh();
+                  fetchData();
                 }
               }
             }}
@@ -363,16 +379,17 @@ function BrandList({
                 : `${totalRows} total rows`}
             </div>
             <TablePagination
-              canPrevious={table.getCanPreviousPage()}
-              canNext={table.getCanNextPage()}
-              firstPage={() => table.firstPage()}
-              lastPage={() => table.lastPage()}
-              previousPage={() => table.previousPage()}
-              nextPage={() => table.nextPage()}
+              canPrevious={pageIndex > 0}
+              canNext={currentPage < totalPages}
+              firstPage={() => setPageIndex(0)}
+              lastPage={() => setPageIndex(totalPages - 1) }
+              previousPage={() => setPageIndex(pageIndex - 1)}
+              nextPage={() => setPageIndex(pageIndex + 1)}
               currentPage={currentPage}
               totalPages={totalPages}
-              pagination={pagination}
-              setPagination={setPagination}
+              pageSize={pageSize}
+              onPageChange={setPageIndex}
+              onPageSizeChange={setPageSize}
             />
           </div>
         </>
