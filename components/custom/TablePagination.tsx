@@ -28,9 +28,7 @@ function TablePagination({
   nextPage,
   currentPage,
   totalPages,
-  // pageIndex,
   pageSize,
-  // total,
   onPageChange,
   onPageSizeChange,
 }: {
@@ -42,9 +40,7 @@ function TablePagination({
   nextPage: () => void;
   currentPage: number;
   totalPages: number;
-  pageIndex: number;
   pageSize: number;
-  total: number;
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }) {

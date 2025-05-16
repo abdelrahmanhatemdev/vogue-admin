@@ -88,7 +88,6 @@ function CategoryList({
     fetchData,
     setData,
     nextCursor,
-    // limit,
     total,
     pageIndex,
     pageSize,
@@ -377,9 +376,7 @@ function CategoryList({
               nextPage={() => handlePageChange(pageIndex + 1)}
               currentPage={currentPage}
               totalPages={totalPages}
-              pageIndex={pageIndex}
               pageSize={pageSize}
-              total={total}
               onPageChange={handlePageChange}
               onPageSizeChange={handlePageSizeChange}
             />
