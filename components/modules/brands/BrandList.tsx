@@ -92,6 +92,7 @@ function BrandList({
     setData,
     nextCursor,
     total,
+    
     pageIndex,
     pageSize,
     setPageIndex,
