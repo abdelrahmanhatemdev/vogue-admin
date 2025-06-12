@@ -16,6 +16,7 @@ import z from "zod";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { notify } from "@/lib/utils";
 
 const Login = () => {
   const form = useForm<z.infer<typeof adminLoginSchema>>({
@@ -33,11 +34,23 @@ const Login = () => {
   async function onSubmit(values: z.infer<typeof adminLoginSchema>) {
     const { email, password } = values;
 
-    const res = await login(email, password);
+    return login(email, password)
+      .then((res) => {
+        if (res?.uid) {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        const message =
+          error instanceof Error ? error.message : "Login failed. Try again.";
 
-    if (res.uid) {
-      router.push("/")
-    }
+        notify({ status: "500", message });
+
+        form.setError("root", {
+          type: "manual",
+          message,
+        });
+      });
   }
 
   return (

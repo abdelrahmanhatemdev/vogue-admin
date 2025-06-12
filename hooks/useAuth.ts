@@ -16,46 +16,46 @@ export function useAuth() {
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const result = await signInWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
-      const idToken = await result.user.getIdToken();
-      const res = await axios.post("/api/auth/login", { idToken });
-      const user = { ...result.user, isAdmin: res.data.isAdmin };
-      setUser(user);
-      return user;
-    } catch (error) {
-      let message = "Something went wrong. Please try again.";
+    return signInWithEmailAndPassword(
+      auth,
+      email.trim().toLowerCase(),
+      password
+    )
+      .then(async (result) => {
+        if (result?.user) {
+          const idToken = result.user.getIdToken();
+          const res = await axios.post("/api/auth/login", { idToken });
 
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-email":
-            message = "Invalid email format.";
-            break;
-          case "auth/user-disabled":
-            message = "This account has been disabled.";
-            break;
-          case "auth/user-not-found":
-            message = "No account found with this email.";
-            break;
-          case "auth/wrong-password":
-            message = "Incorrect password.";
-            break;
-          case "auth/too-many-requests":
-            message = "Too many attempts. Try again later.";
-            break;
-          default:
-            message = error.message;
-            break;
+          const user = { ...result.user, isAdmin: res.data.isAdmin };
+          setUser(user);
+          return user;
         }
-      }
+      })
+      .catch((error) => {
+        let message = "Something went wrong.";
 
-      console.error("Login error:", error);
-      throw new Error(message);
-    }
+        if (error instanceof FirebaseError) {
+          switch (error.code) {
+            case "auth/invalid-credential":
+              message = "Incorrect email or password.";
+              break;
+            case "auth/user-not-found":
+              message = "No account found with this email.";
+              break;
+            case "auth/wrong-password":
+              message = "Incorrect password.";
+              break;
+            case "auth/too-many-requests":
+              message = "Too many attempts. Try again later.";
+              break;
+            default:
+              message = error.message;
+          }
+        }
+
+        console.error("Login error:", error);
+        throw new Error(message);
+      });
   };
 
   const logout = async () => {

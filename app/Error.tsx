@@ -1,7 +1,6 @@
 "use client";
 import ErrorPage from "@/components/custom/ErrorPage";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 
 export const metadata: Metadata = {
