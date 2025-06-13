@@ -6,6 +6,9 @@ export async function POST(req: Request) {
   try {
     const { idToken } = await req.json();
 
+    console.log("idToken", idToken);
+    
+
     const decodedToken = await adminAuth.verifyIdToken(idToken);
     const isAdmin = decodedToken.admin || false; 
 
