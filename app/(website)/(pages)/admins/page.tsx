@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { getAdmins } from "@/actions/Admin";
 import { Metadata } from "next";
 
 const AdminsModule = dynamic(
@@ -13,6 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Admins() {
-  const data: Admin[] = await getAdmins();
-  return <AdminsModule data={data} />;
+  return <AdminsModule/>;
 }

@@ -5,6 +5,8 @@ import { ColumnDef, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
+import useSWR from "swr";
+import { fetcher } from "@/lib/api/swrFetcher";
 
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -54,7 +56,7 @@ const EditButton = dynamic(
 
 export type OptimisicDataType = Admin & { isPending?: boolean };
 
-function Admins({ data }: { data: Admin[] }) {
+function Admins() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     title: "",
@@ -62,7 +64,11 @@ function Admins({ data }: { data: Admin[] }) {
     children: <></>,
   });
 
-  const [optimisicData, addOptimisticData] = useOptimistic(data);
+  const { data, isLoading, error } = useSWR(`api/admins`, fetcher);
+
+  const list = data?.data ?? [];
+
+  const [optimisicData, addOptimisticData] = useOptimistic(list);
 
   const sortedOptimisicData = useMemo(() => {
     return optimisicData?.length
@@ -147,7 +153,7 @@ function Admins({ data }: { data: Admin[] }) {
                     children: (
                       <DeleteAdmin
                         itemId={item.id}
-                        itemUid={item.uid}
+                        itemUid={item.uid as string}
                         setModalOpen={setModalOpen}
                         addOptimisticData={addOptimisticData}
                       />
@@ -155,7 +161,6 @@ function Admins({ data }: { data: Admin[] }) {
                   });
                 }}
               />
-              
             </div>
           );
         },
@@ -163,6 +168,8 @@ function Admins({ data }: { data: Admin[] }) {
     ],
     [setModalOpen, setModal, addOptimisticData]
   );
+
+  if (error) return <p>Failed to load admins</p>;
 
   return (
     <div className="flex flex-col gap-4">
@@ -172,13 +179,18 @@ function Admins({ data }: { data: Admin[] }) {
           <Heading title="Admins" description="Here's a list of your Admins!" />
         </div>
 
-        <AdminList
-          data={sortedOptimisicData}
-          columns={columns}
-          setModalOpen={setModalOpen}
-          setModal={setModal}
-          addOptimisticData={addOptimisticData}
-        />
+        {error ? <p className="text-red-400">Failed to load admins</p> : null}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <AdminList
+            data={sortedOptimisicData}
+            columns={columns}
+            setModalOpen={setModalOpen}
+            setModal={setModal}
+            addOptimisticData={addOptimisticData}
+          />
+        )}
       </div>
       <Modal
         title={modal.title}
