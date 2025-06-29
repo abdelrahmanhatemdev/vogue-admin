@@ -70,13 +70,16 @@ function Admins() {
 
   const [optimisicData, addOptimisticData] = useOptimistic(list);
 
-  const sortedOptimisicData = useMemo(() => {
-    return optimisicData?.length
-      ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
-          b.updatedAt.localeCompare(a.updatedAt)
-        )
-      : [];
-  }, [optimisicData]);
+  // const sortedOptimisicData = useMemo(() => {
+  //   return optimisicData?.length
+  //     ? optimisicData.sort((a: OptimisicDataType, b: OptimisicDataType) =>
+  //         b.updatedAt.localeCompare(a.updatedAt)
+  //       )
+  //     : [];
+  // }, [optimisicData]);
+
+  console.log(optimisicData);
+  
 
   const columns: ColumnDef<Admin>[] = useMemo(
     () => [
