@@ -184,7 +184,6 @@ function Admins() {
           <Loading />
         ) : (
           <AdminList
-            data={sortedOptimisicData}
             columns={columns}
             setModalOpen={setModalOpen}
             setModal={setModal}

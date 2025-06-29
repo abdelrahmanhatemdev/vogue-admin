@@ -48,7 +48,8 @@ import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView
 
 import { DialogFooter } from "@/components/ui/dialog";
 import { notify } from "@/lib/utils";
-import { deleteAdmin } from "@/actions/Admin";
+import { deleteAdmin, getAdmins } from "@/actions/Admin";
+import usePagination from "@/hooks/usePagination";
 
 const NoResults = dynamic(() => import("@/components/custom/NoResults"), {
   loading: Loading,
@@ -65,7 +66,6 @@ const TablePagination = dynamic(
 const AddAdmin = dynamic(() => import("./AddAdmin"), { loading: Loading });
 
 interface AdminListProps<TData> {
-  data: TData[];
   columns: ColumnDef<Admin>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
@@ -79,12 +79,16 @@ interface RowSelectionType {
 }
 
 function AdminList({
-  data,
   columns,
   setModal,
   setModalOpen,
   addOptimisticData,
 }: AdminListProps<Admin>) {
+  const { data, nextPage, isLoading, total } = usePagination({
+    tag: "admins",
+    getList: getAdmins,
+  });
+
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -184,8 +188,8 @@ function AdminList({
                 ]);
               });
               for (const row of selectedRows) {
-                const user = data.find(doc => doc.id === row) as Admin
-                const deleteData = { id: row, uid: user.uid };
+                const user = data.find((doc) => doc.id === row) as Admin;
+                const deleteData = { id: row, uid: user.uid as string };
                 const res: ActionResponse = await deleteAdmin(deleteData);
                 notify(res);
               }
@@ -275,7 +279,7 @@ function AdminList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
@@ -372,18 +376,31 @@ function AdminList({
                 ? `${selectedRows.length} of ${totalRows} row(s) selected.`
                 : `${totalRows} total rows`}
             </div>
-            <TablePagination
+            {/* <TablePagination
+              canPrevious={pageIndex > 0}
+              canNext={currentPage < totalPages}
+              firstPage={() => setPageIndex(0)}
+              lastPage={() => setPageIndex(totalPages - 1)}
+              previousPage={() => setPageIndex(pageIndex - 1)}
+              nextPage={() => setPageIndex(pageIndex + 1)}
+              pageIndex={currentPage}
+              totalPages={totalPages}
+              pageSize={pageSize}
+              setPageIndex={setPageIndex}
+              setPageSize={setPageSize}
+            /> */}
+            {/* <TablePagination
               canPrevious={table.getCanPreviousPage()}
               canNext={table.getCanNextPage()}
-              firstPage={() => table.firstPage()}
-              lastPage={() => table.lastPage()}
-              previousPage={() => table.previousPage()}
-              nextPage={() => table.nextPage()}
-              currentPage={currentPage}
+              setFirstPage={() => table.firstPage()}
+              setLastPage={() => table.lastPage()}
+              setPreviousPage={() => table.previousPage()}
+              setNextPage={() => table.nextPage()}
+              pageIndex={currentPage}
               totalPages={totalPages}
               pagination={pagination}
               setPagination={setPagination}
-            />
+            /> */}
           </div>
         </>
       ) : (

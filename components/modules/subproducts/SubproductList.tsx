@@ -384,11 +384,11 @@ function SubproductList({
             <TablePagination
               canPrevious={table.getCanPreviousPage()}
               canNext={table.getCanNextPage()}
-              firstPage={() => table.firstPage()}
-              lastPage={() => table.lastPage()}
-              previousPage={() => table.previousPage()}
-              nextPage={() => table.nextPage()}
-              currentPage={currentPage}
+              setFirstPage={() => table.firstPage()}
+              setLastPage={() => table.lastPage()}
+              setPreviousPage={() => table.previousPage()}
+              setNextPage={() => table.nextPage()}
+              pageIndex={currentPage}
               totalPages={totalPages}
               pagination={pagination}
               setPagination={setPagination}

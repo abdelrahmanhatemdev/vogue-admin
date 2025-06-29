@@ -19,48 +19,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function TablePagination({
-  canPrevious,
-  canNext,
-  firstPage,
-  lastPage,
-  previousPage,
-  nextPage,
-  currentPage,
-  totalPages,
-  pageSize,
-  onPageChange,
-  onPageSizeChange,
-}: {
+interface TablePaginationOptions {
+  setPageIndex: (newPageIndex: number) => void;
+  setPageSize: (pageSize: number) => void;
+  setFirstPage: () => void;
+  setLastPage: () => void;
+  setPreviousPage: () => void;
+  setNextPage: () => void;
+  pageIndex: number;
+  pageSize: number;
+  totalPages: number;
   canPrevious: boolean;
   canNext: boolean;
-  firstPage: () => void;
-  lastPage: () => void;
-  previousPage: () => void;
-  nextPage: () => void;
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  onPageChange: (pageIndex: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
-}) {
+}
+
+function TablePagination({
+  setFirstPage,
+  setLastPage,
+  setPreviousPage,
+  setNextPage,
+  setPageIndex,
+  setPageSize,
+  pageIndex,
+  pageSize,
+  totalPages,
+  canPrevious,
+  canNext,
+}: TablePaginationOptions) {
   let middleButtons: ReactNode = <></>;
 
-  if (totalPages && currentPage) {
+  if (totalPages && pageIndex) {
     const pagesArray = Array.from({ length: totalPages });
 
     middleButtons = pagesArray.map((_, index) => {
       const displayIndex = index + 1;
-      const isActive = currentPage === displayIndex;
+      const isActive = pageIndex === displayIndex;
 
-      const showButton =
-        currentPage === 1
+      const showButtons =
+        pageIndex === 1
           ? [1, 2, 3]
-          : currentPage === totalPages
+          : pageIndex === totalPages
           ? [totalPages - 2, totalPages - 1, totalPages]
-          : [currentPage - 1, currentPage, currentPage + 1];
+          : [pageIndex - 1, pageIndex, pageIndex + 1];
 
-      if (showButton.includes(displayIndex)) {
+      if (showButtons.includes(displayIndex)) {
         return (
           <PaginationItem key={index}>
             <Button
@@ -71,7 +73,7 @@ function TablePagination({
                   : "")
               }
               variant="outline"
-              onClick={() => onPageChange(index)}
+              onClick={() => setPageIndex(index)}
               aria-label={`Pagination Button ${displayIndex}`}
             >
               {displayIndex}
@@ -81,7 +83,6 @@ function TablePagination({
       }
     });
   }
-  
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 flex-wrap w-full lg:w-fit">
@@ -90,8 +91,8 @@ function TablePagination({
           Rows Per Page
         </div>
         <Select
-          value={`${pageSize}`} 
-          onValueChange={(value) => onPageSizeChange(Number(value))}
+          value={`${pageSize}`}
+          onValueChange={(value) => setPageSize(Number(value))}
         >
           <SelectTrigger aria-label="Rows Per Page Select">
             <SelectValue>{pageSize}</SelectValue>
@@ -106,7 +107,7 @@ function TablePagination({
         </Select>
       </div>
       <div className="font-semibold text-sm text-neutral-700 dark:text-neutral-300 w-fit">
-        Page {currentPage} of {totalPages}
+        Page {pageIndex} of {totalPages}
       </div>
 
       <Pagination className="w-full lg:justify-end lg:w-auto text-center">
@@ -115,7 +116,7 @@ function TablePagination({
             <Button
               className="h-6 w-6 border-neutral-400 p-3"
               variant="outline"
-              onClick={firstPage}
+              onClick={setFirstPage}
               disabled={!canPrevious}
               aria-label={`First Page`}
             >
@@ -126,7 +127,7 @@ function TablePagination({
             <Button
               className="h-6 w-6 border-neutral-400 p-3"
               variant="outline"
-              onClick={previousPage}
+              onClick={setPreviousPage}
               disabled={!canPrevious}
               aria-label={`Previous Page`}
             >
@@ -138,7 +139,7 @@ function TablePagination({
             <Button
               className="h-6 w-6 border-neutral-400 p-3"
               variant="outline"
-              onClick={nextPage}
+              onClick={setNextPage}
               disabled={!canNext}
               aria-label={`Next Page`}
             >
@@ -149,7 +150,7 @@ function TablePagination({
             <Button
               className="h-6 w-6 border-neutral-400 p-3"
               variant="outline"
-              onClick={lastPage}
+              onClick={setLastPage}
               disabled={!canNext}
               aria-label={`Last Page`}
             >

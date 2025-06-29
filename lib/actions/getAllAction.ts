@@ -17,12 +17,17 @@ export async function getAllAction<T>({
   url,
   tag,
   sortKey = "updatedAt",
-}: GetAllOptions): Promise<GetAllResult<T> | null> {
+}: GetAllOptions): Promise<GetAllResult<T>> {
   try {
     const res = await fetchWithAuth({ url, tag });
 
     if (res?.ok) {
-      const { data = [], nextCursor = null, limit = 10, total = 0 } = await res.json();
+      const {
+        data = [],
+        nextCursor = null,
+        limit = 10,
+        total = 0,
+      } = await res.json();
 
       const sortedData = sortKey
         ? [...data].sort((a, b) =>
@@ -33,9 +38,19 @@ export async function getAllAction<T>({
       return { data: sortedData, nextCursor, limit, total };
     }
 
-    return null;
+    return {
+      data: [],
+      nextCursor: null,
+      limit: 0,
+      total: 0,
+    };
   } catch (error) {
     console.error("getAllAction error:", error);
-    return null;
+    return {
+      data: [],
+      nextCursor: null,
+      limit: 0,
+      total: 0,
+    };
   }
 }

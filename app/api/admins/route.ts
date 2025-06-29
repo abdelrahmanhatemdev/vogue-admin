@@ -10,8 +10,13 @@ import { softDelete } from "@/lib/api/routes/softDelete";
 export const collectionName = "admins";
 export const collectionRef = adminDB.collection(collectionName);
 
-export async function GET() {
-  return await getAllActive({ collectionRef });
+export async function GET(req: Request) {
+
+  const { searchParams } = new URL(req.url);
+  const cursor = searchParams.get("cursor") || undefined;
+  const limit = Number(searchParams.get("limit") || 10);
+
+  return await getAllActive({ collectionRef, limit, cursor });
 }
 
 export async function POST(request: Request) {

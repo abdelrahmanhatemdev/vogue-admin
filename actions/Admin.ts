@@ -8,8 +8,17 @@ import { EditOneAction } from "@/lib/actions/EditOneAction";
 const url = `${process.env.NEXT_PUBLIC_APP_API}/admins`;
 const tag: string = "admins";
 
-export const getAdmins = async () => {
-  return getAllAction<Admin>({ url, tag });
+export const getAdmins = async (params?: {
+  limit?: number;
+  cursor?: string;
+}) => {
+  const query = new URLSearchParams();
+
+  if (params?.limit) query.set("limit", params.limit.toString());
+  if (params?.cursor) query.set("cursor", params.cursor);
+
+  const paramUrl = `${url}?${query.toString()}`;
+  return getAllAction<Admin>({ url:paramUrl, tag});
 };
 
 export async function getAdminById(uuid: string) {

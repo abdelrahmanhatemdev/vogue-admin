@@ -382,15 +382,15 @@ function BrandList({
             <TablePagination
               canPrevious={pageIndex > 0}
               canNext={currentPage < totalPages}
-              firstPage={() => setPageIndex(0)}
-              lastPage={() => setPageIndex(totalPages - 1) }
-              previousPage={() => setPageIndex(pageIndex - 1)}
-              nextPage={() => setPageIndex(pageIndex + 1)}
-              currentPage={currentPage}
+             setFirstPage={() => setPageIndex(0)}
+              setLastPage={() => setPageIndex(totalPages - 1)}
+              setPreviousPage={() => setPageIndex(pageIndex - 1)}
+              setNextPage={() => setPageIndex(pageIndex + 1)}
+              pageIndex={currentPage}
               totalPages={totalPages}
               pageSize={pageSize}
-              onPageChange={setPageIndex}
-              onPageSizeChange={setPageSize}
+              setPageIndex={setPageIndex}
+              setPageSize={setPageSize}
             />
           </div>
         </>
