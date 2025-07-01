@@ -42,24 +42,22 @@ import { TiArrowUnsorted } from "react-icons/ti";
 import dynamic from "next/dynamic";
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteCategory } from "@/actions/Category";
+import { deleteCategory, getCategories } from "@/actions/Category";
 import { notify } from "@/lib/utils";
 import useCategoryStore from "@/store/useCategoryStore";
+import usePagination from "@/hooks/usePagination";
 
 const NoResults = dynamic(() => import("@/components/custom/NoResults"));
 
 const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
   () => import("@/components/custom/ToggleColumnView")
 );
-const TablePagination = dynamic(
-  () => import("@/components/custom/TablePagination")
-);
+
 const AddCategory = dynamic(
   () => import("@/components/modules/categories/AddCategory")
 );
 
-interface CategoryListProps<TData> {
-  data: TData[];
+interface CategoryListProps {
   columns: ColumnDef<Category>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
@@ -70,11 +68,10 @@ interface RowSelectionType {
 }
 
 function CategoryList({
-  data,
   columns,
   setModal,
   setModalOpen,
-}: CategoryListProps<Category>) {
+}: CategoryListProps) {
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
@@ -86,40 +83,35 @@ function CategoryList({
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>(visibleColumns);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const selectedRows = Object.keys(rowSelection);
-
-  const isData = data?.length > 0 ? true : false;
-
-  const {
-    fetchData,
-    setData,
-    nextCursor,
-    total,
-    pageIndex,
-    pageSize,
-    setPageIndex,
-    setPageSize,
-  } = useCategoryStore();
-
-  const totalRows = total ? total : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
 
-  useEffect(() => {
-    fetchData({ pageIndex, pageSize });
-  }, [pageIndex, pageSize, fetchData]);
+  const {
+    refetch,
+    items: data,
+    total,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+  } = usePagination<Category>({ 
+    tag: "categories", 
+    getList: getCategories,
+    limit: 10 
+  });
+
+  const selectedRows = Object.keys(rowSelection);
+  const isData = data?.length > 0;
+  const totalRows = total || 0;
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
       sorting,
-      pagination: { pageIndex, pageSize },
       columnVisibility,
       columnFilters,
     },
@@ -128,7 +120,6 @@ function CategoryList({
       setShowDeleteAll(true);
     },
     onSortingChange: setSorting,
-    manualPagination: true,
     defaultColumn: {
       size: 50,
       minSize: 5,
@@ -137,14 +128,10 @@ function CategoryList({
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     getRowId: (row) => row.id,
+    manualPagination: false, 
   });
 
-  const currentPage = pageIndex + 1;
-  const totalPages = total
-    ? Math.ceil(total / pageSize)
-    : currentPage + (nextCursor ? 1 : 0);
-
-  function deleteMultiple() {
+  async function deleteMultiple() {
     setModalOpen(true);
     setModal({
       title: `Delete Categories`,
@@ -156,7 +143,7 @@ function CategoryList({
           ) : (
             <strong> delete all categories </strong>
           )}
-          permenantly ?
+          permanently?
         </p>
       ),
       children: (
@@ -168,24 +155,14 @@ function CategoryList({
               setModalOpen(false);
               setShowDeleteAll(false);
 
-              setData([
-                ...data.map((item) => {
-                  if (selectedRows.includes(item.id)) {
-                    const pendingItem = { ...item, isPending: true };
-                    return pendingItem;
-                  }
-                  return item;
-                }),
-              ]);
-
-              for (const row of selectedRows) {
-                const data = { id: row };
-                const res = await deleteCategory(data);
+              for (const rowId of selectedRows) {
+                const res = await deleteCategory({ id: rowId });
                 notify(res);
                 if (res?.status === "success") {
-                  fetchData();
+                  refetch(); 
                 }
               }
+              setRowSelection({});
             }}
           >
             Delete All
@@ -193,6 +170,16 @@ function CategoryList({
         </DialogFooter>
       ),
     });
+  }
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading) {
+    return <div className="flex justify-center p-8">Loading categories...</div>;
   }
 
   return (
@@ -223,7 +210,7 @@ function CategoryList({
               setModal({
                 title: "Add Category",
                 description:
-                  "Add new Category here. Click Add when you'are done.",
+                  "Add new Category here. Click Add when you're done.",
                 children: <AddCategory setModalOpen={setModalOpen} />,
               });
             }}
@@ -260,7 +247,6 @@ function CategoryList({
                             <DropdownMenuTrigger>
                               <div className="flex gap-2 items-center hover:bg-neutral-200 dark:hover:bg-neutral-500 hover:*:text-neutral-900 dark:text-neutral-50 rounded-lg p-2">
                                 <span className="text-neutral-800 dark:text-neutral-300">
-                                  {" "}
                                   {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -314,7 +300,6 @@ function CategoryList({
                         ) : (
                           <div>
                             <span className="text-neutral-800 dark:text-neutral-300">
-                              {" "}
                               {header.isPlaceholder
                                 ? null
                                 : flexRender(
@@ -359,25 +344,26 @@ function CategoryList({
               )}
             </TableBody>
           </Table>
+          
+          {/* Load More Button for Infinite Scroll */}
+          {hasNextPage && (
+            <div className="flex justify-center py-4">
+              <Button 
+                onClick={handleLoadMore} 
+                disabled={isFetchingNextPage}
+                variant="outline"
+              >
+                {isFetchingNextPage ? "Loading..." : "Load More"}
+              </Button>
+            </div>
+          )}
+
           <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
             <div className="text-neutral-600 dark:text-neutral-300">
               {selectedRows.length > 0
                 ? `${selectedRows.length} of ${totalRows} row(s) selected.`
                 : `${totalRows} total rows`}
             </div>
-            <TablePagination
-              setPageIndex={setPageIndex}
-              setPageSize={setPageSize}
-              setFirstPage={() => setPageIndex(0)}
-              setLastPage={() => setPageIndex(totalPages - 1)}
-              setPreviousPage={() => setPageIndex(pageIndex - 1)}
-              setNextPage={() => setPageIndex(pageIndex + 1)}
-              pageIndex={currentPage}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              canPrevious={pageIndex > 0}
-              canNext={currentPage < totalPages}
-            />
           </div>
         </>
       ) : (

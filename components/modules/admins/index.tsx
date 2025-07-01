@@ -77,8 +77,6 @@ function Admins() {
   //       )
   //     : [];
   // }, [optimisicData]);
-
-  console.log(optimisicData);
   
 
   const columns: ColumnDef<Admin>[] = useMemo(

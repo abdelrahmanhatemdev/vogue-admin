@@ -34,17 +34,17 @@ interface TablePaginationOptions {
 }
 
 function TablePagination({
+  pageIndex,
+  pageSize,
+  totalPages,
+  canPrevious,
+  canNext,
   setFirstPage,
   setLastPage,
   setPreviousPage,
   setNextPage,
   setPageIndex,
   setPageSize,
-  pageIndex,
-  pageSize,
-  totalPages,
-  canPrevious,
-  canNext,
 }: TablePaginationOptions) {
   let middleButtons: ReactNode = <></>;
 

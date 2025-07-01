@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const cursor = searchParams.get("cursor") || undefined;
   const limit = Number(searchParams.get("limit") || 10);
-
+  
   return await getAllActive({ collectionRef, limit, cursor });
 }
 
