@@ -24,14 +24,11 @@ export async function fetchWithAuth({
   if (typeof window === "undefined") {
     // Server-side cookies
     token = (await cookies()).get("token")?.value;
-    console.log("server token", token?.length);
   } else {
     // Client-side cookies
     token = Cookies.get("token");
     console.log("client token", token?.length);
   }
-
-  console.log("token", token?.length);
 
   const isFormData = options.body instanceof FormData;
   const headers = {

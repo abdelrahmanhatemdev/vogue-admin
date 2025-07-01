@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import type { InfiniteData } from '@tanstack/react-query';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import type { InfiniteData } from "@tanstack/react-query";
 
 interface PaginationParams {
   limit?: number;
@@ -21,7 +21,7 @@ interface UsePaginationOptions<T> {
 function usePagination<T>({
   tag,
   getList,
-  limit= 10,
+  limit = 10,
 }: UsePaginationOptions<T>) {
   const {
     data,
@@ -30,20 +30,20 @@ function usePagination<T>({
     isFetching,
     isFetchingNextPage,
     refetch,
+    error,
   } = useInfiniteQuery<
-    PaginatedResponse<T>,                    
-    Error,                                  
-    InfiniteData<PaginatedResponse<T>>,      
-    [string, number],                       
-    string | null                            
+    PaginatedResponse<T>,
+    Error,
+    InfiniteData<PaginatedResponse<T>>,
+    [string, number],
+    string | null
   >({
     queryKey: [tag, limit],
     initialPageParam: null,
-    queryFn: ({ pageParam }) =>  getList({ limit, cursor: pageParam ?? undefined }),
-    getNextPageParam: (lastPage) => {
-      console.log("lastpage", lastPage);
-      
-      return lastPage.nextCursor},
+    queryFn: ({ pageParam }) =>
+      getList({ limit, cursor: pageParam ?? undefined }),
+
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   });
 
   return {
@@ -54,6 +54,7 @@ function usePagination<T>({
     isLoading: isFetching && !data,
     isFetchingNextPage,
     refetch,
+    error,
   };
 }
 

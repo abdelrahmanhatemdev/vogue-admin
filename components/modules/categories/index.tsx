@@ -242,7 +242,7 @@ function Categories() {
         </div>
 
         <CategoryList
-          data={data}
+          // data={data}
           columns={columns}
           setModalOpen={setModalOpen}
           setModal={setModal}

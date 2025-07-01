@@ -6,7 +6,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
-  PaginationState,
   SortingState,
   VisibilityState,
   useReactTable,
@@ -40,32 +39,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TiArrowUnsorted } from "react-icons/ti";
-
 import dynamic from "next/dynamic";
-import Loading from "@/components/custom/Loading";
-const NoResults = dynamic(
-  () => import("@/components/custom/NoResults"),
-  { loading: Loading }
-);
 import type { ToggleColumnViewProps } from "@/components/custom/ToggleColumnView";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteBrand } from "@/actions/Brand";
+import { deleteCategory, getCategories } from "@/actions/Category";
 import { notify } from "@/lib/utils";
-import useBrandStore from "@/store/useBrandStore";
+import useCategoryStore from "@/store/useCategoryStore";
+import usePagination from "@/hooks/usePagination";
 
-const ToggleColumnView = dynamic<ToggleColumnViewProps<Brand>>(
-  () => import("@/components/custom/ToggleColumnView"),
-  { loading: Loading }
-);
-const TablePagination = dynamic(
-  () => import("@/components/custom/TablePagination"),
-  { loading: Loading }
-);
-const AddBrand = dynamic(() => import("@/components/modules/brands/AddBrand"), { loading: Loading });
+const NoResults = dynamic(() => import("@/components/custom/NoResults"));
 
-interface BrandListProps<TData> {
-  data: TData[];
-  columns: ColumnDef<Brand>[];
+const ToggleColumnView = dynamic<ToggleColumnViewProps<Category>>(
+  () => import("@/components/custom/ToggleColumnView")
+);
+
+const AddCategory = dynamic(
+  () => import("@/components/modules/categories/AddCategory")
+);
+
+interface CategoryListProps {
+  columns: ColumnDef<Category>[];
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
@@ -74,62 +67,51 @@ interface RowSelectionType {
   [key: string]: boolean;
 }
 
-
-function BrandList({
-  data,
+function CategoryList({
   columns,
   setModal,
   setModalOpen,
-}: BrandListProps<Brand>) {
+}: CategoryListProps) {
   const visibleColumns = useMemo(() => {
     return columns?.length > 0
       ? Object.fromEntries([...columns.map((col) => [col.id, true])])
       : {};
   }, [columns]);
 
-  const {
-    fetchData,
-    setData,
-    nextCursor,
-    total,
-    pageIndex,
-    pageSize,
-    setPageIndex,
-    setPageSize,
-  } = useBrandStore();
-
   const [rowSelection, setRowSelection] = useState<RowSelectionType>({});
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>(visibleColumns);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const selectedRows = Object.keys(rowSelection);
-
-  const isData = data?.length > 0 ? true : false;
-
-  const totalRows = isData ? data.length : 0;
   const [showDeleteAll, setShowDeleteAll] = useState(true);
 
-  useEffect(() => {
-      fetchData({ pageIndex, pageSize });
-    }, [pageIndex, pageSize, fetchData]);
+  const {
+    refetch,
+    items: data,
+    total,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+  } = usePagination<Category>({ 
+    tag: "categories", 
+    getList: getCategories,
+    limit: 10 
+  });
+
+  const selectedRows = Object.keys(rowSelection);
+  const isData = data?.length > 0;
+  const totalRows = total || 0;
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
       sorting,
-      pagination,
       columnVisibility,
       columnFilters,
     },
@@ -138,7 +120,6 @@ function BrandList({
       setShowDeleteAll(true);
     },
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
     defaultColumn: {
       size: 50,
       minSize: 5,
@@ -147,26 +128,22 @@ function BrandList({
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     getRowId: (row) => row.id,
+    manualPagination: false, 
   });
 
-  const currentPage = pageIndex + 1;
-  const totalPages = total
-    ? Math.ceil(total / pageSize)
-    : currentPage + (nextCursor ? 1 : 0);
-
-  function deleteMultiple() {
+  async function deleteMultiple() {
     setModalOpen(true);
     setModal({
-      title: `Delete Brands`,
+      title: `Delete Categories`,
       description: (
         <p className="font-medium">
           Are you sure to
           {selectedRows.length === 1 ? (
-            " delete the brand "
+            " delete the category "
           ) : (
-            <strong> delete all brands </strong>
+            <strong> delete all categories </strong>
           )}
-          permenantly ?
+          permanently?
         </p>
       ),
       children: (
@@ -177,25 +154,15 @@ function BrandList({
             onClick={async () => {
               setModalOpen(false);
               setShowDeleteAll(false);
-              
-              setData( [
-                  ...data.map((item) => {
-                    if (selectedRows.includes(item.id)) {
-                      const pendingItem = { ...item, isPending: true };
-                      return pendingItem;
-                    }
-                    return item;
-                  }),
-                ]);
-             
-              for (const row of selectedRows) {
-                const data = { id: row };
-                const res: ActionResponse = await deleteBrand(data);
+
+              for (const rowId of selectedRows) {
+                const res = await deleteCategory({ id: rowId });
                 notify(res);
                 if (res?.status === "success") {
-                  fetchData();
+                  refetch(); 
                 }
               }
+              setRowSelection({});
             }}
           >
             Delete All
@@ -203,6 +170,16 @@ function BrandList({
         </DialogFooter>
       ),
     });
+  }
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading) {
+    return <div className="flex justify-center p-8">Loading categories...</div>;
   }
 
   return (
@@ -213,7 +190,7 @@ function BrandList({
             <Input
               className="bg-background"
               type="text"
-              placeholder="Filter Brands..."
+              placeholder="Filter Categories..."
               onChange={(e) =>
                 setColumnFilters([{ id: "name", value: e.target.value }])
               }
@@ -231,13 +208,10 @@ function BrandList({
             onClick={() => {
               setModalOpen(true);
               setModal({
-                title: "Add Brand",
-                description: "Add new Brand here. Click Add when you'are done.",
-                children: (
-                  <AddBrand
-                    setModalOpen={setModalOpen}
-                  />
-                ),
+                title: "Add Category",
+                description:
+                  "Add new Category here. Click Add when you're done.",
+                children: <AddCategory setModalOpen={setModalOpen} />,
               });
             }}
           >
@@ -271,9 +245,8 @@ function BrandList({
                         {header.column.getCanSort() ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <div className="flex gap-2 items-center hover:bg-neutral-200 dark:hover:bg-neutral-500 hover:*:text-neutral-900 dark:text-neutral-50 rounded-lg p-2 -ms-2">
+                              <div className="flex gap-2 items-center hover:bg-neutral-200 dark:hover:bg-neutral-500 hover:*:text-neutral-900 dark:text-neutral-50 rounded-lg p-2">
                                 <span className="text-neutral-800 dark:text-neutral-300">
-                                  {" "}
                                   {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -281,7 +254,7 @@ function BrandList({
                                         header.getContext()
                                       )}
                                 </span>
-                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500"/>
+                                <TiArrowUnsorted className="text-neutral-800 dark:text-neutral-500" />
                               </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-background p-2 rounded-lg *:cursor-pointer">
@@ -327,7 +300,6 @@ function BrandList({
                         ) : (
                           <div>
                             <span className="text-neutral-800 dark:text-neutral-300">
-                              {" "}
                               {header.isPlaceholder
                                 ? null
                                 : flexRender(
@@ -372,32 +344,33 @@ function BrandList({
               )}
             </TableBody>
           </Table>
+          
+          {/* Load More Button for Infinite Scroll */}
+          {hasNextPage && (
+            <div className="flex justify-center py-4">
+              <Button 
+                onClick={handleLoadMore} 
+                disabled={isFetchingNextPage}
+                variant="outline"
+              >
+                {isFetchingNextPage ? "Loading..." : "Load More"}
+              </Button>
+            </div>
+          )}
+
           <div className="flex flex-col lg:flex-row lg:items-center items-start lg:justify-between px-2 gap-4">
             <div className="text-neutral-600 dark:text-neutral-300">
               {selectedRows.length > 0
                 ? `${selectedRows.length} of ${totalRows} row(s) selected.`
                 : `${totalRows} total rows`}
             </div>
-            <TablePagination
-              canPrevious={pageIndex > 0}
-              canNext={currentPage < totalPages}
-             setFirstPage={() => setPageIndex(0)}
-              setLastPage={() => setPageIndex(totalPages - 1)}
-              setPreviousPage={() => setPageIndex(pageIndex - 1)}
-              setNextPage={() => setPageIndex(pageIndex + 1)}
-              pageIndex={currentPage}
-              totalPages={totalPages}
-              pageSize={pageSize}
-              setPageIndex={setPageIndex}
-              setPageSize={setPageSize}
-            />
           </div>
         </>
       ) : (
-        <NoResults title="Add some Brands to show data!" />
+        <NoResults title="Add some Categories to show data!" />
       )}
     </div>
   );
 }
 
-export default memo(BrandList);
+export default memo(CategoryList);
