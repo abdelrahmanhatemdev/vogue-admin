@@ -55,56 +55,56 @@ export const SidebarLinks = [
     link: "/",
     icon: MdSpaceDashboard,
   },
-  {
-    title: "Admins",
-    link: "/admins",
-    icon: MdAdminPanelSettings,
-  },
-  {
-    title: "Users",
-    link: "/users",
-    icon: TbUsers,
-  },
+  // {
+  //   title: "Admins",
+  //   link: "/admins",
+  //   icon: MdAdminPanelSettings,
+  // },
+  // {
+  //   title: "Users",
+  //   link: "/users",
+  //   icon: TbUsers,
+  // },
   {
     title: "Categories",
     link: "/categories",
     icon: BiSolidCategoryAlt,
   },
-  {
-    title: "Brands",
-    link: "/brands",
-    icon: IoMdBusiness,
-  },
-  {
-    title: "Sizes",
-    link: "/sizes",
-    icon: CgSize,
-  },
-  {
-    title: "Colors",
-    link: "/colors",
-    icon: IoIosColorPalette,
-  },
-  {
-    title: "Labels",
-    link: "/labels",
-    icon: MdLabel,
-  },
-  {
-    title: "Products",
-    link: "/products",
-    icon: AiOutlineProduct,
-  },
-  {
-    title: "Orders",
-    link: "/orders",
-    icon: PiTruckTrailerDuotone,
-  },
-  {
-    title: "Payments",
-    link: "/payments",
-    icon: HiOutlineCurrencyDollar,
-  },
+  // {
+  //   title: "Brands",
+  //   link: "/brands",
+  //   icon: IoMdBusiness,
+  // },
+  // {
+  //   title: "Sizes",
+  //   link: "/sizes",
+  //   icon: CgSize,
+  // },
+  // {
+  //   title: "Colors",
+  //   link: "/colors",
+  //   icon: IoIosColorPalette,
+  // },
+  // {
+  //   title: "Labels",
+  //   link: "/labels",
+  //   icon: MdLabel,
+  // },
+  // {
+  //   title: "Products",
+  //   link: "/products",
+  //   icon: AiOutlineProduct,
+  // },
+  // {
+  //   title: "Orders",
+  //   link: "/orders",
+  //   icon: PiTruckTrailerDuotone,
+  // },
+  // {
+  //   title: "Payments",
+  //   link: "/payments",
+  //   icon: HiOutlineCurrencyDollar,
+  // },
   {
     title: "Settings",
     link: "/settings/social-media",

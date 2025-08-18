@@ -7,9 +7,10 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { cn, notify } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
-import { editCategory } from "@/actions/Category";
+import { editCategory, getCategories } from "@/actions/Category";
 import useCategoryStore from "@/store/useCategoryStore";
 import useLabelStore from "@/store/useLabelStore";
+import usePagination from "@/hooks/usePagination";
 const Link = dynamic(() => import("next/link"), { loading: Loading });
 const Heading = dynamic(() => import("@/components/custom/Heading"), {
   loading: Loading,
@@ -39,7 +40,19 @@ const EditButton = dynamic(
 export type OptimisicDataType = Category & { isPending?: boolean };
 
 function Categories() {
-  const { data, fetchData, setData, pageIndex, pageSize } = useCategoryStore();
+  const {
+    items: data,
+    total,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    error,
+  } = usePagination<Category>({
+    tag: "categories",
+    getList: getCategories,
+    limit: 10,
+  });
   const { data: labels } = useLabelStore();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,10 +61,6 @@ function Categories() {
     description: "",
     children: <></>,
   });
-
-  useEffect(() => {
-    fetchData({ pageIndex, pageSize });
-  }, []);
 
   const columns: ColumnDef<OptimisicDataType>[] = useMemo(
     () => [
@@ -160,10 +169,10 @@ function Categories() {
                     additional: !additional,
                     isPending: true,
                   };
-                  setData([
-                    ...data.filter((sub) => sub.id !== item.id),
-                    optimisticObj,
-                  ]);
+                  // setData([
+                  //   ...data.filter((sub) => sub.id !== item.id),
+                  //   optimisticObj,
+                  // ]);
 
                   const res = await editCategory({
                     id: item.id,
@@ -173,7 +182,7 @@ function Categories() {
 
                   notify(res);
                   if (res?.status === "success") {
-                    fetchData({ pageIndex, pageSize });
+                    // fetchData({ pageIndex, pageSize });
                   }
                 }}
               />
@@ -183,6 +192,7 @@ function Categories() {
       },
       {
         id: "actions",
+        header: () => <span className="flex justify-end">Actions</span>,
         cell: ({ row }) => {
           const item: Category = row.original;
 
@@ -227,7 +237,7 @@ function Categories() {
         },
       },
     ],
-    [setModalOpen, setModal, data, labels, pageIndex, pageSize, fetchData]
+    [setModalOpen, setModal, data, labels]
   );
 
   return (

@@ -43,17 +43,9 @@ export default async function CatergoryPage( {
 }: {
   params: { slug: string };
 }) {
-
-
-
- 
-  
   
   const data = await getCategoryBySlug(slug);
-
-
   
-
   if (!data) {
     notFound();
   }
