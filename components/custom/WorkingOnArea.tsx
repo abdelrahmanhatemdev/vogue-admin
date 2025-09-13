@@ -1,4 +1,4 @@
-import useTheme from "@/hooks/useTheme";
+import { useTheme } from "@/store/useTheme";
 import Image from "next/image";
 import { memo } from "react";
 

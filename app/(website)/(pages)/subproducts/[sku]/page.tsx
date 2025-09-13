@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { getProductById } from "@/actions/Product";
 import { getSubproductImages } from "@/actions/Image";
 const Subproduct = dynamic(
-  () => import("@/components/modules/subproducts/Subproduct"),
+  () => import("@/modules/subproducts/Subproduct"),
   { loading: Loading }
 );
 

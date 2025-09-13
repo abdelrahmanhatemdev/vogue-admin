@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import { title } from "@/app/(website)/(pages)/brands/page";
 
 const Brand = dynamic(
-  () => import("@/components/modules/brands/Brand"),
+  () => import("@/modules/brands/Brand"),
   { loading: Loading }
 );
 

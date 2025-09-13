@@ -5,11 +5,11 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/custom/Loading";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
-const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
+const MainLayout = dynamic(() => import("@/layout/MainLayout"), {
   loading: Loading,
 });
 
-const Header = dynamic(() => import("@/components/modules/header/Header"), {
+const Header = dynamic(() => import("@/layout/header/Header"), {
   loading: Loading,
 });
 const SidebarProvider = dynamic(
@@ -18,7 +18,7 @@ const SidebarProvider = dynamic(
   { loading: Loading }
 );
 const AdminSidebar = dynamic(
-  () => import("@/components/modules/sidebar/AdminSidebar"),
+  () => import("@/layout/sidebar/AdminSidebar"),
   { loading: Loading }
 );
 const ContentContainer = dynamic(
@@ -26,7 +26,7 @@ const ContentContainer = dynamic(
   { loading: Loading }
 );
 
-const Footer = dynamic(() => import("@/components/modules/footer/Footer"), {
+const Footer = dynamic(() => import("@/layout/footer/Footer"), {
   loading: Loading,
 });
 export default async function layout({

@@ -8,20 +8,20 @@ const AdminBreadcrumb = dynamic(
 );
 
 const StatsSquares = dynamic(
-  () => import("@/components/modules/dashboard/StatsSquares"),
+  () => import("@/modules/dashboard/StatsSquares"),
   { loading: Loading }
 );
 
-const Goal = dynamic(() => import("@/components/modules/dashboard/Goal"), {
+const Goal = dynamic(() => import("@/modules/dashboard/Goal"), {
   loading: Loading,
 });
 
 const PaymentChart = dynamic(
-  () => import("@/components/modules/dashboard/PaymentChart"),
+  () => import("@/modules/dashboard/PaymentChart"),
   { loading: Loading }
 );
 
-const GoalCalender = dynamic(() => import("@/components/modules/dashboard/GoalCalender"), {
+const GoalCalender = dynamic(() => import("@/modules/dashboard/GoalCalender"), {
   loading: Loading,
 });
 

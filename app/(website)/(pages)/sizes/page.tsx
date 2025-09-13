@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
-const SizesModule = dynamic(() => import("@/components/modules/sizes"));
+const SizesModule = dynamic(() => import("@/modules/sizes"));
 
 export const title = "Sizes";
 

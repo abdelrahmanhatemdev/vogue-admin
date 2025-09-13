@@ -4,7 +4,7 @@ import { title } from "@/app/(website)/(pages)/settings/layout";
 import { getCurrencies } from "@/actions/Currency";
 import Loading from "@/components/custom/Loading";
 const Currency = dynamic(
-  () => import("@/components/modules/settings/currencies"),
+  () => import("@/modules/settings/currencies"),
   {
     loading: Loading,
   }

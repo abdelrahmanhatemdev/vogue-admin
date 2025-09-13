@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
 const LabelsModule = dynamic(
-  () => import("@/components/modules/labels")
+  () => import("@/modules/labels")
 );
 
 export const title = "Labels"

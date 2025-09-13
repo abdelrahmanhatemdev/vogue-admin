@@ -1,12 +1,15 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   // {
   //   key: "Content-Security-Policy",
   //   value: `
-  //     default-src 'self'; 
-  //     script-src 'self' https://trusted.cdn.com; 
-  //     object-src 'none'; 
-  //     upgrade-insecure-requests; 
+  //     default-src 'self';
+  //     script-src 'self' https://trusted.cdn.com;
+  //     object-src 'none';
+  //     upgrade-insecure-requests;
   //   `.replace(/\s{2,}/g, " ").trim(),
   // },
   {
@@ -53,7 +56,15 @@ const nextConfig = {
       static: 180,
     },
     // dynamicIO: true,
-  }, 
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "node:process": "process/browser",
+    };
+    return config;
+  },
+  
 };
 
 export default nextConfig;

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Loading from "@/components/custom/Loading";
 
 const OrdersModule = dynamic(
-  () => import("@/components/modules/orders"),
+  () => import("@/modules/orders"),
   { loading: Loading }
 );
 

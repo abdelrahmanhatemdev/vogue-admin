@@ -1,38 +1,24 @@
+import { serialize } from "cookie";
 import { NextResponse } from "next/server";
 import { adminAuth } from "@/database/firebase-admin";
-import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
-  try {
-    const { idToken } = await req.json();
+  const { idToken } = await req.json();
 
-    console.log("idToken", idToken);
-    
+  // Firebase requires maxAge <= 2 weeks
+  const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+  const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn });
 
-    const decodedToken = await adminAuth.verifyIdToken(idToken);
-    const isAdmin = decodedToken.admin || false; 
+  const cookie = serialize("session", sessionCookie, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/", // ✅ important
+    maxAge: expiresIn / 1000,
+    sameSite: "lax",
+  });
 
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, {
-      expiresIn: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
-
-    (await cookies()).set("session", sessionCookie, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      path: "/",
-    });
-
-    (await cookies()).set("token", idToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      path: "/",
-    });
-
-    return NextResponse.json({ success: true, uid: decodedToken.uid, isAdmin });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Something Wrong";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  return new NextResponse(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { "Set-Cookie": cookie },
+  });
 }

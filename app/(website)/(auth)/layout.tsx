@@ -12,7 +12,7 @@ const AuthSwiper = dynamic(() => import("@/components/custom/AuthSwiper"), {
   loading: Loading,
 });
 
-const MainLayout = dynamic(() => import("@/components/custom/MainLayout"), {
+const MainLayout = dynamic(() => import("@/layout/MainLayout"), {
   loading: Loading,
 });
 

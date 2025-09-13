@@ -4,7 +4,7 @@ import { title } from "@/app/(website)/(pages)/settings/layout";
 import { getGlobalNotification } from "@/actions/GlobalNotification";
 import Loading from "@/components/custom/Loading";
 const GlobalNotification = dynamic(
-  () => import("@/components/modules/settings/globalNotifications"),
+  () => import("@/modules/settings/globalNotifications"),
   {
     loading: Loading,
   }

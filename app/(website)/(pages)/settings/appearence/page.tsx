@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { title } from "@/app/(website)/(pages)/settings/layout";
 import Loading from "@/components/custom/Loading";
 const Appearence = dynamic(
-  () => import("@/components/modules/settings/appearence"),
+  () => import("@/modules/settings/appearence"),
   {
     loading: Loading,
   }

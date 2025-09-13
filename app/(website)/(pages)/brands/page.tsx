@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
-const BrandsModule = dynamic(() => import("@/components/modules/brands"));
+const BrandsModule = dynamic(() => import("@/modules/brands"));
 
 export const title = "Brands"
 

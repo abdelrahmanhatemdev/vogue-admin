@@ -1,6 +1,7 @@
 
 "use client"
-import useTheme from "@/hooks/useTheme";
+
+import { useTheme } from "@/store/useTheme";
 import Loader from "react-spinners/PuffLoader";
 
 function Loading() {

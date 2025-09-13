@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { getProducSubproducts, getProducts } from "@/actions/Product";
 import { Metadata } from "next";
 
-const ProductsModule = dynamic(() => import("@/components/modules/products"));
+const ProductsModule = dynamic(() => import("@/modules/products"));
 
 export const title = "Products";
 

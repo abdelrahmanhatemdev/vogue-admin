@@ -4,7 +4,7 @@ import { title } from "@/app/(website)/(pages)/settings/layout";
 import { getSetting } from "@/actions/Setting";
 import Loading from "@/components/custom/Loading";
 const Setting = dynamic(
-  () => import("@/components/modules/settings/settings"),
+  () => import("@/modules/settings/settings"),
   {
     loading: Loading,
   }

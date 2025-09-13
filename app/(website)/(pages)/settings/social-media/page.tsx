@@ -4,7 +4,7 @@ import { title } from "@/app/(website)/(pages)/settings/layout";
 import { getSocialMedia } from "@/actions/SocialMedia";
 import Loading from "@/components/custom/Loading";
 const SocialMedia = dynamic(
-  () => import("@/components/modules/settings/socialMedia"),
+  () => import("@/modules/settings/socialMedia"),
   {
     loading: Loading,
   }

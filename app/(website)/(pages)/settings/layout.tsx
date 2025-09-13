@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import AdminBreadcrumb from "@/components/custom/AdminBreadcrumb";
-import SettingsSidebar from "@/components/modules/settings/SettingsSidebar";
+import SettingsSidebar from "@/modules/settings/SettingsSidebar";
 import { ReactNode } from "react";
 
 export const title = "Settings";

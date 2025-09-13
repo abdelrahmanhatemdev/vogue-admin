@@ -1,9 +1,10 @@
 "use client";
-import useTheme from "@/hooks/useTheme";
+
 import { IoSunnyOutline } from "react-icons/io5";
 import { IoMoonSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/store/useTheme";
 
 function ToggleThemeSwitch() {
   const { theme, toggleTheme } = useTheme();

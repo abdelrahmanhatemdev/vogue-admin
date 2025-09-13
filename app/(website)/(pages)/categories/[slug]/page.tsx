@@ -9,7 +9,7 @@ import { title } from "@/app/(website)/(pages)/categories/page";
 import Loading from "@/components/custom/Loading";
 
 const Category = nextDynamic(
-  () => import("@/components/modules/categories/Category"),
+  () => import("@/modules/categories/Category"),
   { loading: Loading }
 );
 

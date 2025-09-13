@@ -1,5 +1,5 @@
 import { memo } from "react";
-import AppLayout from "./AppLayout";
+import AppLayout from "../../layout/AppLayout";
 import { TbExclamationMark } from "react-icons/tb";
 import Image from "next/image";
 
